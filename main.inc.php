@@ -41,3 +41,11 @@ add_event_handler('init', 'pem_init');
 function pem_init()
 {
 }
+
+/**
+ * add ws_methods
+ */
+add_event_handler('ws_add_methods', 'pem_ws_add_methods');
+include_once(PEM_PATH . 'include/ws_functions.inc.php');
+
+
