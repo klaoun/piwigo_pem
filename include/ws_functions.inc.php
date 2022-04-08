@@ -15,6 +15,14 @@ function pem_ws_add_methods($arr)
     'Get list of extensions.'
   );
 
+  $service->addMethod(
+    'pem.extensions.getExtensionInfo',
+    'ws_pem_get_extension_info',
+    array(
+      'extension_id' => array('type'=>WS_TYPE_INT|WS_TYPE_POSITIVE),
+    ),
+    'Get extension info.'
+  );
 
 }
 
@@ -43,4 +51,45 @@ SELECT
   }
 
   return $extension_infos_of;
+}
+
+/**
+ * Get extension info
+ */
+function ws_pem_get_extension_info($params, &$service)
+{
+
+  if (!isset($params['extension_id']))
+  {
+    die('missing eid');
+  }
+
+  if (!preg_match('/^\d+$/', $params['extension_id']))
+  {
+    die('expected format for eid');
+  }
+  
+  $extension_infos_of = array();
+  
+  $query = '
+SELECT
+    id_extension,
+    name,
+    username
+  FROM '.PEM_EXT_TABLE.' AS e
+    JOIN '.PEM_USER_TABLE.' AS u ON u.id_user = e.idx_user
+  WHERE id_extension = '.$params['extension_id'].'
+';
+
+  $extension_infos_of = query2array($query, 'id_extension');
+
+  if (!isset($_REQUEST['format']))
+  {
+    //Echo to be compatible with previous version of Piwigo
+    echo serialize($extension_infos_of);
+    exit;
+  }
+
+  return $extension_infos_of;
+    
 }
