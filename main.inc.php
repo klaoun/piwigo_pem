@@ -48,4 +48,28 @@ function pem_init()
 add_event_handler('ws_add_methods', 'pem_ws_add_methods');
 include_once(PEM_PATH . 'include/ws_functions.inc.php');
 
+/**
+ * Load PEM header
+ */
+add_event_handler('init', 'pem_load_header');
+function pem_load_header()
+{
+  global $template, $page, $lang, $user;
+
+  $pem_root = '';
+  $pem_root_url = get_absolute_root_url();
+  $pem_root_url_piwigodotorg = get_absolute_root_url() . PEM_PATH;
+  $template->set_template_dir(PEM_PATH);
+  $template->set_filenames(array('header_pem' => realpath(PEM_PATH .'template/header.tpl')));
+  $template->assign(
+    array(
+      'PEM_ROOT' => $pem_root,
+      'PEM_ROOT_URL' => $pem_root_url,
+      'PEM_ROOT_URL_PLUGINS' => $pem_root_url_piwigodotorg,
+      // 'URL' => pem_get_page_urls(),
+      // 'PEM_DOMAIN_PREFIX' => $page['pem_domain_prefix'],
+    )
+  );
+}
+
 
