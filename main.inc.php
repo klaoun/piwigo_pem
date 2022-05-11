@@ -72,4 +72,13 @@ function pem_load_header()
   );
 }
 
+/**
+ * Load Pem content
+ */
+add_event_handler('init', 'pem_load_content');
+function pem_load_content(){
+  global $template;
+
+  $template->set_filenames(array('pem_page' => realpath(PEM_PATH . 'template/' . 'home.tpl')));
+}
 
