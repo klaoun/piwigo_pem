@@ -82,3 +82,19 @@ function pem_load_content(){
   $template->set_filenames(array('pem_page' => realpath(PEM_PATH . 'template/' . 'home.tpl')));
 }
 
+/**
+ * Load Pem footer
+ */
+add_event_handler('init', 'pem_load_footer');
+function pem_load_footer(){
+  global $template;
+  // echo('<pre>');print_r($template);echo('</pre>');
+
+  $template->set_filenames(array('footer_pem' => realpath(PEM_PATH .'template/footer.tpl')));
+
+  $template->parse('header_pem');
+  $template->parse('pem_page');
+  $template->parse('footer_pem');
+  $template->p();
+  exit();
+}
