@@ -13,8 +13,15 @@
     <link rel="stylesheet" type="text/css" href="{$PEM_ROOT_URL_PLUGINS}styles/css/main.css">
         <link rel="stylesheet" type="text/css" href="{$PEM_ROOT_URL_PLUGINS}styles/css/navbar.css">
 
+    {* Jquery *}
     <script src="{$PEM_ROOT_URL_PLUGINS}vendor/js/jquery-3.6.0.min.js"></script>
+
+    {* Bootstrap javascript *}
     <script src="{$PEM_ROOT_URL_PLUGINS}vendor/bootstrap/js/bootstrap.min.js"></script>
+
+    {* ChartJs *}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.8.0/chart.min.js" integrity="sha512-sW/w8s4RWTdFFSduOTGtk4isV1+190E/GghVffMA9XczdJ2MDzSzLEubKAs5h0wzgSJOQTRYyaz73L3d6RtJSg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.8.0/helpers.esm.js" integrity="sha512-dSutS1n8KEMUnQMa9YGa6CxAmoUfaZdxL2+s2xBgEq7WHaWdtjna/rzGsjqkT27GxKBDLT0Fr3C/TzzHvBRaAg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
   </head>
   <body>
