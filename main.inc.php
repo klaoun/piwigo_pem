@@ -61,6 +61,8 @@ function pem_load_header()
   $pem_root_url_piwigodotorg = get_absolute_root_url() . PEM_PATH;
   $template->set_template_dir(PEM_PATH);
   $template->set_filenames(array('header_pem' => realpath(PEM_PATH .'template/header.tpl')));
+  $template->set_filenames(array('navbar_pem' => realpath(PEM_PATH .'template/navbar.tpl')));
+
   $template->assign(
     array(
       'PEM_ROOT' => $pem_root,
@@ -93,6 +95,7 @@ function pem_load_footer(){
   $template->set_filenames(array('footer_pem' => realpath(PEM_PATH .'template/footer.tpl')));
 
   $template->parse('header_pem');
+  $template->parse('navbar_pem');
   $template->parse('pem_page');
   $template->parse('footer_pem');
   $template->p();
