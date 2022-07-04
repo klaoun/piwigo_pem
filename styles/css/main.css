@@ -1,0 +1,52 @@
+:root{
+  --main_orange: #ff7700;
+  --dark_grey: #3d3d3d;
+  --med_grey: #767676;
+  --white: #ffffff;
+  --black: #000000;
+  --light-blue-background: #ebf5ff;
+  --light-blue-font: #6CADD9;
+}
+
+/******
+Titles
+******/
+
+h1{
+  font-size: 56px;
+  font-weight: 900;
+  text-align: left;
+  color: #3c3c3c;
+  line-height: 76px;
+  transition: all 1s;
+}
+
+h2{
+  font-size: 40px;
+  font-weight: 900;
+  text-align: left;
+  color: #3c3c3c;
+  transition: all 1s;
+}
+
+h5{
+  color: #7e7e7e;
+  font-size:20px;
+  font-weight: 700;
+  line-height: 28px;
+  transition: all 1s;
+  text-align: left;
+}
+
+/******
+Badges
+******/
+.blue-badge{
+  background-color: var(--light-blue-background);
+  color:var(--light-blue-font);
+  padding: 5px 10px;
+  border-radius: 25px;
+  margin-left: 10px;
+  font-size: 13px;
+  font-weight: 700;
+}
