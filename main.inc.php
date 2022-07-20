@@ -80,8 +80,8 @@ function pem_load_header()
 add_event_handler('init', 'pem_load_content');
 function pem_load_content(){
   global $template;
-
-  $template->set_filenames(array('pem_page' => realpath(PEM_PATH . 'template/' . 'home.tpl')));
+  include_once(PEM_PATH.'include/home.inc.php');
+  include_once(PEM_PATH.'include/list_view.inc.php');
 }
 
 /**
@@ -96,7 +96,8 @@ function pem_load_footer(){
 
   $template->parse('header_pem');
   $template->parse('navbar_pem');
-  $template->parse('pem_page');
+  $template->parse('home_pem');
+  // $template->parse('list_view_pem');
   $template->parse('footer_pem');
   $template->p();
   exit();
