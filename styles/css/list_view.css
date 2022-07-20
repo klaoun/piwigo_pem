@@ -1,0 +1,11 @@
+:root{
+  --white: #ffffff;
+}
+
+/******
+specific css styles fo list-view tpl
+******/
+
+h3{
+  color:var(--white);
+}

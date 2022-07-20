@@ -1,11 +1,20 @@
 :root{
   --main_orange: #ff7700;
-  --dark_grey: #3d3d3d;
-  --med_grey: #767676;
+  --grey1: #3c3c3c;
+  --grey2: #3d3d3d;
+  --grey3: #767676;
+  --grey4:#9C9C9C;
   --white: #ffffff;
   --black: #000000;
-  --light-blue-background: #ebf5ff;
-  --light-blue-font: #6CADD9;
+  --light_blue_background: #ebf5ff;
+  --light_blue_font: #6CADD9;
+}
+
+/******
+Backgrounds
+******/
+.purple-gradient{
+  background: linear-gradient(287deg, #1E0134 0%, #1E2775 19.79%, #6E2C96 44.79%, #FF005C 100%);
 }
 
 /******
@@ -16,7 +25,7 @@ h1{
   font-size: 56px;
   font-weight: 900;
   text-align: left;
-  color: #3c3c3c;
+  color:  var(--grey1);
   line-height: 76px;
   transition: all 1s;
 }
@@ -25,12 +34,30 @@ h2{
   font-size: 40px;
   font-weight: 900;
   text-align: left;
-  color: #3c3c3c;
+  color:  var(--grey1);
   transition: all 1s;
 }
 
+h3{
+  font-size: 40px;
+  font-weight: 700;
+  text-align: left;
+  color:  var(--grey1);
+  transition: all 1s;
+}
+
+h4{
+  color:  var(--grey4);
+  font-size:25px;
+  font-weight: 700;
+  line-height: 28px;
+  transition: all 1s;
+  text-align: left;
+}
+
+
 h5{
-  color: #7e7e7e;
+  color:  var(--grey3);
   font-size:20px;
   font-weight: 700;
   line-height: 28px;
@@ -39,14 +66,26 @@ h5{
 }
 
 /******
+Buttons
+******/
+.btn-primary{
+  background-color: var(--main_orange);
+  color: var(--white);
+  font-weight:700;
+  border:none;
+  border-radius:0;
+}
+
+/******
 Badges
 ******/
 .blue-badge{
-  background-color: var(--light-blue-background);
-  color:var(--light-blue-font);
+  background-color: var(--light_blue_background);
+  color:var(--light_blue_font);
   padding: 5px 10px;
   border-radius: 25px;
   margin-left: 10px;
   font-size: 13px;
   font-weight: 700;
 }
+
