@@ -40,6 +40,7 @@ define('PEM_DIR', PHPWG_ROOT_PATH . PWG_LOCAL_DIR . 'piwigo_pem/');
 add_event_handler('init', 'pem_init');
 function pem_init()
 {
+  include_once(PEM_PATH . 'include/functions_pem.php');
 }
 
 /**
@@ -68,7 +69,7 @@ function pem_load_header()
       'PEM_ROOT' => $pem_root,
       'PEM_ROOT_URL' => $pem_root_url,
       'PEM_ROOT_URL_PLUGINS' => $pem_root_url_piwigodotorg,
-      // 'URL' => pem_get_page_urls(),
+      'URL' => pem_get_page_urls(),
       // 'PEM_DOMAIN_PREFIX' => $page['pem_domain_prefix'],
     )
   );
@@ -79,10 +80,61 @@ function pem_load_header()
  */
 add_event_handler('init', 'pem_load_content');
 function pem_load_content(){
-  global $template;
-  include_once(PEM_PATH.'include/home.inc.php');
-  include_once(PEM_PATH.'include/list_view.inc.php');
+  global $template, $logger, $lang, $user, $page, $lang_info;
+
+  $logger->info(__FUNCTION__.', $_GET[pem] = '.(isset($_GET['pem']) ? $_GET['pem'] : 'null'));
+
+  $meta_title = null;
+  $meta_description = null;
+
+  $pem_root_url = get_absolute_root_url();
+  if (isset($_GET['pem']))
+  {
+    $pem_page = pem_label_to_page($_GET['pem']);
+
+    if ($pem_page !== false)
+    {
+      $pem_file = pem_page_to_file($pem_page);
+      $tpl_file = PEM_PATH . 'template/' . $pem_file . '.tpl';
+
+      $template->set_filenames(array('pem_page' => realpath($tpl_file)));
+
+      /* Load en_UK translation */
+      // if ('en_UK' != $user['language'])
+      // {
+      //     load_language($pem_file . '.lang', PEM_PATH, array('language' => 'en_UK', 'no_fallback' => true));
+      // }
+      /* Load user language translation */
+      // load_language($pem_file . '.lang', PEM_PATH);
+
+      // $meta_title = pem_get_page_title($pem_page);
+      // $meta_description = isset($lang['page_meta_description']) ? $lang['page_meta_description'] : null;
+
+      if (file_exists(PEM_PATH . '/include/' . $pem_file . '.inc.php'))
+      {
+          include(PEM_PATH . '/include/' . $pem_file . '.inc.php');
+      }
+    }
+    else
+    {
+      http_response_code(404);
+      $template->set_filenames(array('pem_page' => realpath(PEM_PATH . 'template/404.tpl')));
+    }
+  }
+  else
+  {
+    $template->set_filenames(array('pem_page' => realpath(PEM_PATH . 'template/' . 'home.tpl')));
+
+  }
+  $template->assign(
+    array(
+        'meta_title' => $meta_title,
+        'meta_description' => $meta_description,
+        'PEMROOT_URL' => $pem_root_url . PEM_PATH,
+    )
+  );
 }
+
 
 /**
  * Load Pem footer
@@ -90,13 +142,14 @@ function pem_load_content(){
 add_event_handler('init', 'pem_load_footer');
 function pem_load_footer(){
   global $template;
-  // echo('<pre>');print_r($template);echo('</pre>');
+
+  $porg_root_url = get_absolute_root_url();
 
   $template->set_filenames(array('footer_pem' => realpath(PEM_PATH .'template/footer.tpl')));
 
   $template->parse('header_pem');
   $template->parse('navbar_pem');
-  $template->parse('home_pem');
+  $template->parse('pem_page');
   // $template->parse('list_view_pem');
   $template->parse('footer_pem');
   $template->p();
