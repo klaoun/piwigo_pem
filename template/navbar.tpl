@@ -1,4 +1,4 @@
-<nav class="navbar navbar-expand-lg navbar-light bg-light justify-content-between">
+<nav class="navbar navbar-expand-lg navbar-light bg-light justify-content-between py-3">
   <div class="container">
     <div class="brand">
       <a class="d-inline-block" href="https://www.piwigo.org">
@@ -12,24 +12,25 @@
     <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
       <ul class="navbar-nav">
         <li class="nav-item active fw-bold">
-          <a class="nav-link" href="#">Extensions</a>
+          <a class="nav-link" href="{$PEM_ROOT}{$URL.home}">Extensions</a>
         </li>
         <li class="nav-item fw-bold">
-          <a class="nav-link" href="#"><i class="icon-puzzle-piece-solid"></i>Plugin</a>
+          <a class="nav-link" href="{$PEM_ROOT}{$URL.plugins}"><i class="icon-puzzle-piece-solid"></i>Plugin</a>
         </li>
         <li class="nav-item fw-bold">
-          <a class="nav-link" href="#"><i class="icon-palette-solid"></i>Thème</a>
+          <a class="nav-link" href="{$PEM_ROOT}{$URL.themes}"><i class="icon-palette-solid"></i>Thème</a>
         </li>
         <li class="nav-item fw-bold">
-          <a class="nav-link" href="#"><i class="icon-screwdriver-wrench-solid"></i>Outil</a>
+          <a class="nav-link" href="{$PEM_ROOT}{$URL.tools}"><i class="icon-screwdriver-wrench-solid"></i>Outil</a>
         </li>
         <li class="nav-item fw-bold">
-          <a class="nav-link" href="#"><i class="icon-language-solid"></i>Langage</a>
+          <a class="nav-link" href="{$PEM_ROOT}{$URL.language}"><i class="icon-language-solid"></i>Langage</a>
         </li>
         <li class="nav-item fw-bold" id="account-link">
-          <a class="nav-link" href="#"><i class="icon-user-solid"></i>Votre compte</a>
+          <a class="nav-link" href="{$PEM_ROOT}{$URL.account}"><i class="icon-user-solid"></i>Votre compte</a>
         </li>
       </ul>
     </div> 
   </div>
 </nav>
+{$active_page}
