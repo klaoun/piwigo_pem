@@ -124,6 +124,10 @@ function pem_load_content(){
   else
   {
     $template->set_filenames(array('pem_page' => realpath(PEM_PATH . 'template/' . 'home.tpl')));
+    if (file_exists(PEM_PATH . '/include/home.inc.php'))
+    {
+      include(PEM_PATH . '/include/home.inc.php');
+    }
 
   }
   $template->assign(
@@ -131,6 +135,7 @@ function pem_load_content(){
         'meta_title' => $meta_title,
         'meta_description' => $meta_description,
         'PEMROOT_URL' => $pem_root_url . PEM_PATH,
+        'active_page' => isset($pem_page) ? $pem_page : "home",
     )
   );
 }
@@ -150,7 +155,6 @@ function pem_load_footer(){
   $template->parse('header_pem');
   $template->parse('navbar_pem');
   $template->parse('pem_page');
-  // $template->parse('list_view_pem');
   $template->parse('footer_pem');
   $template->p();
   exit();
