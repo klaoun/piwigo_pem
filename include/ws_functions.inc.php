@@ -33,11 +33,14 @@ function pem_ws_add_methods($arr)
   );
 
   $service->addMethod(
-    'pem.extensions.getExtensionHighestRated',
-    'ws_pem_get_extension_highest_rated',
+    'pem.extensions.getHighestRated',
+    'ws_pem_get_highest_rated',
     array(
-      'extension_type' => array('info'=>'Language, Theme, Tool, Plugin'),
+      'extension_type' => array('info'=>'language, theme, tool, plugin'),
     ),
+    'Get highest rated extension depending on type.'
+  );
+
   $service->addMethod(
     'pem.extensions.getNumberDownloads',
     'ws_pem_get_number_downloads',
@@ -153,21 +156,46 @@ SELECT
 }
 
 /**
- * Get highest rated extension per category
+ * Get highest rated extension depending on category
  */
-function ws_pem_get_extension_highest_rated($params, &$service){
+function ws_pem_get_highest_rated($params, &$service){
+  $category_id;
+  switch ($params['extension_type']) 
+  {
+    case 'language':
+      $category_id = 8;
+      break;
+    case 'theme':
+      $category_id = 10;
+      break;
+    case 'tool':
+      $category_id = 11;
+      break;
+    case 'plugin':
+      $category_id = 12;
+      break;
+  }
+
   $query = '
+SELECT 
   SELECT 
-  id_extension,
-  "name",
-  description,
-  rating_score
+SELECT 
+    id_extension,
+    "name",
+    description,
+    rating_score
   FROM piwigo_pem_pem_extensions AS extensions
   left JOIN piwigo_pem_pem_extensions_categories AS categories
    ON extensions.id_extension = categories.idx_extension
-   WHERE categories.idx_category = 12
+   WHERE categories.idx_category = '.$category_id.'
    ORDER BY rating_score DESC
    LIMIT 1
+  ;';
+
+  $highest_rated = query2array($query);
+
+  return $highest_rated;
+}
 
 /**
  * Get number of downloads per category
