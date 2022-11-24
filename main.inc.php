@@ -34,20 +34,28 @@ define('PEM_DIR', PHPWG_ROOT_PATH . PWG_LOCAL_DIR . 'piwigo_pem/');
 // | Add event handlers                                                    |
 // +-----------------------------------------------------------------------+
 
-/**
- * plugin initialization
- */
-add_event_handler('init', 'pem_init');
-function pem_init()
-{
-  include_once(PEM_PATH . 'include/functions_pem.php');
-}
+// we put these handlers "before" the test on index page (and the return) because
+// whatever the page, we want to execute them
 
 /**
  * add ws_methods
  */
 add_event_handler('ws_add_methods', 'pem_ws_add_methods');
 include_once(PEM_PATH . 'include/ws_functions.inc.php');
+
+/**
+ * plugin initialization
+ */
+
+if (script_basename() != 'index') {
+  return;
+}
+
+add_event_handler('init', 'pem_init');
+function pem_init()
+{
+  include_once(PEM_PATH . 'include/functions_pem.php');
+}
 
 /**
  * Load PEM header
