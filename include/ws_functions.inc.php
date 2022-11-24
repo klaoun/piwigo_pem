@@ -49,6 +49,14 @@ function pem_ws_add_methods($arr)
     ),
     'Get most downloded extension depending on type.'
   );
+
+  $service->addMethod(
+    'pem.extensions.getMostDownloaded',
+    'ws_pem_get_most_downloaded',
+    array(
+      'extension_type' => array('info'=>'language, theme, tool, plugin'),
+    ),
+    'Get most downloded extension depending on type.'
   );
 
 }
@@ -238,3 +246,44 @@ SELECT
   return $number_downloads;
 }
 
+/**
+ * Get most downloaded depending on category
+ */
+function ws_pem_get_most_downloaded($params, &$service){
+  $category_id;
+  switch ($params['extension_type']) 
+  {
+    case 'language':
+      $category_id = 8;
+      break;
+    case 'theme':
+      $category_id = 10;
+      break;
+    case 'tool':
+      $category_id = 11;
+      break;
+    case 'plugin':
+      $category_id = 12;
+      break;
+  }
+
+  $query = '
+SELECT
+    extensions.id_extension,
+    SUM(nb_downloads) AS download_count,
+    extensions.description
+  FROM piwigo_pem_pem_revisions AS revisions
+    LEFT JOIN piwigo_pem_pem_extensions AS extensions
+    ON revisions.idx_extension = extensions.id_extension
+      left JOIN piwigo_pem_pem_extensions_categories AS categories
+      ON extensions.id_extension = categories.idx_extension
+      WHERE categories.idx_category = '.$category_id.'
+  GROUP BY revisions.idx_extension
+  ORDER BY download_count DESC 
+  LIMIT 1
+;';
+
+$most_downloaded = query2array($query);
+
+return $most_downloaded;
+}
