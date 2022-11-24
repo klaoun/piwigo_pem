@@ -15,8 +15,8 @@ function pem_ws_add_methods($arr)
   );
 
   $service->addMethod(
-    'pem.extensions.getExtensionInfo',
-    'ws_pem_get_extension_info',
+    'pem.extensions.getInfo',
+    'ws_pem_get_info',
     array(
       'extension_id' => array('type'=>WS_TYPE_INT|WS_TYPE_POSITIVE),
     ),
@@ -24,10 +24,10 @@ function pem_ws_add_methods($arr)
   );
 
   $service->addMethod(
-    'pem.extensions.getExtensionCount',
-    'ws_pem_get_extension_count',
+    'pem.extensions.getCount',
+    'ws_pem_get_count',
     array(
-      'extension_type' => array('info'=>'Language, Theme, Tool, Plugin'),
+      'extension_type' => array('info'=>'language, theme, tool, plugin'),
     ),
     'Get number of extensions depending on type.'
   );
@@ -92,7 +92,7 @@ SELECT
 /**
  * Get extension info
  */
-function ws_pem_get_extension_info($params, &$service)
+function ws_pem_get_info($params, &$service)
 {
 
   if (!isset($params['extension_id']))
@@ -115,8 +115,7 @@ SELECT
   FROM '.PEM_EXT_TABLE.' AS e
     JOIN '.PEM_USER_TABLE.' AS u ON u.id_user = e.idx_user
   WHERE id_extension = '.$params['extension_id'].'
-;
-';
+;';
 
   $extension_infos_of = query2array($query, 'id_extension');
 
@@ -131,23 +130,23 @@ SELECT
 }
 
 /**
- * Get number of themes, plugins or languages
+ * Get number of extensions depending on category
  */
-function ws_pem_get_extension_count($params, &$service)
+function ws_pem_get_count($params, &$service)
 {
   $category_id;
   switch ($params['extension_type']) 
   {
-    case 'Language':
+    case 'language':
       $category_id = 8;
       break;
-    case 'Theme':
+    case 'theme':
       $category_id = 10;
       break;
-    case 'Tool':
+    case 'tool':
       $category_id = 11;
       break;
-    case 'Plugin':
+    case 'plugin':
       $category_id = 12;
       break;
   }
@@ -161,6 +160,9 @@ SELECT
  	    WHERE categories.idx_category = '.$category_id.'
 ;
 ';
+  $count_of_extensions = pwg_db_fetch_row(pwg_query($query));
+
+  return $count_of_extensions;
 }
 
 /**
@@ -185,8 +187,6 @@ function ws_pem_get_highest_rated($params, &$service){
   }
 
   $query = '
-SELECT 
-  SELECT 
 SELECT 
     id_extension,
     "name",
