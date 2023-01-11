@@ -89,3 +89,70 @@ Badges
   font-weight: 700;
 }
 
+/******
+Position
+******/
+.position-relative{
+  position:relative;
+}
+.vertical-align{
+  top:50%;
+  transform:translateY(-50%);
+  position:absolute;
+}
+
+/******
+Homepage
+******/
+
+#homeSections .card{
+  background: #FAFAFA;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.25);
+  border-radius: 7px;
+  border:none;
+  padding:15px;
+  min-height:160px;
+}
+
+#homeSections .spotlight .card,
+.spotlight .card{
+  background: linear-gradient(287deg, #1E0134 0%, #1E2775 19.79%, #6E2C96 44.79%, #FF005C 100%);
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.25);
+  border-radius: 7px;
+  color:white;
+  border:none;
+}
+
+#homeSections .spotlight .card h5{
+  color:white;
+}
+
+#homeSections .spotlight,
+#homeSections .highest-rated,
+#homeSections .most-downloaded,
+#homeSections .most-recent{
+  margin:15px 0;
+}
+
+p.description{
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+[data-title] {
+	font-size: 18px;
+	position: relative;
+	cursor: help;
+}
+
+[data-title]:hover::before {
+	content: attr(data-title);
+	position: absolute;
+	bottom: -46px;
+	padding: 10px;
+	background: #000;
+	color: #fff;
+	font-size: 14px;
+	/* white-space: nowrap; */
+}
