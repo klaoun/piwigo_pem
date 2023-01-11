@@ -67,7 +67,7 @@ function pem_load_header()
 
   $pem_root = '';
   $pem_root_url = get_absolute_root_url();
-  $pem_root_url_piwigodotorg = get_absolute_root_url() . PEM_PATH;
+  $pem_root_url_pem = get_absolute_root_url() . PEM_PATH;
   $template->set_template_dir(PEM_PATH);
   $template->set_filenames(array('header_pem' => realpath(PEM_PATH .'template/header.tpl')));
   $template->set_filenames(array('navbar_pem' => realpath(PEM_PATH .'template/navbar.tpl')));
@@ -76,7 +76,7 @@ function pem_load_header()
     array(
       'PEM_ROOT' => $pem_root,
       'PEM_ROOT_URL' => $pem_root_url,
-      'PEM_ROOT_URL_PLUGINS' => $pem_root_url_piwigodotorg,
+      'PEM_ROOT_URL_PLUGINS' => $pem_root_url_pem,
       'URL' => pem_get_page_urls(),
       // 'PEM_DOMAIN_PREFIX' => $page['pem_domain_prefix'],
     )
@@ -122,6 +122,12 @@ function pem_load_content(){
       {
           include(PEM_PATH . '/include/' . $pem_file . '.inc.php');
       }
+
+      //TODO change if, with different language will not work
+      if('plugins' == $_GET['pem'] || 'themes' == $_GET['pem'] || 'tools' == $_GET['pem'] || 'languages' == $_GET['pem'])
+      {
+        include(PEM_PATH . '/include/list_view.inc.php');
+      }
     }
     else
     {
@@ -138,12 +144,15 @@ function pem_load_content(){
     }
 
   }
+  $pem_root_url_pem = get_absolute_root_url() . PEM_PATH;
+
   $template->assign(
     array(
         'meta_title' => $meta_title,
         'meta_description' => $meta_description,
         'PEMROOT_URL' => $pem_root_url . PEM_PATH,
         'active_page' => isset($pem_page) ? $pem_page : "home",
+        'PEM_ROOT_URL_PLUGINS' => $pem_root_url_pem,
     )
   );
 }
