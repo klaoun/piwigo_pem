@@ -17,6 +17,7 @@
 .navbar-light .navbar-nav .nav-link{
   color: var(--grey1);
   padding: 8px 15px;
+  white-space:nowrap;
 }
 
 .navbar-light .navbar-nav .nav-link:hover{
