@@ -88,9 +88,7 @@ function pem_load_header()
  */
 add_event_handler('init', 'pem_load_content');
 function pem_load_content(){
-  global $template, $logger, $lang, $user, $page, $lang_info;
-
-  $logger->info(__FUNCTION__.', $_GET[pem] = '.(isset($_GET['pem']) ? $_GET['pem'] : 'null'));
+  global $template, $lang, $user, $page, $lang_info;
 
   $meta_title = null;
   $meta_description = null;
