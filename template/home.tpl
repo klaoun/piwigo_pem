@@ -3,7 +3,7 @@
 <div class="container" id="home">
 
   <section>
-    <div class="row py-4">
+    <div class="row py-5">
       <div class="col-6 position-relative">
         <div class="vertical-align ">
           <h1 class="mt-2">Extensions for Piwigo</h1>
@@ -18,11 +18,11 @@
 
   <div id="homeSections">
 {foreach from=$CATEGORIES item=category}
-    <div class="row py-4" id="{$category.type}">
+    <div class="row py-5" id="{$category.type}">
       <div class="mt-2 row">
         <h2 class="col-10">{$category.name}s<span class="blue-badge extension-count">{$category.counter}</span></h2>
         <div class="col-2 text-end">
-          <a href="{$PEM_ROOT}"><button class="btn btn-primary">See all<i class="icon-chevron-right-solid"></i></button></a>
+          <a href="{$PEM_ROOT_URL}index.php?/pem={$category.type}s"><button class="btn btn-primary">See all<i class="icon-chevron-right-solid"></i></button></a>
         </div>
       </div>
       <div class="row card-group">
@@ -35,7 +35,8 @@
                 
                 </div>
                 <div class="col-12 info-column">
-                  
+                  <h5 class='extension-name'>{$category.spotlighted_extension.name}</h5>
+                  <p class='description'>{$category.spotlighted_extension.description}</p>
                 </div>
               </div>
             </div>
@@ -47,10 +48,16 @@
             <div class="card">
               <div class="row">
                 <div class="image-column">
-                
+
                 </div>
                 <div class="col-12 info-column">
-                  
+                  <h5 class='extension-name'>{$category.highest_rated_extension.name}</h5>
+                  <p class='description' >{$category.highest_rated_extension.description}</p>
+                  <div class='rating_score'>
+  {for $foo=1 to $category.highest_rated_extension.rating_score}
+                    <i class='icon-star-solid'></i>
+  {/for}
+                  </div>
                 </div>
               </div>
             </div>
@@ -65,7 +72,11 @@
                 
                 </div>
                 <div class="col-12 info-column">
-                  
+                    <h5 class='extension-name'>{$category.most_downloaded_extension.name}</h5>
+                    <p class='description' >{$category.most_downloaded_extension.description}</p>
+                  <div class='number_of_downloads'>
+                     <i class='icon-download-solid'>{$category.most_downloaded_extension.download_count}</i>
+                  </div>
                 </div>
               </div>
             </div>
@@ -80,7 +91,11 @@
                 
                 </div>
                 <div class="col-12 info-column">
-                  
+                  <h5 class='extension-name'>{$category.most_recent_extension.name}</h5>
+                  <p class='description' >{$category.most_recent_extension.description}</p>
+                  <div class='lat_updated'>
+                    {$category.most_recent_extension.formatted_date}<span class='badge blue-badge'>{$category.most_recent_extension.time_since}</span>
+                  </div>
                 </div>
               </div>
             </div>

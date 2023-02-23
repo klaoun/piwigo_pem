@@ -4,18 +4,43 @@ defined('PHPWG_ROOT_PATH') or die('Hacking attempt!');
 class piwigo_pem_maintain extends PluginMaintain
 {
   private $installed = false;
+
+  // +-----------------------------------------------------------------------+
+  // | Define default configuration                                              |
+  // +-----------------------------------------------------------------------+
+
+  private $default_conf = array(
+    'pem_spotlight_extension' => array(
+      "plugin" => 303,
+      "theme" => 831,
+      "language" => 716,
+      "tool" => 899
+    )
+  );
  
   function __construct($plugin_id)
   {
     parent::__construct($plugin_id);
   }
-    /**
+
+  /**
    * plugin installation
    */
   function install($plugin_version, &$errors=array())
   {
     include(PHPWG_ROOT_PATH.'admin/include/functions_install.inc.php');
-    global $prefixeTable;
+    global $prefixeTable, $conf;
+
+    if (empty($conf['pem_conf']))
+    {
+      conf_update_param('pem_conf', $this->default_conf, true);
+    }
+    else
+    {
+      $old_conf = safe_unserialize($conf['pem_conf']);
+
+      conf_update_param('pem_conf', $old_conf, true);
+    }
 
     // Create tables
     execute_sqlfile(
