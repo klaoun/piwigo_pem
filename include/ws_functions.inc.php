@@ -1,7 +1,7 @@
 <?php
 defined('PEM_PATH') or die('Hacking attempt!');
 
-include_once(PEM_PATH . 'constants.inc.php');
+include_once(PEM_PATH . 'include/constants.inc.php');
 
 function pem_ws_add_methods($arr)
 {
@@ -21,7 +21,7 @@ function pem_ws_add_methods($arr)
     array(
       'category_id' => array('type'=>WS_TYPE_INT|WS_TYPE_POSITIVE),
     ),
-    'Getcategory info.'
+    'Get category info.'
   );
 
   $service->addMethod(
