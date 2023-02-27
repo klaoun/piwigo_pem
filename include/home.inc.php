@@ -1,150 +1,199 @@
 <?php
 global $conf;
 
-// get count of extensions by category, returns category id and count
+/**
+ * Spotlighted, highest rated and most downloaded extensions are defined by admin in local config
+ */
+$pem_spotlight_extensions = conf_get_param('pem_spotlight_extensions',array());
+$pem_highest_rated_extensions = conf_get_param('pem_highest_rated_extensions',array());
+$pem_most_downloaded_extensions = conf_get_param('pem_most_downloaded_extensions',array());
+$pem_most_recent_extensions = [];
+
+/**
+ * Get spotlighted extensions details
+ */
+$pem_spotlight_extensions_ids = implode(",", array_values($pem_spotlight_extensions));
 $query = '
 SELECT
-    idx_category,
+    id_extension  AS eId,
+    name,
+    description,
+    idx_category AS cId
+  FROM '.PEM_EXT_TABLE.' AS extensions
+    left JOIN '.PEM_EXT_CAT_TABLE.' AS categories
+      ON extensions.id_extension = categories.idx_extension
+  WHERE id_extension IN ('.$pem_spotlight_extensions_ids.')
+;';
+
+$result = pwg_query($query);
+
+while($row = pwg_db_fetch_assoc($result))
+{
+  $pem_spotlight_extensions[$row['cId']] = $row;
+}
+
+/**
+ * Get highested rated extensions details
+ */
+$pem_highest_rated_extensions_ids = implode(",", array_values($pem_highest_rated_extensions));
+
+$query = '
+SELECT
+    id_extension AS eId,
+    name,
+    description,
+    idx_category as cId,
+    rating_score
+  FROM '.PEM_EXT_TABLE.' AS extensions
+    left JOIN '.PEM_EXT_CAT_TABLE.' AS categories
+      ON extensions.id_extension = categories.idx_extension
+  WHERE id_extension IN ('.$pem_highest_rated_extensions_ids.')
+;';
+
+$result = pwg_query($query);
+
+while($row = pwg_db_fetch_assoc($result))
+{
+  $pem_highest_rated_extensions[$row['cId']] = $row;
+}
+
+/**
+ * Get most recent extensions details
+ */
+$pem_most_recent_extensions_ids = implode(",", array_values($pem_most_recent_extensions));
+
+$query = '
+SELECT
+    r.idx_extension AS eId,
+    c.idx_category AS cId,
+    r.date,
+    r.description
+ FROM '.PEM_REV_TABLE.' AS r
+   	LEFT JOIN '.PEM_EXT_CAT_TABLE.' AS c
+      	ON c.idx_extension = r.idx_extension
+ORDER BY r.date DESC
+;';
+
+$result = pwg_query($query);
+
+$category_id = null;
+while($row = pwg_db_fetch_assoc($result))
+{
+
+  if($category_id != $row['cId'])
+  {
+    $pem_most_recent_extensions[$row['cId']] = $row;
+    $pem_most_recent_extensions[$row['cId']]['formatted_date'] = format_date($row['date']);
+    $pem_most_recent_extensions[$row['cId']]['time_since'] = time_since($row['date'], $stop='month');
+
+    $category_id = $row['cId'];
+  }
+}
+
+$query = '
+SELECT
+    id_extension AS eId,
+    name,
+    idx_category as cId
+  FROM '.PEM_EXT_TABLE.' AS extensions
+    left JOIN '.PEM_EXT_CAT_TABLE.' AS categories
+      ON extensions.id_extension = categories.idx_extension
+  WHERE id_extension IN ('.$pem_highest_rated_extensions_ids.')
+;';
+$result = pwg_query($query);
+
+while($row = pwg_db_fetch_assoc($result))
+{
+  $pem_most_recent_extensions[$row['cId']]['name'] = $row['name'];
+}
+
+/**
+ * Get most downloaded extensions details
+ */
+$pem_most_downloaded_extensions_ids = implode(",", array_values($pem_most_downloaded_extensions));
+
+$query = '
+SELECT
+    e.id_extension as eId,
+    name,
+    SUM(nb_downloads) AS download_count,
+    e.description,
+    c.idx_category as cId
+FROM '.PEM_REV_TABLE.' AS r
+  LEFT JOIN '.PEM_EXT_TABLE.' AS e
+  ON r.idx_extension = e.id_extension
+    left JOIN '.PEM_EXT_CAT_TABLE.' AS c
+    ON e.id_extension = c.idx_extension
+    WHERE e.id_extension IN ('.$pem_most_downloaded_extensions_ids.')
+      GROUP BY r.idx_extension
+      ORDER BY download_count DESC 
+;';
+
+$result = pwg_query($query);
+
+while($row = pwg_db_fetch_assoc($result))
+{
+  $pem_most_downloaded_extensions[$row['cId']] = $row;
+}
+
+/**
+ * get count of extensions by category, returns category id and count
+ */ 
+
+$query = '
+SELECT
+    idx_category AS cId,
     COUNT(*) AS count
   FROM '.PEM_EXT_CAT_TABLE.'
   GROUP BY idx_category
 ;';
-  $nb_ext_of_category = query2array($query, 'idx_category', 'count');
+$nb_ext_of_category = query2array($query, 'cId', 'count');
 
-//Get list of categories with name and count of plugins
+/**
+ * Get list of categories with name and count of plugins
+ */
+
 $query = '
 SELECT
-    id_category AS id,
-    c.name AS default_name,
-    ct.name    
-  FROM '.PEM_CAT_TABLE.' AS c
-  LEFT JOIN '.PEM_CAT_TRANS_TABLE.' AS ct
-    ON c.id_category = ct.idx_category
+    id_category as cId,
+    name 
+  FROM '.PEM_CAT_TABLE.' 
   ORDER BY name ASC
 ;';
 
-$categories = query2array($query);
+$categories = query2array($query, 'cId');
 
-$categoriy_ids = [];
-  
 foreach ($categories as $i => $category) {
-  array_push($categoriy_ids, $category['id'] );
-  // echo('<pre>');print_r($i);echo('</pre>');
-  // echo('<pre>');print_r($category);echo('</pre>');
 
-  if (empty($categories[$i]['name']))
-  {
-    $categories[$i]['name'] = $categories[$i]['default_name'];
-  }
-  unset($categories[$i]['default_name']);
-    
-  $categories[$i]['counter'] = 0;
-  if (isset($nb_ext_of_category[ $category['id'] ])) {
-    $categories[$i]['counter'] = $nb_ext_of_category[ $category['id'] ];
+  //Set count of extensions per category
+  $categories[$i]['nb_extensions'] = 0;
+  if (isset($nb_ext_of_category[ $category['cId'] ])) {
+    $categories[$i]['nb_extensions'] = $nb_ext_of_category[ $category['cId'] ];
   }
 
-  $categories[$i]['type'] = strtolower($categories[$i]['name']);
-
-    /**
-   * Get highest rated extension for each category
-   */
-
-  $query = '
-SELECT 
-      id_extension,
-      name,
-      description,
-      rating_score
-  FROM '.PEM_EXT_TABLE.' AS extensions
-    left JOIN '.PEM_EXT_CAT_TABLE.' AS categories
-    ON extensions.id_extension = categories.idx_extension
-    WHERE categories.idx_category = '.$category['id'].'
-    ORDER BY rating_score DESC
-    LIMIT 1
-;';
-
-  $highest_rated = query2array($query);
-
-  //Two plugins have a rating score of 500 this iff is to check and round to a number under 5
-  //If these two plugin sratings are fixed this if can be removed
-  if ($highest_rated[0]['rating_score'] > 100)
-  {
-    $highest_rated[0]['rating_score'] = ($highest_rated[0]['rating_score'] / 100) < 5 ? ($highest_rated[0]['rating_score'] / 100) :round(($highest_rated[0]['rating_score'] / 100), 0, PHP_ROUND_HALF_DOWN);
+  //Set spotlighted extension
+  $categories[$i]['spotlight_extension'] = null;
+  if (isset($pem_spotlight_extensions[$category['cId'] ])) {
+    $categories[$i]['spotlight_extension'] = $pem_spotlight_extensions[ $category['cId'] ];
   }
 
-  $categories[$i]['highest_rated_extension'] = $highest_rated[0];
+  //Set highest rated extension
+  $categories[$i]['highest_rated_extension'] = null;
+  if (isset($pem_highest_rated_extensions[$category['cId'] ])) {
+    $categories[$i]['highest_rated_extension'] = $pem_highest_rated_extensions[ $category['cId'] ];
+  }
 
-  /**
-   * Get most downloaded extension for each category
-   */
+  //Set most downloaded
+  $categories[$i]['most_downloaded_extension'] = null;
+  if (isset($pem_most_downloaded_extensions[$category['cId'] ])) {
+    $categories[$i]['most_downloaded_extension'] = $pem_most_downloaded_extensions[ $category['cId'] ];
+  }
 
-  $query = '
-SELECT
-    extensions.id_extension,
-    name,
-    SUM(nb_downloads) AS download_count,
-    extensions.description
-FROM piwigo_pem_pem_revisions AS revisions
-  LEFT JOIN piwigo_pem_pem_extensions AS extensions
-  ON revisions.idx_extension = extensions.id_extension
-    left JOIN piwigo_pem_pem_extensions_categories AS categories
-    ON extensions.id_extension = categories.idx_extension
-      WHERE categories.idx_category = '.$category['id'].'
-      GROUP BY revisions.idx_extension
-      ORDER BY download_count DESC 
-      LIMIT 1
-;';
-  
-  $most_downloaded = query2array($query);
-
-  $categories[$i]['most_downloaded_extension'] = $most_downloaded[0];
-
-  /**
-   * Get most recent extension for each category
-   */
-
-   $query = '
-SELECT
-    extensions.id_extension,
-    name,
-    revisions.date,
-    extensions.description
-  FROM piwigo_pem_pem_revisions AS revisions
-    LEFT JOIN piwigo_pem_pem_extensions AS extensions
-    ON revisions.idx_extension = extensions.id_extension
-      LEFT JOIN piwigo_pem_pem_extensions_categories AS categories
-      ON extensions.id_extension = categories.idx_extension
-        WHERE categories.idx_category = '.$category['id'].'
-    ORDER BY revisions.date DESC 
-    LIMIT 1
-;';
-   
-    $most_recent= query2array($query);
-
-    $most_recent[0]['formatted_date'] = format_date($most_recent[0]['date']);
-    $most_recent[0]['time_since'] = time_since($most_recent[0]['date'], $stop='month');
-
-    $categories[$i]['most_recent_extension'] = $most_recent[0];
-
-    /**
-    * Get spotlighted extension for each category
-    */
-
-    $spolight_extension_id = $conf['pem_conf']['pem_spotlight_extension'][$categories[$i]['type']];
-    $query = '
-SELECT
-    id_extension,
-    name,
-    description,
-    username
-  FROM '.PEM_EXT_TABLE.' AS e
-    JOIN '.PEM_USER_TABLE.' AS u ON u.id_user = e.idx_user
-    WHERE id_extension = '.$spolight_extension_id.'
-;';
-    
-    $spotlighted= query2array($query);
-
-    $categories[$i]['spotlighted_extension'] = $spotlighted[0];
+  //Set most recent extension
+  $categories[$i]['most_recent_extension'] = null;
+  if (isset($pem_most_recent_extensions[$category['cId'] ])) {
+    $categories[$i]['most_recent_extension'] = $pem_most_recent_extensions[ $category['cId'] ];
+  }
 }
 
 $template->assign(
@@ -152,5 +201,3 @@ $template->assign(
     'CATEGORIES' => $categories
   )
 );
-
-
