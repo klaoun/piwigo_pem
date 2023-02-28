@@ -5,19 +5,6 @@ class piwigo_pem_maintain extends PluginMaintain
 {
   private $installed = false;
 
-  // +-----------------------------------------------------------------------+
-  // | Define default configuration                                              |
-  // +-----------------------------------------------------------------------+
-
-  private $default_conf = array(
-    'pem_spotlight_extension' => array(
-      "plugin" => 303,
-      "theme" => 831,
-      "language" => 716,
-      "tool" => 899
-    )
-  );
- 
   function __construct($plugin_id)
   {
     parent::__construct($plugin_id);
