@@ -94,44 +94,16 @@ function pem_load_content(){
   $meta_description = null;
 
   $pem_root_url = get_absolute_root_url();
-  if (isset($_GET['pem']))
+
+  if (isset($_GET['cId']))
   {
-    $pem_page = pem_label_to_page($_GET['pem']);
-
-    if ($pem_page !== false)
-    {
-      $pem_file = pem_page_to_file($pem_page);
-      $tpl_file = PEM_PATH . 'template/' . $pem_file . '.tpl';
-
-      $template->set_filenames(array('pem_page' => realpath($tpl_file)));
-
-      /* Load en_UK translation */
-      // if ('en_UK' != $user['language'])
-      // {
-      //     load_language($pem_file . '.lang', PEM_PATH, array('language' => 'en_UK', 'no_fallback' => true));
-      // }
-      /* Load user language translation */
-      // load_language($pem_file . '.lang', PEM_PATH);
-
-      // $meta_title = pem_get_page_title($pem_page);
-      // $meta_description = isset($lang['page_meta_description']) ? $lang['page_meta_description'] : null;
-
-      if (file_exists(PEM_PATH . '/include/' . $pem_file . '.inc.php'))
-      {
-          include(PEM_PATH . '/include/' . $pem_file . '.inc.php');
-      }
-
-      //TODO change if, with different language will not work
-      if('plugins' == $_GET['pem'] || 'themes' == $_GET['pem'] || 'tools' == $_GET['pem'] || 'languages' == $_GET['pem'])
-      {
-        include(PEM_PATH . '/include/list_view.inc.php');
-      }
-    }
-    else
-    {
-      http_response_code(404);
-      $template->set_filenames(array('pem_page' => realpath(PEM_PATH . 'template/404.tpl')));
-    }
+    //cId is category ID so display list view of extensions
+    include(PEM_PATH . '/include/list_view.inc.php');
+  }
+  else if (isset($_GET['eId']))
+  {
+    //eId is extension ID so display single view of extension
+    include(PEM_PATH . '/include/single_view.inc.php');
   }
   else
   {
@@ -154,7 +126,6 @@ function pem_load_content(){
     )
   );
 }
-
 
 /**
  * Load Pem footer
