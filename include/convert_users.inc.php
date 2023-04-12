@@ -4,8 +4,9 @@
  * We get all their information and insert it into the users & users_info table
  * We update the guest and webmaster id to avoid conflicts and remove those created with piwigo installation
  */
-
-include_once(PEM_PATH . 'include/constants.inc.php');
+define('PEM_ID', basename(dirname(__FILE__)));
+define('PEM_PATH' , PHPWG_PLUGINS_PATH . PEM_ID . '/');
+include_once(PHPWG_ROOT_PATH.'plugins/piwigo_pem/include/constants.inc.php');
 
 global $conf;
 
@@ -15,10 +16,6 @@ DELETE FROM '.USERS_TABLE.'
   WHERE id IN (1,2)';
 
 pwg_query($query);
-
-// Change webmaster and guest id due to exisiting users of PEM
-conf_update_param('guest_id', 1);
-conf_update_param('webmaster_id', 2);
 
 //Recreate guest user with different id
 $inserts = array(
