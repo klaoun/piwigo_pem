@@ -97,11 +97,15 @@ function pem_load_content(){
 
   if (isset($_GET['cId']))
   {
+    check_input_parameter('cId',$_GET, false,"/^\\d+$/");
+
     //cId is category ID so display list view of extensions
     include(PEM_PATH . '/include/list_view.inc.php');
   }
   else if (isset($_GET['eId']))
   {
+    check_input_parameter('eId',$_GET, false,"/^\\d+$/", true);
+
     //eId is extension ID so display single view of extension
     include(PEM_PATH . '/include/single_view.inc.php');
   }
