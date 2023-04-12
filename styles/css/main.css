@@ -1,9 +1,11 @@
 :root{
   --main_orange: #ff7700;
+  --secondary_orange: #ffaf58;
   --grey1: #3c3c3c;
   --grey2: #3d3d3d;
   --grey3: #767676;
   --grey4:#9C9C9C;
+  --grey5:#EDEDED;
   --white: #ffffff;
   --black: #000000;
   --light_blue_background: #ebf5ff;
@@ -11,10 +13,15 @@
 }
 
 /******
-Backgrounds
+Purle pink gradient block
 ******/
 .purple-gradient{
   background: linear-gradient(287deg, #1E0134 0%, #1E2775 19.79%, #6E2C96 44.79%, #FF005C 100%);
+}
+
+.purple-gradient p,
+.purple-gradient a{
+  color:white!important;
 }
 
 /******
@@ -71,9 +78,52 @@ Buttons
 .btn-primary{
   background-color: var(--main_orange);
   color: var(--white);
-  font-weight:700;
-  border:none;
+  border:1px solid var(--main_orange);
   border-radius:0;
+  width: auto;
+  max-width: 300px;
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  padding: 15px 25px;
+  transition: all 0.2s;
+  text-transform: uppercase;
+}
+
+.btn-primary:hover{
+  box-shadow: 3px 3px 6px #bbb;
+  background-color: var(--main_orange);
+  color: var(--white);
+  border:1px solid var(--main_orange);
+}
+
+.btn-secondary{
+  border:1px solid var(--main_orange);
+  color: var(--main_orange);
+  background:none;
+  border-radius:0;
+  width: auto;
+  max-width: 300px;
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  padding: 15px 25px;
+  transition: all 0.2s;
+  text-transform: uppercase;
+}
+
+.btn-secondary:hover{
+  box-shadow: 3px 3px 6px #bbb;
+  background-color: var(--main_orange);
+  color: var(--white);
+  border:1px solid var(--main_orange);
+}
+
+/******
+Inputs
+******/
+.form-group{
+  max-width:300px;
 }
 
 /******
@@ -111,7 +161,7 @@ Homepage
   border-radius: 7px;
   border:none;
   padding:15px;
-  min-height:160px;
+  /* min-height:160px; */
 }
 
 #homeSections .spotlight .card,
@@ -155,4 +205,8 @@ p.description{
 	color: #fff;
 	font-size: 14px;
 	/* white-space: nowrap; */
+}
+
+.rating_score i{
+  color:#f9a62d;
 }
