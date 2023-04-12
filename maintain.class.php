@@ -46,6 +46,21 @@ class piwigo_pem_maintain extends PluginMaintain
       pwg_query('ALTER TABLE `' . $this->table . '` ADD `icon_class` varchar(50);');
     }
 
+    //add remind every and last-reminder to user_infos to ba able to convert existing pem users into piwigo users
+
+    $this->table =  $prefixeTable.'pem_'.'user_infos';
+    
+    $result = pwg_query('SHOW COLUMNS FROM `'.$this->table.'` LIKE "remind_every";');
+    if (!pwg_db_num_rows($result))
+    {
+      pwg_query('ALTER TABLE `' . $this->table . '` ADD `remind_every` ENUM (`day`,`week`,`month`)  default `week`;');
+    }
+
+    $result = pwg_query('SHOW COLUMNS FROM `'.$this->table.'` LIKE "last_reminder";');
+    if (!pwg_db_num_rows($result))
+    {
+      pwg_query('ALTER TABLE `' . $this->table . '` ADD `last_reminder` DATETIME;');
+    }
   }
 
   /**
