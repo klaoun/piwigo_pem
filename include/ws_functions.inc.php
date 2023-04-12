@@ -1,7 +1,10 @@
 <?php
 defined('PEM_PATH') or die('Hacking attempt!');
 
-include_once(PEM_PATH . 'include/constants.inc.php');
+// include_once(PEM_PATH . 'include/constants.inc.php');
+include_once(PEM_PATH . 'include/functions_core.inc.php');
+include_once(PEM_PATH . 'include/functions_users.inc.php');
+
 
 function pem_ws_add_methods($arr)
 {
@@ -23,6 +26,22 @@ function pem_ws_add_methods($arr)
     ),
     'Get category info.'
   );
+
+  $service->addMethod(
+    'pem.categories.getExtensions',
+    'ws_pem_categories_get_extensions',
+    array(
+      'category_id' => array('type'=>WS_TYPE_INT|WS_TYPE_POSITIVE,'info'=>'use category id'),
+      'page' => array('type'=>WS_TYPE_INT|WS_TYPE_POSITIVE, 'default'=>1),
+      'filter' => array(
+        'default'=>null,
+        'info'=>'max_date DESC, max_date ASC, extension_name DESC, extension_name ASC, '),
+      
+    ),
+    
+    'Get list of extensions by category.'
+  );
+
 
   $service->addMethod(
     'pem.extensions.getList',
@@ -92,7 +111,7 @@ SELECT
     name,
     username
   FROM '.PEM_EXT_TABLE.' AS e
-    JOIN '.PEM_USER_TABLE.' AS u ON u.id_user = e.idx_user
+    JOIN '.USERS_TABLE.' AS u ON u.id = e.idx_user
 ;';
 
   $extension_infos_of = query2array($query, 'id_extension');
@@ -105,6 +124,150 @@ SELECT
   }
 
   return $extension_infos_of;
+}
+
+/**
+ * Get list of all extensions, by category
+ */
+function ws_pem_categories_get_extensions($params, &$service)
+{
+  global $conf;
+
+  $cId = $params['category_id'];
+  $offset = ($conf['extensions_per_page'] * $params['page']) - $conf['extensions_per_page']; 
+
+  $revision_ids = array();
+  $revision_infos_of = array();
+  $extension_ids = array();
+  $extension_infos_of = array();
+  $author_ids = array();
+  $author_infos_of = array();
+
+  $query = '
+  SELECT 
+  r.idx_extension,
+  r.id_revision,
+  r.date AS latest_date,
+  ec.idx_category
+FROM 
+  (SELECT 
+     idx_extension, 
+     MAX(date) AS latest_date
+   FROM 
+   '.PEM_REV_TABLE.'
+   GROUP BY 
+     idx_extension) AS latest_revisions
+INNER JOIN 
+'.PEM_REV_TABLE.' AS r
+  ON latest_revisions.idx_extension = r.idx_extension AND latest_revisions.latest_date = r.date
+INNER JOIN 
+'.PEM_EXT_CAT_TABLE.' AS ec
+  ON r.idx_extension = ec.idx_extension
+WHERE 
+  ec.idx_category = '.$cId.'
+ORDER BY 
+  latest_date DESC
+';
+
+  $all_revision_ids = query2array($query, null, 'id_revision');
+
+  $nb_total = count($all_revision_ids);
+
+  if (count($all_revision_ids) == 0)
+  {
+    message_die(
+      'No extensions match your filter',
+      'Most recent extensions',
+      false
+      );
+  }
+
+  $revision_ids = array_slice($all_revision_ids, $offset , $conf['extensions_per_page'], true);
+
+  $nb_total_displayed = count($revision_ids);
+
+  $versions_of = get_versions_of_revision($revision_ids);
+  $languages_of = get_languages_of_revision($revision_ids);
+
+  // retrieve revisions information
+  $revision_infos_of = get_revision_infos_of($revision_ids);
+  $extension_ids = array_unique(
+  array_from_subfield(
+    $revision_infos_of,
+    'idx_extension'
+    )
+  );
+
+  $extension_infos_of = get_extension_infos_of($extension_ids);
+  $download_of_extension = get_download_of_extension($extension_ids);
+  $categories_of_extension = get_categories_of_extension($extension_ids);
+  $tags_of_extension = get_tags_of_extension($extension_ids);
+
+  $revisions = array();
+
+  foreach ($revision_ids as $revision_id)
+  {
+    $extension_id = $revision_infos_of[$revision_id]['idx_extension'];
+    $authors = get_extension_authors($extension_id);
+    $screenshot_infos = get_extension_screenshot_infos($extension_id);
+
+    array_push(
+      $revisions,
+      array(
+        'revision_id' => $revision_id,
+        'extension_id' => $extension_id,
+        'extension_name' => $extension_infos_of[$extension_id]['name'],
+        'rating_score' => $extension_infos_of[$extension_id]['rating_score'],
+        'rating_score_stars' => generate_static_stars($extension_infos_of[$extension_id]['rating_score']),
+        'nb_reviews' => !empty($extension_infos_of[$extension_id]['nb_reviews']) ? sprintf(l10n('%d reviews'), $extension_infos_of[$extension_id]['nb_reviews']) : null,
+        'about' => nl2br(
+          htmlspecialchars(
+            strip_tags($extension_infos_of[$extension_id]['description'])
+            )
+          ),
+        'authors' => array_combine($authors, get_author_name($authors)),
+        'name' => $revision_infos_of[$revision_id]['version'],
+        'compatible_versions' => implode(', ', $versions_of[$revision_id]),
+        'languages' => isset($languages_of[$revision_id]) ?
+            $languages_of[$revision_id] : array(),
+        'description' => nl2br(
+          htmlspecialchars(
+            strip_tags($revision_infos_of[$revision_id]['description'])
+            )
+          ),
+        'date' => date('Y-m-d', $revision_infos_of[$revision_id]['date']),
+        'thumbnail_src' => $screenshot_infos
+          ? $screenshot_infos['thumbnail_src']
+          : null,
+        'screenshot_url' => $screenshot_infos
+          ? $screenshot_infos['screenshot_url']
+          : null,
+        'revision_url' => sprintf(
+          'extension_view.php?eid=%u&amp;rid=%u#rev%u',
+          $extension_id,
+          $revision_id,
+          $revision_id
+          ),
+        'downloads' => isset($download_of_extension[$extension_id]) ?
+                        $download_of_extension[$extension_id] : 0,
+        'categories' => $categories_of_extension[$extension_id],
+        'tags' => $tags_of_extension[$extension_id],
+      )
+    );
+  }
+
+  if (!isset($_REQUEST['format']))
+  {
+    //Echo to be compatible with previous version of Piwigo
+    echo serialize($revisions);
+    exit;
+  }
+
+  return array(
+    'revisions' => $revisions,
+    'nb_total_displayed' => $nb_total_displayed,
+    'nb_total_extensions' => $nb_total,
+  );
 }
 
 /**
@@ -133,7 +296,7 @@ SELECT
     description,
     username
   FROM '.PEM_EXT_TABLE.' AS e
-    JOIN '.PEM_USER_TABLE.' AS u ON u.id_user = e.idx_user
+    JOIN '.USERS_TABLE.' AS u ON u.id= e.idx_user
   WHERE id_extension = '.$params['extension_id'].'
 ;';
 
