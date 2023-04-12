@@ -1,5 +1,3 @@
-<script src="{$PEM_ROOT_URL_PLUGINS}template/js/home.js"></script>
-
 <div class="container" id="home">
 
   <section>
@@ -18,34 +16,34 @@
 
   <div id="homeSections">
 {foreach from=$CATEGORIES item=category}
-    <div class="row py-5" id="{$category.type}">
+    <div class="row py-5" id="category-{$category.cId}">
       <div class="mt-2 row">
-        <h2 class="col-10">{$category.name}s<span class="blue-badge extension-count">{$category.counter}</span></h2>
+        <h2 class="col-10">{$category.name}s<span class="blue-badge extension-count">{$category.nb_extensions}</span></h2>
         <div class="col-2 text-end">
-          <a href="{$PEM_ROOT_URL}index.php?/pem={$category.type}s"><button class="btn btn-primary">See all<i class="icon-chevron-right-solid"></i></button></a>
+          <a href="{$PEM_ROOT_URL}index.php?cId={$category.cId}&page=1"><button class="btn btn-primary">See all<i class="icon-chevron-right"></i></button></a>
         </div>
       </div>
       <div class="row card-group">
-        <div class="col-md-6 col-sm-12 spotlight">
+        <div class="col-md-6 col-sm-12 align-items-stretch spotlight">
           <h4>Spotlight</h4>
           <div class="col-12">
-            <div class="card">
+            <div class="card align-items-stretch">
               <div class="row">
                 <div class="image-column">
                 
                 </div>
                 <div class="col-12 info-column">
-                  <h5 class='extension-name'>{$category.spotlighted_extension.name}</h5>
-                  <p class='description'>{$category.spotlighted_extension.description}</p>
+                  <h5 class='extension-name' >{$category.spotlight_extension.name}</h5>
+                  <p class='description'>{$category.spotlight_extension.description}</p>
                 </div>
               </div>
             </div>
           </div>
         </div>
-        <div class="col-md-6 col-sm-12 highest-rated">
+        <div class="col-md-6 col-sm-12 align-items-stretch highest-rated">
           <h4>Highest rated</h4>
           <div class="col-12">
-            <div class="card">
+            <div class="card align-items-stretch">
               <div class="row">
                 <div class="image-column">
 
@@ -55,7 +53,7 @@
                   <p class='description' >{$category.highest_rated_extension.description}</p>
                   <div class='rating_score'>
   {for $foo=1 to $category.highest_rated_extension.rating_score}
-                    <i class='icon-star-solid'></i>
+                    <i class='icon-star'></i>
   {/for}
                   </div>
                 </div>
@@ -63,10 +61,10 @@
             </div>
           </div>
         </div>
-        <div class="col-md-6 col-sm-12 most-downloaded">
+        <div class="col-md-6 col-sm-12 align-items-stretch most-downloaded">
           <h4>Most downloaded</h4>
           <div class="col-12">
-            <div class="card">
+            <div class="card align-items-stretch">
               <div class="row">
                 <div class="image-column">
                 
@@ -75,17 +73,17 @@
                     <h5 class='extension-name'>{$category.most_downloaded_extension.name}</h5>
                     <p class='description' >{$category.most_downloaded_extension.description}</p>
                   <div class='number_of_downloads'>
-                     <i class='icon-download-solid'>{$category.most_downloaded_extension.download_count}</i>
+                     <i class='icon-download'>{$category.most_downloaded_extension.download_count}</i>
                   </div>
                 </div>
               </div>
             </div>
           </div>
         </div>
-        <div class="col-md-6 col-sm-12 most-recent">
+        <div class="col-md-6 col-sm-12 align-items-stretch most-recent">
           <h4>Most recent</h4>
           <div class="col-12">
-            <div class="card">
+            <div class="card align-items-stretch">
               <div class="row">
                 <div class="image-column">
                 
