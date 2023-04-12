@@ -1509,62 +1509,6 @@ please do not answer to this automated email.
 }
 
 /**
- * compute the tag string sended by jQuery TokenInput
- */
-// function get_tag_ids($raw_tags, $allow_create=true)
-// {
-//   // In $raw_tags we receive something like "~~6~~,~~59~~,New tag,Another new tag"
-//   // The ~~34~~ means that it is an existing tag. I've added the surrounding ~~ 
-//   // to permit creation of tags like "10" or "1234" (numeric characters only)
-  
-//   if (empty($raw_tags)) return array();
-  
-//   global $conf, $interface_languages;
-
-//   $tag_ids = array();
-//   $raw_tags = explode(',',$raw_tags);
-  
-//   foreach ($raw_tags as $raw_tag)
-//   {
-//     if (preg_match('/^~~(\d+)~~$/', $raw_tag, $matches))
-//     {
-//       array_push($tag_ids, $matches[1]);
-//     }
-//     elseif ($allow_create)
-//     {
-//       // does the tag already exists?
-//       $query = '
-// SELECT id_tag
-//   FROM '.PEM_TAG_TABLE.'
-//   WHERE name = "'.$raw_tag.'"
-// ;';
-//       $existing_tags = query2array($query, null, 'id_tag');
-
-//       if (count($existing_tags) == 0)
-//       {
-//         mass_inserts(
-//           PEM_TAG_TABLE,
-//           array('name', 'idx_language'),
-//           array(
-//             array(
-//               'name' => $raw_tag,
-//               'idx_language' => $interface_languages[$conf['default_language']]['id'],
-//               )
-//             )
-//           );
-//         array_push($tag_ids, $db->insert_id());
-//       }
-//       else
-//       {
-//         array_push($tag_ids, $existing_tags[0]);
-//       }
-//     }
-//   }
-
-//   return $tag_ids;
-// }
-
-/**
  * returns the name of a tag
  */
 function get_tag_name_from_id($id)
