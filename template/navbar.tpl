@@ -11,23 +11,16 @@
     </button>
     <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
       <ul class="navbar-nav">
+        <li class="nav-item fw-bold" id="extensions-link">
+          <a class="nav-link" href="{$PEM_ROOT_URL}">Extensions</a>
+        </li>
+{foreach from=$CATEGORIES_INFO item=category}
         <li class="nav-item active fw-bold">
-          <a class="nav-link" href="{$PEM_ROOT}{$URL.home}">Extensions</a>
+          <a class="nav-link" href="{$PEM_ROOT_URL}index.php?cId={$category.cId}&page=1"><i class="{$category.icon_class}"></i>{$category.plural_name}</a>
         </li>
-        <li class="nav-item fw-bold">
-          <a class="nav-link" href="{$PEM_ROOT}{$URL.plugins}"><i class="icon-puzzle-piece-solid"></i>Plugins</a>
-        </li>
-        <li class="nav-item fw-bold">
-          <a class="nav-link" href="{$PEM_ROOT}{$URL.themes}"><i class="icon-palette-solid"></i>Themes</a>
-        </li>
-        <li class="nav-item fw-bold">
-          <a class="nav-link" href="{$PEM_ROOT}{$URL.tools}"><i class="icon-screwdriver-wrench-solid"></i>Tools</a>
-        </li>
-        <li class="nav-item fw-bold">
-          <a class="nav-link" href="{$PEM_ROOT}{$URL.languages}"><i class="icon-language-solid"></i>Languages</a>
-        </li>
+{/foreach}
         <li class="nav-item fw-bold" id="account-link">
-          <a class="nav-link" href="{$PEM_ROOT}{$URL.account}"><i class="icon-user-solid"></i>Your account</a>
+          <a class="nav-link" href="{$PEM_ROOT_URL}index.php?uId=login"><i class="icon-user"></i>Your account</a>
         </li>
       </ul>
     </div> 

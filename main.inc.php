@@ -70,7 +70,8 @@ function pem_load_header()
   $pem_root_url_pem = get_absolute_root_url() . PEM_PATH;
   $template->set_template_dir(PEM_PATH);
   $template->set_filenames(array('header_pem' => realpath(PEM_PATH .'template/header.tpl')));
-  $template->set_filenames(array('navbar_pem' => realpath(PEM_PATH .'template/navbar.tpl')));
+  include(PEM_PATH . '/include/navbar.inc.php');
+
 
   $template->assign(
     array(
