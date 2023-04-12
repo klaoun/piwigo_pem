@@ -37,6 +37,15 @@ class piwigo_pem_maintain extends PluginMaintain
       'mysql'
     );
 
+    $this->table =  $prefixeTable.'pem_'.'categories';
+
+    // add icon_class to categories table to make displaying categories easier
+    $result = pwg_query('SHOW COLUMNS FROM `'.$this->table.'` LIKE "icon_class";');
+    if (!pwg_db_num_rows($result))
+    {
+      pwg_query('ALTER TABLE `' . $this->table . '` ADD `icon_class` varchar(50);');
+    }
+
   }
 
   /**
