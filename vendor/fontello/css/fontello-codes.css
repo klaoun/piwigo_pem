@@ -33,6 +33,6 @@
 .icon-circle-plus:before { content: '\e81f'; } /* '' */
 .icon-chevron-up:before { content: '\e820'; } /* '' */
 .icon-user-group:before { content: '\e821'; } /* '' */
-.icon-user-solid:before { content: '\e822'; } /* '' */
+.icon-user:before { content: '\e822'; } /* '' */
 .icon-star-half:before { content: '\e831'; } /* '' */
 .icon-star-empty:before { content: '\e832'; } /* '' */
