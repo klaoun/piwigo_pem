@@ -110,6 +110,12 @@ function pem_load_content(){
     //eId is extension ID so display single view of extension
     include(PEM_PATH . '/include/single_view.inc.php');
   }
+  else if (isset($_GET['uId']))
+  {
+    check_input_parameter('uId',$_GET, false,"/^\\d+$/", true);
+    //uId is extension ID so display single view of extension
+    include(PEM_PATH . '/include/account.inc.php');
+  }
   else
   {
     $template->set_filenames(array('pem_page' => realpath(PEM_PATH . 'template/' . 'home.tpl')));
