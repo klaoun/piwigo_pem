@@ -46,7 +46,7 @@
                 <ul>
                   <li><a href="//{$PORG_DOMAIN_PREFIX}piwigo.org/forum/">{'Forum'|translate}</a></li>
                   <li><a href="//{$PORG_DOMAIN_PREFIX}piwigo.org/doc/">{'Documentation'|translate}</a> </li>
-                  <li><a href="https://piwigo.org/guides">{'porg_guides'|translate}</a></li>
+                  <li><a href="https://piwigo.org/guides">{'Guides'|translate}</a></li>
                   <li><a href="https://piwigo.org/get_started">{'Get Started'|translate}</a></li>
                 </ul>
             </div>
