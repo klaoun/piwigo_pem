@@ -156,3 +156,30 @@ function pem_load_footer(){
   $template->p();
   exit();
 }
+
+/**
+ * Change identification tpl
+ */
+add_event_handler('loc_end_identification', 'pem_loc_end_identification');
+function pem_loc_end_identification()
+{
+  $template->set_filenames( array('identification' => realpath(PEM_PATH .'template/identification.tpl')));
+}
+
+/**
+ * Change register tpl
+ */
+add_event_handler('loc_end_register', 'pem_loc_end_register');
+function pem_loc_end_register()
+{
+  $template->set_filenames( array('register' => realpath(PEM_PATH .'template/register.tpl')));
+}
+
+/**
+ * Change password tpl
+ */
+add_event_handler('loc_end_password', 'pem_loc_end_password');
+function pem_loc_end_password()
+{
+  $template->set_filenames( array('password' => realpath(PEM_PATH .'template/password.tpl')));
+}
