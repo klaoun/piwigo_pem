@@ -17,9 +17,20 @@ foreach ($categories as $i => $category) {
   $categories[$i]['icon_class'] = $category_icons[$i];
 }
 
+
+if (get_pwg_token() !== null)
+{
+  $account_url = $pem_root_url.'index.php?uId='.$user['id'];
+}
+else
+{
+  $account_url = $pem_root_url.'indentification.php';
+}
+
 $template->assign(
   array(
-    'CATEGORIES_INFO' => $categories
+    'CATEGORIES_INFO' => $categories,
+    'ACCOUNT_URL' => $account_url,
   )
 );
 

@@ -20,7 +20,7 @@
         </li>
 {/foreach}
         <li class="nav-item fw-bold" id="account-link">
-          <a class="nav-link" href="{$PEM_ROOT_URL}index.php?uId=login"><i class="icon-user"></i>Your account</a>
+          <a class="nav-link" href="{$ACCOUNT_URL}"><i class="icon-user"></i>Your account</a>
         </li>
       </ul>
     </div> 
