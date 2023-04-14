@@ -93,8 +93,6 @@ class piwigo_pem_maintain extends PluginMaintain
     include(PHPWG_ROOT_PATH.'admin/include/functions_install.inc.php');
     global $prefixeTable, $logger;
 
-    $logger->debug(__FUNCTION__.' Salut les frites ');
-
     $tables_to_drop = array(
       'authors',
       'categories',
