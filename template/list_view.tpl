@@ -1,6 +1,8 @@
 <div id="list_view" class="container">
-  <div class="col-12 py-4">
-    <h2>A la une</h2>
+
+{if $SPOTLIGHTED}
+  <div class="col-12 py-4 spotlighted">
+    <h2>Spotlighted</h2>
     <div class="col-12 p-3 purple-gradient">
       <div class="row">
         <img class="col-md-2" src="{$PEM_PATH}images/image-solid.svg">
@@ -14,6 +16,7 @@
       </div>
     </div>
   </div>
+{/if}
 
 
   <div class="d-flex content_header">

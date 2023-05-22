@@ -77,6 +77,15 @@ SELECT
 
   $template->set_filename('pem_page', realpath(PEM_PATH . 'template/list_view.tpl'));
   
+  // Check if on languages page and hide spotlighted
+  if (8 != $_GET['cId'])
+  {
+    $template->assign(
+      array(
+      'SPOTLIGHTED' => true,
+      )
+    );
+  }
   $template->assign(
     array(
     'PEM_PATH' => PEM_PATH,
