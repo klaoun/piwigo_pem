@@ -19,6 +19,17 @@ SELECT
 
   $nb_ext_of_category = query2array($query, 'cId', 'count');
 
+  // Get list of extension ids for this category
+  $query = '
+  SELECT
+      idx_category AS cId,
+      idx_extension
+    FROM '.PEM_EXT_CAT_TABLE.'
+    WHERE idx_category  = '.$current_category_page_id.'
+  ;';
+
+  $extensions_ids = query2array($query, null, 'idx_extension');
+
   // Get category name with Id and count
   $query = '
 SELECT
