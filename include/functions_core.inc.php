@@ -871,17 +871,17 @@ SELECT id_revision, id_language, code, name
   WHERE idx_extension = '.$extension_id.'
   ORDER BY r.date ASC
 ;';
-  $result = pwg_query($query);
+  $result = query2array($query);
   
   $existing_lang = array();
   $languages_of = array();
   
-  while ($row = pwg_db_fetch_row($result))
+  foreach ($result as $revsion)
   {
-    if (!in_array($row['id_language'], $existing_lang))
+    if (!in_array($revsion['id_language'], $existing_lang))
     {
-      $existing_lang[] = $row['id_language'];
-      $languages_of[ $row['id_revision'] ][] = $row;
+      $existing_lang[] = $revsion['id_language'];
+      $languages_of[ $revsion['id_revision'] ][] = $revsion;
     }
   }
   
