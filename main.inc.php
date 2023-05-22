@@ -30,6 +30,7 @@ define('PEM_ID', basename(dirname(__FILE__)));
 define('PEM_PATH' , PHPWG_PLUGINS_PATH . PEM_ID . '/');
 define('PEM_DIR', PHPWG_ROOT_PATH . PWG_LOCAL_DIR . 'piwigo_pem/');
 
+include_once(PEM_PATH . 'include/constants.inc.php');
 // +-----------------------------------------------------------------------+
 // | Add event handlers                                                    |
 // +-----------------------------------------------------------------------+
@@ -51,10 +52,30 @@ if (script_basename() != 'index') {
   return;
 }
 
+// adapt language depending on url
+add_event_handler('user_init', 'pem_user_init');
+function pem_user_init()
+{
+  global $user, $page;
+  $page['pem_domain_prefix'] = '';
+  //Set user language to 'en_GB'
+  $user['language'] = 'en_GB';
+
+}
+
+//Init pem functions
 add_event_handler('init', 'pem_init');
 function pem_init()
 {
   include_once(PEM_PATH . 'include/functions_pem.php');
+  require_once(PEM_PATH . 'include/config_default.inc.php');
+
+  //Load languages
+  /* Load en_GB translation */
+  load_language('plugin.lang', PEM_PATH, array('language' => 'en_GB', 'no_fallback' => true));
+  /* Load user language translation */
+  load_language('plugin.lang', PEM_PATH);
+
 }
 
 /**
@@ -79,7 +100,7 @@ function pem_load_header()
       'PEM_ROOT_URL' => $pem_root_url,
       'PEM_ROOT_URL_PLUGINS' => $pem_root_url_pem,
       'URL' => pem_get_page_urls(),
-      // 'PEM_DOMAIN_PREFIX' => $page['pem_domain_prefix'],
+      'PEM_DOMAIN_PREFIX' => $page['pem_domain_prefix'],
     )
   );
 }
@@ -163,6 +184,7 @@ function pem_load_footer(){
 add_event_handler('loc_end_identification', 'pem_loc_end_identification');
 function pem_loc_end_identification()
 {
+  global $template;
   $template->set_filenames( array('identification' => realpath(PEM_PATH .'template/identification.tpl')));
 }
 
@@ -172,6 +194,7 @@ function pem_loc_end_identification()
 add_event_handler('loc_end_register', 'pem_loc_end_register');
 function pem_loc_end_register()
 {
+  global $template;
   $template->set_filenames( array('register' => realpath(PEM_PATH .'template/register.tpl')));
 }
 
@@ -181,5 +204,6 @@ function pem_loc_end_register()
 add_event_handler('loc_end_password', 'pem_loc_end_password');
 function pem_loc_end_password()
 {
+  global $template;
   $template->set_filenames( array('password' => realpath(PEM_PATH .'template/password.tpl')));
 }
