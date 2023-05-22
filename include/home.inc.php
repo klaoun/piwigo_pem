@@ -158,7 +158,7 @@ SELECT
     id_category as cId,
     name 
   FROM '.PEM_CAT_TABLE.' 
-  ORDER BY cId DESC
+  ORDER BY name ASC
 ;';
 
 $categories = query2array($query, 'cId');

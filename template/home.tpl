@@ -16,6 +16,7 @@
 
   <div id="homeSections">
 {foreach from=$CATEGORIES item=category}
+  {if $category.cId != 8}
     <div class="row py-5" id="category-{$category.cId}">
       <div class="mt-2 row">
         <h2 class="col-10">{$category.name}s<span class="blue-badge extension-count">{$category.nb_extensions}</span></h2>
@@ -101,6 +102,7 @@
         </div>
       </div>
     </div>
+  {/if}
 {/foreach}
   </div>
 </div>
