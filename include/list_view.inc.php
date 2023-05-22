@@ -8,6 +8,7 @@ if (isset($_GET['cId']))
 {
   $current_category_page_id = $_GET['cId'];
 
+// Get count of extensions
   $query = '
 SELECT
     idx_category AS cId,
@@ -86,6 +87,21 @@ SELECT
  ;';
   $versions= query2array($query, 'id_version');
 
+  //Get List of tags for filter, 
+  // Get specific tags for this category
+  $query = '
+  SELECT 
+      etT.idx_extension as eId,
+      pT.id_tag as tId,
+      pT.name
+    FROM '.PEM_EXT_TAG_TABLE.' as etT
+      JOIN '.PEM_TAG_TABLE.' as pT on pT.id_tag = etT.idx_tag
+    WHERE etT.idx_extension IN ('.implode(',', $extensions_ids).')
+    ORDER BY name ASC
+  ;';
+
+  $tags = query2array($query, 'tId');
+
   $template->set_filename('pem_page', realpath(PEM_PATH . 'template/list_view.tpl'));
   
   // Check if on languages page and hide spotlighted
@@ -97,12 +113,14 @@ SELECT
       )
     );
   }
+  
   $template->assign(
     array(
     'PEM_PATH' => PEM_PATH,
     'CATEGORY' => $current_category_page_info,
     'AUTHORS' => $authors,
     'VERSIONS' => $versions,
+    'TAGS' => $tags,
     )
   );
   
