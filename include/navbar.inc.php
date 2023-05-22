@@ -18,13 +18,13 @@ foreach ($categories as $i => $category) {
 }
 
 
-if (get_pwg_token() !== null)
+if (is_a_guest())
 {
-  $account_url = $pem_root_url.'index.php?uId='.$user['id'];
+  $account_url = $pem_root_url.'identification.php';
 }
 else
 {
-  $account_url = $pem_root_url.'indentification.php';
+  $account_url = $pem_root_url.'index.php?uId='.$user['id'];
 }
 
 $template->assign(
