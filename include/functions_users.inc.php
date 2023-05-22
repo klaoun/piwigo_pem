@@ -80,3 +80,13 @@ SELECT
 
   return $user_infos_of;
 }
+
+/**
+ * checks if the user is translator
+ */
+function isTranslator($user_id)
+{
+  global $conf;
+
+  return isset($conf['translator_users'][$user_id]);
+}
