@@ -523,6 +523,12 @@
       "search": [
         "star-half-stroke-solid"
       ]
+    },
+    {
+      "uid": "d7271d490b71df4311e32cdacae8b331",
+      "css": "home",
+      "code": 59427,
+      "src": "fontawesome"
     }
   ]
 }
