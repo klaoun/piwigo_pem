@@ -51,13 +51,13 @@ SELECT
   $pem_spotlight_extensions_ids = conf_get_param('pem_spotlight_extensions',array());
 
   $query = '
-  SELECT
-      id_extension AS eId,
-      name,
-      description
-    FROM '.PEM_EXT_TABLE.'
-    WHERE id_extension = ('.$pem_spotlight_extensions_ids[$current_category_page_id].')
-  ;';
+SELECT
+    id_extension AS eId,
+    name,
+    description
+  FROM '.PEM_EXT_TABLE.'
+  WHERE id_extension = ('.$pem_spotlight_extensions_ids[$current_category_page_id].')
+;';
 
   $result= query2array($query);
 
@@ -65,26 +65,26 @@ SELECT
 
   //Get List of authors for filter
   $query = '
-  SELECT DISTINCT
-      aT.idx_user as uId,
-      uT.username,
-      ecT.idx_category as cId,
-      aT.idx_extension as eId
-    FROM '.PEM_AUTHORS_TABLE.' as aT
+SELECT DISTINCT
+    aT.idx_user as uId,
+    uT.username,
+    ecT.idx_category as cId,
+    aT.idx_extension as eId
+  FROM '.PEM_AUTHORS_TABLE.' as aT
     JOIN '.USERS_TABLE.' as uT on id = aT.idx_user
     JOIN '.PEM_EXT_CAT_TABLE.' as ecT on ecT.idx_extension = aT.idx_extension
-    WHERE ecT.idx_category = '.$current_category_page_id.'
-  ;';
+  WHERE ecT.idx_category = '.$current_category_page_id.'
+;';
   $authors= query2array($query, 'uId');
 
   //Get List of authors for filter
   $query = '
-  SELECT 
-      id_version,
-      version
-    FROM '.PEM_VER_TABLE.'
-    ORDER BY id_version DESC
- ;';
+SELECT 
+    id_version,
+    version
+  FROM '.PEM_VER_TABLE.'
+  ORDER BY id_version DESC
+;';
   $versions= query2array($query, 'id_version');
 
   //Get List of tags for filter, 
@@ -103,7 +103,7 @@ SELECT
   $tags = query2array($query, 'tId');
 
   $template->set_filename('pem_page', realpath(PEM_PATH . 'template/list_view.tpl'));
-  
+
   // Check if on languages page and hide spotlighted
   if (8 != $_GET['cId'])
   {

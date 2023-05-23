@@ -22,7 +22,7 @@ Content header
 ******/
 
 #list_view .content_header{
-  /* justify-content: space-between; */
+  justify-content: space-between;
   align-items:baseline;
   margin: 30px 0;
 }
@@ -42,6 +42,12 @@ Content header
   background-color:  var(--grey5);
   padding:10px 20px;
 }
+
+#list_view .filter_section .filter_tab.toggled{
+  border-top-left-radius: 15px;
+  border-top-right-radius: 15px;
+}
+
 
 #list_view .filter_section label{
   white-space: nowrap;
@@ -130,6 +136,23 @@ Filter section
   top: -.7em !important;
   width: 1.4em;
   height: 1.4em;
+}
+
+.badge.rounded-pill{
+  border:2px solid #ff7700;
+  color:#ff7700;
+}
+
+/* Hide the checkboxes */
+.checkbox_hidden, #hidden-checkbox-2{
+  height: 0;
+  width: 0;
+  margin: 0;
+  padding: 0;
+}
+
+label.badge:focus-within{
+  outline: 2px solid black;
 }
 
 

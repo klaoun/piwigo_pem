@@ -13,8 +13,9 @@ jQuery(document).ready(function () {
   var nb_total_extensions = getData['nb_total_extensions'];
   var nb_total_displayed = getData['nb_total_displayed'];
  
-  jQuery(extensions).each(function(){
-
+  // Foreach extension clone the empty extension div and fill it with the extension information
+  jQuery(extensions).each(function()
+  {
     var extension_id = this.extension_id;
     var clone = jQuery("#jango_fett").clone().removeAttr("id").attr("id","extension_"+extension_id)
     clone.appendTo(".extensions_container");
@@ -33,12 +34,14 @@ jQuery(document).ready(function () {
     jQuery('#extension_'+extension_id+' .extension_name').text(this.extension_name);
 
     //add authors, ther can be multiple, that is the reason for the foreach
-    $.each(this.authors, function(key, value) {
+    $.each(this.authors, function(key, value) 
+    {
       jQuery('#extension_'+extension_id+' .extension_authors').html("<p>"+value+"</p>");
     });
 
     //If extensions has rating score then display it
-    if(this.rating_score != null){
+    if(this.rating_score != null)
+    {
       jQuery('#extension_'+extension_id+' .extension_score').html(this.rating_score_stars + this.rating_score); 
     }
     jQuery('#extension_'+extension_id+' .extension_number_downloads').text(this.downloads);
@@ -56,27 +59,46 @@ jQuery(document).ready(function () {
     }
     var _href = jQuery('#extension_'+extension_id+' .more_info_link').attr('href')
     jQuery('#extension_'+extension_id+' .more_info_link').attr('href', _href + extension_id)
-      
+    
+    // If extension has image then display it
+
+    if(this.screenshot_url != null)
+    {
+      jQuery('#extension_'+extension_id+' .col').removeClass('col-6')
+      jQuery('#extension_'+extension_id+' .card-body').preped('<div class="col-4"></div>')
+    }
+
+    // Change state of tag filter
+
+    var checkLabel = document.querySelector("input[type=checkbox]");
+    checkLabel.addEventListener("click", function() {
+      if (checkLabel.checked) {
+        console.log("turnOn");
+      } else {
+        console.log("turnOff");
+      }
+    })
+
   });
 
   //Define pagination depending on amount of plugins and which page we are on
 
   var nb_pages = nb_total_extensions % nb_total_displayed;
   var pagination_href = jQuery('.pagination #previous_page').attr('href')
-  
-  // jQuery(".page_buttons a").first().
-  // jQuery('.page_buttons')
 
-  if(page > 1 && page != nb_pages){
+  if(page > 1 && page != nb_pages)
+  {
     jQuery('#previous_page').attr('href', pagination_href + 'cId=' + cId + '&page=' + (parseInt(page)-1))
     // aria-disabled="true" 
   }
-  else if(page == 1){
+  else if(page == 1)
+  {
     jQuery('#next_page').attr('href', pagination_href + 'cId=' + cId + '&page=' + (parseInt(page)+1))
     jQuery('#previous_page').replaceWith(jQuery('<span id="#previous_page"><i class="icon-chevron-left"></i></spn>'))
     // jQuery('#previous_page').attr("aria-disabled", true)
   }
-  else if(page == nb_pages){
+  else if(page == nb_pages)
+  {
     jQuery('#next_page').replaceWith(jQuery('<span id="#next_page"><i class="icon-chevron-right"></i></span>'))
   }
   
@@ -118,6 +140,7 @@ jQuery(document).ready(function () {
 
 });
 
+// Ajax request to get all extension information from specifique category
 function getExtensionList(cId) {
   var extensionInfos ;
   jQuery.ajax({
@@ -146,6 +169,8 @@ function getExtensionList(cId) {
   return extensionInfos;
 }
 
+// Toggle for filter section
 function toggleFilter(){
   jQuery('.extension_filters').toggle();
+  jQuery('.filter_tab ').toggleClass('toggled');
 }
