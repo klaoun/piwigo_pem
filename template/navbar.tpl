@@ -12,7 +12,7 @@
     <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
       <ul class="navbar-nav">
         <li class="nav-item fw-bold" id="extensions-link">
-          <a class="nav-link" href="{$PEM_ROOT_URL}">Extensions</a>
+          <a class="nav-link" href="{$PEM_ROOT_URL}"><i class="icon-home"></i>Extensions</a>
         </li>
 {foreach from=$CATEGORIES_INFO item=category}
         <li class="nav-item active fw-bold">
