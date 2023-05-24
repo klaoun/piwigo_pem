@@ -47,9 +47,11 @@ SELECT
 
   $current_category_page_info['name_plural_EN'] = $current_category_page_info['name'].'s';
 
-  //Get spotlighted extension
+  //Get spotlighted extension, exclude languages
   $pem_spotlight_extensions_ids = conf_get_param('pem_spotlight_extensions',array());
 
+  if ( 8 != $current_category_page_id)
+  {
   $query = '
 SELECT
     id_extension AS eId,
@@ -62,6 +64,7 @@ SELECT
   $result= query2array($query);
 
   $current_category_page_info['spotlight_extension'] = $result[0];
+  }
 
   //Get List of authors for filter
   $query = '
