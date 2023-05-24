@@ -183,8 +183,8 @@ ORDER BY
   }
 
   $revision_ids = array_slice($all_revision_ids, $offset , $conf['extensions_per_page'], true);
-
-  $nb_total_displayed = count($revision_ids);
+  
+  $nb_pages = ceil(count($all_revision_ids)/ $conf['extensions_per_page']);
 
   $versions_of = get_versions_of_revision($revision_ids);
   $languages_of = get_languages_of_revision($revision_ids);
@@ -265,7 +265,7 @@ ORDER BY
 
   return array(
     'revisions' => $revisions,
-    'nb_total_displayed' => $nb_total_displayed,
+    'nb_pages' => $nb_pages,
     'nb_total_extensions' => $nb_total,
   );
 }

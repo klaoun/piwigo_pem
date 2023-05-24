@@ -8,15 +8,21 @@ if (isset($_GET['cId']))
 {
   $current_category_page_id = $_GET['cId'];
 
-// Get count of extensions
   $query = '
-SELECT
-    idx_category AS cId,
-    COUNT(*) AS count
-  FROM '.PEM_EXT_CAT_TABLE.'
-  WHERE idx_category  = '.$current_category_page_id.'
-  GROUP BY idx_category
-;';
+SELECT 
+    COUNT(*) AS count,
+    ec.idx_category as cId
+  FROM 
+    (SELECT 
+        idx_extension, 
+        MAX(date) AS latest_date
+      FROM '.PEM_REV_TABLE.'
+        GROUP BY idx_extension ) AS latest_revisions
+    INNER JOIN '.PEM_REV_TABLE.' AS r ON latest_revisions.idx_extension = r.idx_extension AND latest_revisions.latest_date = r.date
+    INNER JOIN '.PEM_EXT_CAT_TABLE.' AS ec ON r.idx_extension = ec.idx_extension
+  WHERE ec.idx_category = '.$current_category_page_id.'
+    ORDER BY latest_date DESC
+';
 
   $nb_ext_of_category = query2array($query, 'cId', 'count');
 
