@@ -668,22 +668,15 @@ SELECT
       $cat_list_for[$id_extension] = array();
     }
 
-    array_push(
-      $cat_list_for[$id_extension],
-      sprintf(
-        '<a href="index.php?cid=%u">%s</a>',
-        $row['id_category'],
-        $row['name']
-        )
-      );
+    $cat_list_for[$id_extension]['id_category']= $row['id_category'];
+    $cat_list_for[$id_extension]['default_name']= $row['default_name'];
+    $cat_list_for[$id_extension]['name']= $row['name'];
+
   }
 
   $categories_of_extension = array();
   foreach ($extension_ids as $extension_id) {
-    $categories_of_extension[$extension_id] = implode(
-      ', ',
-      $cat_list_for[$extension_id]
-      );
+    $categories_of_extension[$extension_id] = $cat_list_for[$extension_id];
   }
 
   return $categories_of_extension;
@@ -693,7 +686,7 @@ SELECT
  * returns tags id of a set of extensions
  */
 function get_tags_of_extension($extension_ids) {  
-  $cat_list_for = array();
+  $tag_list_for = array();
   
   $query = '
 SELECT idx_extension,
@@ -707,31 +700,29 @@ SELECT idx_extension,
   $result = pwg_query($query);
   
   while ($row = pwg_db_fetch_assoc($result)) {
+
     $id_extension = $row['idx_extension'];
     
-    if (!isset($cat_list_for[$id_extension])) {
-      $cat_list_for[$id_extension] = array();
+    if (!isset($tag_list_for[$id_extension])) {
+      $tag_list_for[$id_extension] = array();
     }
 
-    array_push(
-      $cat_list_for[$id_extension],
-      sprintf(
-        '<a href="index.php?tid=%u">%s</a>',
-        $row['id_tag'],
-        $row['name']
-        )
-      );
+    array_push( $tag_list_for[$id_extension],$row);
   }
 
-  $categories_of_extension = array();
+  $tags_of_extension = array();
+
+  if (!empty($tag_list_for))
+  {
   foreach ($extension_ids as $extension_id) {
-    $categories_of_extension[$extension_id] = implode(
-      ', ',
-      isset($cat_list_for[$extension_id]) ? $cat_list_for[$extension_id] : array()
-      );
+      if (!empty($tag_list_for[$extension_id]))
+      {
+        $tags_of_extension[$extension_id] = $tag_list_for[$extension_id];
+      }
+    }
   }
 
-  return $categories_of_extension;
+  return $tags_of_extension;
 }
 
 /**
