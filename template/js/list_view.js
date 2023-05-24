@@ -61,11 +61,14 @@ jQuery(document).ready(function () {
     jQuery('#extension_'+extension_id+' .more_info_link').attr('href', _href + extension_id)
     
     // If extension has image then display it
-
     if(this.screenshot_url != null)
     {
-      jQuery('#extension_'+extension_id+' .col').removeClass('col-6')
-      jQuery('#extension_'+extension_id+' .card-body').preped('<div class="col-4"></div>')
+      jQuery('#extension_'+extension_id+' .extension_description_container').removeClass('col-9').addClass('col-5')
+      jQuery('#extension_'+extension_id+' .card-body').prepend('\
+        <div class="col-4 text-center">\
+          <img class="img-fluid extension_image" src="'+this.screenshot_url +'">\
+        </div>'
+      )
     }
 
     // Change state of tag filter
@@ -89,13 +92,11 @@ jQuery(document).ready(function () {
   if(page > 1 && page != nb_pages)
   {
     jQuery('#previous_page').attr('href', pagination_href + 'cId=' + cId + '&page=' + (parseInt(page)-1))
-    // aria-disabled="true" 
   }
   else if(page == 1)
   {
     jQuery('#next_page').attr('href', pagination_href + 'cId=' + cId + '&page=' + (parseInt(page)+1))
     jQuery('#previous_page').replaceWith(jQuery('<span id="#previous_page"><i class="icon-chevron-left"></i></spn>'))
-    // jQuery('#previous_page').attr("aria-disabled", true)
   }
   else if(page == nb_pages)
   {

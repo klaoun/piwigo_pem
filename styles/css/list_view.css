@@ -1,5 +1,5 @@
 /******
-specific css styles fo list-view tpl
+specific css styles for list_view tpl
 ******/
 
 /******
@@ -191,6 +191,11 @@ Extension cards
 
 .extension_score i:before{
   margin:0;
+}
+
+.extension_info .extension_image{
+  max-height:300px;
+  width:auto;
 }
 
 /******

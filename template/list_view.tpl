@@ -95,10 +95,6 @@
     <div class="row mt-4" id="tag_select">
       <div class="col-12">
 {foreach from=$TAGS item=tag}
-  {* <input type="hidden" name="alarm" value="False" />
-  <input class="custom-checkbox-input" name="alarm" value="True" type="checkbox">
-  <span class="custom-checkbox-text">Alarm</span> *}
-
     <label class="badge rounded-pill" for="flexCheckDefault">
       <input type="hidden" name="alarm" value="False" />
       <input class="form-check-input checkbox_hidden" type="checkbox" value="true" id="{$tag.tId}_{$tag.name}">
@@ -115,13 +111,13 @@
 
     <div class="extension_info card" id="jango_fett">
       <div class="row card-body">
-        <div class="col col-6">
+        <div class="col col-3">
           <h5 class="card-title extension_name"></h5>
           <div class="card-text extension_authors"></div>
           <div class="extension_score"></div>
           <div class="d-flex"><i class="icon-download"></i><p class="card-text extension_number_downloads"></p></div>
         </div>
-        <div class="col col-6">
+        <div class="col col-9 extension_description_container">
           <p class="card-text extension_description"></p>
           <a class="more_info_link" href="{$PEM_ROOT_URL}index.php?eId=" >Discover this {$CATEGORY.name}</a>
         </div>
