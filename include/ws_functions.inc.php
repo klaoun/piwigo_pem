@@ -251,7 +251,7 @@ ORDER BY
         'downloads' => isset($download_of_extension[$extension_id]) ?
                         $download_of_extension[$extension_id] : 0,
         'categories' => $categories_of_extension[$extension_id],
-        'tags' => $tags_of_extension[$extension_id],
+        'tags' => empty($tags_of_extension[$extension_id]) ? array() : $tags_of_extension[$extension_id] ,
       )
     );
   }
