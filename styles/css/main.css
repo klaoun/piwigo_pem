@@ -120,6 +120,23 @@ Buttons
 }
 
 /******
+Links
+******/
+a{
+  text-decoration:none;
+}
+
+.orange-link{
+  color:#ff7700;
+  text-decoration:none;
+}
+
+.orange-link:hover{
+  color:#ff7700;
+  text-decoration:underline;
+}
+
+/******
 Inputs
 ******/
 .form-group{
