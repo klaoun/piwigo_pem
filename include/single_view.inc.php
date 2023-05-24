@@ -194,9 +194,10 @@ if (isset($_GET['eId']))
           ', ',
           $versions_of_extension[$current_extension_page_id]
         ),
+      'latest_compatible_version' =>  end($versions_of_extension[$current_extension_page_id]),
       'extension_downloads' => $extension_downloads,
       'extension_categories' => $categories_of_extension[$current_extension_page_id],
-      'extension_tags' => $tags_of_extension[$current_extension_page_id],
+      'extension_tags' => empty($tags_of_extension[$current_extension_page_id]) ? array() : $tags_of_extension[$current_extension_page_id]
       )
     );
 
@@ -344,6 +345,7 @@ if (isset($_GET['eId']))
         $last_languages = get_languages_of_revision(array($row['id_revision']));
         $template->assign(array(
           'last_date' => date('Y-m-d', $row['date']),
+          'last_date_formatted_since' => time_since($row['date'], $stop='month'),
           'download_last_url' => 'download.php?rid='.$row['id_revision'],
           'ext_languages' => array_shift($last_languages),
           ));
@@ -382,12 +384,12 @@ if (isset($_GET['eId']))
     }
 
     $template->assign(
-      'first_date',
-      date(
-        'Y-m-d',
-        $first_date
-        )
-      );
+      'first_date', date('Y-m-d',$first_date)
+    );
+
+    $template->assign(
+      'first_date_formatted_since', time_since($first_date, $stop='month'),
+    );
 
     if ($conf['revisions_sort_order'] == 'version')
     {
@@ -494,7 +496,7 @@ if (isset($_GET['eId']))
   // get displayed reviews
   $query = '
   SELECT *
-    FROM '.REVIEW_TABLE.'
+    FROM '.PEM_REVIEW_TABLE.'
     WHERE
       idx_extension = '.$current_extension_page_id.'
       AND '.$where_clause.'
