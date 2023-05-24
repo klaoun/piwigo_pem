@@ -427,10 +427,11 @@ function get_extension_screenshot_infos($extension_id)
   }
   else
   {
-    return array(
-      'thumbnail_src'  => PEM_DIR.'images/image_solid.svg',
-      'screenshot_url' => PEM_DIR.'images/image_solid.svg',
-    );
+    // return array(
+    //   'thumbnail_src'  => PEM_DIR.'images/image-solid.svg',
+    //   'screenshot_url' => PEM_DIR.'images/image-solid.svg',
+    // );
+    return false;
   }
 }
 
