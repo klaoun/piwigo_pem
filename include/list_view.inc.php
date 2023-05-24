@@ -52,7 +52,7 @@ SELECT
 
   if ( 8 != $current_category_page_id)
   {
-  $query = '
+    $query = '
 SELECT
     id_extension AS eId,
     name,
@@ -60,10 +60,18 @@ SELECT
   FROM '.PEM_EXT_TABLE.'
   WHERE id_extension = ('.$pem_spotlight_extensions_ids[$current_category_page_id].')
 ;';
+    
+    $result= query2array($query);
+    
+    $current_category_page_info['spotlight_extension'] = $result[0];
 
-  $result= query2array($query);
+    //Get screenshot info
+    $screenshot_infos = get_extension_screenshot_infos(
+      $pem_spotlight_extensions_ids[$current_category_page_id]
+    );
 
-  $current_category_page_info['spotlight_extension'] = $result[0];
+    !empty($screenshot_infos) ? $current_category_page_info['spotlight_extension']['screenshot'] = $screenshot_infos['screenshot_url']: null;
+    
   }
 
   //Get List of authors for filter
@@ -116,7 +124,7 @@ SELECT
       )
     );
   }
-  
+
   $template->assign(
     array(
     'PEM_PATH' => PEM_PATH,

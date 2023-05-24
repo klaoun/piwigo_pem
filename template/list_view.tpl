@@ -5,12 +5,16 @@
     <h2>Spotlighted</h2>
     <div class="col-12 p-3 purple-gradient">
       <div class="row">
-        <img class="col-md-2" src="{$PEM_PATH}images/image-solid.svg">
+  {if $CATEGORY.spotlight_extension.screenshot}
+        <img class="col-md-2" src="{$CATEGORY.spotlight_extension.screenshot}">
         <div class="col-md-8">
+  {else}
+        <div class="col-md-10">
+  {/if}
           <h3>{$CATEGORY.spotlight_extension.name}</h3>
           <p class="description">{$CATEGORY.spotlight_extension.description}</p>
         </div>
-        <div class="col-md-2">
+        <div class="col-md-2 col-md-2 d-flex justify-content-end align-items-end">
           <a href="{$PEM_ROOT_URL}index.php?eId={$CATEGORY.spotlight_extension.eId}">Voir <i class="icon-chevron-right"></i></a>
         </div>
       </div>
