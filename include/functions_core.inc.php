@@ -380,7 +380,7 @@ function get_extension_dir($extension_id)
 {
   global $conf;
 
-  return $conf['upload_dir'].'extension-'.$extension_id;
+  return $conf['upload_dir'].'/extension-'.$extension_id;
 }
 
 /**
@@ -388,7 +388,7 @@ function get_extension_dir($extension_id)
  */
 function get_revision_src($extension_id, $revision_id, $url)
 {
-  return get_extension_dir($extension_id)
+  return PEM_DIR.get_extension_dir($extension_id)
     .'/revision-'.$revision_id
     .'/'.$url
   ;
@@ -399,7 +399,7 @@ function get_revision_src($extension_id, $revision_id, $url)
  */
 function get_extension_thumbnail_src($extension_id)
 {
-  return get_extension_dir($extension_id).'/thumbnail.jpg';
+  return PEM_DIR.get_extension_dir($extension_id).'/thumbnail.jpg';
 }
 
 /**
@@ -407,7 +407,7 @@ function get_extension_thumbnail_src($extension_id)
  */
 function get_extension_screenshot_src($extension_id)
 {
-  return get_extension_dir($extension_id).'/screenshot.jpg';
+  return PEM_DIR.get_extension_dir($extension_id).'/screenshot.jpg';
 }
 
 /**
@@ -427,11 +427,10 @@ function get_extension_screenshot_infos($extension_id)
   }
   else
   {
-//     return array(
-//       'thumbnail_src'  => './default_thumbnail.jpg',
-//       'screenshot_url' => 'http://le-gall.net/pierrick',
-//       );
-   return false;
+    return array(
+      'thumbnail_src'  => PEM_DIR.'images/image_solid.svg',
+      'screenshot_url' => PEM_DIR.'images/image_solid.svg',
+    );
   }
 }
 
