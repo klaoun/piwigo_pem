@@ -1,0 +1,40 @@
+/******
+specific css styles for single_view tpl
+******/
+
+/******
+Titles
+******/
+h4.author{
+  font-size: 30px;
+  font-weight: 700;
+  text-align: left;
+  color:var(--grey4);
+  line-height: 41px;
+  transition: all 1s;
+}
+
+h3.category{
+  font-size: 30px;
+  font-weight: 700;
+  text-align: left;
+  line-height: 41px;
+  transition: all 1s;
+}
+
+/******
+Body text
+******/
+p.revision-version{
+  color:var(--grey4);
+  font-weight: 700;
+  margin-left: 10px;
+}
+
+/******
+Borders
+******/
+
+.border-right{
+  border-right:2px solid var(--grey4);
+}
