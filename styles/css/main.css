@@ -136,6 +136,10 @@ a{
   text-decoration:underline;
 }
 
+.disabled{
+  color:var(--grey4);
+}
+
 /******
 Inputs
 ******/
