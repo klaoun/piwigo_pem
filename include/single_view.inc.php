@@ -384,7 +384,7 @@ if (isset($_GET['eId']))
     }
 
     $template->assign(
-      'first_date', date('Y-m-d',$first_date)
+      'first_date', format_date($first_date, array('day_name','day','month','year'))
     );
 
     $template->assign(
