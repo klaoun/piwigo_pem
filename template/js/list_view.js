@@ -126,6 +126,7 @@ jQuery(document).ready(function () {
   {
     // If page is first
     jQuery(".page_buttons").append('<a class="page_number" href="' + pagination_href + 'cId=' + cId + '&page=' + nextPage +'">' + nextPage + '</a>')  
+    jQuery('#first_page_number').addClass('active')
   }
   else if(page == nb_pages)
   {
@@ -162,9 +163,15 @@ jQuery(document).ready(function () {
   {
     jQuery(".page_buttons").append('<span>...</span>')
   }
- 
-  jQuery(".page_buttons").append('<a class="page_number" href="' + pagination_href + 'cId=' + cId + '&page=' + nb_pages +'">' + nb_pages + '</a>')
 
+  // last page number
+  jQuery(".page_buttons").append('<a class="page_number" id="last_page_number" href="' + pagination_href + 'cId=' + cId + '&page=' + nb_pages +'">' + nb_pages + '</a>')
+  if(page == nb_pages)
+  {
+    // If page is last
+    jQuery('#last_page_number').addClass('active')
+  }
+ 
 });
 
 // Ajax request to get all extension information from specifique category
