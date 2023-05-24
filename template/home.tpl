@@ -93,7 +93,8 @@
                   <h5 class='extension-name'>{$category.most_recent_extension.name}</h5>
                   <p class='description' >{$category.most_recent_extension.description}</p>
                   <div class='lat_updated'>
-                    {$category.most_recent_extension.formatted_date}<span class='badge blue-badge'>{$category.most_recent_extension.time_since}</span>
+                    {$category.most_recent_extension.formatted_date}
+                    <span class='badge blue-badge'>{$category.most_recent_extension.time_since}</span>
                   </div>
                 </div>
               </div>
