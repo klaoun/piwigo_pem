@@ -28,7 +28,7 @@ if (basename(dirname(__FILE__)) != 'piwigo_pem')
 
 define('PEM_ID', basename(dirname(__FILE__)));
 define('PEM_PATH' , PHPWG_PLUGINS_PATH . PEM_ID . '/');
-define('PEM_DIR', PHPWG_ROOT_PATH . PWG_LOCAL_DIR . 'piwigo_pem/');
+define('PEM_DIR', PHPWG_ROOT_PATH . 'plugins/piwigo_pem/');
 
 include_once(PEM_PATH . 'include/constants.inc.php');
 // +-----------------------------------------------------------------------+
