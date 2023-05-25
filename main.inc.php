@@ -68,8 +68,7 @@ add_event_handler('init', 'pem_init');
 function pem_init()
 {
   include_once(PEM_PATH . 'include/functions_pem.php');
-  require_once(PEM_PATH . 'include/config_default.inc.php');
-
+  
   //Load languages
   /* Load en_GB translation */
   load_language('plugin.lang', PEM_PATH, array('language' => 'en_GB', 'no_fallback' => true));
