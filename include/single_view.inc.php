@@ -225,7 +225,10 @@ if (isset($_GET['eId']))
           )
         );
     }
-    if ($conf['allow_svn_file_creation'] and $user['extension_owner'])
+
+    $allow_svn_file_creation = conf_get_param('allow_svn_file_creation',false);
+
+    if ($allow_svn_file_creation and $user['extension_owner'])
     {
       $template->assign('u_svn', 'extension_svn.php?eid='.$current_extension_page_id);
         
@@ -378,7 +381,7 @@ if (isset($_GET['eId']))
           'expanded' => isset($_GET['rid']) && $row['id_revision'] == $_GET['rid'],
           'downloads' => isset($downloads_of_revision[$row['id_revision']]) ? 
                           $downloads_of_revision[$row['id_revision']] : 0,
-          );
+      );
 
       $first_date = $row['date'];
     }
@@ -391,7 +394,9 @@ if (isset($_GET['eId']))
       'first_date_formatted_since', time_since($first_date, $stop='month'),
     );
 
-    if ($conf['revisions_sort_order'] == 'version')
+    $revisions_sort_order = conf_get_param('revisions_sort_order','version');
+
+    if ($revisions_sort_order == 'version')
     {
       usort($tpl_revisions, function($a, $b) {
         return safe_version_compare($b['version'], $a['version']);

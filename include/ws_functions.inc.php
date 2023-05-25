@@ -133,8 +133,10 @@ function ws_pem_categories_get_extensions($params, &$service)
 {
   global $conf;
 
+  $extensions_per_page = conf_get_param('extensions_per_page',15);
+
   $cId = $params['category_id'];
-  $offset = ($conf['extensions_per_page'] * $params['page']) - $conf['extensions_per_page']; 
+  $offset = ($extensions_per_page * $params['page']) - $extensions_per_page; 
 
   $revision_ids = array();
   $revision_infos_of = array();
@@ -182,9 +184,9 @@ ORDER BY
       );
   }
 
-  $revision_ids = array_slice($all_revision_ids, $offset , $conf['extensions_per_page'], true);
+  $revision_ids = array_slice($all_revision_ids, $offset , $extensions_per_page, true);
   
-  $nb_pages = ceil(count($all_revision_ids)/ $conf['extensions_per_page']);
+  $nb_pages = ceil(count($all_revision_ids)/ $extensions_per_page);
 
   $versions_of = get_versions_of_revision($revision_ids);
   $languages_of = get_languages_of_revision($revision_ids);

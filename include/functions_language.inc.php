@@ -83,9 +83,10 @@ function get_current_language()
   
   if (empty($language) or !is_array($language))
   {
-    $language = $interface_languages[$conf['default_language']];
+
+    conf_get_param('get_browser_language',true)
     
-    if ($conf['get_browser_language'])
+    if ($get_browser_language)
     {
       $browser_language = @substr($_SERVER["HTTP_ACCEPT_LANGUAGE"],0,2);
       foreach ($interface_languages as $interface_language)
