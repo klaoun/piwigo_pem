@@ -358,7 +358,7 @@
     },
     {
       "uid": "e2d2207229dfd4538860eab79b2659e4",
-      "css": "trash-solid",
+      "css": "trash",
       "code": 59412,
       "src": "custom_icons",
       "selected": true,
@@ -414,7 +414,7 @@
     },
     {
       "uid": "99839a51ff0021a218e6c3353b687d01",
-      "css": "arrow-right-to-bracket-solid",
+      "css": "arrow-right-to-bracket",
       "code": 59416,
       "src": "custom_icons",
       "selected": true,
