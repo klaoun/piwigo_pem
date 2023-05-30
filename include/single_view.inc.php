@@ -238,16 +238,14 @@ if (isset($_GET['eId']))
   if ($screenshot_infos = get_extension_screenshot_infos($current_extension_page_id))
   {
     $template->assign(
-      'thumbnail',
-      array(
-        'src' => $screenshot_infos['thumbnail_src'],
-        'url' => $screenshot_infos['screenshot_url'],
-        )
-      );
+      'screenshot', $screenshot_infos['screenshot_url'],    
+    );
   }
 
   // Links associated to the current extension
   $tpl_links = array();
+
+  $tpl_all_extension_links = array();
 
   // if the extension is hosted on github, add a link to the Github page
   if (isset($data['git_url']) and preg_match('/github/', $data['git_url']))
@@ -257,6 +255,16 @@ if (isset($_GET['eId']))
       array(
         'name' => l10n('Github page'),
         'url' => $data['git_url'],
+        'description' => l10n('source code, bug/request tracker'),
+      )
+    );
+
+    array_push(
+      $tpl_all_extension_links,
+      array(
+        'name' => l10n('Github page'),
+        'url' => $data['git_url'],
+        'language' => "All languages",
         'description' => l10n('source code, bug/request tracker'),
       )
     );
@@ -283,8 +291,34 @@ if (isset($_GET['eId']))
         'description' => $row['description'],
         )
       );
-  }
+  }  
   $template->assign('links', $tpl_links);
+  
+  $query = '
+  SELECT lt.name,
+        url,
+        description,
+        it.name as lang
+    FROM '.PEM_LINKS_TABLE.' as lt
+    LEFT JOIN '.PEM_LANG_TABLE.' as it
+      ON lt.idx_language = it.id_language
+      WHERE idx_extension = '.$current_extension_page_id.'
+  ;';
+  $result = pwg_query($query);
+
+  while ($row = pwg_db_fetch_assoc($result))
+  {
+    array_push(
+      $tpl_all_extension_links,
+      array(
+        'name' => $row['name'],
+        'url' => $row['url'],
+        'language' => $row['lang'],
+        )
+      );
+  }
+  
+  $template->assign('all_extension_links', $tpl_all_extension_links);
 
   // which revisions to display?
   $revision_ids = array();
@@ -368,7 +402,7 @@ if (isset($_GET['eId']))
             $languages_of[$row['id_revision']] : array(),
           'languages_diff' => isset($diff_languages_of[$row['id_revision']]) ?
             $diff_languages_of[$row['id_revision']] : array(),
-          'date' => date('Y-m-d', $row['date']),
+          'date' => format_date($row['date'], array('day_name','day','month','year')),
           'author' => (count($authors) > 1 or $row['author'] != $data['idx_user']) ?
                         get_author_name($row['author']) : '',
           'u_download' => 'download.php?rid='.$row['id_revision'],
@@ -567,12 +601,6 @@ if (isset($_GET['eId']))
   asort($scores);
   $template->assign('scores', $scores);
 
-
-  $template->assign(
-    array(
-    'PEM_PATH' => PEM_PATH,
-    )
-  );
 }
 else
 {

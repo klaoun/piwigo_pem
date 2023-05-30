@@ -32,9 +32,130 @@ p.revision-version{
 }
 
 /******
+Buttons
+*******/
+#single_view .btn-tertiary:hover{
+  color:var(--main_orange);
+}
+
+/******
 Borders
 ******/
 
 .border-right{
   border-right:2px solid var(--grey4);
+}
+
+/******
+header Image
+******/
+#single_view .placeholder_image{
+  margin:0 auto;
+  /* max-width:300px; */
+}
+
+#single_view .screenshot_image{
+  height:300px;
+  max-width:100%;
+}
+
+/******
+Revisions
+******/
+.changelogRevision.card{
+  background-color:  var(--grey5);
+  padding:20px;
+  border-radius:15px;
+  box-shadow: 0 0 10px var(--grey4);
+  margin-bottom:30px;
+}
+
+.changelogRevision.card p{
+  margin-bottom:0;
+}
+
+#changelog .changelogRevision.latest_rev{
+  background-color:  var(--main_orange);
+  color: var(--white);
+}
+
+.changelogRevision.card h4{
+  /* font-size:20px; */
+  font-weight:700;
+  margin-bottom:0;
+}
+
+#changelog .changelogRevision.latest_rev h4,
+#changelog .changelogRevision.latest_rev h5{
+  color: var(--white);
+}
+
+#changelog .changelogRevision .changelogRevisionHeaderExpanded {
+  border-bottom:2px solid var(--grey4);
+}
+
+#changelog .changelogRevision.latest_rev .changelogRevisionHeaderExpanded {
+  border-bottom:2px solid var(--white);
+}
+
+#changelog .changelogRevision .btn-tertiary{
+  border:1px solid var(--main_orange);
+  color: var(--main_orange);
+  background:var(--white)
+}
+
+/******
+Edit mode
+*******/
+.circle-icon{
+  background-color:var(--grey2);
+  color:white;
+  font-size:15px;
+  border-radius:25px;
+  padding:5px;
+}
+
+.circle-icon:hover{
+  background-color:var(--main_orange);
+  cursor:pointer;
+  box-shadow: 2px 2px 6px #555;
+  transition: all 0.2s;
+}
+
+.edit_mode{
+  display:none;
+}
+
+.secondary_action{
+  color: var(--grey2);
+  border: 1px solid var(--grey2);
+  background-color:transparent;
+}
+
+.secondary_action:hover{
+  color:white;
+  border:1px solid var(--main_orange);
+}
+
+.edit_links .circle-icon{
+  padding: 5px 10px;
+}
+
+#changelog .changelogRevision.latest_rev .circle-icon.main_action{
+  color: var(--white);
+  border: 1px solid var(--secondary_orange);
+  background-color:var(--secondary_orange);
+}
+
+#changelog .changelogRevision.latest_rev .circle-icon.secondary_action{
+  color: var(--white);
+  border: 1px solid var(--white);
+  background-color:transparent;
+}
+
+#changelog .changelogRevision.latest_rev .circle-icon.secondary_action:hover,
+#changelog .changelogRevision.latest_rev .circle-icon.main_action:hover{
+  color: var(--main_orange);
+  border: 1px solid var(--white);
+  background-color:var(--white);
 }
