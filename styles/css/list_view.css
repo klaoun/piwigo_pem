@@ -100,7 +100,20 @@ Filter section
   position:relative
 }
 
+.ui-slider {
+  background:#fff;
+  border-radius:2px;
+  border:none;
+}
+.ui-slider .ui-slider-range {
+  background:#aaa;
+  border-radius:2px;
+}
+
 .ui-slider .ui-slider-handle {
+  background-color: #ddd;
+  border: 1px solid #aaa;
+  border-radius: 3px;
   position: absolute;
   z-index: 2;
   width: 1.2em;
@@ -114,6 +127,8 @@ Filter section
 
 .ui-slider-range.ui-widget-header.ui-corner-all {
   border: 1px solid var(--secondary_orange);
+  background: var(--secondary_orange);
+  margin-top: -1px;
 }
 
 .ui-state-default, 
@@ -138,22 +153,59 @@ Filter section
   height: 1.4em;
 }
 
-.badge.rounded-pill{
-  border:2px solid #ff7700;
-  color:#ff7700;
+.slider-bar-wrapper {
+  padding-left:10px;
+  margin-top: 20px;
+  margin-bottom: 30px;
 }
 
-/* Hide the checkboxes */
-.checkbox_hidden, #hidden-checkbox-2{
-  height: 0;
-  width: 0;
-  margin: 0;
-  padding: 0;
+.slider-bar-wrapper .slider-bar-container {
+height: 2px;
 }
 
-label.badge:focus-within{
-  outline: 2px solid black;
+.slider-bar-wrapper .ui-slider-horizontal .ui-slider-handle{
+  background-color:#ffaf58;
+  border: 1px solid #ffaf58;
+  border-radius:25px;
+  top: -.7em !important;
+  width: 1.4em;
+  height: 1.4em;
 }
+
+.slider-bar-wrapper .ui-slider-horizontal .ui-slider-range {
+  background-color: #ffaf58;
+  height:2px;
+}
+
+.slider-bar-wrapper .ui-slider-horizontal{
+  border:none;
+  border-radius:25px;
+  background-color:#e3e3e3;
+}
+
+/* style for tag filter */
+#tag_select .badge{
+  border:2px solid var(--main_orange);
+  color:var(--main_orange);
+  padding: 5px 10px;
+  border-radius: 25px;
+  margin: 4px;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+#tag_select input[type="checkbox"].tag-filter {
+  display: none;
+}
+/* input[type="checkbox"].tag-filter + label {
+  border:2px solid var(--main_orange);
+} */
+#tag_select input[type="checkbox"].tag-filter:checked + label {
+  /* border:2px solid var(--main_orange); */
+  background-color: var(--main_orange);
+  color: var(--white);
+}
+
 
 
 /******
@@ -193,9 +245,17 @@ Extension cards
   margin:0;
 }
 
-.extension_info .extension_image{
-  max-height:300px;
-  width:auto;
+.extension_info .extension_image_div{
+  object-fit:cover;
+  /* max-height:300px;
+  width:auto; */
+}
+
+.placeholder_image{
+  opacity:.2;
+  /* background-color:var(--grey4);
+  padding:15px 30px; */
+  max-width:200px;
 }
 
 /******
