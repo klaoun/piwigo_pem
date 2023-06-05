@@ -9,13 +9,6 @@
     <link rel="stylesheet" type="text/css" href="{$PEM_ROOT_URL_PLUGINS}vendor/bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="{$PEM_ROOT_URL_PLUGINS}fonts/open-sans/open-sans.css">
 
-    {* PEM CSS files *}
-    <link rel="stylesheet" type="text/css" href="{$PEM_ROOT_URL_PLUGINS}styles/css/main.css">
-    <link rel="stylesheet" type="text/css" href="{$PEM_ROOT_URL_PLUGINS}styles/css/navbar.css">
-    <link rel="stylesheet" type="text/css" href="{$PEM_ROOT_URL_PLUGINS}styles/css/list_view.css">
-    <link rel="stylesheet" type="text/css" href="{$PEM_ROOT_URL_PLUGINS}styles/css/single_view.css">
-    <link rel="stylesheet" type="text/css" href="{$PEM_ROOT_URL_PLUGINS}styles/css/footer.css">
-
     {* Jquery *}
     <script src="{$PEM_ROOT_URL_PLUGINS}vendor/js/jquery-3.6.0.min.js"></script>
 
@@ -25,5 +18,12 @@
     {*Fontello css*}
     <link rel="stylesheet" type="text/css" href="{$PEM_ROOT_URL_PLUGINS}vendor/fontello/css/fontello.css">
 
+    {* PEM CSS files *}
+    <link rel="stylesheet" type="text/css" href="{$PEM_ROOT_URL_PLUGINS}styles/css/main.css">
+    <link rel="stylesheet" type="text/css" href="{$PEM_ROOT_URL_PLUGINS}styles/css/navbar.css">
+    <link rel="stylesheet" type="text/css" href="{$PEM_ROOT_URL_PLUGINS}styles/css/list_view.css">
+    <link rel="stylesheet" type="text/css" href="{$PEM_ROOT_URL_PLUGINS}styles/css/single_view.css">
+    <link rel="stylesheet" type="text/css" href="{$PEM_ROOT_URL_PLUGINS}styles/css/footer.css">
+    
   </head>
   <body>
