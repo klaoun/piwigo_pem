@@ -33,9 +33,9 @@ function pem_ws_add_methods($arr)
     array(
       'category_id' => array('type'=>WS_TYPE_INT|WS_TYPE_POSITIVE,'info'=>'use category id'),
       'page' => array('type'=>WS_TYPE_INT|WS_TYPE_POSITIVE, 'default'=>1),
-      'filter' => array(
+      'sort_by' => array(
         'default'=>null,
-        'info'=>'max_date DESC, max_date ASC, extension_name DESC, extension_name ASC, '),
+        'info'=>'date_desc, date_asc, a_z, z_a'),
       
     ),
     
@@ -135,9 +135,30 @@ function ws_pem_categories_get_extensions($params, &$service)
 
   $extensions_per_page = conf_get_param('extensions_per_page',15);
 
-  $cId = $params['category_id'];
-  $offset = ($extensions_per_page * $params['page']) - $extensions_per_page; 
+  $cId = $params['category_id']; 
 
+  $sort_by = $params['sort_by'];
+  switch ( $sort_by) 
+  {
+    case "a_z":
+      $sort_by = 'compare_extension_name_asc';
+      break;
+    case "z_a":
+      $sort_by = 'compare_extension_name_desc';
+      break;
+    case "date_desc":
+      $sort_by = 'compare_extension_date_desc';
+      break;
+    case "date_asc":
+      $sort_by = 'compare_extension_date_asc';
+      break;
+    default:
+      return new PwgError(WS_ERR_INVALID_PARAM, 'Invalid sort_by');
+      break;
+  }
+
+  $offset = ($extensions_per_page * $params['page']) - $extensions_per_page;
+  
   $revision_ids = array();
   $revision_infos_of = array();
   $extension_ids = array();
@@ -167,8 +188,6 @@ INNER JOIN
   ON r.idx_extension = ec.idx_extension
 WHERE 
   ec.idx_category = '.$cId.'
-ORDER BY 
-  latest_date DESC
 ';
 
   $all_revision_ids = query2array($query, null, 'id_revision');
@@ -181,7 +200,7 @@ ORDER BY
       'No extensions match your filter',
       'Most recent extensions',
       false
-      );
+    );
   }
 
   $revision_ids = array_slice($all_revision_ids, $offset , $extensions_per_page, true);
@@ -258,6 +277,9 @@ ORDER BY
     );
   }
 
+  // sort alphabetically by name
+  usort($revisions, $sort_by);
+
   if (!isset($_REQUEST['format']))
   {
     //Echo to be compatible with previous version of Piwigo
@@ -270,6 +292,26 @@ ORDER BY
     'nb_pages' => $nb_pages,
     'nb_total_extensions' => $nb_total,
   );
+}
+
+function compare_extension_name_asc($a, $b)
+{
+  return strcasecmp($a['extension_name'], $b['extension_name']);
+}
+
+function compare_extension_name_desc($a, $b)
+{
+  return strcasecmp($b['extension_name'], $a['extension_name']);
+}
+
+function compare_extension_date_desc($a, $b)
+{
+  return strcmp($a['date'], $b['date']);
+}
+
+function compare_extension_date_asc($a, $b)
+{
+  return strcmp($b['date'], $a['date']);
 }
 
 /**
