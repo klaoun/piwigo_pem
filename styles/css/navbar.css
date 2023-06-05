@@ -41,3 +41,21 @@
  border-radius:25px;
  padding:3px;
 }
+
+/*****
+Account dropdown
+******/
+#account-dropdown{
+  display:none;
+  position:absolute;
+  min-width:175px;
+  padding:10px;
+}
+
+#account-link:hover #account-dropdown{
+  display:block;
+}
+
+#account-dropdown a{
+  color:var(--white);
+}

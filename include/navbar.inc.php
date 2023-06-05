@@ -17,7 +17,6 @@ foreach ($categories as $i => $category) {
   $categories[$i]['icon_class'] = $category_icons[$i];
 }
 
-
 if (is_a_guest())
 {
   $account_url = $pem_root_url.'identification.php';
@@ -31,7 +30,9 @@ $template->assign(
   array(
     'CATEGORIES_INFO' => $categories,
     'ACCOUNT_URL' => $account_url,
+    'USER' => $user
   )
 );
+
 
 $template->set_filenames(array('navbar_pem' => realpath(PEM_PATH .'template/navbar.tpl')));
