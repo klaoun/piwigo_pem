@@ -185,7 +185,7 @@ function pem_load_footer(){
 
   $porg_root_url = get_absolute_root_url();
 
-  $template->set_filenames(array('footer_pem' => realpath(PEM_PATH .'template/footer.tpl')));
+  $template->set_filenames(array('footer_pem' => realpath(PEM_PATH .'template/pem_footer.tpl')));
 
   $template->parse('header_pem');
   $template->parse('navbar_pem');
@@ -193,4 +193,6 @@ function pem_load_footer(){
   $template->parse('footer_pem');
   $template->p();
   exit();
+
+}
   
