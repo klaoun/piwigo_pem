@@ -10,6 +10,17 @@
   --black: #000000;
   --light_blue_background: #ebf5ff;
   --light_blue_font: #6CADD9;
+
+  /*colors for infos, errors, warnings and messages */
+  --message_green:#0a0;
+  --message_light_green:#c2f5c2;
+  --message_red:#f22;
+  --message_light_red:#ffd5dc;
+  --message_orange:#ee8800;
+  --message_light_orange:#ffdd99;
+  --message_blue:#00529b;
+  --message_light_blue:#bde5f8;
+
 }
 
 /******
@@ -21,7 +32,7 @@ Purle pink gradient block
 
 .purple-gradient p,
 .purple-gradient a{
-  color:white!important;
+  color:var(--white)!important;
 }
 
 /******
@@ -147,12 +158,12 @@ a{
 }
 
 .orange-link{
-  color:#ff7700;
+  color:var(--main_orange);
   text-decoration:none;
 }
 
 .orange-link:hover{
-  color:#ff7700;
+  color:var(--main_orange);
   text-decoration:underline;
 }
 
@@ -163,8 +174,17 @@ a{
 /******
 Inputs
 ******/
-.form-group{
-  max-width:300px;
+
+/*Switch*/
+.form-check-input:checked {
+  background-color: var(--main_orange);
+  border-color: var(--main_orange);
+}
+
+.form-check-input:focus {
+  border-color: var(--secondary_orange);
+  outline: 0;
+  box-shadow: 0 0 0 0.25rem var(--grey5);
 }
 
 /******
@@ -183,13 +203,105 @@ Badges
 /******
 Position
 ******/
-.position-relative{
-  position:relative;
-}
 .vertical-align{
   top:50%;
   transform:translateY(-50%);
   position:absolute;
+}
+
+.horizontal-align{
+  left:50%;
+  transform:translateX(-50%);
+  position:absolute;
+}
+
+.vertical-horizontal-align{
+  left:50%;
+  top:50%;
+  transform:translate(-50%, -50%);
+}
+
+/******
+Dropdown
+******/
+.navbar .dropdown {
+  z-index: 100;
+  padding: 5px 0px;
+  border-radius: 10px;
+  background: linear-gradient(130deg, #ff7700 0%, #ffa744 100%);
+  color: white;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.navbar .dropdown::after {
+  content: " ";
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  transform:translateX(-50%);
+  border-width: 5px;
+  border-style: solid;
+  border-color: transparent transparent #ff7700 transparent;
+}
+
+.navbar .dropdown-content {
+  position: relative;
+}
+
+/******
+Messages
+******/
+
+.infos, .errors, .warnings, .messages {
+  text-align: left;
+  padding: 5px 15px;
+  font-weight:bold;
+  min-height: 54px;
+}
+
+.infos i, .errors i, .warnings i, .messages i{
+  display: inline-block;
+  font-size: 30px;
+  margin-right: 10px;
+  vertical-align: middle;
+}
+
+.infos {
+  color: var(--message_green);
+  background-color:#c2f5c2;
+  border-left:4px solid var(--message_green);
+}
+
+.errors {
+  color: #f22;
+  background-color: #ffd5dc;
+  border-left: 4px solid #f22;
+}
+
+.warnings {
+  color: #ee8800;
+  background-color:#ffdd99;
+  border-left:4px solid #ee8800;
+}
+
+.messages {
+  color: #00529b;
+  background-color:#bde5f8;
+  border-left:4px solid #00529b;
+}
+
+.infos .infos-content,
+.errors .errors-content,
+.warnings .warnings-content,
+.messages .messages-content{
+  vertical-align:middle;
+}
+
+.infos a {
+  color: #3C3C3C;
+}
+.infos a:hover {
+  text-decoration:underline;
 }
 
 /******
@@ -202,7 +314,6 @@ Homepage
   border-radius: 7px;
   border:none;
   padding:15px;
-  /* min-height:160px; */
 }
 
 #homeSections .spotlight .card,
@@ -242,12 +353,23 @@ p.description{
 	position: absolute;
 	bottom: -46px;
 	padding: 10px;
-	background: #000;
-	color: #fff;
+	background: var(--black);
+	color: var(--white);
 	font-size: 14px;
-	/* white-space: nowrap; */
 }
 
 .rating_score i{
-  color:#f9a62d;
+  color:var(--secondary_orange);
+}
+/******
+Other
+******/
+
+.cancel-icon:hover{
+  cursor:pointer;
+  text-decoration:underline;
+}
+
+.cancel-icon i{
+  font-size:10px;
 }
