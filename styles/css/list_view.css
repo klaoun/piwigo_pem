@@ -46,6 +46,7 @@ Content header
 #list_view .filter_section .filter_tab.toggled{
   border-top-left-radius: 15px;
   border-top-right-radius: 15px;
+  padding-bottom:20px;
 }
 
 
@@ -183,29 +184,58 @@ height: 2px;
   background-color:#e3e3e3;
 }
 
-/* style for tag filter */
-#tag_select .badge{
-  border:2px solid var(--main_orange);
-  color:var(--main_orange);
-  padding: 5px 10px;
-  border-radius: 25px;
-  margin: 4px;
-  font-size: 13px;
-  font-weight: 700;
+.selectize-input{
+  box-shadow: none;
+  line-height:1rem;
 }
 
-#tag_select input[type="checkbox"].tag-filter {
-  display: none;
-}
-/* input[type="checkbox"].tag-filter + label {
-  border:2px solid var(--main_orange);
-} */
-#tag_select input[type="checkbox"].tag-filter:checked + label {
-  /* border:2px solid var(--main_orange); */
-  background-color: var(--main_orange);
-  color: var(--white);
+.selectize-input  .item,
+.selectize-input .item.active,
+.selectize-input [data-value]{
+  background-image:none !important;
+  background-color: #ffa646 !important;
+  border-color: transparent !important;
+  color: black !important;
+
+  border-radius: 20px !important;
 }
 
+.selectize-input .item .remove,
+.selectize-input .item .remove {
+  background-color: transparent !important;
+  border-top-right-radius: 20px !important;
+  border-bottom-right-radius: 20px !important;
+  color: black !important;
+  
+  border-left: 1px solid transparent !important;
+
+}
+.selectize-input .item .remove:hover,
+.selectize-input .item .remove:hover {
+  background-color: #ff7700 !important;
+}
+
+.version_filter_container .selectize-control,
+.version_filter_container .selectize-dropdown.single.form-select.w-100{
+  padding:0;
+}
+
+.version_filter_container .selectize-input,
+.version_filter_container .selectize-input .item, 
+.version_filter_container .selectize-input .item.active, 
+.version_filter_container .selectize-input [data-value]{
+  border: none;
+  background: transparent!important;
+  box-shadow:none!important;
+}
+
+.version_filter_container .selectize-control.single .selectize-input:after{
+  display:none;
+}
+
+.form-select{
+  line-height:1rem;
+}
 
 
 /******
