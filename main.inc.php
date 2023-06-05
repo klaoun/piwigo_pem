@@ -45,6 +45,26 @@ add_event_handler('ws_add_methods', 'pem_ws_add_methods');
 include_once(PEM_PATH . 'include/ws_functions.inc.php');
 
 /**
+ * Use plugin tpl for identification, register, password
+ * Use php provided by Piwigo
+ */
+if (in_array(script_basename(), array('identification', 'register', 'password')))
+{
+  add_event_handler('init', 'replace_header_init');
+  function replace_header_init()
+  {
+    global $template;
+    $pem_root_url_pem = get_absolute_root_url() . PEM_PATH;
+    $template->assign(
+      array(
+        'PEM_ROOT_URL_PLUGINS' => $pem_root_url_pem,
+      )
+    );
+    $template->smarty->setTemplateDir(PEM_DIR.'template');
+  }
+}
+
+/**
  * plugin initialization
  */
 
@@ -74,7 +94,6 @@ function pem_init()
   load_language('plugin.lang', PEM_PATH, array('language' => 'en_GB', 'no_fallback' => true));
   /* Load user language translation */
   load_language('plugin.lang', PEM_PATH);
-
 }
 
 /**
@@ -91,7 +110,6 @@ function pem_load_header()
   $template->set_template_dir(PEM_PATH);
   $template->set_filenames(array('header_pem' => realpath(PEM_PATH .'template/header.tpl')));
   include(PEM_PATH . '/include/navbar.inc.php');
-
 
   $template->assign(
     array(
@@ -175,34 +193,4 @@ function pem_load_footer(){
   $template->parse('footer_pem');
   $template->p();
   exit();
-}
-
-/**
- * Change identification tpl
- */
-add_event_handler('loc_end_identification', 'pem_loc_end_identification');
-function pem_loc_end_identification()
-{
-  global $template;
-  $template->set_filenames( array('identification' => realpath(PEM_PATH .'template/identification.tpl')));
-}
-
-/**
- * Change register tpl
- */
-add_event_handler('loc_end_register', 'pem_loc_end_register');
-function pem_loc_end_register()
-{
-  global $template;
-  $template->set_filenames( array('register' => realpath(PEM_PATH .'template/register.tpl')));
-}
-
-/**
- * Change password tpl
- */
-add_event_handler('loc_end_password', 'pem_loc_end_password');
-function pem_loc_end_password()
-{
-  global $template;
-  $template->set_filenames( array('password' => realpath(PEM_PATH .'template/password.tpl')));
-}
+  
