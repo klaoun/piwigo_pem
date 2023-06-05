@@ -15,6 +15,11 @@
     {* Bootstrap javascript *}
     <script src="{$PEM_ROOT_URL_PLUGINS}vendor/bootstrap/js/bootstrap.min.js"></script>
 
+
+    {* Selectize *}
+    <script src="{$PEM_ROOT_URL_PLUGINS}vendor/js/selectize.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="{$PEM_ROOT_URL_PLUGINS}styles/css/selectize.clear.css">
+    
     {*Fontello css*}
     <link rel="stylesheet" type="text/css" href="{$PEM_ROOT_URL_PLUGINS}vendor/fontello/css/fontello.css">
 
