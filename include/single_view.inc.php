@@ -31,13 +31,6 @@ if (isset($_GET['eId']))
   
   $self_url = PEM_PATH.'index.php?eid='.$current_extension_page_id;
 
-  // $template->set_filenames(
-  //   array(
-  //     'page' => 'page.tpl',
-  //     'extension_view' => 'extension_view.tpl'
-  //   )
-  // );
-
   // actions
   if (isset($_GET['action']))
   {
@@ -128,8 +121,8 @@ if (isset($_GET['eId']))
 
   //Check if user can make change to extension
   $page['user_can_modify'] = false;
-  if (isset($user['id']) and 
-    (is_Admin($user['id']) or isTranslator($user['id']) or in_array($user['id'], $authors)))
+
+  if (isset($user['id']) and (is_Admin() or isTranslator($user['id']) or in_array($user['id'], $authors)))
   {
     $page['user_can_modify'] = true;
   }
@@ -213,8 +206,8 @@ if (isset($_GET['eId']))
           'u_links' => 'extension_links.php?eid='.$current_extension_page_id,
           'u_screenshot'=> 'extension_screenshot.php?eid='.$current_extension_page_id,
           'translator' => !in_array($user['id'], $authors) and get_user_status() !='admin',
-          )
-        );
+        )
+      );
     }
     if ($user['extension_owner'])
     {
@@ -601,6 +594,26 @@ if (isset($_GET['eId']))
   asort($scores);
   $template->assign('scores', $scores);
 
+  // Assign template for general information popin
+  $template->set_filename('pem_edit_general_info_form', realpath(PEM_PATH . 'template/modals/edit_general_info_form.tpl'));
+  $template->assign_var_from_handle('PEM_EDIT_GENERAL_INFO_FORM', 'pem_edit_general_info_form');
+
+  // Assign template for edit revision popin
+  $template->set_filename('pem_edit_revision_form', realpath(PEM_PATH . 'template/modals/edit_revision_form.tpl'));
+  $template->assign_var_from_handle('PEM_EDIT_REVISION_FORM', 'pem_edit_revision_form');
+  
+  // Assign template for edit image popin
+  $template->set_filename('pem_edit_image_form', realpath(PEM_PATH . 'template/modals/edit_image_form.tpl'));
+  $template->assign_var_from_handle('PEM_EDIT_IMAGE_FORM', 'pem_edit_image_form');
+    
+  // Assign template for edit description popin
+  $template->set_filename('pem_edit_description_form', realpath(PEM_PATH . 'template/modals/edit_description_form.tpl'));
+  $template->assign_var_from_handle('PEM_EDIT_DESCRIPTION_FORM', 'pem_edit_description_form');
+    
+  // Assign template for edit related links popin
+  $template->set_filename('pem_edit_related_link_form', realpath(PEM_PATH . 'template/modals/edit_related_link_form.tpl'));
+  $template->assign_var_from_handle('PEM_EDIT_RELATED_LINK_FORM', 'pem_edit_related_link_form');
+        
 }
 else
 {

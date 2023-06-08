@@ -37,23 +37,6 @@ function revToggleDisplay(headerId, contentId)
   }
 }
 
-// function editToggleDisplay()
-// {
-
-
-//   const edit_switch = jQuery('#edit_mode');
-//   console.log(edit_switch.checked)
-//   if ($('#edit_switch').is(':checked')) {
-//   // if(edit_switch.checked != false)
-//     jQuery('.edit_mode').toggle();
-//     console.log('true')
-//   }
-//   else if(edit_switch.checked == false)
-//   {
-//     console.log('false')
-//   }
-// }
-
 jQuery("#edit_mode").change(function() {
   jQuery('.edit_mode').toggle();
   jQuery('.related_links').toggle();

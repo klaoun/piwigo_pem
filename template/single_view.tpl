@@ -1,12 +1,11 @@
 <div id="single_view" class="container">
-
   <section class="section-fluid">
-    <a href="{$PEM_ROOT_URL}index.php?cId={$extension_categories.id_category}&page=1" class="orange-link">
+    <a href="{$PEM_ROOT_URL}index.php?cid={$extension_categories.id_category}&page=1" class="orange-link">
       <i class="icon-chevron-left"></i>Back to {$extension_categories.name}s
     </a>
   </section>
 
-  {if $rev.can_modify = true}
+{if $can_modify == true}
   <section  class="mt-4 section-fluid">
     <div class="d-flex justify-content-end">
       <div class="form-check form-switch ">
@@ -18,13 +17,16 @@
       </div>
     </div>
   </section>
-  {/if}
+{/if}
 
   <section class="mt-4 section-fluid">
   <div class="row">
-    <div class="col-md-6 position-relative">
-
-      <i class="icon-pencil circle-icon edit_mode position-absolute top-0 start-100 translate-middle"></i>
+    <div class="col-md-6 position-relative" id="info-container">
+{if $can_modify == true}
+      <span class="circle-icon edit_mode position-absolute top-0 end-0 translate-middle" data-bs-toggle="modal" data-bs-target="#generalInfoModal">
+        <i class="icon-pencil"></i>
+      </span>
+{/if}
 
       <div>
         <h2>{$extension_name}</h2>
@@ -38,7 +40,7 @@
 
       <div class="mt-5">
           <h3 class="category ">
-            <a href="{$PEM_ROOT_URL}index.php?cId={$extension_categories.id_category}&page=1" class="orange-link">
+            <a href="{$PEM_ROOT_URL}index.php?cid={$extension_categories.id_category}&page=1" class="orange-link">
               {$extension_categories.name}
             </a>
           </h3>
@@ -60,8 +62,12 @@
       </div>
 
     </div>
-    <div class="col-md-6 text-center position-relative">
-      <i class="icon-pencil circle-icon edit_mode position-absolute top-0 start-100 translate-middle"></i>
+    <div class="col-md-6 text-center position-relative" id="image-container">
+{if $can_modify == true}
+      <span class="circle-icon edit_mode position-absolute top-0 end-0 translate-middle" data-bs-toggle="modal" data-bs-target="#ImageModal">
+        <i class="icon-pencil" ></i>
+      </span>
+{/if}
 
 {if $screenshot}
       <img class="img-fluid screenshot_image" src="{$screenshot}">
@@ -98,7 +104,11 @@
 
 {*Description block *}
   <section class="mt-5 pt-3 section-fluid position-relative">
-    <i class="icon-pencil circle-icon edit_mode position-absolute top-0 start-100 translate-middle"></i>
+{if $can_modify == true}
+    <span class="circle-icon edit_mode position-absolute top-0 end-0 translate-middle" data-bs-toggle="modal" data-bs-target="#DescriptionModal">
+      <i class="icon-pencil" ></i>
+    </span>
+{/if}
 
     <div>
       <p class="extension_description">{$description}</p>
@@ -126,7 +136,7 @@
         </thead>
         <tbody>
 
-        {foreach from=$all_extension_links item=link}
+{foreach from=$all_extension_links item=link}
           <tr>
             <td>
               <a class="orange-link my-3" href="{$link.url}">
@@ -138,11 +148,17 @@
               <span class="ms-0 badge blue-badge d-inline">{$link.language}</span>
             </td>
             <td>
-              <span class="circle-icon"><i class="icon-pencil translate-middle"></i>Edit</span>
-              <span class="circle-icon secondary_action"><i class="icon-trash translate-middle"></i>Delete</span>
+  {if $can_modify == true}
+              <span class="circle-icon edit_mode me-2" data-bs-toggle="modal" data-bs-target="#RelatedLinkModal">
+                <i class="icon-pencil"></i>Edit
+              </span>
+              <span class="circle-icon secondary_action">
+                <i class="icon-trash translate-middle"></i>Delete
+              </span>
+  {/if}
             </td>
           </tr>
-        {/foreach}
+{/foreach}
 
         </tbody>
       </table>
@@ -187,18 +203,22 @@
     {else}
       <div id="rev{$rev.id}" class="changelogRevision card position-relative">
     {/if}
+
+  {if $can_modify}
+      <div class="position-absolute end-0 me-5">
+        <span class="circle-icon edit_mode main_action z-index me-2 pe-0" data-bs-toggle="modal" data-bs-target="#revsionInfoModal" onclick="popinToggleDisplay('generalInfo')">
+          <i class="icon-pencil" ></i>
+        </span>
+        <span class="edit_mode circle-icon secondary_action"><i class="icon-trash"></i></span>
+      </div>
+  {/if}
+       
   
-        <div
-          id="rev{$rev.id}_header" {if $rev.expanded} class="changelogRevisionHeaderExpanded pb-4" {else} class="changelogRevisionHeaderCollapsed pb-0"{/if}
-          onclick="revToggleDisplay('rev{$rev.id}_header', 'rev{$rev.id}_content')"
-        >
+        <div id="rev{$rev.id}_header" {if $rev.expanded} class="changelogRevisionHeaderExpanded pb-4" {else} class="changelogRevisionHeaderCollapsed pb-0"{/if} onclick="revToggleDisplay('rev{$rev.id}_header', 'rev{$rev.id}_content')">
             <div class="revision_title_container d-flex justify-content-between">
               <h4 class="revisionTitle">{'Revision'|@translate} {$rev.version}</h4>
               <div class="">
-                <div class="d-inline-block ">
-                  <span class="edit_mode circle-icon main_action"><i class="icon-pencil"></i></span>
-                  <span class="edit_mode circle-icon secondary_action"><i class="icon-trash"></i></span>
-                </div>
+ 
                 <span><i {if $rev.expanded}class="icon-chevron-down"{else}class="icon-chevron-right"{/if}></i>
               </div>
             </div>
@@ -246,16 +266,6 @@
           </div>
       {/if}
 
-      {if $rev.can_modify}
-          <ul class="revActionLinks">
-            <li><a href="{$rev.u_modify}" title="{'Modify revision'|@translate}"><img src="template/images/modify.png" alt="{'Modify revision'|@translate}"></a></li>
-            {if !$translator}
-            <li><a href="{$rev.u_delete}" onclick="return confirm('{'Are you sure you want to delete this item?'|@translate|escape:javascript}');" title="{'Delete revision'|@translate}">
-            <i class="icon-trash"></i>Delete revision</a></li>
-            {/if}
-          </ul>
-      {/if}
-
           <div class="row mt-4">
             <a href="{$rev.u_download}" title="{'Download revision'|@translate} {$rev.version}" rel="nofollow">
               <button class="btn btn-tertiary">
@@ -274,6 +284,12 @@
 {/if}
     
   </section>
+  
+  {$PEM_EDIT_GENERAL_INFO_FORM}
+  {$PEM_EDIT_REVISION_FORM}
+  {$PEM_EDIT_IMAGE_FORM}
+  {$PEM_EDIT_DESCRIPTION_FORM}
+  {$PEM_EDIT_RELATED_LINK_FORM}
 
 </div>
 
