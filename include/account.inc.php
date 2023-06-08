@@ -1,5 +1,5 @@
 <?php
-if (isset($_GET['uId']))
+if (isset($_GET['uid']))
 {
   check_status(ACCESS_CLASSIC);
 
@@ -8,7 +8,7 @@ if (isset($_GET['uId']))
     check_pwg_token();
   }
   
-  $current_extension_page_id = $_GET['uId'];
+  $current_extension_page_id = $_GET['uid'];
 
   $template->set_filename('pem_page', realpath(PEM_PATH . 'template/account.tpl'));
 

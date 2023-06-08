@@ -15,7 +15,7 @@
           <p class="description">{$CATEGORY.spotlight_extension.description}</p>
         </div>
         <div class="col-md-2 col-md-2 d-flex justify-content-end align-items-end">
-          <a href="{$PEM_ROOT_URL}index.php?eId={$CATEGORY.spotlight_extension.eId}">Voir <i class="icon-chevron-right"></i></a>
+          <a href="{$PEM_ROOT_URL}index.php?eid={$CATEGORY.spotlight_extension.eid}">Voir <i class="icon-chevron-right"></i></a>
         </div>
       </div>
     </div>
@@ -36,9 +36,9 @@
           <option value="a_Z">A to Z</option>
           <option value="z_a">Z to A</option>
       </select>
-      <form class="form-inline  cId-search-form">
+      <form class="form-inline  cid-search-form">
         <i class="icon-magnifying-glass"></i>
-        <input id="cId-search" class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+        <input id="cid-search" class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
       </form>
     </div>
   </div>
@@ -123,7 +123,7 @@
         </div>
         <div class="col col-9 extension_description_container">
           <p class="card-text extension_description"></p>
-          <a class="more_info_link" href="{$PEM_ROOT_URL}index.php?eId=" >Discover this {$CATEGORY.name}</a>
+          <a class="more_info_link" href="{$PEM_ROOT_URL}index.php?eid=" >Discover this {$CATEGORY.name}</a>
         </div>
       </div>
     </div>

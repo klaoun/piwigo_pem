@@ -134,24 +134,24 @@ function pem_load_content(){
 
   $pem_root_url = get_absolute_root_url();
 
-  if (isset($_GET['cId']))
+  if (isset($_GET['cid']))
   {
-    check_input_parameter('cId',$_GET, false,"/^\\d+$/");
+    check_input_parameter('cid',$_GET, false,"/^\\d+$/");
 
-    //cId is category ID so display list view of extensions
+    //cid is category ID so display list view of extensions
     include(PEM_PATH . '/include/list_view.inc.php');
   }
-  else if (isset($_GET['eId']))
+  else if (isset($_GET['eid']))
   {
-    check_input_parameter('eId',$_GET, false,"/^\\d+$/", true);
+    check_input_parameter('eid',$_GET, false,"/^\\d+$/", true);
 
-    //eId is extension ID so display single view of extension
+    //eid is extension ID so display single view of extension
     include(PEM_PATH . '/include/single_view.inc.php');
   }
-  else if (isset($_GET['uId']))
+  else if (isset($_GET['uid']))
   {
-    check_input_parameter('uId',$_GET, false,"/^\\d+$/", true);
-    //uId is extension ID so display single view of extension
+    check_input_parameter('uid',$_GET, false,"/^\\d+$/", true);
+    //uid is extension ID so display account
     include(PEM_PATH . '/include/account.inc.php');
   }
   else

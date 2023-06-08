@@ -135,7 +135,7 @@ function ws_pem_categories_get_extensions($params, &$service)
 
   $extensions_per_page = conf_get_param('extensions_per_page',15);
 
-  $cId = $params['category_id']; 
+  $cid = $params['category_id']; 
 
   $sort_by = $params['sort_by'];
   switch ( $sort_by) 
@@ -187,7 +187,7 @@ INNER JOIN
 '.PEM_EXT_CAT_TABLE.' AS ec
   ON r.idx_extension = ec.idx_extension
 WHERE 
-  ec.idx_category = '.$cId.'
+  ec.idx_category = '.$cid.'
 ';
 
   $all_revision_ids = query2array($query, null, 'id_revision');

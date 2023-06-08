@@ -19,7 +19,7 @@
         </li>
 {foreach from=$CATEGORIES_INFO item=category}
         <li class="nav-item active fw-bold">
-          <a class="nav-link" href="{$PEM_ROOT_URL}index.php?cId={$category.cId}&page=1"><i class="{$category.icon_class}"></i>{$category.plural_name}</a>
+          <a class="nav-link" href="{$PEM_ROOT_URL}index.php?cid={$category.cid}&page=1"><i class="{$category.icon_class}"></i>{$category.plural_name}</a>
         </li>
 {/foreach}
         <li class="nav-item fw-bold position-relative" id="account-link">

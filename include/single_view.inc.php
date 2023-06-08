@@ -1,11 +1,11 @@
 <?php
-if (isset($_GET['eId']))
+if (isset($_GET['eid']))
 {
   global $conf, $user;
 
   include_once(PEM_PATH . 'include/functions_language.inc.php');
 
-  $current_extension_page_id = $_GET['eId'];
+  $current_extension_page_id = $_GET['eid'];
 
   // Get current language id, transition to PEM plugin means that language id is the language code in the old PEM database
   // Using this we get the number id from PEM_LANG_TABLE
@@ -191,8 +191,8 @@ if (isset($_GET['eId']))
       'extension_downloads' => $extension_downloads,
       'extension_categories' => $categories_of_extension[$current_extension_page_id],
       'extension_tags' => empty($tags_of_extension[$current_extension_page_id]) ? array() : $tags_of_extension[$current_extension_page_id]
-      )
-    );
+    )
+  );
 
   if (isset($user['id']))
   {

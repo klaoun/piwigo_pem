@@ -4,14 +4,14 @@
  * For example the different category pages
  */
 
-if (isset($_GET['cId']))
+if (isset($_GET['cid']))
 {
-  $current_category_page_id = $_GET['cId'];
+  $current_category_page_id = $_GET['cid'];
 
   $query = '
 SELECT 
     COUNT(*) AS count,
-    ec.idx_category as cId
+    ec.idx_category as cid
   FROM 
     (SELECT 
         idx_extension, 
@@ -24,12 +24,12 @@ SELECT
     ORDER BY latest_date DESC
 ';
 
-  $nb_ext_of_category = query2array($query, 'cId', 'count');
+  $nb_ext_of_category = query2array($query, 'cid', 'count');
 
   // Get list of extension ids for this category
   $query = '
   SELECT
-      idx_category AS cId,
+      idx_category AS cid,
       idx_extension
     FROM '.PEM_EXT_CAT_TABLE.'
     WHERE idx_category  = '.$current_category_page_id.'
@@ -40,7 +40,7 @@ SELECT
   // Get category name with Id and count
   $query = '
 SELECT
-      id_category as cId,
+      id_category as cid,
       name
   FROM '.PEM_CAT_TABLE.'
     WHERE id_category  = '.$current_category_page_id.'
@@ -60,7 +60,7 @@ SELECT
   {
     $query = '
 SELECT
-    id_extension AS eId,
+    id_extension AS eid,
     name,
     description
   FROM '.PEM_EXT_TABLE.'
@@ -83,16 +83,16 @@ SELECT
   //Get List of authors for filter
   $query = '
 SELECT DISTINCT
-    aT.idx_user as uId,
+    aT.idx_user as uid,
     uT.username,
-    ecT.idx_category as cId,
-    aT.idx_extension as eId
+    ecT.idx_category as cid,
+    aT.idx_extension as eid
   FROM '.PEM_AUTHORS_TABLE.' as aT
     JOIN '.USERS_TABLE.' as uT on id = aT.idx_user
     JOIN '.PEM_EXT_CAT_TABLE.' as ecT on ecT.idx_extension = aT.idx_extension
   WHERE ecT.idx_category = '.$current_category_page_id.'
 ;';
-  $authors= query2array($query, 'uId');
+  $authors= query2array($query, 'uid');
 
   //Get List of authors for filter
   $query = '
@@ -108,7 +108,7 @@ SELECT
   // Get specific tags for this category
   $query = '
   SELECT 
-      etT.idx_extension as eId,
+      etT.idx_extension as eid,
       pT.id_tag as tId,
       pT.name
     FROM '.PEM_EXT_TAG_TABLE.' as etT
@@ -122,7 +122,7 @@ SELECT
   $template->set_filename('pem_page', realpath(PEM_PATH . 'template/list_view.tpl'));
 
   // Check if on languages page and hide spotlighted
-  if (8 != $_GET['cId'])
+  if (8 != $_GET['cid'])
   {
     $template->assign(
       array(

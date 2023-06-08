@@ -2,25 +2,25 @@
 const queryString = window.location.search
 const urlParams = new URLSearchParams(queryString);
 
-const cId = urlParams.get('cId')
+const cid = urlParams.get('cid')
 const page = urlParams.get('page')
 
 jQuery(document).ready(function () {
 
   var sort_by = jQuery("#sort_order").find(":selected").val();
   // Call getExtensionList to populate list of extensions
-  getExtensionList(cId, page, sort_by);
+  getExtensionList(cid, page, sort_by);
 
 });
 // End of jQuery(document).ready()
 
 jQuery("#sort_order").on('change', function () {
   var sort_by = jQuery("#sort_order").find(":selected").val();
-  getExtensionList(cId, page, sort_by);
+  getExtensionList(cid, page, sort_by);
 });
 
 // Ajax request to get all extension information from specifique category
-function getExtensionList(cId, page, sort_by ) {
+function getExtensionList(cid, page, sort_by ) {
   var extensionInfos ;
     
   var params= '&sort_by='+sort_by
@@ -29,7 +29,7 @@ function getExtensionList(cId, page, sort_by ) {
     type: 'GET',
     dataType: 'json',
     async: false,
-    url: 'ws.php?format=json&method=pem.categories.getExtensions&category_id='+cId+'&page='+page + params,
+    url: 'ws.php?format=json&method=pem.categories.getExtensions&category_id='+cid+'&page='+page + params,
     data: { ajaxload: 'true' },
     success: function (data) {
         if (data.stat == 'ok') {
@@ -114,26 +114,26 @@ function getExtensionList(cId, page, sort_by ) {
           if(page > 1 && page != nb_pages)
           {
             // If page is different from first or last
-            jQuery('#previous_page').attr('href', pagination_href + 'cId=' + cId + '&page=' + (parseInt(page)-1))
-            jQuery('#next_page').attr('href', pagination_href + 'cId=' + cId + '&page=' + (parseInt(page)+1))
+            jQuery('#previous_page').attr('href', pagination_href + 'cid=' + cid + '&page=' + (parseInt(page)-1))
+            jQuery('#next_page').attr('href', pagination_href + 'cid=' + cid + '&page=' + (parseInt(page)+1))
           }
           else if(page == 1)
           {
             // If page is first
-            jQuery('#next_page').attr('href', pagination_href + 'cId=' + cId + '&page=' + (parseInt(page)+1))
+            jQuery('#next_page').attr('href', pagination_href + 'cid=' + cid + '&page=' + (parseInt(page)+1))
             // Disable previous arrow
             jQuery('#previous_page').replaceWith(jQuery('<span id="#previous_page" class="disabled"><i class="icon-chevron-left"></i></spn>'))
           }
           else if(page == nb_pages)
           {
             // If page is last 
-            jQuery('#previous_page').attr('href', pagination_href + 'cId=' + cId + '&page=' + (parseInt(page)-1))
+            jQuery('#previous_page').attr('href', pagination_href + 'cid=' + cid + '&page=' + (parseInt(page)-1))
             // disable next arrow
             jQuery('#next_page').replaceWith(jQuery('<span id="#next_page" class="disabled"><i class="icon-chevron-right"></i></span>'))
           }
           
           //First page number
-          jQuery(".page_buttons").append('<a class="page_number" id="first_page_number" href="' + pagination_href + 'cId=' + cId + '&page=1">1</a>')
+          jQuery(".page_buttons").append('<a class="page_number" id="first_page_number" href="' + pagination_href + 'cid=' + cid + '&page=1">1</a>')
 
           //Current page number with +1 and -1
           var previousPage = parseInt(page) -1;
@@ -149,37 +149,37 @@ function getExtensionList(cId, page, sort_by ) {
           if(1 == page)
           {
             // If page is first
-            jQuery(".page_buttons").append('<a class="page_number" href="' + pagination_href + 'cId=' + cId + '&page=' + nextPage +'">' + nextPage + '</a>')  
+            jQuery(".page_buttons").append('<a class="page_number" href="' + pagination_href + 'cid=' + cid + '&page=' + nextPage +'">' + nextPage + '</a>')  
             jQuery('#first_page_number').addClass('active')
           }
           else if(page == nb_pages)
           {
             // If page is last
-            jQuery(".page_buttons").append('<a class="page_number" href="' + pagination_href + 'cId=' + cId + '&page=' + previousPage +'">' + previousPage+ '</a>')
+            jQuery(".page_buttons").append('<a class="page_number" href="' + pagination_href + 'cid=' + cid + '&page=' + previousPage +'">' + previousPage+ '</a>')
           }
           else if(page == 2 && nb_pages == 3)
           {
             // If page is second and total pages = 3, avoid displaying the last page number twice
-            jQuery(".page_buttons").append('<a class="page_number active" href="' + pagination_href + 'cId=' + cId + '&page=' + page +'">' + page + '</a>')
+            jQuery(".page_buttons").append('<a class="page_number active" href="' + pagination_href + 'cid=' + cid + '&page=' + page +'">' + page + '</a>')
           }
           else if(page == 2)
           {
             // If page is second
-            jQuery(".page_buttons").append('<a class="page_number active" href="' + pagination_href + 'cId=' + cId + '&page=' + page +'">' + page + '</a>')
-            jQuery(".page_buttons").append('<a class="page_number" href="' + pagination_href + 'cId=' + cId + '&page=' + nextPage +'">' + nextPage + '</a>')
+            jQuery(".page_buttons").append('<a class="page_number active" href="' + pagination_href + 'cid=' + cid + '&page=' + page +'">' + page + '</a>')
+            jQuery(".page_buttons").append('<a class="page_number" href="' + pagination_href + 'cid=' + cid + '&page=' + nextPage +'">' + nextPage + '</a>')
           }
           else if(nb_pages - page == 1)
           {
             // If page before last
-            jQuery(".page_buttons").append('<a class="page_number" href="' + pagination_href + 'cId=' + cId + '&page=' + previousPage +'">' + previousPage+ '</a>')
-            jQuery(".page_buttons").append('<a class="page_number active" href="' + pagination_href + 'cId=' + cId + '&page=' + page +'">' + page + '</a>')
+            jQuery(".page_buttons").append('<a class="page_number" href="' + pagination_href + 'cid=' + cid + '&page=' + previousPage +'">' + previousPage+ '</a>')
+            jQuery(".page_buttons").append('<a class="page_number active" href="' + pagination_href + 'cid=' + cid + '&page=' + page +'">' + page + '</a>')
           }
           else
           {
             // All other pages
-            jQuery(".page_buttons").append('<a class="page_number" href="' + pagination_href + 'cId=' + cId + '&page=' + previousPage +'">' + previousPage+ '</a>')
-            jQuery(".page_buttons").append('<a class="page_number active" href="' + pagination_href + 'cId=' + cId + '&page=' + page +'">' + page + '</a>')
-            jQuery(".page_buttons").append('<a class="page_number" href="' + pagination_href + 'cId=' + cId + '&page=' + nextPage +'">' + nextPage + '</a>')
+            jQuery(".page_buttons").append('<a class="page_number" href="' + pagination_href + 'cid=' + cid + '&page=' + previousPage +'">' + previousPage+ '</a>')
+            jQuery(".page_buttons").append('<a class="page_number active" href="' + pagination_href + 'cid=' + cid + '&page=' + page +'">' + page + '</a>')
+            jQuery(".page_buttons").append('<a class="page_number" href="' + pagination_href + 'cid=' + cid + '&page=' + nextPage +'">' + nextPage + '</a>')
           }
           
           // Add ... when there is more than one number between current page and last
@@ -189,7 +189,7 @@ function getExtensionList(cId, page, sort_by ) {
           }
 
           // last page number
-          jQuery(".page_buttons").append('<a class="page_number" id="last_page_number" href="' + pagination_href + 'cId=' + cId + '&page=' + nb_pages +'">' + nb_pages + '</a>')
+          jQuery(".page_buttons").append('<a class="page_number" id="last_page_number" href="' + pagination_href + 'cid=' + cid + '&page=' + nb_pages +'">' + nb_pages + '</a>')
           if(page == nb_pages)
           {
             // If page is last

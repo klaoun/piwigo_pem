@@ -15,10 +15,10 @@ $pem_most_recent_extensions = [];
 $pem_spotlight_extensions_ids = implode(",", array_values($pem_spotlight_extensions));
 $query = '
 SELECT
-    id_extension  AS eId,
+    id_extension  AS eid,
     name,
     description,
-    idx_category AS cId
+    idx_category AS cid
   FROM '.PEM_EXT_TABLE.' AS extensions
     left JOIN '.PEM_EXT_CAT_TABLE.' AS categories
       ON extensions.id_extension = categories.idx_extension
@@ -29,7 +29,7 @@ $result = pwg_query($query);
 
 while($row = pwg_db_fetch_assoc($result))
 {
-  $pem_spotlight_extensions[$row['cId']] = $row;
+  $pem_spotlight_extensions[$row['cid']] = $row;
 }
 
 /**
@@ -39,10 +39,10 @@ $pem_highest_rated_extensions_ids = implode(",", array_values($pem_highest_rated
 
 $query = '
 SELECT
-    id_extension AS eId,
+    id_extension AS eid,
     name,
     description,
-    idx_category as cId,
+    idx_category as cid,
     rating_score
   FROM '.PEM_EXT_TABLE.' AS extensions
     left JOIN '.PEM_EXT_CAT_TABLE.' AS categories
@@ -54,7 +54,7 @@ $result = pwg_query($query);
 
 while($row = pwg_db_fetch_assoc($result))
 {
-  $pem_highest_rated_extensions[$row['cId']] = $row;
+  $pem_highest_rated_extensions[$row['cid']] = $row;
 }
 
 /**
@@ -64,8 +64,8 @@ $pem_most_recent_extensions_ids = implode(",", array_values($pem_most_recent_ext
 
 $query = '
 SELECT
-    r.idx_extension AS eId,
-    c.idx_category AS cId,
+    r.idx_extension AS eid,
+    c.idx_category AS cid,
     r.date,
     r.description
  FROM '.PEM_REV_TABLE.' AS r
@@ -80,21 +80,21 @@ $category_id = null;
 while($row = pwg_db_fetch_assoc($result))
 {
 
-  if($category_id != $row['cId'])
+  if($category_id != $row['cid'])
   {
-    $pem_most_recent_extensions[$row['cId']] = $row;
-    $pem_most_recent_extensions[$row['cId']]['formatted_date'] = format_date($row['date']);
-    $pem_most_recent_extensions[$row['cId']]['time_since'] = time_since($row['date'], $stop='month');
+    $pem_most_recent_extensions[$row['cid']] = $row;
+    $pem_most_recent_extensions[$row['cid']]['formatted_date'] = format_date($row['date']);
+    $pem_most_recent_extensions[$row['cid']]['time_since'] = time_since($row['date'], $stop='month');
 
-    $category_id = $row['cId'];
+    $category_id = $row['cid'];
   }
 }
 
 $query = '
 SELECT
-    id_extension AS eId,
+    id_extension AS eid,
     name,
-    idx_category as cId
+    idx_category as cid
   FROM '.PEM_EXT_TABLE.' AS extensions
     left JOIN '.PEM_EXT_CAT_TABLE.' AS categories
       ON extensions.id_extension = categories.idx_extension
@@ -104,7 +104,7 @@ $result = pwg_query($query);
 
 while($row = pwg_db_fetch_assoc($result))
 {
-  $pem_most_recent_extensions[$row['cId']]['name'] = $row['name'];
+  $pem_most_recent_extensions[$row['cid']]['name'] = $row['name'];
 }
 
 /**
@@ -114,11 +114,11 @@ $pem_most_downloaded_extensions_ids = implode(",", array_values($pem_most_downlo
 
 $query = '
 SELECT
-    e.id_extension as eId,
+    e.id_extension as eid,
     name,
     SUM(nb_downloads) AS download_count,
     e.description,
-    c.idx_category as cId
+    c.idx_category as cid
 FROM '.PEM_REV_TABLE.' AS r
   LEFT JOIN '.PEM_EXT_TABLE.' AS e
   ON r.idx_extension = e.id_extension
@@ -133,7 +133,7 @@ $result = pwg_query($query);
 
 while($row = pwg_db_fetch_assoc($result))
 {
-  $pem_most_downloaded_extensions[$row['cId']] = $row;
+  $pem_most_downloaded_extensions[$row['cid']] = $row;
 }
 
 /**
@@ -142,12 +142,12 @@ while($row = pwg_db_fetch_assoc($result))
 
 $query = '
 SELECT
-    idx_category AS cId,
+    idx_category AS cid,
     COUNT(*) AS count
   FROM '.PEM_EXT_CAT_TABLE.'
   GROUP BY idx_category
 ;';
-$nb_ext_of_category = query2array($query, 'cId', 'count');
+$nb_ext_of_category = query2array($query, 'cid', 'count');
 
 /**
  * Get list of categories with name and count of plugins
@@ -155,44 +155,44 @@ $nb_ext_of_category = query2array($query, 'cId', 'count');
 
 $query = '
 SELECT
-    id_category as cId,
+    id_category as cid,
     name 
   FROM '.PEM_CAT_TABLE.' 
   ORDER BY name ASC
 ;';
 
-$categories = query2array($query, 'cId');
+$categories = query2array($query, 'cid');
 
 foreach ($categories as $i => $category) {
 
   //Set count of extensions per category
   $categories[$i]['nb_extensions'] = 0;
-  if (isset($nb_ext_of_category[ $category['cId'] ])) {
-    $categories[$i]['nb_extensions'] = $nb_ext_of_category[ $category['cId'] ];
+  if (isset($nb_ext_of_category[ $category['cid'] ])) {
+    $categories[$i]['nb_extensions'] = $nb_ext_of_category[ $category['cid'] ];
   }
 
   //Set spotlighted extension
   $categories[$i]['spotlight_extension'] = null;
-  if (isset($pem_spotlight_extensions[$category['cId'] ])) {
-    $categories[$i]['spotlight_extension'] = $pem_spotlight_extensions[ $category['cId'] ];
+  if (isset($pem_spotlight_extensions[$category['cid'] ])) {
+    $categories[$i]['spotlight_extension'] = $pem_spotlight_extensions[ $category['cid'] ];
   }
 
   //Set highest rated extension
   $categories[$i]['highest_rated_extension'] = null;
-  if (isset($pem_highest_rated_extensions[$category['cId'] ])) {
-    $categories[$i]['highest_rated_extension'] = $pem_highest_rated_extensions[ $category['cId'] ];
+  if (isset($pem_highest_rated_extensions[$category['cid'] ])) {
+    $categories[$i]['highest_rated_extension'] = $pem_highest_rated_extensions[ $category['cid'] ];
   }
 
   //Set most downloaded
   $categories[$i]['most_downloaded_extension'] = null;
-  if (isset($pem_most_downloaded_extensions[$category['cId'] ])) {
-    $categories[$i]['most_downloaded_extension'] = $pem_most_downloaded_extensions[ $category['cId'] ];
+  if (isset($pem_most_downloaded_extensions[$category['cid'] ])) {
+    $categories[$i]['most_downloaded_extension'] = $pem_most_downloaded_extensions[ $category['cid'] ];
   }
 
   //Set most recent extension
   $categories[$i]['most_recent_extension'] = null;
-  if (isset($pem_most_recent_extensions[$category['cId'] ])) {
-    $categories[$i]['most_recent_extension'] = $pem_most_recent_extensions[ $category['cId'] ];
+  if (isset($pem_most_recent_extensions[$category['cid'] ])) {
+    $categories[$i]['most_recent_extension'] = $pem_most_recent_extensions[ $category['cid'] ];
   }
 }
 

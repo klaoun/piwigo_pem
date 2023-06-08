@@ -4,12 +4,12 @@ $category_icons =  conf_get_param('categories_icon',array());
 
 $query = '
 SELECT
-    id_category as cId,
+    id_category as cid,
     name
   FROM '.PEM_CAT_TABLE.' 
-  ORDER BY cId DESC
+  ORDER BY cid DESC
 ;';
-$categories = query2array($query, 'cId');
+$categories = query2array($query, 'cid');
 
 foreach ($categories as $i => $category) {
   //See about l10n the category name
@@ -23,7 +23,7 @@ if (is_a_guest())
 }
 else
 {
-  $account_url = $pem_root_url.'index.php?uId='.$user['id'];
+  $account_url = $pem_root_url.'index.php?uid='.$user['id'];
 }
 
 $template->assign(
