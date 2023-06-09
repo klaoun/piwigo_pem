@@ -68,14 +68,14 @@ Filter section
 .form-control{
   width:auto;
 }
-.cId-search-form{
+.cid-search-form{
   position:relative;
 }
-.cId-search-form input{
+.cid-search-form input{
   padding-left:40px;
   position:relative;
 }
-.cId-search-form i{
+.cid-search-form i{
   position: absolute;
   z-index: 1;
   margin-left: 20px;
