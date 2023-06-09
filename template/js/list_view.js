@@ -29,7 +29,7 @@ function getExtensionList(cid, page, sort_by ) {
     type: 'GET',
     dataType: 'json',
     async: false,
-    url: 'ws.php?format=json&method=pem.categories.getExtensions&category_id='+cid+'&page='+page + params,
+    url: 'ws.php?format=json&method=pem.extensions.getList&category_id='+cid+'&page='+page + params,
     data: { ajaxload: 'true' },
     success: function (data) {
         if (data.stat == 'ok') {
@@ -214,10 +214,11 @@ function toggleFilter(){
   jQuery('.filter_tab ').toggleClass('toggled');
 }
 
-// For tag filer
+// For tag filter
 jQuery('.extension_tag_select').selectize({
   plugins: ["remove_button"],
 })
+
 jQuery('.extension_author_select').selectize({
   plugins: ["remove_button"],
 })

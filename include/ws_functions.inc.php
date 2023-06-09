@@ -28,27 +28,28 @@ function pem_ws_add_methods($arr)
   );
 
   $service->addMethod(
-    'pem.categories.getExtensions',
-    'ws_pem_categories_get_extensions',
-    array(
-      'category_id' => array('type'=>WS_TYPE_INT|WS_TYPE_POSITIVE,'info'=>'use category id'),
-      'page' => array('type'=>WS_TYPE_INT|WS_TYPE_POSITIVE, 'default'=>1),
-      'sort_by' => array(
-        'default'=>null,
-        'info'=>'date_desc, date_asc, a_z, z_a'),
-      
-    ),
-    
-    'Get list of extensions by category.'
-  );
-
-
-  $service->addMethod(
     'pem.extensions.getList',
     'ws_pem_extensions_get_list',
-    array(
+        array(
+      'category_id' => array(
+        'default' => null,
+        'type'=>WS_TYPE_INT|WS_TYPE_POSITIVE,'info'=>'use category id'
+      ),
+      'page' => array(
+        'default'=>null,
+        'type'=>WS_TYPE_INT|WS_TYPE_POSITIVE,
+      ),
+      'sort_by' => array(
+        'default'=>'date_desc',
+        'info'=>'date_desc, date_asc, a_z, z_a'
+      ),
+      'filter_version' => array(
+        'default' => null,
+        'type'=>WS_TYPE_FLOAT|WS_TYPE_POSITIVE,
+        'info'=>'use a piwigo version number'
+      ),
     ),
-    'Get list of extensions.'
+    'Get list of extensions. Filter by category or version. Apply different sorting orders. Get limited number of extension by using pages.'
   );
 
   $service->addMethod(
@@ -99,43 +100,20 @@ function pem_ws_add_methods($arr)
 }
 
 /**
- * Get list of all extensions, no matter the category
+ * Get list of all extensions
+ * Filter by category or version
+ * Can apply sort order and limit number or extensions returned with page
  */
 function ws_pem_extensions_get_list($params, &$service)
-{
-  $extension_infos_of = array();
-
-  $query = '
-SELECT
-    id_extension,
-    name,
-    username
-  FROM '.PEM_EXT_TABLE.' AS e
-    JOIN '.USERS_TABLE.' AS u ON u.id = e.idx_user
-;';
-
-  $extension_infos_of = query2array($query, 'id_extension');
-
-  if (!isset($_REQUEST['format']))
-  {
-    //Echo to be compatible with previous version of Piwigo
-    echo serialize($extension_infos_of);
-    exit;
-  }
-
-  return $extension_infos_of;
-}
-
-/**
- * Get list of all extensions, by category
- */
-function ws_pem_categories_get_extensions($params, &$service)
 {
   global $conf;
 
   $extensions_per_page = conf_get_param('extensions_per_page',15);
 
-  $cid = $params['category_id']; 
+  if(isset($params['category_id']))
+  {
+    $cid = $params['category_id']; 
+  }
 
   $sort_by = $params['sort_by'];
   switch ( $sort_by) 
@@ -185,10 +163,16 @@ INNER JOIN
   ON latest_revisions.idx_extension = r.idx_extension AND latest_revisions.latest_date = r.date
 INNER JOIN 
 '.PEM_EXT_CAT_TABLE.' AS ec
-  ON r.idx_extension = ec.idx_extension
-WHERE 
-  ec.idx_category = '.$cid.'
-';
+  ON r.idx_extension = ec.idx_extension';
+
+  if(isset($cid))
+  {
+    $query .= '
+  WHERE 
+    ec.idx_category = '.$cid;
+  }
+
+  $query .= ';';
 
   $all_revision_ids = query2array($query, null, 'id_revision');
 
