@@ -10,54 +10,6 @@ $pem_most_downloaded_extensions = conf_get_param('pem_most_downloaded_extensions
 $pem_most_recent_extensions = [];
 
 /**
- * Get spotlighted extensions details
- */
-$pem_spotlight_extensions_ids = implode(",", array_values($pem_spotlight_extensions));
-$query = '
-SELECT
-    id_extension  AS eid,
-    name,
-    description,
-    idx_category AS cid
-  FROM '.PEM_EXT_TABLE.' AS extensions
-    left JOIN '.PEM_EXT_CAT_TABLE.' AS categories
-      ON extensions.id_extension = categories.idx_extension
-  WHERE id_extension IN ('.$pem_spotlight_extensions_ids.')
-;';
-
-$result = pwg_query($query);
-
-while($row = pwg_db_fetch_assoc($result))
-{
-  $pem_spotlight_extensions[$row['cid']] = $row;
-}
-
-/**
- * Get highested rated extensions details
- */
-$pem_highest_rated_extensions_ids = implode(",", array_values($pem_highest_rated_extensions));
-
-$query = '
-SELECT
-    id_extension AS eid,
-    name,
-    description,
-    idx_category as cid,
-    rating_score
-  FROM '.PEM_EXT_TABLE.' AS extensions
-    left JOIN '.PEM_EXT_CAT_TABLE.' AS categories
-      ON extensions.id_extension = categories.idx_extension
-  WHERE id_extension IN ('.$pem_highest_rated_extensions_ids.')
-;';
-
-$result = pwg_query($query);
-
-while($row = pwg_db_fetch_assoc($result))
-{
-  $pem_highest_rated_extensions[$row['cid']] = $row;
-}
-
-/**
  * Get most recent extensions details
  */
 $pem_most_recent_extensions_ids = implode(",", array_values($pem_most_recent_extensions));
@@ -76,19 +28,23 @@ ORDER BY r.date DESC
 
 $result = pwg_query($query);
 
-$category_id = null;
+$category_ids = [];
+$pem_most_recent_extensions_ids = [];
 while($row = pwg_db_fetch_assoc($result))
 {
 
-  if($category_id != $row['cid'])
+  if(!in_array($row['cid'], $category_ids))
   {
+    array_push($pem_most_recent_extensions_ids, $row['eid'] );
     $pem_most_recent_extensions[$row['cid']] = $row;
     $pem_most_recent_extensions[$row['cid']]['formatted_date'] = format_date($row['date']);
     $pem_most_recent_extensions[$row['cid']]['time_since'] = time_since($row['date'], $stop='month');
 
-    $category_id = $row['cid'];
+    array_push($category_ids, $row['cid']);
   }
 }
+
+$pem_most_recent_extensions_ids = implode(",", array_values($pem_most_recent_extensions_ids));
 
 $query = '
 SELECT
@@ -98,7 +54,7 @@ SELECT
   FROM '.PEM_EXT_TABLE.' AS extensions
     left JOIN '.PEM_EXT_CAT_TABLE.' AS categories
       ON extensions.id_extension = categories.idx_extension
-  WHERE id_extension IN ('.$pem_highest_rated_extensions_ids.')
+  WHERE id_extension IN ('.$pem_most_recent_extensions_ids.')
 ;';
 $result = pwg_query($query);
 
@@ -107,34 +63,6 @@ while($row = pwg_db_fetch_assoc($result))
   $pem_most_recent_extensions[$row['cid']]['name'] = $row['name'];
 }
 
-/**
- * Get most downloaded extensions details
- */
-$pem_most_downloaded_extensions_ids = implode(",", array_values($pem_most_downloaded_extensions));
-
-$query = '
-SELECT
-    e.id_extension as eid,
-    name,
-    SUM(nb_downloads) AS download_count,
-    e.description,
-    c.idx_category as cid
-FROM '.PEM_REV_TABLE.' AS r
-  LEFT JOIN '.PEM_EXT_TABLE.' AS e
-  ON r.idx_extension = e.id_extension
-    left JOIN '.PEM_EXT_CAT_TABLE.' AS c
-    ON e.id_extension = c.idx_extension
-    WHERE e.id_extension IN ('.$pem_most_downloaded_extensions_ids.')
-      GROUP BY r.idx_extension
-      ORDER BY download_count DESC 
-;';
-
-$result = pwg_query($query);
-
-while($row = pwg_db_fetch_assoc($result))
-{
-  $pem_most_downloaded_extensions[$row['cid']] = $row;
-}
 
 /**
  * get count of extensions by category, returns category id and count
@@ -164,6 +92,10 @@ SELECT
 $categories = query2array($query, 'cid');
 
 foreach ($categories as $i => $category) {
+  if (8 == $category['cid'])
+  {
+    continue;
+  }
 
   //Set count of extensions per category
   $categories[$i]['nb_extensions'] = 0;
@@ -171,29 +103,149 @@ foreach ($categories as $i => $category) {
     $categories[$i]['nb_extensions'] = $nb_ext_of_category[ $category['cid'] ];
   }
 
+  /**
+   * Get spolighted extension details 
+   */
+  $query = '
+SELECT
+  id_extension  AS eid,
+  name,
+  description,
+  idx_category AS cid
+FROM '.PEM_EXT_TABLE.' AS extensions
+  left JOIN '.PEM_EXT_CAT_TABLE.' AS categories
+    ON extensions.id_extension = categories.idx_extension
+WHERE id_extension = '.$pem_spotlight_extensions[$category['cid']].'
+;';
+
+  $result = query2array($query);
+  $pem_spotlight_extensions[$category['cid']] = $result[0];
+
   //Set spotlighted extension
   $categories[$i]['spotlight_extension'] = null;
   if (isset($pem_spotlight_extensions[$category['cid'] ])) {
     $categories[$i]['spotlight_extension'] = $pem_spotlight_extensions[ $category['cid'] ];
+
+    //Get screenshot info
+    $screenshot_infos = get_extension_screenshot_infos(
+      $pem_spotlight_extensions[$category['cid']]['eid']
+    );
+
+    if(!empty($screenshot_infos))
+    {
+      $categories[$i]['spotlight_extension']['screenshot_src'] = $screenshot_infos['screenshot_url'];
+    }
+    else
+    {
+      $categories[$i]['spotlight_extension']['screenshot_src'] = get_absolute_root_url() . PEM_PATH .'images/image-solid.svg';
+    }
   }
+
+  /**
+   * Get highested rated extension details
+   */
+  $query = '
+SELECT
+    id_extension AS eid,
+    name,
+    description,
+    idx_category as cid,
+    rating_score
+  FROM '.PEM_EXT_TABLE.' AS extensions
+    left JOIN '.PEM_EXT_CAT_TABLE.' AS categories
+      ON extensions.id_extension = categories.idx_extension
+      WHERE id_extension = '.$pem_highest_rated_extensions[$category['cid']].'
+;';
+
+  $result = query2array($query);
+  $pem_highest_rated_extensions[$category['cid']] = $result[0];
 
   //Set highest rated extension
   $categories[$i]['highest_rated_extension'] = null;
   if (isset($pem_highest_rated_extensions[$category['cid'] ])) {
     $categories[$i]['highest_rated_extension'] = $pem_highest_rated_extensions[ $category['cid'] ];
+
+    //Get screenshot info
+    $screenshot_infos = get_extension_screenshot_infos(
+      $pem_highest_rated_extensions[$category['cid']]['eid']
+    );
+
+    if(!empty($screenshot_infos))
+    {
+      $categories[$i]['highest_rated_extension']['screenshot_src'] = $screenshot_infos['screenshot_url'];
+    }
+    else
+    {
+      $categories[$i]['highest_rated_extension']['screenshot_src'] = get_absolute_root_url() . PEM_PATH .'images/image-solid.svg';
+    }
   }
+
+  /**
+   * Get most downloaded extension details
+   */
+  $query = '
+SELECT
+    e.id_extension as eid,
+    name,
+    SUM(nb_downloads) AS download_count,
+    e.description,
+    c.idx_category as cid
+FROM '.PEM_REV_TABLE.' AS r
+  LEFT JOIN '.PEM_EXT_TABLE.' AS e
+  ON r.idx_extension = e.id_extension
+    left JOIN '.PEM_EXT_CAT_TABLE.' AS c
+    ON e.id_extension = c.idx_extension
+    WHERE e.id_extension = '.$pem_most_downloaded_extensions[$category['cid']].'
+      GROUP BY r.idx_extension
+      ORDER BY download_count DESC 
+;';
+  $result = query2array($query);
+  $pem_most_downloaded_extensions[$category['cid']] = $result[0];
 
   //Set most downloaded
   $categories[$i]['most_downloaded_extension'] = null;
-  if (isset($pem_most_downloaded_extensions[$category['cid'] ])) {
-    $categories[$i]['most_downloaded_extension'] = $pem_most_downloaded_extensions[ $category['cid'] ];
+  if (isset($pem_most_downloaded_extensions[$category['cid']])) {
+    $categories[$i]['most_downloaded_extension'] = $pem_most_downloaded_extensions[$category['cid']];
+
+    //Get screenshot info
+    $screenshot_infos = get_extension_screenshot_infos(
+      $pem_most_downloaded_extensions[$category['cid']]['eid']
+    );
+
+    if(!empty($screenshot_infos))
+    {
+      $categories[$i]['most_downloaded_extension']['screenshot_src'] = $screenshot_infos['screenshot_url'];
+    }
+    else
+    {
+      $categories[$i]['most_downloaded_extension']['screenshot_src'] = get_absolute_root_url() . PEM_PATH .'images/image-solid.svg';
+    }
   }
+  /**
+   * For most recent extension that was handled previously
+   */
 
   //Set most recent extension
   $categories[$i]['most_recent_extension'] = null;
   if (isset($pem_most_recent_extensions[$category['cid'] ])) {
     $categories[$i]['most_recent_extension'] = $pem_most_recent_extensions[ $category['cid'] ];
+
+    //Get screenshot info
+    $screenshot_infos = get_extension_screenshot_infos(
+      $pem_most_recent_extensions[$category['cid']]['eid']
+    );
+
+    if(!empty($screenshot_infos))
+    {
+      $categories[$i]['most_recent_extension']['screenshot_src'] = $screenshot_infos['screenshot_url'];
+    }
+    else
+    {
+      $categories[$i]['most_recent_extension']['screenshot_src'] = get_absolute_root_url() . PEM_PATH .'images/image-solid.svg';
+    }
   }
+  
+
 }
 
 $template->assign(

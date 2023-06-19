@@ -25,82 +25,95 @@
         </div>
       </div>
       <div class="row card-group">
-        <div class="col-md-6 col-sm-12 align-items-stretch spotlight">
-          <h4>Spotlight</h4>
-          <div class="col-12">
-            <div class="card align-items-stretch">
-              <div class="row">
-                <div class="image-column">
-                
-                </div>
-                <div class="col-12 info-column">
-                  <h5 class='extension-name' >{$category.spotlight_extension.name}</h5>
-                  <p class='description'>{$category.spotlight_extension.description}</p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="col-md-6 col-sm-12 align-items-stretch highest-rated">
-          <h4>Highest rated</h4>
-          <div class="col-12">
-            <div class="card align-items-stretch">
-              <div class="row">
-                <div class="image-column">
 
-                </div>
-                <div class="col-12 info-column">
-                  <h5 class='extension-name'>{$category.highest_rated_extension.name}</h5>
-                  <p class='description' >{$category.highest_rated_extension.description}</p>
-                  <div class='rating_score'>
-  {for $foo=1 to $category.highest_rated_extension.rating_score}
-                    <i class='icon-star'></i>
-  {/for}
+        <div class="col-md-6 col-sm-12 align-items-stretch spotlight extension_{$category.spotlight_extension.eid}">
+          <a href="{$PEM_ROOT_URL}index.php?eid={$category.spotlight_extension.eid}">
+            <h4>Spotlight</h4>
+            <div class="col-12">
+              <div class="card align-items-stretch">
+                <div class="row">
+                  <div class="col-4 image-column">
+                    <img class="img-fluid extension_image" src="{$category.spotlight_extension.screenshot_src}">
+                  </div>
+                  <div class="col-8 info-column">
+                    <h5 class='extension-name' >{$category.spotlight_extension.name}</h5>
+                    <p class='description'>{$category.spotlight_extension.description}</p>
                   </div>
                 </div>
               </div>
             </div>
-          </div>
+          </a>
         </div>
-        <div class="col-md-6 col-sm-12 align-items-stretch most-downloaded">
-          <h4>Most downloaded</h4>
-          <div class="col-12">
-            <div class="card align-items-stretch">
-              <div class="row">
-                <div class="image-column">
-                
+        
+        <div class="col-md-6 col-sm-12 align-items-stretch highest-rated">
+          <a href="{$PEM_ROOT_URL}index.php?eid={$category.highest_rated_extension.eid}">
+            <h4>Highest rated</h4>
+            <div class="col-12">
+              <div class="card align-items-stretch">
+                <div class="row">
+                  <div class="col-4 image-column">
+                    <img class="img-fluid extension_image" src="{$category.highest_rated_extension.screenshot_src}">
+                  </div>
+                  <div class="col-8 info-column">
+                    <h5 class='extension-name'>{$category.highest_rated_extension.name}</h5>
+                    <p class='description' >{$category.highest_rated_extension.description}</p>
+                    <div class='rating_score'>
+  {for $foo=1 to $category.highest_rated_extension.rating_score}
+                      <i class='icon-star'></i>
+  {/for}
+                    </div>
+                  </div>
                 </div>
-                <div class="col-12 info-column">
+              </div>
+            </div>
+          </a>
+        </div>
+
+        <div class="col-md-6 col-sm-12 align-items-stretch most-downloaded">
+          <a href="{$PEM_ROOT_URL}index.php?eid={$category.most_downloaded_extension.eid}">
+            <h4>Most downloaded</h4>
+            <div class="col-12">
+              <div class="card align-items-stretch">
+                <div class="row">
+                  <div class="col-4 image-column">
+                    <img class="img-fluid extension_image" src="{$category.most_downloaded_extension.screenshot_src}">
+                  </div>
+                  <div class="col-8 info-column">
                     <h5 class='extension-name'>{$category.most_downloaded_extension.name}</h5>
                     <p class='description' >{$category.most_downloaded_extension.description}</p>
-                  <div class='number_of_downloads'>
-                     <i class='icon-download'>{$category.most_downloaded_extension.download_count}</i>
+                    <div class='number_of_downloads'>
+                      <i class='icon-download'>{$category.most_downloaded_extension.download_count}</i>
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
-          </div>
+          </a>
         </div>
+
         <div class="col-md-6 col-sm-12 align-items-stretch most-recent">
-          <h4>Most recent</h4>
-          <div class="col-12">
-            <div class="card align-items-stretch">
-              <div class="row">
-                <div class="image-column">
-                
-                </div>
-                <div class="col-12 info-column">
-                  <h5 class='extension-name'>{$category.most_recent_extension.name}</h5>
-                  <p class='description' >{$category.most_recent_extension.description}</p>
-                  <div class='lat_updated'>
-                    {$category.most_recent_extension.formatted_date}
-                    <span class='badge blue-badge'>{$category.most_recent_extension.time_since}</span>
+          <a href="{$PEM_ROOT_URL}index.php?eid={$category.most_recent_extension.eid}">
+            <h4>Most recent</h4>
+            <div class="col-12">
+              <div class="card align-items-stretch">
+                <div class="row">
+                  <div class="col-4 image-column">
+                    <img class="img-fluid extension_image" src="{$category.most_recent_extension.screenshot_src}">
+                  </div>
+                  <div class="col-8 info-column">
+                    <h5 class='extension-name'>{$category.most_recent_extension.name}</h5>
+                    <p class='description' >{$category.most_recent_extension.description}</p>
+                    <div class='lat_updated'>
+                      {$category.most_recent_extension.formatted_date}
+                      <span class='badge blue-badge'>{$category.most_recent_extension.time_since}</span>
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
-          </div>
+          </a>
         </div>
+
       </div>
     </div>
   {/if}
