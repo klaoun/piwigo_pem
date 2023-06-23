@@ -169,6 +169,15 @@ a{
   color:var(--main_orange);
 }
 
+.secondary-orange-link{
+  color:var(--secondary_orange);
+  text-decoration:none;
+}
+
+.secondary-orange-link:hover{
+  color:var(--secondary_orange);
+}
+
 .white-link{
   color:var(--main_white);
   text-decoration:none;
