@@ -1,3 +1,11 @@
+<link rel="stylesheet" type="text/css" href="{$PEM_ROOT_URL_PLUGINS}styles/css/single_view.css">
+
+{* Load selectize *}
+<script src="{$PEM_ROOT_URL_PLUGINS}vendor/js/selectize.min.js"></script>
+<link rel="stylesheet" type="text/css" href="{$PEM_ROOT_URL_PLUGINS}vendor/css/selectize.clear.css">
+
+
+{*Start of single_view tpl*}
 <div id="single_view" class="container">
   <section class="section-fluid">
     <a href="{$PEM_ROOT_URL}index.php?cid={$extension_categories.id_category}&page=1" class="orange-link">
