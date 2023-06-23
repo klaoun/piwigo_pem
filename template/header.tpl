@@ -15,27 +15,11 @@
     {* Bootstrap javascript *}
     <script src="{$PEM_ROOT_URL_PLUGINS}vendor/bootstrap/js/bootstrap.min.js"></script>
 
-    {*Jquery ui slider*}
-    {* <link rel="stylesheet" type="text/css" href="{$PEM_ROOT_URL_PLUGINS}vendor/jquery/jquery-ui-slider/jquery.ui.slider.css">
-    <script src="{$PEM_ROOT_URL_PLUGINS}vendor/jquery/jquery-ui-slider/jquery.ui.slider.js"></script> *}
-
-    {* Selectize *}
-    <script src="{$PEM_ROOT_URL_PLUGINS}vendor/js/selectize.min.js"></script>
-    <link rel="stylesheet" type="text/css" href="{$PEM_ROOT_URL_PLUGINS}vendor/css/selectize.clear.css">
-    
     {*Fontello css*}
     <link rel="stylesheet" type="text/css" href="{$PEM_ROOT_URL_PLUGINS}vendor/fontello/css/fontello.css">
 
-    {*jquery-Confirm*}
-    <script src="{$PEM_ROOT_URL_PLUGINS}vendor/jquery/jquery-confirm.min.js"></script>
-    <link rel="stylesheet" type="text/css" href="{$PEM_ROOT_URL_PLUGINS}vendor/css/jquery-confirm.min.css">
-
-    {* PEM CSS files *}
+    {* Main CSS file, common to all tpls *}
     <link rel="stylesheet" type="text/css" href="{$PEM_ROOT_URL_PLUGINS}styles/css/main.css">
-    <link rel="stylesheet" type="text/css" href="{$PEM_ROOT_URL_PLUGINS}styles/css/navbar.css">
-    <link rel="stylesheet" type="text/css" href="{$PEM_ROOT_URL_PLUGINS}styles/css/list_view.css">
-    <link rel="stylesheet" type="text/css" href="{$PEM_ROOT_URL_PLUGINS}styles/css/single_view.css">
-    <link rel="stylesheet" type="text/css" href="{$PEM_ROOT_URL_PLUGINS}styles/css/footer.css">
     
   </head>
   <body>
