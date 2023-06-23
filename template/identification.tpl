@@ -1,7 +1,7 @@
 <div class="" id="identification">
 
   <section class="align-self-start p-4">
-    <a href="{$PEM_ROOT_URL}index.php" class="orange-link"><i class="icon-chevron-left"></i>Back</a>
+    <a href="{$PEM_ROOT_URL}index.php" class="orange-link lnik"><i class="icon-chevron-left"></i>Back</a>
   </section>
 
   <section class="w-100 h-100">
@@ -39,7 +39,7 @@
       </form>
 
       <div class="w-100 text-center mt-4">
-        <a href="{$U_LOST_PASSWORD}" title="{'Forgot your password?'|@translate}" class="link-primary orange-link">
+        <a href="{$U_LOST_PASSWORD}" title="{'Forgot your password?'|@translate}" class="link-primary orange-link link">
           {'Forgot your password?'|@translate}
         </a>
       </div>
