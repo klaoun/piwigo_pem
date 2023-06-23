@@ -20,7 +20,6 @@
   --message_light_orange:#ffdd99;
   --message_blue:#00529b;
   --message_light_blue:#bde5f8;
-
 }
 
 /******
@@ -157,6 +156,10 @@ a{
   text-decoration:none;
 }
 
+.link:hover{
+  text-decoration:underline;
+}
+
 .orange-link{
   color:var(--main_orange);
   text-decoration:none;
@@ -164,7 +167,15 @@ a{
 
 .orange-link:hover{
   color:var(--main_orange);
-  text-decoration:underline;
+}
+
+.white-link{
+  color:var(--main_white);
+  text-decoration:none;
+}
+
+.white-link:hover{
+  color:var(--main_white);
 }
 
 .disabled{
@@ -362,6 +373,13 @@ p.description{
   color:var(--secondary_orange);
 }
 /******
+Modals
+******/
+
+.modal-dialog{
+  max-width:750px;
+}
+/******
 Other
 ******/
 
@@ -372,4 +390,25 @@ Other
 
 .cancel-icon i{
   font-size:10px;
+}
+
+.z-index{
+  z-index:99;
+}
+
+.rotate-90{
+  rotate: 90deg;;
+}
+
+[class^="icon-"]:before, 
+[class*=" icon-"]:before{
+  line-height:unset;
+}
+
+.border-right{
+  border-right: 2px solid var(--grey4) !important;
+}
+
+.certification_blue{
+  max-height:20px;
 }
