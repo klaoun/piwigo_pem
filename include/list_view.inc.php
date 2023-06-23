@@ -8,24 +8,6 @@ if (isset($_GET['cid']))
 {
   $current_category_page_id = $_GET['cid'];
 
-  $query = '
-SELECT 
-    COUNT(*) AS count,
-    ec.idx_category as cid
-  FROM 
-    (SELECT 
-        idx_extension, 
-        MAX(date) AS latest_date
-      FROM '.PEM_REV_TABLE.'
-        GROUP BY idx_extension ) AS latest_revisions
-    INNER JOIN '.PEM_REV_TABLE.' AS r ON latest_revisions.idx_extension = r.idx_extension AND latest_revisions.latest_date = r.date
-    INNER JOIN '.PEM_EXT_CAT_TABLE.' AS ec ON r.idx_extension = ec.idx_extension
-  WHERE ec.idx_category = '.$current_category_page_id.'
-    ORDER BY latest_date DESC
-';
-
-  $nb_ext_of_category = query2array($query, 'cid', 'count');
-
   // Get list of extension ids for this category
   $query = '
   SELECT
@@ -49,7 +31,8 @@ SELECT
   $current_category_page_info = query2array($query);
   $current_category_page_info = $current_category_page_info[0];
 
-  $current_category_page_info['extension_count'] = $nb_ext_of_category[$current_category_page_id];
+  // Set number of extensions for this category
+  $current_category_page_info['extension_count'] = pem_extensions_get_count($current_category_page_id);
 
   $current_category_page_info['name_plural_EN'] = $current_category_page_info['name'].'s';
 
