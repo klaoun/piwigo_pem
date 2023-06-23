@@ -56,9 +56,12 @@ function pem_ws_add_methods($arr)
     'pem.extensions.getCount',
     'ws_pem_extensions_get_count',
     array(
-      'extension_type' => array('info'=>'language, theme, tool, plugin'),
+      'category_id' => array(
+        'default' => null,
+        'type'=>WS_TYPE_INT|WS_TYPE_POSITIVE,'info'=>'use category id'
+      ),
     ),
-    'Get number of extensions depending on type.'
+    'Get number of extensions, can filter for number of extensions per catetgory.'
   );
 
   $service->addMethod(
@@ -345,34 +348,23 @@ SELECT
  */
 function ws_pem_extensions_get_count($params, &$service)
 {
-  $category_id;
-  switch ($params['extension_type']) 
+  // Check if category is set for filter, die if category doesn't exist
+  $category_ids = array_keys(ws_pem_categories_get_list());
+  if(isset($params['category_id']))
   {
-    case 'language':
-      $category_id = 8;
-      break;
-    case 'theme':
-      $category_id = 10;
-      break;
-    case 'tool':
-      $category_id = 11;
-      break;
-    case 'plugin':
-      $category_id = 12;
-      break;
+    if(!in_array($params['category_id'], $category_ids))
+    {
+      die(
+        'No categories match your filter'
+      );
+    }
+    $category_id = $params['category_id']; 
   }
-  $query = '
-SELECT 
-  COUNT(id_extension)
-  FROM '.PEM_EXT_TABLE.' AS extensions
-    LEFT JOIN '.PEM_EXT_CAT_TABLE.' AS categories
-      ON extensions.id_extension = categories.idx_extension
-      WHERE categories.idx_category = '.$category_id.'
-;';
-  $count_of_extensions = pwg_db_fetch_row(pwg_query($query));
+
+  $count_of_extensions = pem_extensions_get_count($category_id);
+
   return $count_of_extensions;
 }
-
 
 /**
  * Get highest rated extension depending on category used in params
