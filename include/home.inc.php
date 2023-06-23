@@ -1,6 +1,8 @@
 <?php
 global $conf;
 
+include_once(PEM_PATH . 'include/functions_core.inc.php');
+
 /**
  * Spotlighted, highest rated and most downloaded extensions are defined by admin in local config
  */
@@ -92,16 +94,14 @@ SELECT
 $categories = query2array($query, 'cid');
 
 foreach ($categories as $i => $category) {
+  // Skip languages on homepage
   if (8 == $category['cid'])
   {
     continue;
   }
 
   //Set count of extensions per category
-  $categories[$i]['nb_extensions'] = 0;
-  if (isset($nb_ext_of_category[ $category['cid'] ])) {
-    $categories[$i]['nb_extensions'] = $nb_ext_of_category[ $category['cid'] ];
-  }
+  $categories[$i]['nb_extensions'] = pem_extensions_get_count($category['cid']);
 
   /**
    * Get spolighted extension details 
