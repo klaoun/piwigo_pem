@@ -41,3 +41,15 @@ jQuery("#edit_mode").change(function() {
   jQuery('.edit_mode').toggle();
   jQuery('.related_links').toggle();
 });
+
+
+// Selectize modal inputs
+jQuery('.extension_author_select').selectize({
+  plugins: ["remove_button"],
+})
+
+jQuery('.extension_tag_select').selectize({
+  plugins: ["remove_button"],
+})
+
+jQuery("#extension_category").selectize();
