@@ -1,3 +1,9 @@
+<link rel="stylesheet" type="text/css" href="{$PEM_ROOT_URL_PLUGINS}styles/css/list_view.css">
+{* Load selectize *}
+<script src="{$PEM_ROOT_URL_PLUGINS}vendor/js/selectize.min.js"></script>
+<link rel="stylesheet" type="text/css" href="{$PEM_ROOT_URL_PLUGINS}vendor/css/selectize.clear.css">
+
+{*Start of list_view tpl*}
 <div id="list_view" class="container">
 
 {if $SPOTLIGHTED}
@@ -9,7 +15,8 @@
         <img class="col-md-2" src="{$CATEGORY.spotlight_extension.screenshot}">
         <div class="col-md-8">
   {else}
-        <div class="col-md-10">
+        <img class="col-md-2" src="{$PEM_DIR}images/image-solid.svg">
+        <div class="col-md-8">
   {/if}
           <h3>{$CATEGORY.spotlight_extension.name}</h3>
           <p class="description">{$CATEGORY.spotlight_extension.description}</p>
@@ -31,9 +38,9 @@
       <div class="filter_tab mx-2" onclick="toggleFilter()"><h5 >Filter</h5></div>
       <label for="sort_order">Sort order</label>
       <select name="sort_order" id="sort_order" class="form-control">
-          <option value="date_asc">Newest to oldest</option>
-          <option value="date_desc">Oldest to Newest</option>
-          <option value="a_Z">A to Z</option>
+          <option value="date_desc">Newest to oldest</option>
+          <option value="date_asc">Oldest to Newest</option>
+          <option value="a_z">A to Z</option>
           <option value="z_a">Z to A</option>
       </select>
       <form class="form-inline  cid-search-form">
@@ -115,16 +122,26 @@
 
     <div class="extension_info card" id="jango_fett">
       <div class="row card-body">
+
+        <div class="col col-4 text-center extension_image_container">
+          <div class="extension_image_div">
+          </div>
+        </div>
+
         <div class="col col-3">
-          <h5 class="card-title extension_name"></h5>
-          <div class="card-text extension_authors"></div>
-          <div class="extension_score"></div>
-          <div class="d-flex"><i class="icon-download"></i><p class="card-text extension_number_downloads"></p></div>
+          <h5 class="card-title extension_name my-2"></h5>
+          <div class="card-text extension_authors my-2"></div>
+          <div class="extension_score my-2"></div>
+          <div class="d-flex my-2"><i class="icon-download"></i><p class="card-text extension_number_downloads"></p></div>
         </div>
-        <div class="col col-9 extension_description_container">
+
+        <div class="col col-5 extension_description_container">
           <p class="card-text extension_description"></p>
-          <a class="more_info_link" href="{$PEM_ROOT_URL}index.php?eid=" >Discover this {$CATEGORY.name}</a>
+          <a class="more_info_link" href="{$PEM_ROOT_URL}index.php?eid=" >
+            <button class="btn btn-primary">Discover this {$CATEGORY.name}</button>
+          </a>
         </div>
+
       </div>
     </div>
 
@@ -139,4 +156,10 @@
 
 </div>
 
+<script>
+var PEM_ROOT_URL = '{$PEM_ROOT_URL}';
+var PEM_ROOT_URL_PLUGINS = '{$PEM_ROOT_URL_PLUGINS}';
+</script>
+
 <script src="{$PEM_ROOT_URL_PLUGINS}template/js/list_view.js" require="jquery"></script>
+
