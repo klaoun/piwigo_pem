@@ -208,7 +208,7 @@ function get_revision_infos_of($revision_ids)
   $revision_infos_of = array();
 
   $id_lang = get_user_lang_id();
-  
+
   // retrieve revisions information
   $query = '
 SELECT
@@ -427,10 +427,6 @@ function get_extension_screenshot_infos($extension_id)
   }
   else
   {
-    // return array(
-    //   'thumbnail_src'  => PEM_DIR.'images/image-solid.svg',
-    //   'screenshot_url' => PEM_DIR.'images/image-solid.svg',
-    // );
     return false;
   }
 }
@@ -702,7 +698,7 @@ SELECT idx_extension,
   while ($row = pwg_db_fetch_assoc($result)) {
 
     $id_extension = $row['idx_extension'];
-    
+
     if (!isset($tag_list_for[$id_extension])) {
       $tag_list_for[$id_extension] = array();
     }
@@ -714,7 +710,7 @@ SELECT idx_extension,
 
   if (!empty($tag_list_for))
   {
-  foreach ($extension_ids as $extension_id) {
+    foreach ($extension_ids as $extension_id) {
       if (!empty($tag_list_for[$extension_id]))
       {
         $tags_of_extension[$extension_id] = $tag_list_for[$extension_id];
@@ -1316,7 +1312,7 @@ function insert_user_review(&$comm)
   $anonymous_id = implode('.', $ip_components);
   
   // comment validation and anti-spam
-  if ( !$conf['comments_validation'] or isAdmin(@$user['id']) )
+  if ( !$conf['comments_validation'] or is_Admin(@$user['id']) )
   {
     $comm['action'] = 'validate';
   }
@@ -1514,6 +1510,32 @@ SELECT
   
   list($name) = pwg_db_fetch_row($result);
   return $name;
+}
+
+/**
+ * returns count of extensions
+ * can filter by count of extension by category
+ */
+function pem_extensions_get_count($category_id = null)
+{
+  $query = '
+SELECT 
+  COUNT(id_extension) as count
+  FROM '.PEM_EXT_TABLE.' AS extensions
+    LEFT JOIN '.PEM_EXT_CAT_TABLE.' AS categories
+      ON extensions.id_extension = categories.idx_extension';
+
+  if(isset($category_id))
+  {
+    $query .= ' WHERE categories.idx_category = '.$category_id;
+  }
+
+  $query .= '
+;';
+  $row = pwg_db_fetch_assoc(pwg_query($query));
+  $count_of_extensions = $row['count'];
+  
+  return $count_of_extensions;
 }
 
 ?>
