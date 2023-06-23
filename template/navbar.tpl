@@ -1,3 +1,6 @@
+<link rel="stylesheet" type="text/css" href="{$PEM_ROOT_URL_PLUGINS}styles/css/navbar.css">
+
+{*Start of footer tpl*}
 <nav class="navbar navbar-expand-lg navbar-light bg-light justify-content-between py-3">
   
   <div class="container">
