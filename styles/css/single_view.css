@@ -66,8 +66,9 @@ Revisions
   background-color:  var(--grey5);
   padding:20px;
   border-radius:15px;
-  box-shadow: 0 0 10px var(--grey4);
+  box-shadow: 0 0 5px var(--grey4);
   margin-bottom:30px;
+  border:none;
 }
 
 .changelogRevision.card p{
@@ -158,4 +159,8 @@ Edit mode
   color: var(--main_orange);
   border: 1px solid var(--white);
   background-color:var(--white);
+}
+
+.form-select {
+  line-height: normal;
 }
