@@ -1,3 +1,6 @@
+<link rel="stylesheet" type="text/css" href="{$PEM_ROOT_URL_PLUGINS}styles/css/footer.css">
+
+{*Start of footer tpl*}
   <footer>
     <div class="container-fluide footer">
       <div class="container">
