@@ -27,11 +27,11 @@
 {/foreach}
         <li class="nav-item fw-bold position-relative" id="account-link">
           <a class="nav-link pe-0" href="{$ACCOUNT_URL}"><i class="icon-user"></i>Your account</a>
-{if $USER.status != 'guest'}
+{if $USER_STATUS != 'guest'}
           <div id="account-dropdown" class="dropdown">
             <div class="dropdown-content d-flex flex-column ">
-  {if $USER.status == 'webmaster' || $USER.status == 'admin'}
-              <a class="w-100" href="{$PEM_ROOT_URL}admin.php">Admininstration</a>
+  {if $USER_STATUS == 'webmaster' or $USER_STATUS == 'admin'}
+              <a class="w-100" href="{$PEM_ROOT_URL}admin.php">Administration</a>
   {/if}
               <a class="w-100" href="{$PEM_ROOT_URL}?act=logout">Logout</a>
             </div>

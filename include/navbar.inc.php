@@ -30,7 +30,7 @@ $template->assign(
   array(
     'CATEGORIES_INFO' => $categories,
     'ACCOUNT_URL' => $account_url,
-    'USER' => $user
+    'USER_STATUS' => $user['status'],
   )
 );
 
