@@ -1117,6 +1117,13 @@ function get_filtered_extension_ids($filter) {
     $filtered_sets['id_user'] = get_extension_ids_for_user($filter['id_user']);
   }
 
+  if (isset($filter['user_ids'])) {
+    foreach($filter['user_ids'] as $user_id)
+    {
+      $filtered_sets['user_ids_'.$user_id] = get_extension_ids_for_user($user_id);
+    } 
+  }
+
   $filtered_extension_ids = array_shift($filtered_sets);
   foreach ($filtered_sets as $set) {
     $filtered_extension_ids = array_intersect(
