@@ -54,7 +54,8 @@ if (in_array(script_basename(), array('identification', 'register', 'password'))
   function replace_header_init()
   {
     global $template;
-    $pem_root_url_pem = get_absolute_root_url() . PEM_PATH;
+    $pem_root_url_pem = get_absolute_root_url() . 'plugins/piwigo_pem/';
+    
     $template->assign(
       array(
         'PEM_ROOT_URL_PLUGINS' => $pem_root_url_pem,
