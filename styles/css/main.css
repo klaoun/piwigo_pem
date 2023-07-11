@@ -388,6 +388,36 @@ Modals
 .modal-dialog{
   max-width:750px;
 }
+
+
+/******
+Edit mode
+*******/
+.circle-icon{
+  background-color:var(--grey2);
+  color:white;
+  font-size:15px;
+  border-radius:25px;
+  padding:5px;
+}
+
+.circle-icon:hover{
+  background-color:var(--main_orange);
+  cursor:pointer;
+  box-shadow: 2px 2px 6px #555;
+  transition: all 0.2s;
+}
+
+.edit_mode{
+  display:none;
+}
+
+.secondary_action{
+  color: var(--grey2);
+  border: 1px solid var(--grey2);
+  background-color:transparent;
+}
+
 /******
 Other
 ******/
