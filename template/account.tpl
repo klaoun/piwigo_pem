@@ -2,9 +2,25 @@
 
 <div class="container" id="profile">
 
+{if $can_modify == true}
+  <section  class="mt-4 section-fluid">
+    <div class="d-flex justify-content-end">
+      <div class="form-check form-switch ">
+        <input class="form-check-input" type="checkbox" role="switch" id="edit_mode" >
+        <label class="form-check-label" for="edit_mode">Edit mode</label>
+      </div>                                            
+    </div>
+  </section>
+{/if}
+
   <section class="section-fluid my-5">
     <div class="row">
       <div class="col-4 border-right">
+{if $can_modify == true}
+        <span class="circle-icon edit_mode position-absolute top-0 end-0 translate-middle" data-bs-toggle="modal" data-bs-target="#generalInfoModal">
+          <i class="icon-pencil"></i>
+        </span>
+ {/if}
         <h3>{$USER.username}</h3>
        {if isset($USER.group)}<h5>{$USER.group}</h5>{/if }
       </div>
@@ -39,7 +55,7 @@
         <tbody>
   {foreach from=$extensions item=extension}
           <tr>
-            <td><a href="{$PEM_ROOT_URL}index.php?eid={$extension.id}">{$extension.name}</a></td>
+            <td><a class="link" href="{$PEM_ROOT_URL}index.php?eid={$extension.id}">{$extension.name}</a></td>
             <td>{$extension.category}</td>
             <td>{$extension.publish_date}</td>
             <td>{$extension.last_updated}</td>
@@ -52,7 +68,15 @@
       </div>
     </div>
   </section>
+{else}
+  <section class="section-fluid my-5">
+    <div class="row">
+      <div class="col-12">
+      </div>
+    </div>
+  </section>
 {/if}
 
-
 </div>
+
+<script src="{$PEM_ROOT_URL_PLUGINS}template/js/account.js" require="jquery"></script>

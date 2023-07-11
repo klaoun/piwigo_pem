@@ -1,7 +1,6 @@
 <?php
 if (isset($_GET['uid']))
 {
-  check_status(ACCESS_CLASSIC);
 
   if (!empty($_POST))
   {
@@ -10,46 +9,49 @@ if (isset($_GET['uid']))
   
   global $conf; 
 
-  $current_extension_page_id = $_GET['uid'];
+  $current_user_page_id = $_GET['uid'];
 
-  // $template->set_filename('pem_page', realpath(PEM_PATH . 'template/account.tpl'));
-
-  $template->assign(
-    array(
-    'PEM_PATH' => PEM_PATH,
-    )
-  );
-
-    
-  if (!isset($user['remind_every']))
+  // Specific is the connected user is on their own acocunt page
+  if ($user['id'] == $current_user_page_id)
   {
-    $user = array_merge(
-      $user,
-      create_user_infos($user['id'], true)
-    );
-  }
+    check_status(ACCESS_CLASSIC);
 
-  // +-----------------------------------------------------------------------+
-  // | Form submission                                                       |
-  // +-----------------------------------------------------------------------+
-
-  if (isset($_POST['submit']))
-  {
-    if (!preg_match('/^(day|week|month)$/', $_POST['remind_every']))
+    // Check if user page displayed is for connected user
+    if (isset($user['id']))
     {
-      die("hacking attempt!");
+      $page['user_can_modify'] = true;
+    }
+    
+    if (!isset($user['remind_every']))
+    {
+      $user = array_merge(
+        $user,
+        create_user_infos($user['id'], true)
+      );
     }
 
-    $query = '
-  UPDATE '.USER_INFOS_TABLE.'
-    SET remind_every = \''.$_POST['remind_every'].'\'
-    WHERE idx_user = '.$user['id'].'
-  ;';
-  pwg_query($query);
+    // +-----------------------------------------------------------------------+
+    // | Form submission                                                       |
+    // +-----------------------------------------------------------------------+
 
-    $user['remind_every'] = $_POST['remind_every'];
+    if (isset($_POST['submit']))
+    {
+      if (!preg_match('/^(day|week|month)$/', $_POST['remind_every']))
+      {
+        die("hacking attempt!");
+      }
 
-    $page['infos'][] = 'parameters saved';
+      $query = '
+    UPDATE '.USER_INFOS_TABLE.'
+      SET remind_every = \''.$_POST['remind_every'].'\'
+      WHERE idx_user = '.$user['id'].'
+    ;';
+    pwg_query($query);
+
+      $user['remind_every'] = $_POST['remind_every'];
+
+      $page['infos'][] = 'parameters saved';
+    }
   }
 
   // +-----------------------------------------------------------------------+
@@ -57,36 +59,12 @@ if (isset($_GET['uid']))
   // +-----------------------------------------------------------------------+
 
   $template->set_filename('pem_page', realpath(PEM_PATH . 'template/account.tpl'));
-  // $tpl->set_filenames(
-  //   array(
-  //     'page' => 'page.tpl',
-  //     'my' => 'my.tpl'
-  //   )
-  // );
 
   $template->assign('remind_every', $user['remind_every']);
 
   // Get owned extensions & other extensions
 
-  $extension_ids = get_extension_ids_for_user($user['id']);
-
-  // Get other extensions
-  // $query = '
-  // SELECT id_extension
-  //   FROM '.PEM_EXT_TABLE.' AS ext
-  //   INNER JOIN '.PEM_AUTHORS_TABLE.' AS aut
-  //     ON ext.id_extension = aut.idx_extension
-  //   WHERE aut.idx_user = \''.$user['id'].'\'
-  //   ORDER BY name ASC
-  // ;';
-  // $other_extension_ids = query2array($query, null, 'id_extension');
-
-  // echo('<pre>');print_r( $other_extension_ids);echo('</pre>');
-
-  // Gets the total information about the extensions
-  // $extension_ids = array_merge($other_extension_ids, $my_extension_ids);
-
-  // $extension_ids = $my_extension_ids;
+  $extension_ids = get_extension_ids_for_user($current_user_page_id);
 
   if (count($extension_ids) > 0)
   {
@@ -164,30 +142,33 @@ SELECT
     }
   }
 
-  $registration_date_formatted = format_date($user['registration_date']);
-  $member_since = time_since($user['registration_date'], $stop='month');
+  $current_user_page_infos = get_user_infos_of(explode(' ', $current_user_page_id));
+  $current_user_page_infos = $current_user_page_infos[$current_user_page_id];
 
-  $current_user = array();
+  $registration_date_formatted = format_date($current_user_page_infos['registration_date']);
+  $member_since = time_since($current_user_page_infos['registration_date'], $stop='month');
 
-  $current_user['username'] = $user['username']; 
-  $current_user['registration_date_formatted'] = $registration_date_formatted;
-  $current_user['member_since'] = $member_since;
+  // $current_user_page_infos['username'] = $user['username']; 
+  $current_user_page_infos['registration_date_formatted'] = $registration_date_formatted;
+  $current_user_page_infos['member_since'] = $member_since;
 
   // Assign user info to tpl
-  if(in_array($user['id'], $conf['admin_users'])){
-    $current_user['group'] = 'Piwigo team <img class="certification_blue" src="'.get_absolute_root_url() . PEM_PATH.'images/CertificationBlue.svg"/>';
+  if(in_array($current_user_page_id , $conf['admin_users'])){
+    $current_user_page_infos['group'] = 'Piwigo team <img class="certification_blue" src="'.get_absolute_root_url() . PEM_PATH.'images/CertificationBlue.svg"/>';
   }
-  else if (in_array($user['id'], $conf['translators']))
+  else if (in_array($current_user_page_id , $conf['translator_users']))
   {
-    $current_user['group'] = 'Translator';
+    $current_user_page_infos['group'] = 'Translator';
   }
 
-  $current_user['nb_extensions'] = count($extension_ids);
+  $current_user_page_infos['nb_extensions'] = count($extension_ids);
 
-
-  $template->assign('USER' , $current_user);
-
-  // echo('<pre>');print_r($current_user);echo('</pre>');
+  $template->assign(
+    array(
+      'USER' => $current_user_page_infos,
+      'can_modify' => $page['user_can_modify'],
+    )
+  );
 }
 else
 {
