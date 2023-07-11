@@ -15,7 +15,7 @@
 
   <section class="section-fluid my-5">
     <div class="row">
-      <div class="col-4 border-right">
+      <div class="col-4 border-right position-relative">
 {if $can_modify == true}
         <span class="circle-icon edit_mode position-absolute top-0 end-0 translate-middle" data-bs-toggle="modal" data-bs-target="#generalInfoModal">
           <i class="icon-pencil"></i>
@@ -72,6 +72,7 @@
   <section class="section-fluid my-5">
     <div class="row">
       <div class="col-12">
+        <p>This user has not yet contributed any plugins</p>
       </div>
     </div>
   </section>

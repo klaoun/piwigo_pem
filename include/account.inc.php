@@ -166,7 +166,7 @@ SELECT
   $template->assign(
     array(
       'USER' => $current_user_page_infos,
-      'can_modify' => $page['user_can_modify'],
+      'can_modify' => isset($page['user_can_modify']) ? $page['user_can_modify'] : false ,
     )
   );
 }
