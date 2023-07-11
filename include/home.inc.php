@@ -65,20 +65,6 @@ while($row = pwg_db_fetch_assoc($result))
   $pem_most_recent_extensions[$row['cid']]['name'] = $row['name'];
 }
 
-
-/**
- * get count of extensions by category, returns category id and count
- */ 
-
-$query = '
-SELECT
-    idx_category AS cid,
-    COUNT(*) AS count
-  FROM '.PEM_EXT_CAT_TABLE.'
-  GROUP BY idx_category
-;';
-$nb_ext_of_category = query2array($query, 'cid', 'count');
-
 /**
  * Get list of categories with name and count of plugins
  */
