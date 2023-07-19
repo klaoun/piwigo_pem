@@ -1,5 +1,6 @@
 <?php
 if (isset($_GET['eid']))
+if (isset($_GET['eid']) && 1 == count($_GET))
 {
   global $conf, $user;
 

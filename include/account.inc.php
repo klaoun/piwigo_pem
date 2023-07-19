@@ -1,5 +1,6 @@
 <?php
 if (isset($_GET['uid']))
+if (isset($_GET['uid']) && 1 == count($_GET))
 {
 
   if (!empty($_POST))

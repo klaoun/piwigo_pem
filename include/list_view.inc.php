@@ -5,7 +5,10 @@
  */
 
 if (isset($_GET['cid']))
+if (isset($_GET['cid']) && isset($_GET['page']) && 2 == count($_GET))
 {
+  check_input_parameter('page',$_GET, false,"/^\\d+$/");
+  
   $current_category_page_id = $_GET['cid'];
 
   // Get list of extension ids for this category
