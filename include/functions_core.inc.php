@@ -1280,7 +1280,7 @@ function insert_user_review(&$comm)
   // check spam with Akismet
   if (!empty($conf['askimet_key']))
   {
-    include_once($root_path . 'include/akismet.class.php');
+    include_once(PEM_PATH . 'include/akismet.class.php');
     $akismet = new Akismet($conf['website_url'], $conf['askimet_key'], $comm);
     
     if ( !$akismet->errorsExist() and $akismet->isSpam() )
