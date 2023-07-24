@@ -4,7 +4,6 @@
  * For example the different category pages
  */
 
-if (isset($_GET['cid']))
 if (isset($_GET['cid']) && isset($_GET['page']) && 2 == count($_GET))
 {
   check_input_parameter('page',$_GET, false,"/^\\d+$/");
@@ -67,20 +66,31 @@ SELECT
   }
 
   //Get List of authors for filter
-  $query = '
+
+// Temporary query for authors, they aren't filtered by category at the moment
+//   $query = '
+// SELECT DISTINCT
+//     aT.idx_user as uid,
+//     uT.username,
+//     ecT.idx_category as cid,
+//     aT.idx_extension as eid
+//   FROM '.PEM_AUTHORS_TABLE.' as aT
+//     JOIN '.USERS_TABLE.' as uT on id = aT.idx_user
+//     JOIN '.PEM_EXT_CAT_TABLE.' as ecT on ecT.idx_extension = aT.idx_extension
+//   WHERE ecT.idx_category = '.$current_category_page_id.'
+// ;';
+
+$query = '
 SELECT DISTINCT
     aT.idx_user as uid,
-    uT.username,
-    ecT.idx_category as cid,
-    aT.idx_extension as eid
+    uT.username
   FROM '.PEM_AUTHORS_TABLE.' as aT
     JOIN '.USERS_TABLE.' as uT on id = aT.idx_user
-    JOIN '.PEM_EXT_CAT_TABLE.' as ecT on ecT.idx_extension = aT.idx_extension
-  WHERE ecT.idx_category = '.$current_category_page_id.'
 ;';
+// echo('<pre>');print_r($query);echo('</pre>');
   $authors= query2array($query, 'uid');
 
-  //Get List of authors for filter
+  //Get List of versions for filter
   $query = '
 SELECT 
     id_version,
@@ -95,15 +105,16 @@ SELECT
   $query = '
   SELECT 
       etT.idx_extension as eid,
-      pT.id_tag as tId,
-      pT.name
+      tT.id_tag as tid,
+      tT.name
     FROM '.PEM_EXT_TAG_TABLE.' as etT
-      JOIN '.PEM_TAG_TABLE.' as pT on pT.id_tag = etT.idx_tag
+      JOIN '.PEM_TAG_TABLE.' as tT on tT.id_tag = etT.idx_tag
     WHERE etT.idx_extension IN ('.implode(',', $extensions_ids).')
     ORDER BY name ASC
   ;';
 
-  $tags = query2array($query, 'tId');
+  $tags = query2array($query, 'tid');
+  echo('<pre>');print_r($tags);echo('</pre>');
 
   $template->set_filename('pem_page', realpath(PEM_PATH . 'template/list_view.tpl'));
 
