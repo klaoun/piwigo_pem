@@ -10,19 +10,29 @@ if (isset($_GET['cid']) && isset($_GET['page']) && 2 == count($_GET))
   
   $current_category_page_id = $_GET['cid'];
 
-  // Get list of extension ids for this category
-  $query = '
+  //check category exists
+    $query = '
   SELECT
-      idx_category AS cid,
-      idx_extension
-    FROM '.PEM_EXT_CAT_TABLE.'
-    WHERE idx_category  = '.$current_category_page_id.'
+      id_category as cid
+    FROM '.PEM_CAT_TABLE.' 
+    ORDER BY cid DESC
   ;';
+  $categories = query2array($query);
+  $categories = array_column($categories,'cid');
 
-  $extensions_ids = query2array($query, null, 'idx_extension');
-
-  if (in_array($current_category_page_id, $extensions_ids))
+  if (in_array($current_category_page_id, $categories))
   {
+    // Get list of extension ids for this category
+    $query = '
+SELECT
+    idx_category AS cid,
+    idx_extension
+  FROM '.PEM_EXT_CAT_TABLE.'
+  WHERE idx_category  = '.$current_category_page_id.'
+;';
+
+    $extensions_ids = query2array($query, null, 'idx_extension');
+
     // Get category name with Id and count
     $query = '
 SELECT
