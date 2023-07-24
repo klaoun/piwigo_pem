@@ -59,3 +59,9 @@ Account dropdown
 #account-dropdown a{
   color:var(--white);
 }
+
+.border-bottom{
+  padding-bottom:10px;
+  border-bottom:1px solid var(--white);
+  margin-bottom:10px;
+}
