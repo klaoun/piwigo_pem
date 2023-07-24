@@ -1,6 +1,7 @@
 :root{
   --main_orange: #ff7700;
   --secondary_orange: #ffaf58;
+  --secondary_orange_50 : rgba(255, 175, 88,0.5);
   --grey1: #3c3c3c;
   --grey2: #3d3d3d;
   --grey3: #767676;
@@ -106,6 +107,19 @@ Buttons
   color: var(--white);
   border:1px solid var(--main_orange);
 }
+
+.btn-primary:focus,
+.btn-primary:active{
+  box-shadow: 3px 3px 6px #bbb;
+  background-color: var(--main_orange);
+  color: var(--white);
+  border:1px solid var(--main_orange);
+}
+
+.btn-primary:active:focus{
+  box-shadow: 0 0 0 0.25rem var(--secondary_orange_50);
+}
+
 
 .btn-secondary{
   border:1px solid var(--main_orange);
