@@ -32,21 +32,32 @@ function pem_ws_add_methods($arr)
     'ws_pem_extensions_get_list',
         array(
       'category_id' => array(
-        'default' => null,
-        'type'=>WS_TYPE_INT|WS_TYPE_POSITIVE,'info'=>'use category id'
+        'flags'=>WS_PARAM_OPTIONAL,
+        'type'=>WS_TYPE_INT|WS_TYPE_POSITIVE,
+        'info'=>'use category id',
       ),
       'page' => array(
-        'default'=>null,
+        'flags'=>WS_PARAM_OPTIONAL,
         'type'=>WS_TYPE_INT|WS_TYPE_POSITIVE,
       ),
       'sort_by' => array(
         'default'=>'date_desc',
-        'info'=>'date_desc, date_asc, a_z, z_a'
+        'info'=>'date_desc, date_asc, a_z, z_a',
       ),
       'filter_version' => array(
-        'default' => null,
-        'type'=>WS_TYPE_FLOAT|WS_TYPE_POSITIVE,
-        'info'=>'use a piwigo version number'
+        'flags'=>WS_PARAM_OPTIONAL,
+        'type'=>WS_TYPE_INT|WS_TYPE_POSITIVE,
+        'info'=>'a piwigo version id',
+      ),
+      'filter_authors' => array(
+        'flags'=>WS_PARAM_OPTIONAL|WS_PARAM_FORCE_ARRAY,
+        'type'=>WS_TYPE_ID,
+        'info'=>'array of user ids',
+      ),
+      'filter_tags' => array(
+        'flags'=>WS_PARAM_OPTIONAL|WS_PARAM_FORCE_ARRAY,
+        'type'=>WS_TYPE_ID,
+        'info'=>'array of tag ids',
       ),
     ),
     'Get list of extensions. Filter by category or version. Apply different sorting orders. Get limited number of extension by using pages.'
@@ -111,13 +122,11 @@ function ws_pem_extensions_get_list($params, &$service)
 {
   global $conf;
 
+  $filter = array();
+  
   $extensions_per_page = conf_get_param('extensions_per_page',15);
 
-  if(isset($params['category_id']))
-  {
-    $cid = $params['category_id']; 
-  }
-
+  // Get sort order
   $sort_by = $params['sort_by'];
   switch ( $sort_by) 
   {
@@ -138,48 +147,95 @@ function ws_pem_extensions_get_list($params, &$service)
       break;
   }
 
-  $offset = ($extensions_per_page * $params['page']) - $extensions_per_page;
+  // Page is used to display a certain amount of extensions per page and get the next ones for each page
+  if (isset($params['page']))
+  {
+    $offset = ($extensions_per_page * $params['page']) - $extensions_per_page;
+  }
+
+  // Filter category
+  $all_category_ids = array_keys(ws_pem_categories_get_list());
+
+  // Check if category is set for filter, die if category doesn't exist
+  if(isset($params['category_id']))
+  {
+    if(!in_array($params['category_id'], $all_category_ids))
+    {
+      die(
+        'No extensions match your filter'
+      );
+    }
+    $filter['category_ids'] = explode(" ",$params['category_id']); 
+    $filter['category_mode'] = 'and';
+    $nb_total = pem_extensions_get_count($params['category_id']);
+  }
+  else {
+    $nb_total = pem_extensions_get_count();
+  }
+
+  // Filter version is used in list_view to filter extensions by compatible version
+  if(isset($params['filter_version']))
+  {
+    $filter['id_version'] = $params['filter_version'];
+  }
+
+  if(isset($params['filter_authors']))
+  {
+    $filter['user_ids'] = $params['filter_authors'];
+  }
   
+  if(isset($params['filter_tags']))
+  {
+    $filter['tag_ids'] = $params['filter_tags'];
+    $filter['tag_mode'] = 'and';
+  }
+
   $revision_ids = array();
   $revision_infos_of = array();
   $extension_ids = array();
   $extension_infos_of = array();
-  $author_ids = array();
-  $author_infos_of = array();
 
-  $query = '
-  SELECT 
-  r.idx_extension,
-  r.id_revision,
-  r.date AS latest_date,
-  ec.idx_category
-FROM 
-  (SELECT 
-     idx_extension, 
-     MAX(date) AS latest_date
-   FROM 
-   '.PEM_REV_TABLE.'
-   GROUP BY 
-     idx_extension) AS latest_revisions
-INNER JOIN 
-'.PEM_REV_TABLE.' AS r
-  ON latest_revisions.idx_extension = r.idx_extension AND latest_revisions.latest_date = r.date
-INNER JOIN 
-'.PEM_EXT_CAT_TABLE.' AS ec
-  ON r.idx_extension = ec.idx_extension';
-
-  if(isset($cid))
+  // Apply filter to extension ids
+  if($filter != null)
   {
-    $query .= '
-  WHERE 
-    ec.idx_category = '.$cid;
+    $filtered_extension_ids = get_filtered_extension_ids($filter);
   }
 
-  $query .= ';';
+  $filtered_extension_ids_string = implode(
+    ',',
+    $filtered_extension_ids
+  );
+
+
+  // retrieve N last updated extensions, filtered on the user version
+  $query = '
+  SELECT
+      r.idx_extension,
+      MAX(r.id_revision) AS id_revision,
+      MAX(r.date) AS max_date
+    FROM '.PEM_REV_TABLE.' r';
+  if (isset($filtered_extension_ids)) {
+    if (count($filtered_extension_ids) > 0) {
+      $query.= '
+    WHERE idx_extension IN ('.$filtered_extension_ids_string.')';
+    }
+  }
+  $query.= '
+    GROUP BY idx_extension';
+  
+
+  if (isset($_SESSION['filter']['search'])) {
+    $query.= '
+    ORDER BY FIND_IN_SET(idx_extension, "'.$filtered_extension_ids_string.'")';
+  }
+  else {
+    $query.= '
+    ORDER BY max_date DESC';
+  }
+  $query.= '
+  ;';
 
   $all_revision_ids = query2array($query, null, 'id_revision');
-
-  $nb_total = count($all_revision_ids);
 
   if (count($all_revision_ids) == 0)
   {
@@ -190,8 +246,18 @@ INNER JOIN
     );
   }
 
-  $revision_ids = array_slice($all_revision_ids, $offset , $extensions_per_page, true);
-  
+  // Offset is used to get extensions from specific page 
+  // and calculate the number of pages depending on number of extensions
+
+  if (isset($offset))
+  {
+    $revision_ids = array_slice($all_revision_ids, $offset , $extensions_per_page, true);
+  }
+  else
+  {
+    $revision_ids = $all_revision_ids;
+  }
+
   $nb_pages = ceil(count($all_revision_ids)/ $extensions_per_page);
 
   $versions_of = get_versions_of_revision($revision_ids);
@@ -270,7 +336,7 @@ INNER JOIN
   if (!isset($_REQUEST['format']))
   {
     //Echo to be compatible with previous version of Piwigo
-    echo serialize($revisions);
+    echo serialize($revisions, $nb_pages, $nb_total);
     exit;
   }
 
