@@ -6,33 +6,77 @@ const cid = urlParams.get('cid')
 const page = urlParams.get('page')
 
 jQuery(document).ready(function () {
-
-  var sort_by = jQuery("#sort_order").find(":selected").val();
   // Call getExtensionList to populate list of extensions
-  getExtensionList(cid, page, sort_by);
+  getExtensionList(cid, page);
 
 });
 // End of jQuery(document).ready()
 
+// Watch for sort or filter changes
 jQuery("#sort_order").on('change', function () {
-  var sort_by = jQuery("#sort_order").find(":selected").val();
-  getExtensionList(cid, page, sort_by);
+  getExtensionList(cid, page);
 });
 
-// Ajax request to get all extension information from specifique category
-function getExtensionList(cid, page, sort_by ) {
+jQuery(".extension_version_select").on('change', function () {
+  getExtensionList(cid, page);
+});
+
+jQuery(".extension_author_select").on('change', function () {
+  getExtensionList(cid, page);
+});
+
+jQuery(".extension_tag_select").on('change', function () {
+  getExtensionList(cid, page);
+});
+
+
+// Ajax request to get all extension information from specific category
+function getExtensionList(cid, page) {
+  // Filter and sort values, with version, author and tags
+  var sort_by = jQuery("#sort_order").find(":selected").val();
+  var version = jQuery(".extension_version_select").val();
+
+  var author_ids = [];
+  jQuery('.extension_author_select').children( "option" ).each(function(){
+    var value = $(this).val()
+    author_ids.push(value)
+  })
+
+  var tag_ids = [];
+  jQuery('.extension_tag_select').children( "option" ).each(function(){
+    var value = $(this).val()
+    tag_ids.push(value)
+  })
+
   var extensionInfos ;
     
-  var params= '&sort_by='+sort_by
+  var params = '&sort_by=' + sort_by
+  if (version != "all")
+  {
+    params += '&filter_version=' + version
+  }
+
+  if (author_ids.length !== 0)
+  {
+    params += '&filter_authors=' + author_ids
+  }
+
+  
+  if (tag_ids.length !== 0)
+  {
+    params += '&filter_tags=' + tag_ids
+  }
+
 
   jQuery.ajax({
     type: 'GET',
     dataType: 'json',
     async: false,
-    url: 'ws.php?format=json&method=pem.extensions.getList&category_id='+cid+'&page='+page + params,
+    url: 'ws.php?format=json&method=pem.extensions.getList&category_id=' + cid + '&page=' + page + params,
     data: { ajaxload: 'true' },
     success: function (data) {
         if (data.stat == 'ok') {
+          console.log(data)
           extensionInfos = {
             'extensionList' : data.result.revisions,
             'nb_pages' : data.result.nb_pages,
@@ -65,10 +109,10 @@ function getExtensionList(cid, page, sort_by ) {
             //Fill extension card line with info
             jQuery('#extension_'+extension_id+' .extension_name').text(this.extension_name);
 
-            //add authors, ther can be multiple, that is the reason for the foreach
+            //add authors, there can be multiple, that is the reason for the foreach
             $.each(this.authors, function(key, value) 
             {
-              jQuery('#extension_'+extension_id+' .extension_authors').html("<p>"+value+"</p>");
+              jQuery('#extension_'+extension_id+' .extension_authors').append( "<a class='link' href='"+PEM_ROOT_URL+"index.php?uid="+key+"'>"+value+"</a>");
             });
 
             //If extensions has rating score then display it
@@ -95,13 +139,12 @@ function getExtensionList(cid, page, sort_by ) {
             // If extension has image then display it
             if(this.screenshot_url != null)
             {
-              // jQuery('#extension_'+extension_id+' .extension_description_container').removeClass('col-9').addClass('col-5')
               jQuery('#extension_'+extension_id+' .extension_image_div').append('\
                 <img class="img-fluid extension_image" src="'+this.screenshot_url +'">'
               )
             }
-            else{
-              // jQuery('#extension_'+extension_id+' .extension_description_container').removeClass('col-9').addClass('col-5')
+            else
+            {
               jQuery('#extension_'+extension_id+' .extension_image_div').append('\
                 <img class="img-fluid extension_image placeholder_image" src="'+ PEM_ROOT_URL_PLUGINS +'images/image-solid.svg">'
               )
@@ -214,7 +257,7 @@ function toggleFilter(){
   jQuery('.filter_tab ').toggleClass('toggled');
 }
 
-// For tag filter
+// Selectize filters
 jQuery('.extension_tag_select').selectize({
   plugins: ["remove_button"],
 })
@@ -222,3 +265,5 @@ jQuery('.extension_tag_select').selectize({
 jQuery('.extension_author_select').selectize({
   plugins: ["remove_button"],
 })
+
+jQuery('.extension_version_select').selectize()
