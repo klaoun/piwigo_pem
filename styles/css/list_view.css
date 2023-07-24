@@ -55,7 +55,8 @@ Filter section
 ******/
 .extension_filters{
   background-color:  var(--grey5);
-  padding:10px 20px;
+  padding:20px;
+  padding-top:10px;
   border-radius:15px;
   margin-top:-35px;
   margin-bottom:60px;
@@ -274,6 +275,10 @@ Extension cards
   object-fit:cover;
   /* max-height:300px;
   width:auto; */
+}
+
+.extension_authors  .link{
+  margin-right:15px;
 }
 
 .placeholder_image{
