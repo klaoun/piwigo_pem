@@ -1,5 +1,4 @@
 <?php
-if (isset($_GET['uid']))
 if (isset($_GET['uid']) && 1 == count($_GET))
 {
 
@@ -7,7 +6,7 @@ if (isset($_GET['uid']) && 1 == count($_GET))
   {
     check_pwg_token();
   }
-  
+
   global $conf; 
 
   $current_user_page_id = $_GET['uid'];
@@ -131,8 +130,8 @@ SELECT
         'total_rates' =>  isset($total_rates_of_extension[$extension_id]) ? $total_rates_of_extension[$extension_id] : '',
         'nb_reviews' => isset($extension_infos_of[$extension_id]['nb_reviews']) ? $extension_infos_of[$extension_id]['nb_reviews'] : '',
         'nb_downloads' => isset($download_of_extension[$extension_id]) ? $download_of_extension[$extension_id] : '',
-        'last_updated'=> $last_revision_date_of[$extension_id],
-        'publish_date' => $publish_extension_date_of[$extension_id],
+        'last_updated'=> isset($last_revision_date_of[$extension_id]) ? $last_revision_date_of[$extension_id] : '',
+        'publish_date' => isset($publish_extension_date_of[$extension_id]) ? $publish_extension_date_of[$extension_id] : '',
       );
 
 
