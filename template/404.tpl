@@ -1,4 +1,4 @@
-<div class="container" id="404">
+<div class="container py-5" id="404">
   <div class="row position-relative">
     <div class="col-6 position-relative">
       <img class="w-100" src="{$PEM_ROOT_URL_PLUGINS}images/404.svg">
