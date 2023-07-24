@@ -133,19 +133,16 @@ function pem_load_content(){
   $meta_title = null;
   $meta_description = null;
 
-  $pem_root_url = get_absolute_root_url();
 
   if (isset($_GET['cid']))
   {
-    check_input_parameter('cid',$_GET, false,"/^\\d+$/");
-
+    check_input_parameter('cid',$_GET, false,"/^\\d+$/",true);
     //cid is category ID so display list view of extensions
     include(PEM_PATH . '/include/list_view.inc.php');
   }
   else if (isset($_GET['eid']))
   {
-    check_input_parameter('eid',$_GET, false,"/^\\d+$/", true);
-
+    check_input_parameter('eid',$_GET, false,"/^\\d+$/",true);
     //eid is extension ID so display single view of extension
     include(PEM_PATH . '/include/single_view.inc.php');
   }
@@ -157,22 +154,29 @@ function pem_load_content(){
   }
   else
   {
-    $template->set_filenames(array('pem_page' => realpath(PEM_PATH . 'template/' . 'home.tpl')));
-    if (file_exists(PEM_PATH . '/include/home.inc.php'))
+    if (count($_GET) > 0)
     {
-      include(PEM_PATH . '/include/home.inc.php');
+      $template->set_filenames(array('pem_page' => realpath(PEM_PATH . 'template/' . '404.tpl')));
+      if (file_exists(PEM_PATH . '/include/404.inc.php'))
+      {
+        include(PEM_PATH . '/include/404.inc.php');
+      }
     }
-
+    else
+    {
+      $template->set_filenames(array('pem_page' => realpath(PEM_PATH . 'template/' . 'home.tpl')));
+      if (file_exists(PEM_PATH . '/include/home.inc.php'))
+      {
+        include(PEM_PATH . '/include/home.inc.php');
+      }
+    }
   }
-  $pem_root_url_pem = get_absolute_root_url() . PEM_PATH;
 
   $template->assign(
     array(
         'meta_title' => $meta_title,
         'meta_description' => $meta_description,
-        'PEMROOT_URL' => $pem_root_url . PEM_PATH,
         'active_page' => isset($pem_page) ? $pem_page : "home",
-        'PEM_ROOT_URL_PLUGINS' => $pem_root_url_pem,
     )
   );
 }
