@@ -183,6 +183,15 @@ a{
   color:var(--main_orange);
 }
 
+.grey-link{
+  color:var(--grey4);
+  text-decoration:none;
+}
+
+.grey-link:hover{
+  color:var(--main_orange);
+}
+
 .secondary-orange-link{
   color:var(--secondary_orange);
   text-decoration:none;
@@ -219,6 +228,72 @@ Inputs
   border-color: var(--secondary_orange);
   outline: 0;
   box-shadow: 0 0 0 0.25rem var(--grey5);
+}
+
+.form-control{
+  border: 1px solid #d0d0d0!important;
+}
+
+input[type="search"]:focus::-webkit-search-cancel-button{
+  color:var(--primary_orange);
+}
+
+/*Selectize*/
+
+.selectize-input{
+  box-shadow: none;
+  line-height:1rem;
+  background-color: var(--white) !important;
+}
+
+.selectize-input .item,
+.selectize-input .item.active,
+.selectize-control.multi .selectize-input [data-value]{
+  background-image:none !important;
+  background-color: var(--secondary_orange) !important;
+  border-color: transparent !important;
+  color: var(--black) !important;
+  border-radius: 20px !important;
+}
+
+.selectize-input .item .remove,
+.selectize-input .item .remove {
+  background-color: transparent !important;
+  border-top-right-radius: 20px !important;
+  border-bottom-right-radius: 20px !important;
+  color: var(--black) !important;
+  
+  border-left: 1px solid transparent !important;
+
+}
+.selectize-input .item .remove:hover,
+.selectize-input .item .remove:hover {
+  background-color: var(--primary_orange) !important;
+}
+
+.selectize-control,
+.selectize-dropdown.single.form-select.w-100{
+  padding:0;
+}
+.selectize-control.single .selectize-input,
+.selectize-dropdown.single{
+  border: 1px solid #d0d0d0!important;
+}
+
+.selectize-dropdown{
+  padding-right:0px;
+}
+.selectize-input,
+.selectize-input .item, 
+.selectize-input .item.active, 
+.selectize-input [data-value]{
+  border: none;
+  background: transparent!important;
+  box-shadow:none!important;
+}
+
+.version_filter_container .selectize-control.single .selectize-input:after{
+  display:none;
 }
 
 /******
@@ -464,4 +539,10 @@ Other
 
 .certification_blue{
   max-height:20px;
+}
+
+.spinner-border{
+  color:var(--grey3);
+  width: 25px;
+  height: 25px;
 }
