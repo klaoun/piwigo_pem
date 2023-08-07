@@ -59,6 +59,9 @@ function pem_ws_add_methods($arr)
         'type'=>WS_TYPE_ID,
         'info'=>'array of tag ids',
       ),
+      'filter_search' => array(
+        'flags'=>WS_PARAM_OPTIONAL,
+      ),
     ),
     'Get list of extensions. Filter by category or version. Apply different sorting orders. Get limited number of extension by using pages.'
   );
@@ -124,7 +127,7 @@ function ws_pem_extensions_get_list($params, &$service)
 
   $filter = array();
   
-  $extensions_per_page = conf_get_param('extensions_per_page',15);
+  $extensions_per_page = conf_get_param('extensions_per_page', 15);
 
   // Get sort order
   $sort_by = $params['sort_by'];
@@ -146,11 +149,11 @@ function ws_pem_extensions_get_list($params, &$service)
       return new PwgError(WS_ERR_INVALID_PARAM, 'Invalid sort_by');
       break;
   }
-
-  // Page is used to display a certain amount of extensions per page and get the next ones for each page
+  
+  // page is used to display a certain amount of extensions per page and get the next ones for each page
   if (isset($params['page']))
   {
-    $offset = ($extensions_per_page * $params['page']) - $extensions_per_page;
+    $page = ($extensions_per_page * $params['page']) - $extensions_per_page;
   }
 
   // Filter category
@@ -174,20 +177,25 @@ function ws_pem_extensions_get_list($params, &$service)
   }
 
   // Filter version is used in list_view to filter extensions by compatible version
-  if(isset($params['filter_version']))
+  if (isset($params['filter_version']))
   {
     $filter['id_version'] = $params['filter_version'];
   }
 
-  if(isset($params['filter_authors']))
+  if (isset($params['filter_authors']))
   {
     $filter['user_ids'] = $params['filter_authors'];
   }
   
-  if(isset($params['filter_tags']))
+  if (isset($params['filter_tags']))
   {
     $filter['tag_ids'] = $params['filter_tags'];
     $filter['tag_mode'] = 'and';
+  }
+
+  if (isset($params['filter_search']))
+  {
+    $filter['search'] = $params['filter_search'];
   }
 
   $revision_ids = array();
@@ -196,18 +204,24 @@ function ws_pem_extensions_get_list($params, &$service)
   $extension_infos_of = array();
 
   // Apply filter to extension ids
-  if($filter != null)
+  if ($filter != null)
   {
     $filtered_extension_ids = get_filtered_extension_ids($filter);
+    if (empty($filtered_extension_ids))
+    {
+      return array(
+        'message' => 'No extensions match your filter'
+      );
+    }
+
+    $filtered_extension_ids_string = implode(
+      ',',
+      $filtered_extension_ids
+    );
+  
   }
 
-  $filtered_extension_ids_string = implode(
-    ',',
-    $filtered_extension_ids
-  );
-
-
-  // retrieve N last updated extensions, filtered on the user version
+  // retrieve N last updated extensions
   $query = '
   SELECT
       r.idx_extension,
@@ -222,9 +236,8 @@ function ws_pem_extensions_get_list($params, &$service)
   }
   $query.= '
     GROUP BY idx_extension';
-  
 
-  if (isset($_SESSION['filter']['search'])) {
+  if (isset($params['filter_search'])) {
     $query.= '
     ORDER BY FIND_IN_SET(idx_extension, "'.$filtered_extension_ids_string.'")';
   }
@@ -239,26 +252,22 @@ function ws_pem_extensions_get_list($params, &$service)
 
   if (count($all_revision_ids) == 0)
   {
-    message_die(
-      'No extensions match your filter',
-      'Most recent extensions',
-      false
+    die(
+      'No extensions match your filter'
     );
   }
 
-  // Offset is used to get extensions from specific page 
-  // and calculate the number of pages depending on number of extensions
+  $nb_extensions = count($all_revision_ids);
 
-  if (isset($offset))
+  // Offset is used to get extensions from specific page 
+  if (isset($page))
   {
-    $revision_ids = array_slice($all_revision_ids, $offset , $extensions_per_page, true);
+    $revision_ids = array_slice($all_revision_ids, $page , $extensions_per_page, true);
   }
   else
   {
     $revision_ids = $all_revision_ids;
   }
-
-  $nb_pages = ceil(count($all_revision_ids)/ $extensions_per_page);
 
   $versions_of = get_versions_of_revision($revision_ids);
   $languages_of = get_languages_of_revision($revision_ids);
@@ -336,14 +345,15 @@ function ws_pem_extensions_get_list($params, &$service)
   if (!isset($_REQUEST['format']))
   {
     //Echo to be compatible with previous version of Piwigo
-    echo serialize($revisions, $nb_pages, $nb_total);
+    echo serialize($revisions, $extensions_per_page, $nb_total);
     exit;
   }
 
   return array(
     'revisions' => $revisions,
-    'nb_pages' => $nb_pages,
+    'extensions_per_page' => $extensions_per_page,
     'nb_total_extensions' => $nb_total,
+    'nb_extensions_filtered' => $nb_extensions,
   );
 }
 

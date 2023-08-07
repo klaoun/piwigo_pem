@@ -29,7 +29,6 @@
   </div>
 {/if}
 
-
   <div class="d-flex content_header">
     <h4>{$CATEGORY.name_plural_EN}
       <span class='badge blue-badge'>{$CATEGORY.extension_count}</span>
@@ -45,7 +44,7 @@
       </select>
       <form class="form-inline  cid-search-form">
         <i class="icon-magnifying-glass"></i>
-        <input id="cid-search" class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+        <input id="cid-search" class="form-control mr-sm-2" placeholder="Search" aria-label="Search">
       </form>
     </div>
   </div>
@@ -53,75 +52,56 @@
   <div class="col-12 extension_filters">
     <div class="row">
 
-      <div class="col-md-4 form-group">
-        <label for="version_filter" class="col-12">Version</label>
-        <select class="form-select" >
-          <option selected disabled>Select a version</option>
+      <div class="col-md-4 form-group version_filter_container">
+        <label for="extension_version_select" class="col-12 pb-2">Compatible version of Piwigo</label>
+        <select class="extension_version_select w-100">
+          <option selected value="all">All versions</option>
 {foreach from=$VERSIONS item=version}
           <option value="{$version.id_version}">{$version.version}</option>
 {/foreach}
         </select>
       </div>
 
-      <div class="col-md-8">
+      <div class="col-md-4">
         <div class="form-group">
-
-          <label for="autor_filter">Author</label>
-          <select class="form-select" >
-            <option selected disabled>Select an author</option>
-{foreach from=$AUTHORS item=author}
-            <option value="{$author.uId}">{$author.username}</option>
-{/foreach}
+          <label for="extension_author_select" class="col-12 pb-2">Authors</label>
+          <select class="extension_author_select" data-selectize="authors" data-value="{$author_selection|@json_encode|escape:html}"
+            placeholder="{'Type in a search term'|translate}"
+            data-create="true" name="authors[]" multiple style="width:calc(100% + 2px);">
+  {foreach from=$AUTHORS item=author}
+              <option value="{$author.uid}">{$author.username}</option>
+  {/foreach}
           </select>
-          {* <input type="text" class="form-control w-100" id="autor_filter" placeholder="Select authors"> *}   
-
-        </div>  
+        </div>
       </div>
-    </div>
-
-    <div class="row mt-4">
 
       <div class="col-md-4">
-
-        <div data-slider="last_update" class="slider_blocks">
-              <div class="dimensionSlidersTitleButtons">
-                <div>
-                  Date <span class="slider-info">between 2003 and 2023</span>
-                </div>
-                <a class="slider-choice dimension-cancel" data-min="112" data-max="8256">Annuler</a>
-              </div>
-              <div class="slider-slider ui-slider ui-slider-horizontal ui-widget ui-widget-content ui-corner-all" aria-disabled="false">
-                <div class="ui-slider-range ui-widget-header ui-corner-all" style="left: 0%; width: 100%;"></div>
-                <a class="ui-slider-handle ui-state-default ui-corner-all" href="#" style="left: 0%;"></a>
-              </div>
-
-              <input type="hidden" data-input="min" name="filter_dimension_min_width" value="112">
-              <input type="hidden" data-input="max" name="filter_dimension_max_width" value="8256">
-            </div>
-
-      </div>
-
-    </div>
-    {* Tags filter *}
-    <div class="row mt-4" id="tag_select">
-      <div class="col-12">
+        <div class="form-group">
+          <label for="extension_tag_select" class="col-12 pb-2">Tags</label>
+          <select class="extension_tag_select" data-selectize="tags" data-value="{$tag_selection|@json_encode|escape:html}"
+            placeholder="{'Type in a search term'|translate}"
+            data-create="true" name="tags[]" multiple style="width:calc(100% + 2px);">
 {foreach from=$TAGS item=tag}
-    <label class="badge rounded-pill" for="flexCheckDefault">
-      <input type="hidden" name="alarm" value="False" />
-      <input class="form-check-input checkbox_hidden" type="checkbox" value="true" id="{$tag.tId}_{$tag.name}">
-      {$tag.name}
-    </label>
-  
+              <option value="{$tag.tid}">{$tag.name}</option>
 {/foreach}
+          </select>
+        </div>
       </div>
-    </div>
 
+    </div>
   </div>
 
   <div class="extensions_container">
 
+    <div class="d-flex justify-content-center spinner">
+      <div class="spinner-border" role="status"></div>
+      <span class="sr-only ms-3 align-middle">Loading...</span>
+    </div>
+
     <div class="extension_info card" id="jango_fett">
       <div class="row card-body">
+
+      
 
         <div class="col col-4 text-center extension_image_container">
           <div class="extension_image_div">
@@ -148,17 +128,22 @@
   </div>
 
   <div class="pagination text-center justify-content-center">
-    <a class="align-middle" id="previous_page" href="{$PEM_ROOT_URL}index.php?" ><i class="icon-chevron-left"></i></a>
+    <a class="align-middle d-none" id="previous_page" href="{$PEM_ROOT_URL}index.php?" ><i class="icon-chevron-left"></i></a>
     <div class="page_buttons align-middle">
     </div>
-    <a class="align-middle" id="next_page" href="{$PEM_ROOT_URL}index.php?"><i class="icon-chevron-right"></i></a>
+    <a class="align-middle d-none" id="next_page" href="{$PEM_ROOT_URL}index.php?"><i class="icon-chevron-right"></i></a>
   </div>
 
 </div>
 
 <script>
+
+var PEM_NO_EXTENSIONS =  `{$PEM_NO_EXTENSIONS}`;
+
 var PEM_ROOT_URL = '{$PEM_ROOT_URL}';
 var PEM_ROOT_URL_PLUGINS = '{$PEM_ROOT_URL_PLUGINS}';
+
+
 </script>
 
 <script src="{$PEM_ROOT_URL_PLUGINS}template/js/list_view.js" require="jquery"></script>

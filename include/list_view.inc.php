@@ -148,6 +148,10 @@ SELECT
       'TAGS' => $tags,
       )
     );
+
+    // Template for no extensions found
+    $template->set_filename('pem_no_extensions', realpath(PEM_PATH . 'template/list_view/no_extensions.tpl'));
+    $template->assign_var_from_handle('PEM_NO_EXTENSIONS', 'pem_no_extensions');
   }
   else
   {

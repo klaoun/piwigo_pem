@@ -76,7 +76,7 @@ Filter section
   position: absolute;
   z-index: 1;
   margin-left: 20px;
-  margin-top: 10px;
+  margin-top: 7px;
 }
 
 /* Slider */
@@ -180,60 +180,6 @@ height: 2px;
   border-radius:25px;
   background-color:#e3e3e3;
 }
-
-.selectize-input{
-  box-shadow: none;
-  line-height:1rem;
-}
-
-.selectize-input  .item,
-.selectize-input .item.active,
-.selectize-input [data-value]{
-  background-image:none !important;
-  background-color: #ffa646 !important;
-  border-color: transparent !important;
-  color: black !important;
-
-  border-radius: 20px !important;
-}
-
-.selectize-input .item .remove,
-.selectize-input .item .remove {
-  background-color: transparent !important;
-  border-top-right-radius: 20px !important;
-  border-bottom-right-radius: 20px !important;
-  color: black !important;
-  
-  border-left: 1px solid transparent !important;
-
-}
-.selectize-input .item .remove:hover,
-.selectize-input .item .remove:hover {
-  background-color: #ff7700 !important;
-}
-
-.version_filter_container .selectize-control,
-.version_filter_container .selectize-dropdown.single.form-select.w-100{
-  padding:0;
-}
-
-.version_filter_container .selectize-input,
-.version_filter_container .selectize-input .item, 
-.version_filter_container .selectize-input .item.active, 
-.version_filter_container .selectize-input [data-value]{
-  border: none;
-  background: transparent!important;
-  box-shadow:none!important;
-}
-
-.version_filter_container .selectize-control.single .selectize-input:after{
-  display:none;
-}
-
-.form-select{
-  line-height:1rem;
-}
-
 
 /******
 Extension cards
