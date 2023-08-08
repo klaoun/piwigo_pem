@@ -9,6 +9,8 @@ if (isset($_GET['uid']) && 1 == count($_GET))
 
   global $conf; 
 
+  include_once(PEM_PATH . 'include/functions_language.inc.php');
+
   $current_user_page_id = $_GET['uid'];
 
   // Specific is the connected user is on their own acocunt page
@@ -122,22 +124,28 @@ SELECT
 
     foreach ($extension_ids as $extension_id)
     {
-      $extension = array(
-        'id' => $extension_id,
-        'name' => htmlspecialchars(strip_tags($extension_infos_of[$extension_id]['name'])),
-        'category' => $category_of_extension[$extension_id]['default_name'],
-        'rating_score' => generate_static_stars($extension_infos_of[$extension_id]['rating_score'],0),
-        'total_rates' =>  isset($total_rates_of_extension[$extension_id]) ? $total_rates_of_extension[$extension_id] : '',
-        'nb_reviews' => isset($extension_infos_of[$extension_id]['nb_reviews']) ? $extension_infos_of[$extension_id]['nb_reviews'] : '',
-        'nb_downloads' => isset($download_of_extension[$extension_id]) ? $download_of_extension[$extension_id] : '',
-        'last_updated'=> isset($last_revision_date_of[$extension_id]) ? $last_revision_date_of[$extension_id] : '',
-        'publish_date' => isset($publish_extension_date_of[$extension_id]) ? $publish_extension_date_of[$extension_id] : '',
-      );
-
-
-      if (in_array($extension_id, $extension_ids))
+      if(isset($extension_infos_of[$extension_id]['name']))
       {
-        $template->append('extensions', $extension);
+        $extension = array(
+          'id' => $extension_id,
+          'name' =>htmlspecialchars(strip_tags($extension_infos_of[$extension_id]['name'])),
+          'category' => $category_of_extension[$extension_id]['default_name'],
+          'rating_score' => generate_static_stars($extension_infos_of[$extension_id]['rating_score'],0),
+          'total_rates' =>  isset($total_rates_of_extension[$extension_id]) ? $total_rates_of_extension[$extension_id] : '',
+          'nb_reviews' => isset($extension_infos_of[$extension_id]['nb_reviews']) ? $extension_infos_of[$extension_id]['nb_reviews'] : '',
+          'nb_downloads' => isset($download_of_extension[$extension_id]) ? $download_of_extension[$extension_id] : '',
+          'last_updated'=> isset($last_revision_date_of[$extension_id]) ? $last_revision_date_of[$extension_id] : '',
+          'publish_date' => isset($publish_extension_date_of[$extension_id]) ? $publish_extension_date_of[$extension_id] : '',
+        );
+  
+        if (in_array($extension_id, $extension_ids))
+        {
+          $template->append('extensions', $extension);
+        }
+      }
+      else
+      {
+        continue;
       }
     }
   }
@@ -169,6 +177,16 @@ SELECT
       'can_modify' => isset($page['user_can_modify']) ? $page['user_can_modify'] : false ,
     )
   );
+
+  // Assign template foredit user info modal
+
+  $template->set_filename('pem_user_edit_info_form', realpath(PEM_PATH . 'template/modals/user_edit_info_form.tpl'));
+  $template->assign_var_from_handle('PEM_USER_EDIT_INFO_FORM', 'pem_user_edit_info_form');
+
+  // Assign template for new extension modal
+  include_once(PEM_PATH . 'include/extension/extension_add.inc.php');
+  $template->set_filename('pem_add_ext_form', realpath(PEM_PATH . 'template/modals/add_ext_form.tpl'));
+  $template->assign_var_from_handle('PEM_ADD_EXT_FORM', 'pem_add_ext_form');
 }
 else
 {
