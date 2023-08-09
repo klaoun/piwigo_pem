@@ -2,16 +2,15 @@
 if (isset($_GET['uid']) && 1 == count($_GET))
 {
 
-  if (!empty($_POST))
-  {
-    check_pwg_token();
-  }
-
   global $conf; 
 
   include_once(PEM_PATH . 'include/functions_language.inc.php');
 
   $current_user_page_id = $_GET['uid'];
+
+  // Assign template for new extension modal
+  // Use extension mod because there is a multiple parts that are the same, it saves having the same code twice 
+  include_once(PEM_PATH . 'include/extension/extension_mod.inc.php');
 
   // Specific is the connected user is on their own acocunt page
   if ($user['id'] == $current_user_page_id)
@@ -30,29 +29,6 @@ if (isset($_GET['uid']) && 1 == count($_GET))
         $user,
         create_user_infos($user['id'], true)
       );
-    }
-
-    // +-----------------------------------------------------------------------+
-    // | Form submission                                                       |
-    // +-----------------------------------------------------------------------+
-
-    if (isset($_POST['submit']))
-    {
-      if (!preg_match('/^(day|week|month)$/', $_POST['remind_every']))
-      {
-        die("hacking attempt!");
-      }
-
-      $query = '
-    UPDATE '.USER_INFOS_TABLE.'
-      SET remind_every = \''.$_POST['remind_every'].'\'
-      WHERE idx_user = '.$user['id'].'
-    ;';
-    pwg_query($query);
-
-      $user['remind_every'] = $_POST['remind_every'];
-
-      $page['infos'][] = 'parameters saved';
     }
   }
 
@@ -129,7 +105,7 @@ SELECT
         $extension = array(
           'id' => $extension_id,
           'name' =>htmlspecialchars(strip_tags($extension_infos_of[$extension_id]['name'])),
-          'category' => $category_of_extension[$extension_id]['default_name'],
+          'category' => isset($category_of_extension[$extension_id]['default_name']) ? $category_of_extension[$extension_id]['default_name'] : '' ,
           'rating_score' => generate_static_stars($extension_infos_of[$extension_id]['rating_score'],0),
           'total_rates' =>  isset($total_rates_of_extension[$extension_id]) ? $total_rates_of_extension[$extension_id] : '',
           'nb_reviews' => isset($extension_infos_of[$extension_id]['nb_reviews']) ? $extension_infos_of[$extension_id]['nb_reviews'] : '',
@@ -178,15 +154,14 @@ SELECT
     )
   );
 
-  // Assign template foredit user info modal
-
+  // Assign template for edit user info modal
   $template->set_filename('pem_user_edit_info_form', realpath(PEM_PATH . 'template/modals/user_edit_info_form.tpl'));
   $template->assign_var_from_handle('PEM_USER_EDIT_INFO_FORM', 'pem_user_edit_info_form');
 
   // Assign template for new extension modal
-  include_once(PEM_PATH . 'include/extension/extension_add.inc.php');
   $template->set_filename('pem_add_ext_form', realpath(PEM_PATH . 'template/modals/add_ext_form.tpl'));
   $template->assign_var_from_handle('PEM_ADD_EXT_FORM', 'pem_add_ext_form');
+  
 }
 else
 {
