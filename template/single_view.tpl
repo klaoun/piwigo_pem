@@ -13,6 +13,14 @@
     </a>
   </section>
 
+{if $MESSAGE}
+  <section>
+  <div class="mt-3 {if $MESSAGE_TYPE == "success"}infos{/if}">
+      <p class="my-2">{$MESSAGE}</p>
+    </div>
+  </section>
+{/if}
+
 {if $can_modify == true}
   <section  class="mt-4 section-fluid">
     <div class="d-flex justify-content-end">
@@ -26,6 +34,7 @@
     </div>
   </section>
 {/if}
+
 
   <section class="mt-4 section-fluid">
   <div class="row">
@@ -41,9 +50,14 @@
       </div>
 
       <div>
-{foreach from=$authors item=author}
-        <h4 class="author d-inline">{$author}{if !$author@last}, {/if}</h4>
+{foreach from=$authors item=author key=key}
+        <a href = "{$PEM_ROOT_URL}index.php?uid={$key}"><h4 class="author d-inline link">{$author}{if !$author@last}, {/if}</h4></a>
 {/foreach}
+{if $can_modify == true}
+  <span class="edit_mode" data-bs-toggle="modal" data-bs-target="#authorsModal">
+    <i class="icon-pencil"></i>
+  </span>
+{/if}
       </div> 
 
       <div class="mt-5">
@@ -64,7 +78,7 @@
 {/if}
 
       <div class="mt-5">
-        <a href="{$download_last_url}"><button class="btn btn-primary d-inline">Download</button></a>
+        <a href="{$download_last_url}" rel="nofollow" target="_blank"><button class="btn btn-primary d-inline">Download</button></a>
         <p class="revision-version d-inline ml-3">Revision {$revisions[0]['version']}</p>
         <span class='badge blue-badge d-inline'>{$last_date_formatted_since}</span>
       </div>
@@ -90,33 +104,38 @@
 {*info numbers block *}
   <section class="mt-5 pt-3 section-fluid">
     <div class="text-center">
-      <div class="p-3 border-right d-inline-block">
+      <div class="px-3 py-2 border-right d-inline-block">
         <span><i class="icon-download"></i>{$extension_downloads}</span>
       </div>
 {if $rate_summary.rating_score}
-      <div class="p-3 border-right d-inline-block">
+      <div class="px-3 py-2 border-right d-inline-block">
         {$rate_summary.rating_score}
       </div>
 {/if}
-      <div class="p-3 border-right d-inline-block">
+{if $latest_compatible_version}
+      <div class="px-3 py-2 border-right d-inline-block">
         <span><i class="icon-check"></i>Compatible with Piwigo {$latest_compatible_version}</span>
       </div>
-
-      <div class="p-3 d-inline-block">
+{/if}
+{if $first_date}
+      <div class="px-3 py-2 d-inline-block">
         <span><i class="icon-rocket"></i>{$first_date}</span>
         <span class='badge blue-badge d-inline'>{$first_date_formatted_since}</span>
       </div>
+{/if}
     </div>
     
   </section>
 
 {*Description block *}
   <section class="mt-5 pt-3 section-fluid position-relative">
-{if $can_modify == true}
+
+{* Reactivate this span once the description is in a seperate modal *}
+{* {if $can_modify == true}
     <span class="circle-icon edit_mode position-absolute top-0 end-0 translate-middle" data-bs-toggle="modal" data-bs-target="#DescriptionModal">
       <i class="icon-pencil" ></i>
     </span>
-{/if}
+{/if} *}
 
     <div>
       <p class="extension_description">{$description}</p>
@@ -173,7 +192,7 @@
     </div>
   </section>
 
-{if count($links) > 0}
+{* {if count($links) > 0} *}
   <section class="mt-5 pt-3 section-fluid related_links">
 
     <h3 class="mb-3">Related links</h3>
@@ -187,7 +206,7 @@
     </div>
 
   </section>
-{/if}
+{* {/if} *}
 
 {*Revision block *}
   <section class="mt-5 pt-3 section-fluid">
@@ -197,7 +216,7 @@
       <button class="btn btn-tertiary">
         <i class="icon-git-alt"></i> SVN & Git configuration
       </button>
-      <button class="btn btn-tertiary ms-3">
+      <button class="btn btn-tertiary ms-3" data-bs-toggle="modal" data-bs-target="#addRevisionModal">
         <i class="icon-circle-plus"></i> Add a revision
       </button>
     </div>
@@ -296,8 +315,11 @@
   {$PEM_EDIT_GENERAL_INFO_FORM}
   {$PEM_EDIT_REVISION_FORM}
   {$PEM_EDIT_IMAGE_FORM}
-  {$PEM_EDIT_DESCRIPTION_FORM}
+  {* TODO seperate the description into a seperate modal *}
+  {* {$PEM_EDIT_DESCRIPTION_FORM} *}
   {$PEM_EDIT_RELATED_LINK_FORM}
+  {$PEM_EDIT_AUTHORS_FORM}
+  {$PEM_ADD_REVISION_FORM}
 
 </div>
 
