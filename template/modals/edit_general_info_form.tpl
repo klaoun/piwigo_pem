@@ -16,18 +16,6 @@
                 <input type="text" name="extension_name" size="35" maxlength="255" value="{$extension_name}" class="w-100 form-control" required {if $translator}disabled="disabled"{/if}/>
               </div>
 
-              {* Extension Authors *}
-              <div class="mb-3 form-group">
-                <label for="extension_author_select" class="col-12">Authors</label>
-                <select class="extension_author_select" data-selectize="authors" data-value="{$author_selection|@json_encode|escape:html}"
-                  placeholder="{'Type in a search term'|translate}"
-                  data-create="true" name="authors[]" multiple>
-{foreach from=$ALL_AUTHORS item=author}
-                  <option value="{$author.uid}" {if $author.uid|array_key_exists:$authors}selected {/if}>{$author.username}</option>
-{/foreach}
-                </select>
-              </div>
-
               {* Extension category *}
               <div class="mb-3 form-group">
                 <label for="extension_category_select" class="col-12">Category</label>
