@@ -7,7 +7,7 @@
             <h5 class="modal-title" id="generalInfoModalLabel"><i class="icon-circle-info"></i>General information</h5>
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
-          <form method="post" action="{$f_action}" enctype="multipart/form-data">
+          <form method="POST" action="{$f_action}" enctype="multipart/form-data">
 
             <div class="modal-body">
               {* Extension name *}
@@ -23,7 +23,7 @@
                   placeholder="{'Type in a search term'|translate}"
                   data-create="true" name="authors[]" multiple>
 {foreach from=$ALL_AUTHORS item=author}
-                  <option value="{$author.uid}" {if $author.uid|array_key_exists:$authors}selected{/if}>{$author.username}</option>
+                  <option value="{$author.uid}" {if $author.uid|array_key_exists:$authors}selected {/if}>{$author.username}</option>
 {/foreach}
                 </select>
               </div>
@@ -32,7 +32,7 @@
               <div class="mb-3 form-group">
                 <label for="extension_category_select" class="col-12">Category</label>
         
-                <select class="form-select w-100" id="extension_category_select">
+                <select class="form-select w-100" id="extension_category_select" name="extension_category[]">
 {foreach from=$CATEGORIES_INFO item=category}
                   <option value="{$category.cid}" {if $category.cid == $categories_of_extension.id_category}selected{/if}>{$category.name}</option>
 {/foreach}
@@ -75,9 +75,9 @@
                   <span id="span_{$language.id}" class="desc" style="display: none;">
                     <label><input type="radio" name="default_description" value="{$language.id}" {if $default_language == $language.id}checked="checked"{/if} {if $translator}disabled="disabled"{/if}> {'Default description'|@translate}</label>
                     <br> *}
-                  <input type="radio" name="default_description" value="{$language.id}" hidden {if $default_language == $language.id}checked="checked"{/if} {if $translator}disabled="disabled"{/if}>
+                  <input type="hidden" name="default_description" value="5" checked="checked">
                   <label for="extension_descriptions">Description</label>
-                  <textarea class="form-control" name="extension_descriptions[{$language.id}]" id="desc_{$language.id}" 
+                  <textarea class="form-control" name="extension_descriptions[5]" id="desc_5" 
                   {if $translator and !$language.id|@in_array:$translator_languages}disabled="disabled"{/if} required>{$description}</textarea>
                   {* </span>
                 {/foreach}
