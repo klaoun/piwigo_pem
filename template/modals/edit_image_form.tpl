@@ -7,15 +7,26 @@
               <h5 class="modal-title" id="ImageModalLabel"><i class="icon-image"></i>Edit images</h5>
               <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <div class="modal-body">
-
-
             
-            </div>
-            <div class="modal-footer">
-              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-              <button type="button" class="btn btn-primary">Save changes</button>
-            </div>
+
+            <form method="post" action="{$f_action}" enctype="multipart/form-data">
+              <div class="modal-body">
+                <legend>{'Add or replace screenshot'|@translate}</legend>
+            
+                <strong>{'File'|@translate} *</strong>
+                <input type="file" name="picture" maxlength="50" value="{$f_picture_name}"/>
+
+              </div>
+
+              <input type="hidden" name="pem_action" value="edit_screenshot">
+
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <input type="submit" class="btn btn-primary" value="{'Save Changes'|@translate}" name="submit" />
+              </div>
+
+            </form>
+          
           </div>
         </div>
       </div>
