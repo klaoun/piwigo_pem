@@ -1,12 +1,24 @@
 <link rel="stylesheet" type="text/css" href="{$PEM_ROOT_URL_PLUGINS}styles/css/account.css">
 
+{* Load selectize *}
+<script src="{$PEM_ROOT_URL_PLUGINS}vendor/js/selectize.min.js"></script>
+<link rel="stylesheet" type="text/css" href="{$PEM_ROOT_URL_PLUGINS}vendor/css/selectize.clear.css">
+
 <div class="container" id="profile">
+
+{if $MESSAGE}
+  <section>
+  <div class="mt-3 {if $MESSAGE_TYPE == "success"}infos{/if}">
+      <p class="my-2">{$MESSAGE}</p>
+    </div>
+  </section>
+{/if}
 
 {if $can_modify == true}
   <section  class="mt-4 section-fluid">
     <div class="d-flex justify-content-end">
       <div class="form-check form-switch ">
-        <input class="form-check-input" type="checkbox" role="switch" id="edit_mode" >
+        <input class="form-check-input" type="checkbox" role="switch" id="edit_mode" unchecked >
         <label class="form-check-label" for="edit_mode">Edit mode</label>
       </div>                                            
     </div>
@@ -17,7 +29,7 @@
     <div class="row">
       <div class="col-4 border-right position-relative">
 {if $can_modify == true}
-        <span class="circle-icon edit_mode position-absolute top-0 end-0 translate-middle" data-bs-toggle="modal" data-bs-target="#generalInfoModal">
+        <span class="circle-icon edit_mode position-absolute top-0 end-0 translate-middle" data-bs-toggle="modal" data-bs-target="#userInfoModal">
           <i class="icon-pencil"></i>
         </span>
  {/if}
@@ -37,8 +49,13 @@
 {if isset($extensions) || isset($other_extensions)}
   <section class="section-fluid my-5">
     <div class="row">
-      <div class="col-12">
-        <h4 class="d-inline">Extensions by "{$USER.username}"</h4><span class="badge blue-badge d-inline">{$USER.nb_extensions}</span>
+      <div class="col-12 d-flex justify-content-between">
+        <div>
+          <h4 class="d-inline">Extensions by "{$USER.username}"</h4><span class="badge blue-badge d-inline">{$USER.nb_extensions}</span>
+        </div>
+  {if $can_modify == true}
+        <button data-bs-toggle="modal" data-bs-target="#addExtModal" class="btn btn-primary align-middle">Add an extension</button>
+  {/if}
       </div>
       <div class="col-12 my-5">
       <table class="table">
@@ -80,4 +97,8 @@
 
 </div>
 
+{$PEM_USER_EDIT_INFO_FORM}
+{$PEM_ADD_EXT_FORM}
+
 <script src="{$PEM_ROOT_URL_PLUGINS}template/js/account.js" require="jquery"></script>
+{combine_script id='jquery.confirm' load='footer' require='jquery' path='vendor/js/jquery-confirm.min.js'}
