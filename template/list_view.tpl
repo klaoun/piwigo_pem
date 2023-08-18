@@ -65,7 +65,7 @@
       <div class="col-md-4">
         <div class="form-group">
           <label for="extension_author_select" class="col-12 pb-2">Authors</label>
-          <select class="extension_author_select" data-selectize="authors" data-value="{$author_selection|@json_encode|escape:html}"
+          <select class="extension_author_select" data-selectize="authors"
             placeholder="{'Type in a search term'|translate}"
             data-create="true" name="authors[]" multiple style="width:calc(100% + 2px);">
   {foreach from=$AUTHORS item=author}
