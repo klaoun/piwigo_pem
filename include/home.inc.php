@@ -124,6 +124,7 @@ WHERE id_extension = '.$pem_spotlight_extensions[$category['cid']].'
     else
     {
       $categories[$i]['spotlight_extension']['screenshot_src'] = get_absolute_root_url() . PEM_PATH .'images/image-solid.svg';
+      $categories[$i]['spotlight_extension']['screenshot_class'] = 'placeholder_image';
     }
   }
 
@@ -163,6 +164,7 @@ SELECT
     else
     {
       $categories[$i]['highest_rated_extension']['screenshot_src'] = get_absolute_root_url() . PEM_PATH .'images/image-solid.svg';
+      $categories[$i]['highest_rated_extension']['screenshot_class'] = 'placeholder_image';
     }
   }
 
@@ -205,6 +207,7 @@ FROM '.PEM_REV_TABLE.' AS r
     else
     {
       $categories[$i]['most_downloaded_extension']['screenshot_src'] = get_absolute_root_url() . PEM_PATH .'images/image-solid.svg';
+      $categories[$i]['most_downloaded_extension']['screenshot_class'] = 'placeholder_image';
     }
   }
   /**
@@ -228,9 +231,9 @@ FROM '.PEM_REV_TABLE.' AS r
     else
     {
       $categories[$i]['most_recent_extension']['screenshot_src'] = get_absolute_root_url() . PEM_PATH .'images/image-solid.svg';
+      $categories[$i]['most_recent_extension']['screenshot_class'] = 'placeholder_image';
     }
   }
-  
 
 }
 
