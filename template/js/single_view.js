@@ -43,12 +43,46 @@ jQuery("#edit_mode").change(function() {
 });
 
 // Selectize modal inputs
-jQuery('.extension_author_select').selectize({
-  plugins: ["remove_button"],
-})
+jQuery('.extension_author_select').selectize()
 
 jQuery('.extension_tag_select').selectize({
   plugins: ["remove_button"],
 })
 
-jQuery("#extension_category").selectize();
+jQuery('.extension_lang_desc_select').selectize({
+  plugins: ["remove_button"],
+})
+
+jQuery('.revision_compatible_versions').selectize({
+  plugins: ["remove_button"],
+})
+
+jQuery('#extensions_languages').selectize({
+  plugins: ["remove_button"],
+})
+
+
+
+function showOnlyThisChild(parentId, childIdtoShow)
+{
+  var parent = document.getElementById(parentId);
+  var children = parent.childNodes;
+  var n = children.length;
+
+  for (i=0; i<n; i++)
+  {
+    var child = children[i];
+    if (child.id != undefined)
+    {
+      if (child.id == childIdtoShow)
+      {
+        child.style.display = 'block';
+      }
+      else
+      {
+        child.style.display = 'none';
+      }
+    }
+  }
+}
+
