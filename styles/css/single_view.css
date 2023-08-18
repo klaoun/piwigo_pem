@@ -52,7 +52,6 @@ header Image
 #single_view .placeholder_image{
   margin:0 auto;
   max-width:50%;
-  opacity: .2;
 }
 
 #single_view .screenshot_image{

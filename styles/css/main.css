@@ -218,6 +218,10 @@ a{
 Inputs
 ******/
 
+textarea{
+  min-height:calc(2em + .75rem + 2px);
+}
+
 /*Switch*/
 .form-check-input:checked {
   background-color: var(--main_orange);
@@ -293,6 +297,10 @@ input[type="search"]:focus::-webkit-search-cancel-button{
 }
 
 .version_filter_container .selectize-control.single .selectize-input:after{
+  display:none;
+}
+
+.current_user .remove{
   display:none;
 }
 
@@ -382,9 +390,9 @@ Messages
 }
 
 .errors {
-  color: #f22;
-  background-color: #ffd5dc;
-  border-left: 4px solid #f22;
+  color: var(--message_red);
+  background-color: var(--message_light_red);
+  border-left: 4px solid var(--message_red);
 }
 
 .warnings {
@@ -478,6 +486,11 @@ Modals
   max-width:750px;
 }
 
+.modal-body{
+  max-height:75vh;
+  overflow:auto;
+}
+
 
 /******
 Edit mode
@@ -545,4 +558,8 @@ Other
   color:var(--grey3);
   width: 25px;
   height: 25px;
+}
+
+.placeholder_image{
+  opacity:.2;
 }

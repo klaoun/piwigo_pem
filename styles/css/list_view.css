@@ -219,8 +219,6 @@ Extension cards
 
 .extension_info .extension_image_div{
   object-fit:cover;
-  /* max-height:300px;
-  width:auto; */
 }
 
 .extension_authors  .link{
@@ -228,9 +226,6 @@ Extension cards
 }
 
 .placeholder_image{
-  opacity:.2;
-  /* background-color:var(--grey4);
-  padding:15px 30px; */
   max-width:200px;
 }
 
