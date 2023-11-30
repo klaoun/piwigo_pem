@@ -6,7 +6,7 @@
 
 <div class="container" id="profile">
 
-{if $MESSAGE}
+{if isset($MESSAGE)}
   <section>
   <div class="mt-3 {if $MESSAGE_TYPE == "success"}infos{/if}">
       <p class="my-2">{$MESSAGE}</p>
@@ -18,7 +18,7 @@
   <section  class="mt-4 section-fluid">
     <div class="d-flex justify-content-end">
       <div class="form-check form-switch ">
-        <input class="form-check-input" type="checkbox" role="switch" id="edit_mode" unchecked >
+        <input class="form-check-input" type="checkbox" role="switch" id="edit_mode" >
         <label class="form-check-label" for="edit_mode">Edit mode</label>
       </div>                                            
     </div>
@@ -46,55 +46,54 @@
       </div>
     </div>
   </section>
-{if isset($extensions) || isset($other_extensions)}
+
   <section class="section-fluid my-5">
     <div class="row">
       <div class="col-12 d-flex justify-content-between">
         <div>
           <h4 class="d-inline">Extensions by "{$USER.username}"</h4><span class="badge blue-badge d-inline">{$USER.nb_extensions}</span>
         </div>
-  {if $can_modify == true}
+{if $can_modify == true}
         <button data-bs-toggle="modal" data-bs-target="#addExtModal" class="btn btn-primary align-middle">Add an extension</button>
-  {/if}
+{/if}
       </div>
+{if isset($extensions) || isset($other_extensions)}
       <div class="col-12 my-5">
-      <table class="table">
-        <thead>
-          <tr>
-            <th>Name</th>
-            <th>Category</th>
-            <th>Publish date</th>
-            <th>Last update</th>
-            <th>Downloads</th>
-            <th>Rating</th>
-          </tr>
-        <thead>
-        <tbody>
+        <table class="table">
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Category</th>
+              <th>Publish date</th>
+              <th>Last update</th>
+              <th>Downloads</th>
+              <th>Rating</th>
+            </tr>
+          <thead>
+          <tbody>
   {foreach from=$extensions item=extension}
-          <tr>
-            <td><a class="link" href="{$PEM_ROOT_URL}index.php?eid={$extension.id}">{$extension.name}</a></td>
-            <td>{$extension.category}</td>
-            <td>{$extension.publish_date}</td>
-            <td>{$extension.last_updated}</td>
-            <td>{$extension.nb_downloads}</td>
-            <td>{if $extension.rating_score}{$extension.rating_score}({$extension.total_rates}){/if}</td>
-          </tr>
+            <tr>
+              <td><a class="link" href="{$PEM_ROOT_URL}index.php?eid={$extension.id}">{$extension.name}</a></td>
+              <td>{$extension.category}</td>
+              <td>{$extension.publish_date}</td>
+              <td>{$extension.last_updated}</td>
+              <td>{$extension.nb_downloads}</td>
+              <td>{if $extension.rating_score}{$extension.rating_score}({$extension.total_rates}){/if}</td>
+            </tr>
   {/foreach}
-        </tbody>
+          </tbody>
         </table>
       </div>
-    </div>
-  </section>
 {else}
-  <section class="section-fluid my-5">
-    <div class="row">
+  <div class="row">
       <div class="col-12">
         <p>This user has not yet contributed any plugins</p>
       </div>
     </div>
-  </section>
 {/if}
-
+    </div>
+  </section>
+  
 </div>
 
 {$PEM_USER_EDIT_INFO_FORM}
