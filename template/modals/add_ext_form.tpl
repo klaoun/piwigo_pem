@@ -1,23 +1,23 @@
 <section id="addExt-popin">
   <div>
-    <div class="modal fade" id="addExtModal" tabindex="-1" aria-labelledby="generalInfoModalLabel" aria-hidden="true">
+    <div class="modal fade" id="addExtModal" tabindex="-1" aria-labelledby="addExtModalLabel" aria-hidden="true">
       <div class="modal-dialog">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title" id="generalInfoModalLabel"><i class="icon-circle-info"></i>General information</h5>
+            <h5 class="modal-title" id="addExtModalLabel"><i class="icon-circle-plus"></i>Add extension</h5>
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
-          <form method="POST" action="{$f_action}" enctype="multipart/form-data">
+          <form method="POST" enctype="multipart/form-data">
 
             <div class="modal-body">
               {* Extension name *}
               <div class="mb-3 form-group">
                 <label for="extension_name" class="form-label w-100 ">Name</label>
-                <input type="text" name="extension_name" size="35" maxlength="255" value="{$extension_name}" class="w-100 form-control" required {if $translator}disabled="disabled"{/if}/>
+                <input type="text" name="extension_name" size="35" maxlength="255" value="{if isset($extension_name)}{$extension_name}{/if}" class="w-100 form-control" required {if isset($translator)}disabled="disabled"{/if}/>
               </div>
 
               {* Extension Author *}
-              <input type="hidden" name="authors[]" value="{$author.uid}">
+                <input type="hidden" name="authors[]" value="{if isset($author.uid)}{$author.uid}{/if}">
 
               {* Extension category *}
               <div class="mb-3 form-group">
@@ -25,7 +25,7 @@
         
                 <select class="form-select w-100" id="extension_category_select" name="extension_category[]">
 {foreach from=$CATEGORIES_INFO item=category}
-                  <option value="{$category.cid}" {if $category.cid == $categories_of_extension.id_category}selected{/if}>{$category.name}</option>
+                  <option value="{$category.cid}">{$category.name}</option>
 {/foreach}
                 </select>
               </div>
