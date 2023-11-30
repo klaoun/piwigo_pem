@@ -13,7 +13,7 @@
     </a>
   </section>
 
-{if $MESSAGE}
+{if isset($MESSAGE)}
   <section>
   <div class="mt-3 {if $MESSAGE_TYPE == "success"}infos{/if}">
       <p class="my-2">{$MESSAGE}</p>
@@ -25,12 +25,16 @@
   <section  class="mt-4 section-fluid">
     <div class="d-flex justify-content-end">
       <div class="form-check form-switch ">
-        <input class="form-check-input" type="checkbox" role="switch" id="edit_mode" >
+        <input class="form-check-input" type="checkbox" role="switch" id="edit_mode">
         <label class="form-check-label" for="edit_mode">Edit mode</label>
       </div>
+  {if isset($u_owner) && $u_owner == true}
       <div class="ms-4">
-        <a><i class="icon-trash"></i>Delete extension</a>
+        <a href="{$u_delete}" onclick="return confirm('{'Are you sure you want to delete this item?'|@translate|escape:javascript}');" class="grey-link" title="{'Delete link'|@translate}">
+          <i class="icon-trash"></i>Delete extension
+        </a>
       </div>
+  {/if}
     </div>
   </section>
 {/if}
@@ -54,7 +58,7 @@
         <a href = "{$PEM_ROOT_URL}index.php?uid={$key}"><h4 class="author d-inline link">{$author}{if !$author@last}, {/if}</h4></a>
 {/foreach}
 {if $can_modify == true}
-  <span class="edit_mode" data-bs-toggle="modal" data-bs-target="#authorsModal">
+  <span class="edit_mode secondary_icon" data-bs-toggle="modal" data-bs-target="#authorsModal">
     <i class="icon-pencil"></i>
   </span>
 {/if}
@@ -78,12 +82,22 @@
 {/if}
 
       <div class="mt-5">
+{if isset($download_last_url)}
         <a href="{$download_last_url}" rel="nofollow" target="_blank"><button class="btn btn-primary d-inline">Download</button></a>
-        <p class="revision-version d-inline ml-3">Revision {$revisions[0]['version']}</p>
-        <span class='badge blue-badge d-inline'>{$last_date_formatted_since}</span>
-      </div>
+{else}
+        <button class="btn btn-secondary d-inline disabled" disabled>Download</button>
+{/if}
 
+{if isset($revisions)}
+        <p class="revision-version d-inline ml-3">Revision {$revisions[0]['version']}</p>
+{/if}
+
+{if isset($last_date_formatted_since)}
+        <span class='badge blue-badge d-inline'>{$last_date_formatted_since}</span>
+{/if}
+      </div>
     </div>
+
     <div class="col-md-6 text-center position-relative" id="image-container">
 {if $can_modify == true}
       <span class="circle-icon edit_mode position-absolute top-0 end-0 translate-middle" data-bs-toggle="modal" data-bs-target="#ImageModal">
@@ -91,7 +105,7 @@
       </span>
 {/if}
 
-{if $screenshot}
+{if isset($screenshot)}
       <img class="img-fluid screenshot_image" src="{$screenshot}">
 {else}
       <img class="img-fluid placeholder_image" src="{$PEM_ROOT_URL_PLUGINS}images/image-solid.svg"> 
@@ -104,23 +118,27 @@
 {*info numbers block *}
   <section class="mt-5 pt-3 section-fluid">
     <div class="text-center">
+{if isset($extension_downloads)}
       <div class="px-3 py-2 border-right d-inline-block">
         <span><i class="icon-download"></i>{$extension_downloads}</span>
       </div>
-{if $rate_summary.rating_score}
+{/if}
+{if isset($rate_summary.rating_score)}
       <div class="px-3 py-2 border-right d-inline-block">
         {$rate_summary.rating_score}
       </div>
 {/if}
-{if $latest_compatible_version}
+{if isset($latest_compatible_version) && $latest_compatible_version != null}
       <div class="px-3 py-2 border-right d-inline-block">
         <span><i class="icon-check"></i>Compatible with Piwigo {$latest_compatible_version}</span>
       </div>
 {/if}
-{if $first_date}
+{if isset($first_date)}
       <div class="px-3 py-2 d-inline-block">
         <span><i class="icon-rocket"></i>{$first_date}</span>
+  {if isset($first_date_formatted_since)}
         <span class='badge blue-badge d-inline'>{$first_date_formatted_since}</span>
+  {/if}
       </div>
 {/if}
     </div>
@@ -137,9 +155,11 @@
     </span>
 {/if} *}
 
+{if isset($description)}
     <div>
       <p class="extension_description">{$description}</p>
     </div>
+{/if}
   </section>
 
 {* Links block *}
