@@ -14,7 +14,7 @@
                 <legend>{'Add or replace screenshot'|@translate}</legend>
             
                 <strong>{'File'|@translate} *</strong>
-                <input type="file" name="picture" maxlength="50" value="{$f_picture_name}"/>
+                <input type="file" name="picture" maxlength="50" {if isset($f_picture_name)}value="{$f_picture_name}"{/if}/>
 
               </div>
 
