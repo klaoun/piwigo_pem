@@ -13,6 +13,7 @@ if (isset($_GET['eid']) && 1 == count($_GET))
 
   // For authors modal
   include_once(PEM_PATH . 'include/extension/extension_mod.inc.php');
+  include_once(PEM_PATH . 'include/extension/extension_authors.inc.php');
 
   // For add revision modal
   include_once(PEM_PATH . 'include/revision/revision_add.inc.php');
