@@ -5,10 +5,9 @@
   
   <div class="container">
     <div class="navbar-brand brand">
-      <a class="d-inline-block" href="https://www.piwigo.org">
+      <a class="d-inline-block" href="https://www.piwigo.org" target="_blank">
         <img src="{$PEM_ROOT_URL_PLUGINS}images/porg.svg" alt="piwigo logo in orange and grey">
       </a>
-      <a class="d-inline-block fw-bold" id="link-back-porg" href="https://www.piwigo.org">Accueil piwigo.org</a>
     </div>
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle Navigation">
