@@ -42,25 +42,27 @@ jQuery("#edit_mode").change(function() {
   jQuery('.related_links').toggle();
 });
 
+jQuery(document).ready(function () {
 // Selectize modal inputs
-jQuery('.extension_author_select').selectize()
+  jQuery('.extension_author_select').selectize()
 
-jQuery('.extension_tag_select').selectize({
-  plugins: ["remove_button"],
-})
+  jQuery('.extension_tag_select').selectize({
+    plugins: ["remove_button"],
+  })
+  
+  jQuery('.extension_lang_desc_select').selectize({
+    plugins: ["remove_button"],
+  })
 
-jQuery('.extension_lang_desc_select').selectize({
-  plugins: ["remove_button"],
-})
+  jQuery('.revision_compatible_versions').selectize({
+    plugins: ["remove_button"],
+  })
 
-jQuery('.revision_compatible_versions').selectize({
-  plugins: ["remove_button"],
-})
+  jQuery('#extensions_languages').selectize({
+    plugins: ["remove_button"],
+  })
 
-jQuery('#extensions_languages').selectize({
-  plugins: ["remove_button"],
-})
-
+});
 
 
 function showOnlyThisChild(parentId, childIdtoShow)
