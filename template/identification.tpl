@@ -1,7 +1,7 @@
 <div class="" id="identification">
 
   <section class="align-self-start p-4">
-    <a href="{$PEM_ROOT_URL}index.php" class="orange-link lnik"><i class="icon-chevron-left"></i>Back</a>
+    <a href="{$PEM_ROOT_URL}index.php" class="orange-link link"><i class="icon-chevron-left"></i>Back</a>
   </section>
 
   <section class="w-100 h-100">
