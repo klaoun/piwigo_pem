@@ -11,9 +11,11 @@
       <h1 class="text-center">
         <i class="icon-arrow-right-from-bracket"></i>Login
       </h1>
-
+      
       <form class=" pt-5 properties" action="{$F_LOGIN_ACTION}" method="post" name="login_form">
 
+      {include file='infos_errors.tpl'}
+      
         <div class="w-100 form-group mx-auto">
           <label for="username">{'Username'|@translate}</label>
           <input type="text" class="form-control w-100" type="text" name="username" id="username" size="25 placeholder="Enter username">
