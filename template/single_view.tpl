@@ -344,3 +344,8 @@
 </div>
 
 <script src="{$PEM_ROOT_URL_PLUGINS}template/js/single_view.js" require="jquery"></script>
+
+<script>
+  //allows any filters set in list view to be cleared 
+  sessionStorage.clear()
+</script>

@@ -141,3 +141,7 @@
   </div>
 </div>
 
+<script>
+  //allows any filters set in list view to be cleared 
+  sessionStorage.clear()
+</script>

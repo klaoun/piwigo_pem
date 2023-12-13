@@ -101,3 +101,9 @@
 
 <script src="{$PEM_ROOT_URL_PLUGINS}template/js/account.js" require="jquery"></script>
 {combine_script id='jquery.confirm' load='footer' require='jquery' path='vendor/js/jquery-confirm.min.js'}
+
+<script>
+  //allows any filters set in list view to be cleared 
+  sessionStorage.clear()
+</script>
+
