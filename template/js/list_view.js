@@ -6,62 +6,141 @@ const cid = urlParams.get('cid')
 const page = urlParams.get('page')
 
 jQuery(document).ready(function () {
-  
-  console.log(jQuery(".extension_version_select").val())
+  // If change extension category reset filters in storage
+  var storedcid = sessionStorage.getItem("cid");
+  var filter_version = sessionStorage.getItem("filter_version") ? sessionStorage.getItem("filter_version") : null;
+  var filter_authors = sessionStorage.getItem("filter_authors") ? sessionStorage.getItem("filter_authors") : null;
+  var filter_tags = sessionStorage.getItem("filter_tags") ? sessionStorage.getItem("filter_tags") : null;
+  var filter_search = sessionStorage.getItem("filter_search") ? sessionStorage.getItem("filter_search") : null;
 
-  
-  if(sessionStorage.getItem("filter_version"))
-  {
-    var filter_version = sessionStorage.getItem("filter_version")
-    // console.log(filter_version)
-    // jQuery(".extension_version_select").val(filter_version).change()
+  // if we change category page reset filters
+  if(storedcid != cid){
+    sessionStorage.clear()
   }
+
+  // Selectize filters
+  jQuery('.extension_tag_select').selectize({
+    plugins: ["remove_button"],
+    items:[filter_tags],
+  })
+
+  jQuery('.extension_author_select').selectize({
+    plugins: ["remove_button"],
+    items:[filter_authors]
+  })
+  
+  // change filter values if there is any stored
+  if(filter_version != null )
+  {
+    jQuery(".extension_version_select").val(filter_version).change()
+    jQuery('.extension_filters').css("display", "block");
+    jQuery('.filter_tab').addClass("toggled");
+  }
+
+  if(filter_authors != null)
+  {
+    jQuery(".extension_author_select").val(filter_authors).change()
+    jQuery('.extension_filters').css("display", "block");
+    jQuery('.filter_tab').addClass("toggled");
+  }
+
+  if(filter_tags != null)
+  {
+    jQuery(".extension_tag_select").val(filter_tags).change()
+    jQuery('.extension_filters').css("display", "block");
+    jQuery('.filter_tab').addClass("toggled");
+  }
+
+  if(filter_search != null)
+  {
+    jQuery("#cid-search").val(filter_search).change()
+  }
+
+  // Watch for sort order or filter changes
+  jQuery("#sort_order").on('change', function () {
+    updatePageParam()
+    getExtensionList(cid);
+  });
+
+  jQuery(".extension_version_select").on('change', function () {
+    var version = jQuery(".extension_version_select").val();
+    sessionStorage.setItem("filter_version",version);
+    updatePageParam()
+    getExtensionList(cid);
+  });
+
+  jQuery(".extension_author_select").on('change', function () {
+    var author_ids = [];
+    jQuery('.extension_author_select').children( "option" ).each(function(){
+      var value = $(this).val()
+      author_ids.push(value)
+    })
+    sessionStorage.setItem("filter_authors",author_ids);
+    updatePageParam()
+    getExtensionList(cid);
+  });
+
+  jQuery(".extension_tag_select").on('change', function () {
+    var tag_ids = [];
+    jQuery('.extension_tag_select').children( "option" ).each(function(){
+      var value = $(this).val()
+      tag_ids.push(value)
+    })
+    sessionStorage.setItem("filter_tags",tag_ids);
+    updatePageParam()
+    getExtensionList(cid);
+  });
+
+  //For word search 
+  jQuery("#cid-search").on('keyup', function(e) {
+    console.log(e)
+    
+    if (jQuery("#cid-search").val().length > 2)
+    {
+      emptyContent()
+      updatePageParam()
+      $('.extensions_container').append('\
+      <div class="d-flex justify-content-center">\
+        <div class="spinner-border" role="status"></div>\
+        <span class="sr-only ms-3 align-middle">Loading...</span>\
+      </div>');
+
+      getExtensionList(cid);
+
+    }
+
+    // if value of iput is removed reset page to all extensions
+    if (jQuery("#cid-search").val().length == 0)
+    {
+      emptyContent()
+      updatePageParam()
+      getExtensionList(cid);
+    }
+
+    if (e.keyCode == 13) {  
+      e.preventDefault(); 
+    }  
+    var search = jQuery("#cid-search").val();
+    sessionStorage.setItem("filter_search",search);
+
+  });
+  
+  // if there is that has a value then display block, if none are set hide
+  // if(filter_version != null && filter_authors != null && filter_tags != null)
+  // {
+  //   jQuery('.extension_filters').css("display", "block");
+  //   jQuery('.filter_tab').addClass("toggled");
+  // }
+  // else{
+  //   jQuery('.extension_filters').css("display", "none");
+  // }
 
   // Call getExtensionList to populate list of extensions
   getExtensionList(cid);
+  sessionStorage.setItem("cid",cid);
 });
 
-// Watch for sort or filter changes
-jQuery("#sort_order").on('change', function () {
-  updatePageParam()
-  getExtensionList(cid);
-});
-
-jQuery(".extension_version_select").on('change', function () {
-  updatePageParam()
-  getExtensionList(cid);
-});
-
-jQuery(".extension_author_select").on('change', function () {
-  updatePageParam()
-  getExtensionList(cid);
-});
-
-jQuery(".extension_tag_select").on('change', function () {
-  updatePageParam()
-  getExtensionList(cid);
-});
-
-
-jQuery("#cid-search").keydown(function (e) {
-  updatePageParam()
-  if (jQuery("#cid-search").val().length > 2)
-  {
-    emptyContent()
-    $('.extensions_container').append('\
-    <div class="d-flex justify-content-center">\
-      <div class="spinner-border" role="status"></div>\
-      <span class="sr-only ms-3 align-middle">Loading...</span>\
-    </div>');
-
-    getExtensionList(cid);
-  }
-
-  if(e.keyCode == 13){
-    e.preventDefault()
-  }
-});
-
+// Remove all displayed extensions to avoid having them twice displayed due to page reload
 function emptyContent()
 {
   // Empty container div to avoid adding extensions twice when filters are changed
@@ -72,65 +151,46 @@ function emptyContent()
   jQuery('#next_page').addClass('d-none').removeClass('d-inline-block')
 }
 
+// Called when filter is changed to set page to 1
 function updatePageParam()
 {
-  
   const urlParams = new URLSearchParams(window.location.search);
   if(urlParams.get('page') != 1)
   {
     urlParams.set('page', '1');
     window.location.search = urlParams;
   }
-  // console.log(urlParams)
 }
 
-function getFilterValues()
+// Used to create the string for the filters applied in the ajax request
+function createFilterString()
 {
-
   // Filter with version, author and tags
   var filters = '';
-  var version = jQuery(".extension_version_select").val();
-  if (version != "all")
-  {
-    filters += '&filter_version=' + version
-    
-    sessionStorage.setItem("filter_version",version);
+
+  var filter_version = sessionStorage.getItem("filter_version") ? sessionStorage.getItem("filter_version") : null;
+  var filter_authors = sessionStorage.getItem("filter_authors") ? sessionStorage.getItem("filter_authors") : null;
+  var filter_tags = sessionStorage.getItem("filter_tags") ? sessionStorage.getItem("filter_tags") : null;
+  var filter_search = sessionStorage.getItem("filter_search") ? sessionStorage.getItem("filter_search") : null;
+
+  // Get version value
+  if(filter_version !== null && "all" !== filter_version){
+    filters += '&filter_version=' + filter_version
   }
 
-  var author_ids = [];
-  jQuery('.extension_author_select').children( "option" ).each(function(){
-    var value = $(this).val()
-    author_ids.push(value)
-  })
-
-  if (author_ids.length !== 0)
-  {
-    filters += '&filter_authors=' + author_ids
-
-    sessionStorage.setItem("filter_authors",author_ids);
+  // Get author(s) value
+  if(filter_authors !== null){
+  filters += '&filter_authors=' + filter_authors
   }
 
-  var tag_ids = [];
-  jQuery('.extension_tag_select').children( "option" ).each(function(){
-    var value = $(this).val()
-    tag_ids.push(value)
-  })
-
-  if (tag_ids.length !== 0)
-  {
-    filters += '&filter_tags=' + tag_ids
-
-    sessionStorage.setItem("filter_tags",tag_ids);
+  // Get tag(s) value
+  if(filter_tags !== null){
+  filters += '&filter_tags=' + filter_tags
   }
 
-  var search = jQuery("#cid-search").val();
-  
-  if (search != null && search.length > 2)
-  {
-    console.log(search)
-    filters += '&filter_search=' + search
-
-    sessionStorage.setItem("filter_search",search);
+  // Get user input value
+  if(filter_search !== null){
+  filters += '&filter_search=' + filter_search
   }
 
   return filters;
@@ -142,17 +202,12 @@ function getExtensionList(cid) {
 
   var sort_by = jQuery("#sort_order").find(":selected").val();
   var params = '&sort_by=' + sort_by
-  var filters = getFilterValues();
+  var filters = createFilterString();
 
   if ( filters != null)
   {
-    // if(page != 1){
-    //   page = 1
-    // }
     params = params + filters
   }
-
-  // console.log(params)
 
   $('.extensions_container').append('\
   <div class="d-flex justify-content-center">\
@@ -171,6 +226,7 @@ function getExtensionList(cid) {
     success: function (data) {
       if (data.stat == 'ok') {
         var extensions = data.result.revisions;
+        console.log(extensions)
       
         // Empty container div to avoid adding extensions twice when filters are changed
         jQuery(".extensions_container > *:not('#jango_fett')").remove();
@@ -257,113 +313,131 @@ function getExtensionList(cid) {
           var nb_extensions_filtered = data.result.nb_extensions_filtered;
           // console.log("nb_extensions_filtered = " +nb_extensions_filtered)
 
-          var nb_total_extensions = parseInt(data.result.nb_total_extensions);
-          // console.log("nb_total_extensions = " +nb_total_extensions)
-
           var nb_total_pages = Math.ceil(nb_extensions_filtered/extensions_per_page)
           // console.log("nb_total_pages = "+ nb_total_pages)
 
-          if(nb_total_pages < 4)
-          {
-
-          }
-          else
-          {
-
-          }
-
-          //Define pagination depending on amount of plugins and which page we are on
+          //Define pagination depending on amount of extension and which page we are on
           var pagination_href = PEM_ROOT_URL + 'index.php?'
 
+          jQuery('#previous_page').addClass('d-inline-block').removeClass('d-none')
+          jQuery('#next_page').addClass('d-inline-block').removeClass('d-none')
 
+        
+          // This is is to disable or not the pagination arrows
+          if(1 == nb_total_pages)
+          {
+            // If nb pages = 1
+            jQuery('#previous_page').replaceWith(jQuery('<span id="#previous_page" class="disabled"><i class="icon-chevron-left"></i></spn>'))
+            jQuery('#next_page').replaceWith(jQuery('<span id="#next_page" class="disabled"><i class="icon-chevron-right"></i></span>'))
+          }
+          if(page > 1 && page != nb_total_pages)
+          {
+            // If page is different from first or last
+            jQuery('#previous_page').attr('href', pagination_href + 'cid=' + cid + '&page=' + (parseInt(page)-1))
+            jQuery('#next_page').attr('href', pagination_href + 'cid=' + cid + '&page=' + (parseInt(page)+1))
+          }
+          else if(page == 1)
+          {
+            // If page is first
+            jQuery('#next_page').attr('href', pagination_href + 'cid=' + cid + '&page=' + (parseInt(page)+1))
+            // Disable previous arrow
+            jQuery('#previous_page').replaceWith(jQuery('<span id="#previous_page" class="disabled"><i class="icon-chevron-left"></i></spn>'))
+          }
+          else if(page == nb_total_pages)
+          {
+            // If page is last 
+            jQuery('#previous_page').attr('href', pagination_href + 'cid=' + cid + '&page=' + (parseInt(page)-1))
+            // disable next arrow
+            jQuery('#next_page').replaceWith(jQuery('<span id="#next_page" class="disabled"><i class="icon-chevron-right"></i></span>'))
+          }
 
-          // jQuery('#previous_page').addClass('d-inline-block').removeClass('d-none')
-          // jQuery('#next_page').addClass('d-inline-block').removeClass('d-none')
+          // These display the different page numbers
 
-          // if(page > 1 && page != nb_pages)
-          // {
-          //   // If page is different from first or last
-          //   jQuery('#previous_page').attr('href', pagination_href + 'cid=' + cid + '&page=' + (parseInt(page)-1))
-          //   jQuery('#next_page').attr('href', pagination_href + 'cid=' + cid + '&page=' + (parseInt(page)+1))
-          // }
-          // else if(page == 1)
-          // {
-          //   // If page is first
-          //   jQuery('#next_page').attr('href', pagination_href + 'cid=' + cid + '&page=' + (parseInt(page)+1))
-          //   // Disable previous arrow
-          //   jQuery('#previous_page').replaceWith(jQuery('<span id="#previous_page" class="disabled"><i class="icon-chevron-left"></i></spn>'))
-          // }
-          // else if(page == nb_pages)
-          // {
-          //   // If page is last 
-          //   jQuery('#previous_page').attr('href', pagination_href + 'cid=' + cid + '&page=' + (parseInt(page)-1))
-          //   // disable next arrow
-          //   jQuery('#next_page').replaceWith(jQuery('<span id="#next_page" class="disabled"><i class="icon-chevron-right"></i></span>'))
-          // }
+          //First page number
+          jQuery(".page_buttons").append('<a class="page_number" id="first_page_number" href="' + pagination_href + 'cid=' + cid + '&page=1">1</a>')
+
+          //Current page number with +1 and -1
+          var previousPage = parseInt(page) -1;
+          var nextPage = parseInt(page) + 1;
+
+          // Add ... when there is more than one number between current page and first
+          if(previousPage - 1 > 1 && nb_total_pages > 4)
+          {
+            jQuery(".page_buttons").append('<span>...</span>')
+          }
+
+          if(1 !== nb_total_pages)
+          {
+            // If used to display pages number depeding on which page we are on
+            if(1 == page )
+            {
+              // If page is first page
+              jQuery(".page_buttons").append('<a class="page_number" href="' + pagination_href + 'cid=' + cid + '&page=' + nextPage +'">' + nextPage + '</a>')  
+
+              if(nb_total_pages > 3){
+                jQuery(".page_buttons").append('<a class="page_number" href="' + pagination_href + 'cid=' + cid + '&page=' + (nextPage+1) +'">' + (nextPage+1) + '</a>')  
+              }
+
+              // display current page style
+              jQuery('#first_page_number').addClass('active')
+            }
+            else if(page == nb_total_pages)
+            {
+              console.log("page max")
+              // If page is last
+              if(nb_total_pages > 3){
+                jQuery(".page_buttons").append('<a class="page_number" href="' + pagination_href + 'cid=' + cid + '&page=' + (previousPage-1) +'">' + (previousPage - 1)+ '</a>')
+              }
+              jQuery(".page_buttons").append('<a class="page_number" href="' + pagination_href + 'cid=' + cid + '&page=' + previousPage +'">' + previousPage+ '</a>')
+            }
+            else if(page == 2 && nb_total_pages == 3)
+            {
+              console.log("page max 3 and page 2")
+              // If page is second and total pages = 3, avoid displaying the last page number twice
+              jQuery(".page_buttons").append('<a class="page_number active" href="' + pagination_href + 'cid=' + cid + '&page=' + page +'">' + page + '</a>')
+            }
+            else if(page == 2)
+            {
+              console.log("page 2")
+              // If page is second
+              jQuery(".page_buttons").append('<a class="page_number active" href="' + pagination_href + 'cid=' + cid + '&page=' + page +'">' + page + '</a>')
+              // jQuery(".page_buttons").append('<a class="page_number" href="' + pagination_href + 'cid=' + cid + '&page=' + nextPage +'">' + nextPage + '</a>')
+            }
+            else if(nb_total_pages - page == 1)
+            {
+              console.log("page before page max")
+              // If page before last (n-1)
+              jQuery(".page_buttons").append('<a class="page_number" href="' + pagination_href + 'cid=' + cid + '&page=' + previousPage +'">' + previousPage+ '</a>')
+              jQuery(".page_buttons").append('<a class="page_number active" href="' + pagination_href + 'cid=' + cid + '&page=' + page +'">' + page + '</a>')
+            }
+            else
+            {
+              console.log("any other page")
+              // All other pages
+              jQuery(".page_buttons").append('<a class="page_number" href="' + pagination_href + 'cid=' + cid + '&page=' + previousPage +'">' + previousPage+ '</a>')
+              jQuery(".page_buttons").append('<a class="page_number active" href="' + pagination_href + 'cid=' + cid + '&page=' + page +'">' + page + '</a>')
+              jQuery(".page_buttons").append('<a class="page_number" href="' + pagination_href + 'cid=' + cid + '&page=' + nextPage +'">' + nextPage + '</a>')
+            }
+          }
           
-          // //First page number
-          // jQuery(".page_buttons").append('<a class="page_number" id="first_page_number" href="' + pagination_href + 'cid=' + cid + '&page=1">1</a>')
-
-          // //Current page number with +1 and -1
-          // var previousPage = parseInt(page) -1;
-          // var nextPage = parseInt(page) + 1;
-
-          // // Add ... when there is more than one number between current page and first
-          // if(previousPage - 1 > 1)
-          // {
-          //   jQuery(".page_buttons").append('<span>...</span>')
-          // }
-
-          // // If used to display pages number depeding on which page we are on
-          // if(1 == page)
-          // {
-          //   // If page is first
-          //   jQuery(".page_buttons").append('<a class="page_number" href="' + pagination_href + 'cid=' + cid + '&page=' + nextPage +'">' + nextPage + '</a>')  
-          //   jQuery('#first_page_number').addClass('active')
-          // }
-          // else if(page == nb_pages)
-          // {
-          //   // If page is last
-          //   jQuery(".page_buttons").append('<a class="page_number" href="' + pagination_href + 'cid=' + cid + '&page=' + previousPage +'">' + previousPage+ '</a>')
-          // }
-          // else if(page == 2 && nb_pages == 3)
-          // {
-          //   // If page is second and total pages = 3, avoid displaying the last page number twice
-          //   jQuery(".page_buttons").append('<a class="page_number active" href="' + pagination_href + 'cid=' + cid + '&page=' + page +'">' + page + '</a>')
-          // }
-          // else if(page == 2)
-          // {
-          //   // If page is second
-          //   jQuery(".page_buttons").append('<a class="page_number active" href="' + pagination_href + 'cid=' + cid + '&page=' + page +'">' + page + '</a>')
-          //   jQuery(".page_buttons").append('<a class="page_number" href="' + pagination_href + 'cid=' + cid + '&page=' + nextPage +'">' + nextPage + '</a>')
-          // }
-          // else if(nb_pages - page == 1)
-          // {
-          //   // If page before last
-          //   jQuery(".page_buttons").append('<a class="page_number" href="' + pagination_href + 'cid=' + cid + '&page=' + previousPage +'">' + previousPage+ '</a>')
-          //   jQuery(".page_buttons").append('<a class="page_number active" href="' + pagination_href + 'cid=' + cid + '&page=' + page +'">' + page + '</a>')
-          // }
-          // else
-          // {
-          //   // All other pages
-          //   jQuery(".page_buttons").append('<a class="page_number" href="' + pagination_href + 'cid=' + cid + '&page=' + previousPage +'">' + previousPage+ '</a>')
-          //   jQuery(".page_buttons").append('<a class="page_number active" href="' + pagination_href + 'cid=' + cid + '&page=' + page +'">' + page + '</a>')
-          //   jQuery(".page_buttons").append('<a class="page_number" href="' + pagination_href + 'cid=' + cid + '&page=' + nextPage +'">' + nextPage + '</a>')
-          // }
           
-          // // Add ... when there is more than one number between current page and last
-          // if(nb_pages - nextPage > 1)
-          // {
-          //   jQuery(".page_buttons").append('<span>...</span>')
-          // }
+          // Add ... when there is more than one number between current page and last
+          if(nb_total_pages - nextPage > 1  && nb_total_pages > 4)
+          {
+            jQuery(".page_buttons").append('<span>...</span>')
+          }
+          
+          // If number of pages bigger than 2
+          if(nb_total_pages > 2)
+          {
+          jQuery(".page_buttons").append('<a class="page_number" id="last_page_number" href="' + pagination_href + 'cid=' + cid + '&page=' + nb_total_pages +'">' + nb_total_pages + '</a>')
+          }
 
-          // // last page number
-          // jQuery(".page_buttons").append('<a class="page_number" id="last_page_number" href="' + pagination_href + 'cid=' + cid + '&page=' + nb_pages +'">' + nb_pages + '</a>')
-          // if(page == nb_pages)
-          // {
-          //   // If page is last
-          //   jQuery('#last_page_number').addClass('active')
-          // }
+          if(page == nb_total_pages)
+          {
+            // If page is last (n) display current page style
+            jQuery('#last_page_number').addClass('active')
+          }
         }
 
       }
@@ -381,14 +455,3 @@ function toggleFilter(){
   jQuery('.extension_filters').toggle();
   jQuery('.filter_tab ').toggleClass('toggled');
 }
-
-// Selectize filters
-jQuery('.extension_tag_select').selectize({
-  plugins: ["remove_button"],
-})
-
-jQuery('.extension_author_select').selectize({
-  plugins: ["remove_button"],
-})
-
-jQuery('.extension_version_select').selectize()

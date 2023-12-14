@@ -6,7 +6,7 @@
 {*Start of list_view tpl*}
 <div id="list_view" class="container">
 
-{if $SPOTLIGHTED}
+{if isset($SPOTLIGHTED)}
   <div class="col-12 py-4 spotlighted">
     <h2>Spotlighted</h2>
     <div class="col-12 p-3 purple-gradient">
@@ -53,7 +53,7 @@
     <div class="row">
 
       <div class="col-md-4 form-group version_filter_container">
-        <label for="extension_version_select" class="col-12 pb-2">Compatible version of Piwigo</label>
+        <span id="extension_version_select" class="col-12 pb-2">Compatible version of Piwigo</span>
         <select class="extension_version_select w-100">
           <option selected value="all">All versions</option>
 {foreach from=$VERSIONS item=version}
@@ -64,9 +64,9 @@
 
       <div class="col-md-4">
         <div class="form-group">
-          <label for="extension_author_select" class="col-12 pb-2">Authors</label>
+          <span id="extension_author_select" class="col-12 pb-2">Authors</span>
           <select class="extension_author_select" data-selectize="authors"
-            placeholder="{'Type in a search term'|translate}"
+            placeholder="{'Select authors'|translate}"
             data-create="true" name="authors[]" multiple style="width:calc(100% + 2px);">
   {foreach from=$AUTHORS item=author}
               <option value="{$author.uid}">{$author.username}</option>
@@ -77,9 +77,9 @@
 
       <div class="col-md-4">
         <div class="form-group">
-          <label for="extension_tag_select" class="col-12 pb-2">Tags</label>
-          <select class="extension_tag_select" data-selectize="tags" data-value="{$tag_selection|@json_encode|escape:html}"
-            placeholder="{'Type in a search term'|translate}"
+          <span id="extension_tag_select" class="col-12 pb-2">Tags</span>
+          <select class="extension_tag_select" data-selectize="tags"
+            placeholder="{'Select tags'|translate}"
             data-create="true" name="tags[]" multiple style="width:calc(100% + 2px);">
 {foreach from=$TAGS item=tag}
               <option value="{$tag.tid}">{$tag.name}</option>
