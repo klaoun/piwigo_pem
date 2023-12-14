@@ -5,41 +5,21 @@
   </section>
 
 
-  <section class=" mx-4 position-absolute vertical-horizontal-align">
+  <section class=" mx-4 col-xs-12 col-md-4 col-lg-3 col-xl-3 position-absolute vertical-horizontal-align">
     <div class="w-100"> 
       <h1 class="text-center">
         <i class="icon-lock"></i>Forgotten password ?
       </h1>
 
-{if isset($errors) }
-      <div class="errors mt-5">
-        <i class="icon-cross h-100 d-inline-block"></i>
-        <div class="errors-content d-inline-block">
-  {foreach from=$errors item=error}
-          <p class="m-0">{$error}</p>
-  {/foreach}
-        </div>
-      </div>
-{/if}
-  
-{if not empty($infos)}
-      <div class="infos mt-5">
-        <i class="icon-check h-100 d-inline-block"></i>
-        <div class="infos-content d-inline-block">
-  {foreach from=$infos item=info}
-          <p class="m-0">{$info}</p>
-  {/foreach}
-        </div>
-      </div>
-{/if}
+
 
 {if $action != 'none'}
-      <form class="col-xs-12 col-md-4 col-lg-3 col-xl-2 w-100 pt-5 properties" id="lostPassword" name="lostPassword" action="{$form_action}?action={$action}{if isset($key)}&amp;key={$key}{/if}" method="post">
-
+      <form class="properties pt-5" id="lostPassword" name="lostPassword" action="{$form_action}?action={$action}{if isset($key)}&amp;key={$key}{/if}" method="post">
+  {include file='infos_errors.tpl'}
         <input type="hidden" name="pwg_token" value="{$PWG_TOKEN}">
 
   {if $action == 'lost'}
-        <div class="messages">
+        <div class="alert alert-info" role="alert">
           <p class="m-0">{'Please enter your username or email address.'|@translate} {'You will receive a link to create a new password via email.'|@translate}</p>
         </div>
 
@@ -54,7 +34,7 @@
 
   {elseif $action == 'reset'}
 
-        <div class="message">
+        <div class="alert alert-info" role="alert">
           <p>{'Hello'|@translate} <em>{$username}</em>. Please enter your new password below.</p>
         </div>
 
