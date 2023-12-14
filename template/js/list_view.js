@@ -93,7 +93,6 @@ jQuery(document).ready(function () {
 
   //For word search 
   jQuery("#cid-search").on('keyup', function(e) {
-    console.log(e)
     
     if (jQuery("#cid-search").val().length > 2)
     {
@@ -125,16 +124,6 @@ jQuery(document).ready(function () {
 
   });
   
-  // if there is that has a value then display block, if none are set hide
-  // if(filter_version != null && filter_authors != null && filter_tags != null)
-  // {
-  //   jQuery('.extension_filters').css("display", "block");
-  //   jQuery('.filter_tab').addClass("toggled");
-  // }
-  // else{
-  //   jQuery('.extension_filters').css("display", "none");
-  // }
-
   // Call getExtensionList to populate list of extensions
   getExtensionList(cid);
   sessionStorage.setItem("cid",cid);
@@ -226,7 +215,6 @@ function getExtensionList(cid) {
     success: function (data) {
       if (data.stat == 'ok') {
         var extensions = data.result.revisions;
-        console.log(extensions)
       
         // Empty container div to avoid adding extensions twice when filters are changed
         jQuery(".extensions_container > *:not('#jango_fett')").remove();
@@ -308,19 +296,15 @@ function getExtensionList(cid) {
           });
 
           var extensions_per_page = data.result.extensions_per_page;
-          // console.log("extensions_per_page = " +extensions_per_page)
-
           var nb_extensions_filtered = data.result.nb_extensions_filtered;
-          // console.log("nb_extensions_filtered = " +nb_extensions_filtered)
-
           var nb_total_pages = Math.ceil(nb_extensions_filtered/extensions_per_page)
-          // console.log("nb_total_pages = "+ nb_total_pages)
 
           //Define pagination depending on amount of extension and which page we are on
           var pagination_href = PEM_ROOT_URL + 'index.php?'
 
-          jQuery('#previous_page').addClass('d-inline-block').removeClass('d-none')
-          jQuery('#next_page').addClass('d-inline-block').removeClass('d-none')
+          jQuery('#previous_page').addClass('d-inline-block').removeClass('d-none');
+          jQuery('#next_page').addClass('d-inline-block').removeClass('d-none');
+          jQuery('.pagination').removeClass('d-none');
 
         
           // This is is to disable or not the pagination arrows
@@ -383,7 +367,6 @@ function getExtensionList(cid) {
             }
             else if(page == nb_total_pages)
             {
-              console.log("page max")
               // If page is last
               if(nb_total_pages > 3){
                 jQuery(".page_buttons").append('<a class="page_number" href="' + pagination_href + 'cid=' + cid + '&page=' + (previousPage-1) +'">' + (previousPage - 1)+ '</a>')
@@ -392,34 +375,29 @@ function getExtensionList(cid) {
             }
             else if(page == 2 && nb_total_pages == 3)
             {
-              console.log("page max 3 and page 2")
               // If page is second and total pages = 3, avoid displaying the last page number twice
               jQuery(".page_buttons").append('<a class="page_number active" href="' + pagination_href + 'cid=' + cid + '&page=' + page +'">' + page + '</a>')
             }
             else if(page == 2)
             {
-              console.log("page 2")
               // If page is second
               jQuery(".page_buttons").append('<a class="page_number active" href="' + pagination_href + 'cid=' + cid + '&page=' + page +'">' + page + '</a>')
               // jQuery(".page_buttons").append('<a class="page_number" href="' + pagination_href + 'cid=' + cid + '&page=' + nextPage +'">' + nextPage + '</a>')
             }
             else if(nb_total_pages - page == 1)
             {
-              console.log("page before page max")
               // If page before last (n-1)
               jQuery(".page_buttons").append('<a class="page_number" href="' + pagination_href + 'cid=' + cid + '&page=' + previousPage +'">' + previousPage+ '</a>')
               jQuery(".page_buttons").append('<a class="page_number active" href="' + pagination_href + 'cid=' + cid + '&page=' + page +'">' + page + '</a>')
             }
             else
             {
-              console.log("any other page")
               // All other pages
               jQuery(".page_buttons").append('<a class="page_number" href="' + pagination_href + 'cid=' + cid + '&page=' + previousPage +'">' + previousPage+ '</a>')
               jQuery(".page_buttons").append('<a class="page_number active" href="' + pagination_href + 'cid=' + cid + '&page=' + page +'">' + page + '</a>')
               jQuery(".page_buttons").append('<a class="page_number" href="' + pagination_href + 'cid=' + cid + '&page=' + nextPage +'">' + nextPage + '</a>')
             }
           }
-          
           
           // Add ... when there is more than one number between current page and last
           if(nb_total_pages - nextPage > 1  && nb_total_pages > 4)
@@ -430,7 +408,7 @@ function getExtensionList(cid) {
           // If number of pages bigger than 2
           if(nb_total_pages > 2)
           {
-          jQuery(".page_buttons").append('<a class="page_number" id="last_page_number" href="' + pagination_href + 'cid=' + cid + '&page=' + nb_total_pages +'">' + nb_total_pages + '</a>')
+            jQuery(".page_buttons").append('<a class="page_number" id="last_page_number" href="' + pagination_href + 'cid=' + cid + '&page=' + nb_total_pages +'">' + nb_total_pages + '</a>')
           }
 
           if(page == nb_total_pages)
