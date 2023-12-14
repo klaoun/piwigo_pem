@@ -5,14 +5,16 @@
   </section>
 
 
-  <section class=" mx-4 position-absolute vertical-horizontal-align">
+  <section class=" mx-auto col-xs-12 col-md-4 col-lg-4 col-xl-3 py-5">
     <div class="w-100"> 
 
       <h1 class="text-center">
         <i class="icon-arrow-right-from-bracket"></i>Create an account
       </h1>
 
-      <form class="col-xs-12 col-md-4 col-lg-3 col-xl-2 w-100 pt-5 properties" method="post" action="{$F_ACTION}" name="register_form" id="register_form">
+      <form class=" properties" method="post" action="{$F_ACTION}" name="register_form" id="register_form">
+
+{include file='infos_errors.tpl'}
 
         <div class="form-group mx-auto">
           <label for="mail_address">* {'Email address'|@translate}</label>
