@@ -7,7 +7,7 @@
             <h5 class="modal-title" id="authorsModalLabel"><i class="icon-user"></i>My profil</h5>
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
-          <form method="POST" action="{$f_action}" enctype="multipart/form-data">
+          <form method="POST" enctype="multipart/form-data">
 
             <div class="modal-body">
               <h4>Add authors</h4>
@@ -19,7 +19,10 @@
                   data-create="true" name="author">
                   <option selected>Type in a search term</option>
 {foreach from=$ALL_AUTHORS item=author}
+  {if in_array($author, $authors)}
+  {else}
                   <option value="{$author.uid}" >{$author.username}</option>
+  {/if}
 {/foreach}
                 </select>
               </div>
@@ -28,12 +31,17 @@
               <div>
 {foreach from=$authors item=author}
                 <div class="d-block">
-                  <strong>{$author}</strong>
-  {if isset($u_owner)}
-                  <a href="{$u_delete}">{'Delete'|translate}</a>
-    {if isset($u_owner)}| <a href="{$u_owner}">{'Set as owner'|translate}</a>{/if}
+                  <strong>{$author.username}</strong>
+  {if $author.owner !== true}
+    {* {if $author.owner == true} *}
+      <button class="link-primary" onclick="deleteAuthor({$author.uid}, {$extension_id})">{'Delete'|translate}</button>
+      <p class="d-inline-block m-0">|</p>
+      <button class="link-primary" onclick="setOwner({$author.uid}, {$extension_id})">{'Set as owner'|translate}</button>
+
+    {* {/if} *}
+
   {else}
-                  <p>({'Owner'|translate})</p>
+      <p class="d-inline-block m-0">({'Owner'|translate})</p>
   {/if}
 {/foreach}
                 </div>

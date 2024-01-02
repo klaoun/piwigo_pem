@@ -12,7 +12,6 @@ if (isset($_GET['eid']) && 1 == count($_GET))
   include_once(PEM_PATH . 'include/extension/extension_screenshot.inc.php');
 
   // For authors modal
-  include_once(PEM_PATH . 'include/extension/extension_mod.inc.php');
   include_once(PEM_PATH . 'include/extension/extension_authors.inc.php');
 
   // For add revision modal
@@ -31,96 +30,7 @@ if (isset($_GET['eid']) && 1 == count($_GET))
   $result = query2array($query);
   $id_language = $result[0]['id_language'];
 
-  //Using old PEM functions
-  // define( 'INTERNAL', true );
-  // $root_path = './';
-  // require_once( $root_path . 'include/common.inc.php' );
-    
-  // $page['extension_id'] = isset($_GET['eid']) ? abs(intval($_GET['eid'])) : null;
-  // if (!isset($page['extension_id']))
-  // {
-  //   message_die('eid URL parameter is missing', 'Error', false );
-  // }
-  
   $self_url = PEM_PATH.'index.php?eid='.$current_extension_page_id;
-
-  // actions
-  // if (isset($_GET['action']))
-  // {
-  //   switch ($_GET['action'])
-  //   {
-  //     case 'rate':
-  //       rate_extension($page['extension_id'], $_POST['score']);
-  //       header('Location: '.$self_url);
-  //       break;
-      
-  //     case 'add_review':
-  //       if (empty($_POST)) break;
-        
-  //       $user_review = array(
-  //         'idx_extension' => $page['extension_id'],
-  //         'author' => trim($_POST['author']),
-  //         'email' => trim($_POST['email']),
-  //         'title' => trim($_POST['title']),
-  //         'content' => $_POST['content'],
-  //         'rate' => (float)@$_POST['score'],
-  //         'idx_language' => $_POST['idx_language'],
-  //         );
-        
-  //       insert_user_review($user_review);
-  //       switch ($user_review['action'])
-  //       {
-  //         case 'validate':
-  //           unset($user_review);
-  //           $user_review['action'] = 'validate';
-  //           $user_review['message'] = l10n('Thank you!');
-  //           break;
-            
-  //         case 'moderate':
-  //           unset($user_review);
-  //           $user_review['action'] = 'moderate';
-  //           $user_review['message'] = l10n('Thank you! Your review is awaiting moderation.');
-  //           break;
-            
-  //         case 'reject':
-  //           $user_review['display'] = true;
-  //           break;
-  //       }
-        
-  //       break;
-        
-  //     case 'edit_review':
-  //       if (get_user_status() !='admin') break;
-        
-  //       $query = '
-  // UPDATE '.REVIEW_TABLE.'
-  //   SET 
-  //     title = "'.$_POST['title'].'", 
-  //     content = "'.$_POST['content'].'"
-  //   WHERE
-  //     id_review = '.$_POST['id_review'].'
-  // ;';
-  //       $db->query($query);
-        
-  //       header('Location: '.$self_url.'#reviews');
-  //       break;
-  //   }
-  // }
-
-  // comments management
-  // if(get_user_status() !='admin')
-  // {
-  //   if (isset($_GET['delete_review']))
-  //   {
-  //     delete_user_review($_GET['delete_review']);
-  //     header('Location: '.$self_url);
-  //   }
-  //   else if (isset($_GET['validate_review']))
-  //   {
-  //     validate_user_review($_GET['validate_review']);
-  //     header('Location: '.$self_url);
-  //   }
-  // }
 
   $data = get_extension_infos_of($current_extension_page_id);
 
@@ -135,10 +45,20 @@ if (isset($_GET['eid']) && 1 == count($_GET))
       )
     );
   }
-  else{
-
-    //Get extension authors
+  else
+  {
     $authors = get_extension_authors($current_extension_page_id);
+
+    foreach ($authors as $key => $author)
+    {
+
+      $temp = array (
+        "uid" => $author,
+        "username" => get_author_name($author),
+        "owner" => $author == $extension_infos['idx_user'],
+      );
+      $authors[$key] = $temp;
+    }
 
     //Check if user can make change to extension
     $page['user_can_modify'] = false;
@@ -203,14 +123,14 @@ if (isset($_GET['eid']) && 1 == count($_GET))
       array(
         'extension_id' => $current_extension_page_id,
         'extension_name' => htmlspecialchars(
-          strip_tags($data['name'])
+          strip_tags(stripslashes($data['name']))
           ),
         'description' => nl2br(
           htmlspecialchars(
-            strip_tags($data['description'])
+            strip_tags(stripslashes($data['description']))
             )
           ),
-        'authors' => array_combine($authors, get_author_name($authors)),
+        'authors' => $authors,
         'first_date' => l10n('no revision yet'),
         'last_date'  => l10n('no revision yet'),
         'compatible_with' => implode(

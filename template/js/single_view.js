@@ -61,7 +61,7 @@ jQuery(document).ready(function () {
   jQuery('#extensions_languages').selectize({
     plugins: ["remove_button"],
   })
-
+  
 });
 
 
@@ -88,3 +88,43 @@ function showOnlyThisChild(parentId, childIdtoShow)
   }
 }
 
+function deleteAuthor(userId, extensionId)
+{
+  jQuery.ajax({
+    type: 'GET',
+    dataType: 'json',
+    async: false,
+    url: 'ws.php?format=json&method=pem.extensions.deleteAuthor&extension_id=' + extensionId + '&user_id=' + userId ,
+    data: { ajaxload: 'true' },
+    success: function (data) {
+      if (data.stat == 'ok') {
+        localStorage.setItem("message",data.message)
+        window.location.reload(); 
+      }
+    }
+  });
+
+}
+
+function setOwner(userId, extensionId)
+{
+  jQuery.ajax({
+    type: 'GET',
+    dataType: 'json',
+    async: false,
+    url: 'ws.php?format=php&method=pem.extensions.setOwner&extension_id=' + extensionId + '&user_id=' + userId ,
+    data: { ajaxload: 'true' },
+    success: function (data) {
+      if (data.stat == 'ok') {
+        localStorage.setItem("message",data.message)
+        window.location.reload(); 
+      }
+    }
+  });
+
+}
+
+function deleteExtension(extensionId)
+{
+  console.log("delete extension")
+}

@@ -14,12 +14,11 @@
   </section>
 
 {if isset($MESSAGE)}
-  <section>
-  <div class="mt-3 {if $MESSAGE_TYPE == "success"}infos{/if}">
-      <p class="my-2">{$MESSAGE}</p>
-    </div>
-  </section>
+  <div class="alert {if $MESSAGE_TYPE == "success"}alert-success{/if} mt-3" role="alert">
+    <span>{$MESSAGE}</span><br>
+  </div>
 {/if}
+  
 
 {if $can_modify == true}
   <section  class="mt-4 section-fluid">
@@ -50,12 +49,12 @@
 {/if}
 
       <div>
-        <h2>{$extension_name}</h2>
+        <h2>{if isset($extension_name)}{$extension_name}{/if}</h2>
       </div>
 
       <div>
-{foreach from=$authors item=author key=key}
-        <a href = "{$PEM_ROOT_URL}index.php?uid={$key}"><h4 class="author d-inline link">{$author}{if !$author@last}, {/if}</h4></a>
+{foreach from=$authors item=author}
+        <a href = "{$PEM_ROOT_URL}index.php?uid={$author.uid}"><h4 class="author d-inline link">{$author.username}{if !$author@last}, {/if}</h4></a>
 {/foreach}
 {if $can_modify == true}
   <span class="edit_mode secondary_icon" data-bs-toggle="modal" data-bs-target="#authorsModal">

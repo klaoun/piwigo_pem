@@ -136,3 +136,16 @@ Revisions
 .form-select {
   line-height: normal;
 }
+
+.revision_title_container {
+  cursor:pointer;
+}
+
+/******
+Links
+******/
+button.link-primary{
+  border: none;
+  background: none;
+  cursor: pointer;
+}

@@ -114,6 +114,26 @@ function pem_ws_add_methods($arr)
     'Get most recent extension depending on type.'
   );
 
+  $service->addMethod(
+    'pem.extensions.deleteAuthor',
+    'ws_pem_extensions_delete_author',
+    array(
+      'extension_id' => array('type'=>WS_TYPE_INT|WS_TYPE_POSITIVE),
+      'user_id' => array('type'=>WS_TYPE_INT|WS_TYPE_POSITIVE),
+    ),
+    'Remove a user from extension authors'
+  );
+
+  $service->addMethod(
+    'pem.extensions.setOwner',
+    'ws_pem_extensions_set_owner',
+    array(
+      'extension_id' => array('type'=>WS_TYPE_INT|WS_TYPE_POSITIVE),
+      'user_id' => array('type'=>WS_TYPE_INT|WS_TYPE_POSITIVE),
+    ),
+    'Set a user as extension owner'
+  );
+
 }
 
 /**
@@ -488,7 +508,6 @@ SELECT
     exit;
   }
 
-
   $highest_rated = $highest_rated [0];
 
   return $highest_rated;
@@ -666,4 +685,79 @@ SELECT
   }
 
   return $category_infos_of;  
+
+/**
+ * Remove a user from extension authors
+ */
+
+function ws_pem_extensions_delete_author($params, &$service)
+{
+  if (!isset($params['extension_id']))
+  {
+    die('missing extension id');
+  }
+
+  if (!isset($params['user_id'])) 
+  {
+    die('missing user id');
+  }
+  
+  $eid = $params['extension_id'];
+  $uid = $params['user_id'];
+
+  $query = '
+DELETE FROM '.PEM_AUTHORS_TABLE.'
+  WHERE idx_user = '.$uid.'
+  AND idx_extension = '.$eid.'
+;';
+    pwg_query($query);
+
+
 }
+
+/**
+ * Set a user as extension owner
+ */
+
+ function ws_pem_extensions_set_owner($params, &$service)
+ {
+  if (!isset($params['extension_id']))
+  {
+    die('missing extension id');
+  }
+
+  if (!isset($params['user_id'])) 
+  {
+    die('missing user id');
+  }
+  
+  $eid = $params['extension_id'];
+  $uid = $params['user_id'];
+  
+  // $author = intval($_GET['owner']);
+
+  if ($uid > 0)
+  {
+    $query = '
+UPDATE '.PEM_EXT_TABLE.'
+  SET idx_user = '.$uid.'
+  WHERE id_extension = '.$eid.'
+;';
+    pwg_query($query);
+
+    $query = '
+DELETE FROM '.PEM_AUTHORS_TABLE.'
+  WHERE idx_user = '.$uid.'
+  AND idx_extension = '.$eid.'
+;';
+    pwg_query($query);
+
+    $query = '
+INSERT INTO '.PEM_AUTHORS_TABLE.' (idx_extension, idx_user)
+  VALUES ('.$eid.', '.$uid.')
+;';
+    pwg_query($query);
+
+    // $extension_infos['idx_user'] = $uid;
+  }
+ }
