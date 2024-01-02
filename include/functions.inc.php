@@ -18,6 +18,15 @@ function versort($array)
 }
 
 /**
+ * specific version_compare for PEM
+ */
+function pem_version_compare($a, $b)
+{
+  return version_compare($a['version'], $b['version']);
+}
+
+
+/**
  * extracts a subfield from nested array
  */
 function array_from_subfield($hash, $field)
