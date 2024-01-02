@@ -1,7 +1,6 @@
 <?php
 defined('PEM_PATH') or die('Hacking attempt!');
 
-// include_once(PEM_PATH . 'include/constants.inc.php');
 include_once(PEM_PATH . 'include/functions_core.inc.php');
 include_once(PEM_PATH . 'include/functions_users.inc.php');
 
@@ -50,13 +49,11 @@ function pem_ws_add_methods($arr)
         'info'=>'a piwigo version id',
       ),
       'filter_authors' => array(
-        'flags'=>WS_PARAM_OPTIONAL|WS_PARAM_FORCE_ARRAY,
-        'type'=>WS_TYPE_ID,
+        'flags'=>WS_PARAM_OPTIONAL,
         'info'=>'array of user ids',
       ),
       'filter_tags' => array(
         'flags'=>WS_PARAM_OPTIONAL|WS_PARAM_FORCE_ARRAY,
-        'type'=>WS_TYPE_ID,
         'info'=>'array of tag ids',
       ),
       'filter_search' => array(
@@ -179,13 +176,13 @@ function ws_pem_extensions_get_list($params, &$service)
   // Filter category
   $all_category_ids = array_keys(ws_pem_categories_get_list());
 
-  // Check if category is set for filter, die if category doesn't exist
+  // Check if category is set for filter, return if category doesn't exist
   if(isset($params['category_id']))
   {
     if(!in_array($params['category_id'], $all_category_ids))
     {
-      die(
-        'No extensions match your filter'
+      return array(
+        'message' => 'NoThis category doesn\'t exist'
       );
     }
     $filter['category_ids'] = explode(" ",$params['category_id']); 
@@ -204,7 +201,7 @@ function ws_pem_extensions_get_list($params, &$service)
 
   if (isset($params['filter_authors']))
   {
-    $filter['user_ids'] = $params['filter_authors'];
+    $filter['user_ids'] = explode(",", $params['filter_authors']);
   }
   
   if (isset($params['filter_tags']))
@@ -272,8 +269,8 @@ function ws_pem_extensions_get_list($params, &$service)
 
   if (count($all_revision_ids) == 0)
   {
-    die(
-      'No extensions match your filter'
+    return array(
+      'message' => 'No extensions match your filter'
     );
   }
 
@@ -685,6 +682,7 @@ SELECT
   }
 
   return $category_infos_of;  
+}
 
 /**
  * Remove a user from extension authors
@@ -758,6 +756,5 @@ INSERT INTO '.PEM_AUTHORS_TABLE.' (idx_extension, idx_user)
 ;';
     pwg_query($query);
 
-    // $extension_infos['idx_user'] = $uid;
   }
  }
