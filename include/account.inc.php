@@ -79,8 +79,6 @@ FROM '.PEM_REV_TABLE.'
     $revision_of = $revision_ids_of = array();
     while ($row = pwg_db_fetch_array($result))
     {
-      // $revision_of[ $row['idx_extension'] ] = $row['version'];
-      // $revision_ids_of[ $row['idx_extension'] ] = $row['id_revision'];
       $last_revision_date_of[ $row['idx_extension'] ] = format_date($row['date']);
     }
 
@@ -104,7 +102,7 @@ SELECT
       {
         $extension = array(
           'id' => $extension_id,
-          'name' =>htmlspecialchars(strip_tags($extension_infos_of[$extension_id]['name'])),
+          'name' =>htmlspecialchars(strip_tags(stripslashes($extension_infos_of[$extension_id]['name']))),
           'category' => isset($category_of_extension[$extension_id]['default_name']) ? $category_of_extension[$extension_id]['default_name'] : '' ,
           'rating_score' => generate_static_stars($extension_infos_of[$extension_id]['rating_score'],0),
           'total_rates' =>  isset($total_rates_of_extension[$extension_id]) ? $total_rates_of_extension[$extension_id] : '',
