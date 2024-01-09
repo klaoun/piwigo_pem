@@ -161,13 +161,13 @@
 {/if}
   </section>
 
-{* Links block *}
+{* Links block edit mode *}
   <section class="mt-5 pt-3 section-fluid position-relative edit_mode">
     <div class="edit_links">
       <h3 class="mb-3">Related links</h3>
 
       <div class="my-3">
-        <button class="btn btn-tertiary">
+        <button class="btn btn-tertiary" data-bs-toggle="modal" data-bs-target="#addLinkModal">
           <i class="icon-link"></i>Add a link
         </button>
       </div>
@@ -186,12 +186,20 @@
           <tr>
             <td>
               <a class="orange-link my-3" href="{$link.url}">
-                {if $link.name|strstr:"Github page" || $link.name|strstr:"Issues"}<i class="icon-github-brands"></i>{/if}
+                {if $link.name|stristr:"Github page"}<i class="icon-github"></i>{/if}
+                {if $link.name|stristr:"Issues"}<i class="icon-bug"></i>{/if}
+                {if $link.name|stristr:"Buy me a coffee"}<i class="icon-gift"></i>{/if}
+                {if $link.name|stristr:"Forum topic"}<i class="icon-message"></i>{/if}
+                {if $link.name|stristr:"Demo"}<i class="icon-message"></i>{/if}
                 {$link.name}
               </a>
             </td>
             <td>
-              <span class="ms-0 badge blue-badge d-inline">{$link.language}</span>
+  {if isset($link.lang)}
+                  <span class="ms-0 badge blue-badge d-inline">{$link.lang}</span>
+  {else}
+                  <span class="ms-0 badge purple-badge d-inline">All languages</span>
+  {/if}
             </td>
             <td>
   {if $can_modify == true}
@@ -211,14 +219,13 @@
     </div>
   </section>
 
-{* {if count($links) > 0} *}
+{* Links block non edit mode *}
   <section class="mt-5 pt-3 section-fluid related_links">
 
     <h3 class="mb-3">Related links</h3>
-    <div class="d-flex justify-content-start">
+    <div class="d-flex justify-content-start flex-wrap">
   {foreach from=$links item=link}
-      <a class="orange-link p-3" href="{$link.url}">
-        {if $link.name|strstr:"Github page" || $link.name|strstr:"Issues"}<i class="icon-github-brands"></i>{/if}
+        {if $link.name|stristr:"Forum topic"}<i class="icon-message"></i>{/if}
         {$link.name}
       </a>
   {/foreach}

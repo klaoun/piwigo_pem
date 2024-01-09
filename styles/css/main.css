@@ -11,6 +11,8 @@
   --black: #000000;
   --light_blue_background: #ebf5ff;
   --light_blue_font: #6CADD9;
+  --light_purple_background: #ede8fe;
+  --light_purple_font: #a054dd;
 
   /*colors for infos, errors, warnings and messages */
   --message_green:#0a0;
@@ -172,6 +174,7 @@ a{
 
 .link:hover{
   text-decoration:underline;
+  cursor:pointer;
 }
 
 .orange-link{
@@ -181,15 +184,7 @@ a{
 
 .orange-link:hover{
   color:var(--main_orange);
-}
-
-.grey-link{
-  color:var(--grey4);
-  text-decoration:none;
-}
-
-.grey-link:hover{
-  color:var(--main_orange);
+  text-decoration:underline
 }
 
 .secondary-orange-link{
@@ -235,7 +230,8 @@ textarea{
 }
 
 .form-control{
-  border: 1px solid #d0d0d0!important;
+  border: none;
+  background-color:var(--grey5);
 }
 
 input[type="search"]:focus::-webkit-search-cancel-button{
@@ -310,6 +306,16 @@ Badges
 .blue-badge{
   background-color: var(--light_blue_background);
   color:var(--light_blue_font);
+  padding: 5px 10px;
+  border-radius: 25px;
+  margin-left: 10px;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.purple-badge{
+  background-color: var(--light_purple_background);
+  color:var(--light_purple_font);
   padding: 5px 10px;
   border-radius: 25px;
   margin-left: 10px;
@@ -518,6 +524,15 @@ Edit mode
   color: var(--grey2);
   border: 1px solid var(--grey2);
   background-color:transparent;
+}
+
+.secondary_icon{
+  color: var(--grey4);
+  vertical-align: text-bottom;
+}
+
+.secondary_icon:hover{
+  cursor:pointer;
 }
 
 /******

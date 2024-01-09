@@ -14,6 +14,9 @@ if (isset($_GET['eid']) && 1 == count($_GET))
   // For authors modal
   include_once(PEM_PATH . 'include/extension/extension_authors.inc.php');
 
+  // For links
+  include_once(PEM_PATH . 'include/extension/extension_links.inc.php');
+
   // For add revision modal
   include_once(PEM_PATH . 'include/revision/revision_add.inc.php');
 
@@ -55,7 +58,7 @@ if (isset($_GET['eid']) && 1 == count($_GET))
       $temp = array (
         "uid" => $author,
         "username" => get_author_name($author),
-        "owner" => $author == $extension_infos['idx_user'],
+        "owner" => $author == $data['idx_user'] ? true : false,
       );
       $authors[$key] = $temp;
     }
@@ -552,27 +555,31 @@ if (isset($_GET['eid']) && 1 == count($_GET))
     $template->set_filename('pem_edit_general_info_form', realpath(PEM_PATH . 'template/modals/edit_general_info_form.tpl'));
     $template->assign_var_from_handle('PEM_EDIT_GENERAL_INFO_FORM', 'pem_edit_general_info_form');
 
-    // Assign template for edit revision modal
-    $template->set_filename('pem_edit_revision_form', realpath(PEM_PATH . 'template/modals/edit_revision_form.tpl'));
-    $template->assign_var_from_handle('PEM_EDIT_REVISION_FORM', 'pem_edit_revision_form');
-    
     // Assign template for edit image modal
     $template->set_filename('pem_edit_image_form', realpath(PEM_PATH . 'template/modals/edit_image_form.tpl'));
     $template->assign_var_from_handle('PEM_EDIT_IMAGE_FORM', 'pem_edit_image_form');
-      
+
+    // Assign template for authors modal
+    $template->set_filename('pem_edit_authors_form', realpath(PEM_PATH . 'template/modals/edit_authors_form.tpl'));
+    $template->assign_var_from_handle('PEM_EDIT_AUTHORS_FORM', 'pem_edit_authors_form');
+
     // Assign template for edit description modal
     //TODO seperate description from extension_mod.inc.php
-    $template->set_filename('pem_edit_description_form', realpath(PEM_PATH . 'template/modals/edit_description_form.tpl'));
-    $template->assign_var_from_handle('PEM_EDIT_DESCRIPTION_FORM', 'pem_edit_description_form');
-      
+    // $template->set_filename('pem_edit_description_form', realpath(PEM_PATH . 'template/modals/edit_description_form.tpl'));
+    // $template->assign_var_from_handle('PEM_EDIT_DESCRIPTION_FORM', 'pem_edit_description_form');
+
+    // Assign template for add link modal
+    $template->set_filename('pem_add_link_form', realpath(PEM_PATH . 'template/modals/add_link_form.tpl'));
+    $template->assign_var_from_handle('PEM_ADD_LINK_FORM', 'pem_add_link_form');
+    
     // Assign template for edit related links modal
     //TODO combine svn and links php
     $template->set_filename('pem_edit_related_link_form', realpath(PEM_PATH . 'template/modals/edit_related_link_form.tpl'));
     $template->assign_var_from_handle('PEM_EDIT_RELATED_LINK_FORM', 'pem_edit_related_link_form');
 
-    // Assign template for authors modal
-    $template->set_filename('pem_edit_authors_form', realpath(PEM_PATH . 'template/modals/edit_authors_form.tpl'));
-    $template->assign_var_from_handle('PEM_EDIT_AUTHORS_FORM', 'pem_edit_authors_form');
+    // Assign template for edit revision modal
+    $template->set_filename('pem_edit_revision_form', realpath(PEM_PATH . 'template/modals/edit_revision_form.tpl'));
+    $template->assign_var_from_handle('PEM_EDIT_REVISION_FORM', 'pem_edit_revision_form');
 
     // Assign template for add revision modal
     $template->set_filename('pem_add_revision_form', realpath(PEM_PATH . 'template/modals/add_revision_form.tpl'));
