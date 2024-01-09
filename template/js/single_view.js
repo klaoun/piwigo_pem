@@ -128,3 +128,25 @@ function deleteExtension(extensionId)
 {
   console.log("delete extension")
 }
+
+const editLinkModal = document.getElementById('editLinkModal');
+
+editLinkModal.addEventListener('show.bs.modal', event => {
+  const button = event.relatedTarget
+  // Extract info from data-bs-* attributes
+  const linkId = button.getAttribute('data-bs-link-id')
+  const linkName = button.getAttribute('data-bs-link-name')
+  const linkURL = button.getAttribute('data-bs-link-url')
+  const linkLang = button.getAttribute('data-bs-link-lang')
+  // Update the modal's content.
+  const modalLinkID= editLinkModal.querySelector('#link_id')
+  const modalLinkName = editLinkModal.querySelector('#link_name')
+  const modalLinkUrl= editLinkModal.querySelector('#link_url')
+  const modalLinkLang= editLinkModal.querySelector('#link_lang')
+
+  modalLinkID.value = linkId
+  modalLinkName.value = linkName
+  modalLinkUrl.value = linkURL
+  modalLinkLang.value = linkLang
+
+});

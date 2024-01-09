@@ -96,9 +96,10 @@ if (empty($page['extension_id']))
 // |                           Form submission                             |
 // +-----------------------------------------------------------------------+
 
-if (isset($_POST['pem_action']) and isset($_POST['submit']) and "add_link" == $_POST['pem_action'])
+if (isset($_POST['pem_action']) and isset($_POST['submit']))
 {
-    // find next rank
+  if ("add_link" == $_POST['pem_action'])
+  {
     $query = '
 SELECT MAX(rank) AS current_rank
   FROM '.PEM_LINKS_TABLE.'
@@ -128,13 +129,45 @@ SELECT MAX(rank) AS current_rank
       array_keys($insert),
       array($insert)
       );
+
+      $template->assign(
+        array(
+          'MESSAGE' => 'New link added. Thank you.',
+          'MESSAGE_TYPE' => 'success'
+        )
+      );
+  }
+  else if ("edit_link" == $_POST['pem_action'])
+  {
+
+
+    $data = array(
+      'name'            => pwg_db_real_escape_string($_POST['link_name']),
+      'url'             => pwg_db_real_escape_string($_POST['link_url']),
+      'idx_extension'   => $page['extension_id'],
+      'id_link'   => pwg_db_real_escape_string($_POST['link_id']),
+      );
+
+    if (!empty($_POST['link_language']))
+    {
+      $data['idx_language'] = pwg_db_real_escape_string($_POST['link_language']);
+    }
+
+    single_update(
+      PEM_LINKS_TABLE,
+      $data,
+      array('id_link' => $_POST['link_id'])
+      );
+  }
+
 }
 
-if (isset($_POST['submit_order']))
-{
-  asort($_POST['linkRank'], SORT_NUMERIC);
-  save_order_links(array_keys($_POST['linkRank']));
-}
+// Used to change links order
+// if (isset($_POST['submit_order']))
+// {
+//   asort($_POST['linkRank'], SORT_NUMERIC);
+//   save_order_links(array_keys($_POST['linkRank']));
+// }
 
 if (isset($_GET['delete']) and is_numeric($_GET['delete']))
 {
@@ -162,6 +195,7 @@ $template->assign(
     'LINK_NAME' => @$_POST['link_name'],
     'LINK_DESC' => @$_POST['link_description'],
     'LINK_LANG' => @$_POST['link_language'],
+    'LINK_ID' => @$_POST['link_id'],
     )
   );
 
@@ -198,7 +232,7 @@ while ($row = pwg_db_fetch_array($result))
   array_push(
     $tpl_links,
     array(
-      'id' => $row['id_link'],
+      'id_link' => $row['id_link'],
       'name' => $row['name'],
       'rank' => $row['rank'] * 10,
       'description' => $description,

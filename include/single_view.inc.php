@@ -219,7 +219,8 @@ if (isset($_GET['eid']) && 1 == count($_GET))
     }
 
     $query = '
-    SELECT name,
+    SELECT id_link,
+          name,
           url,
           description
       FROM '.PEM_LINKS_TABLE.'
@@ -234,6 +235,7 @@ if (isset($_GET['eid']) && 1 == count($_GET))
       array_push(
         $tpl_links,
         array(
+          'id_link' => $row['id_link'],
           'name' => $row['name'],
           'url' => $row['url'],
           'description' => $row['description'],
@@ -243,7 +245,8 @@ if (isset($_GET['eid']) && 1 == count($_GET))
     $template->assign('links', $tpl_links);
     
     $query = '
-    SELECT lt.name,
+    SELECT id_link,
+          lt.name,
           url,
           description,
           it.name as lang
@@ -259,6 +262,7 @@ if (isset($_GET['eid']) && 1 == count($_GET))
       array_push(
         $tpl_all_extension_links,
         array(
+          'id_link' => $row['id_link'],
           'name' => $row['name'],
           'url' => $row['url'],
           'language' => $row['lang'],
