@@ -1,7 +1,4 @@
 <link rel="stylesheet" type="text/css" href="{$PEM_ROOT_URL_PLUGINS}styles/css/list_view.css">
-{* Load selectize *}
-<script src="{$PEM_ROOT_URL_PLUGINS}vendor/js/selectize.min.js"></script>
-<link rel="stylesheet" type="text/css" href="{$PEM_ROOT_URL_PLUGINS}vendor/css/selectize.clear.css">
 
 {*Start of list_view tpl*}
 <div id="list_view" class="container">

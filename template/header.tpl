@@ -18,6 +18,10 @@
     {*Fontello css*}
     <link rel="stylesheet" type="text/css" href="{$PEM_ROOT_URL_PLUGINS}vendor/fontello/css/fontello.css">
 
+    {* Selectize *}
+    <script src="{$PEM_ROOT_URL_PLUGINS}vendor/js/selectize.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="{$PEM_ROOT_URL_PLUGINS}vendor/css/selectize.clear.css">
+
     {* Main CSS file, common to all tpls *}
     <link rel="stylesheet" type="text/css" href="{$PEM_ROOT_URL_PLUGINS}styles/css/main.css">
     
