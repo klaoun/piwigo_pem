@@ -57,6 +57,10 @@
       </form>
 {/if}
 
+      <div class="w-100 text-center mt-4">
+        <a class="link-primary orange-link link" href="{$PEM_ROOT_URL}identification.php">{'Cancel'|@translate}</a>
+      </div>
+
     </div>
   </section>
 
