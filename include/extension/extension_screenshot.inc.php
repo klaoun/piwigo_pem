@@ -152,7 +152,7 @@ list($page['extension_name']) = pwg_db_fetch_array($result);
 // |                           Form submission                             |
 // +-----------------------------------------------------------------------+
 
-if (isset($_POST['pem_action']) and "edit_screenshot" == $_POST['pem_action'])
+if (isset($_POST['pem_action']) and isset($_POST['submit']) and "edit_screenshot" == $_POST['pem_action'])
 {
   if (!isset($_FILES['picture']))
   {
