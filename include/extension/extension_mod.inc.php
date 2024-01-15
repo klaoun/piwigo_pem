@@ -36,7 +36,7 @@ if (isset($_POST['submit']))
   {
 
     // this action comes from single_view, we have an eid that is set
-    if (isset($_POST['pem_action']) and "edit_general_info" == $_POST['pem_action'])
+    if (isset($_POST['pem_action']) and isset($_POST['submit']) and "edit_general_info" == $_POST['pem_action'])
     {
 
       $authors = get_extension_authors($current_extension_page_id);
@@ -89,7 +89,7 @@ DELETE
       $post_type ='updated';
     }
     // This actions comes from account, we have a uid that is set and not an eid
-    else if (isset($_POST['pem_action']) and "add_ext" == $_POST['pem_action'])
+    else if (isset($_POST['pem_action']) and isset($_POST['submit']) and "add_ext" == $_POST['pem_action'])
     {
       // Inserts the extension (need to be done before the other includes, to
       // retrieve the insert id
