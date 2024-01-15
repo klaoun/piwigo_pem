@@ -1,7 +1,7 @@
 <section id="revsionInfo-popin">
     <div>
       <div class="modal fade" id="revsionInfoModal" tabindex="-1" aria-labelledby="revsionInfoModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
+        <div class="modal-dialog modal-dialog-centered">
           <div class="modal-content">
             <div class="modal-header">
               <h5 class="modal-title" id="revsionInfoModalLabel"><i class="icon-code-commit rotate-90"></i>Revision</h5>

@@ -1,7 +1,7 @@
 <section id="editLink-popin">
   <div>
     <div class="modal fade" id="editLinkModal" tabindex="-1" aria-labelledby="editLinkModalLabel" aria-hidden="true">
-      <div class="modal-dialog">
+      <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
           <div class="modal-header">
             <h5 class="modal-title" id="editLinkModalLabel"><i class="icon-link"></i> Edit link</h5>
