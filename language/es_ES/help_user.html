@@ -1,0 +1,135 @@
+<h2>Ayuda para el colaborador</h2>
+<br>
+<div class="row">
+
+  <div id="add_extension" class="changelogRevision">
+
+    <div
+      id="add_extension_header"
+      class="changelogRevisionHeaderCollapsed"
+      onclick="revToggleDisplay('add_extension_header', 'add_extension_content')"
+    >
+      <span class="revisionTitle">Añadir una extensión</span>
+    </div>
+
+    <div
+      id="add_extension_content"
+      class="changelogRevisionContent"
+      style="display:none"
+    >
+<p>Para aportar tu extensión, primero debes crearla. Una vez lo hayas hecho, haz clic sobre <a href="extension_add.php">Añadir una extensión</a> en el menú.</p>
+
+<img class="help_user" src="template/images/help/cat.jpg" alt=""/>
+<ol>
+  <li>Dale un Nombre</li>
+  <li>Elige una o varias categorías</li>
+  <li>Introduce una descripción. Puedes utilizar etiquetas multilingües para que el contenido de la descripción se adapte al idioma del usuario.</li>
+</ol>
+
+<p>En la página donde se visualiza la extensión, un conjunto de botones permite realizar varias acciones.</p>
+
+<img class="help_user" src="template/images/help/rev1.jpg" alt=""/>
+
+<ol>
+  <li>Modificar la información de la extensión.</li>
+  <li>Eliminar la extensión.</li>
+  <li>Administrar vínculos externos</li>
+  <li>Añadir una imagen que muestre la finalidad de la extensión</li>
+  <li>Añadir una revisión</li>
+</ol>
+    </div>
+  </div> <!-- add_extension -->
+
+  <div id="add_revision" class="changelogRevision">
+
+    <div
+      id="add_revision_header"
+      class="changelogRevisionHeaderCollapsed"
+      onclick="revToggleDisplay('add_revision_header', 'add_revision_content')"
+    >
+      <span class="revisionTitle">Añadir una revisión</span>
+    </div>
+
+    <div
+      id="add_revision_content"
+      class="changelogRevisionContent"
+      style="display:none"
+    >
+<p>Cada revisión corresponde a la evolución de una extensión, es decir, a una nueva versión. Puede haber varias revisiones por extensión en función de las mejoras o correciones que sufra la misma. Para crear una nueva revisión, clica sobre "Añadir una revisión" en la página de visualización de la extensión. Aparecerá el siguiente formulario:</p>
+
+<img class="help_user" src="template/images/help/rev2.jpg" alt=""/>
+
+<ol>
+  <li>Numerar la revisión, por ejemplo "2.0"</li>
+  <li>Selecciona el archivo correspondiente (*.zip)</li>
+  <li>Selecciona todas las versiones que serán compatibles con esta revisión de la extensión. Por ejemplo, si el software extendido se llama "Piwigo" y la extensión "menú dinámico", entonces hay que declarar aquí que la revisión "2.0" de "menú dinámico" es compatible con las versiones 2.0.0, 2.0.1 y 2.0.2 de "Piwigo".</li>
+  <li>Indicar el registro de cambios realizados para esta nueva revisión. Es posible utilizar las etiquetas multilingües para que el contenido se adapte al idioma elegido por el usuario.</li>
+</ol>
+    </div>
+  </div> <!-- add_revision -->
+
+  <div id="mod_revision" class="changelogRevision">
+
+    <div
+      id="mod_revision_header"
+      class="changelogRevisionHeaderCollapsed"
+      onclick="revToggleDisplay('mod_revision_header', 'mod_revision_content')"
+    >
+      <span class="revisionTitle">Modificar una revisión</span>
+    </div>
+
+    <div
+      id="mod_revision_content"
+      class="changelogRevisionContent"
+      style="display:none"
+    >
+		<img class="help_user" src="template/images/help/rev3.jpg" alt=""/>
+	<ol>
+		<li>Editar revisión</li>
+		<li>Eliminar revisión</li>
+	</ol>
+
+<b>Atención:</b>
+	<ul>
+		<li>El archivo de una revisión no puede ser modificado. Si hubiera algún error en el archivo, debe eliminarse esa revisión y crear una nueva.</li>
+		<li>En caso de que ya se hubiera difundido la revisión errónea, lo mejor es crear una nueva revisión para que los usuarios puedar darse cuenta que existe una nueva actualización disponible para su extensión. Es preferible eso que borrarla, para así evitar que los usuarios usen una revisión obsoleta.</li>
+	</ul>
+    </div>
+  </div> <!-- mod_revision -->
+
+  <div id="multilingual" class="changelogRevision">
+
+    <div
+      id="multilingual_header"
+      class="changelogRevisionHeaderCollapsed"
+      onclick="revToggleDisplay('multilingual_header', 'multilingual_content')"
+    >
+      <span class="revisionTitle">Descripciones multilingües</span>
+    </div>
+
+    <div
+      id="multilingual_content"
+      class="changelogRevisionContent"
+      style="display:none"
+    >
+
+<p>Las descripciones multilingües se introducen entre las etiquetas [lang=xx] y [/lang], donde xx es el código del idioma (por ejemplo fr, en, es, it...) Existen además dos etiquetas especiales: [lang=default] y [lang=all]</p>
+
+<p><strong>Ejemplo de utilización</strong> :</p>
+<textarea cols="80" rows="10">
+[lang=es]Descripción en español[/lang]
+[lang=en]The description, in english[/lang]
+[lang=fr]La description en français[/lang]
+[lang=ru]Описание на русском языке[/lang]
+[lang=it]La descrizione in italiano[/lang]
+[lang=de]Die Beschreibung auf deutscher Sprache[/lang]
+[lang=zh]说明在中国[/lang]
+
+
+[lang=all]Descripción para cualquiera que sea el idioma del usuario[/lang]</textarea>
+
+<p>Si no hubiera información disponible en el idioma seleccionado por el usuario, se utilizará siempre el inglés de forma predeterminada.</p>
+    </div>
+  </div> <!-- multilingual -->
+
+</div> <!-- row -->
