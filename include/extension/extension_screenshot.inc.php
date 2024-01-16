@@ -239,7 +239,7 @@ if (isset($_POST['pem_action']) and isset($_POST['submit']) and "edit_screenshot
   }
   $template->assign(
     array(
-      'MESSAGE' => 'Screenshot successfuly updated. Thank you.',
+      'MESSAGE' => 'Screenshot successfuly updated.',
       'MESSAGE_TYPE' => 'success'
     )
   );
