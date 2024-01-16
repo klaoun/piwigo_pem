@@ -17,6 +17,9 @@ if (isset($_GET['eid']) && 1 == count($_GET))
   // For links
   include_once(PEM_PATH . 'include/extension/extension_links.inc.php');
 
+  // For SVN & Git
+  include_once(PEM_PATH . 'include/extension/extension_svn.inc.php');
+
   // For add revision modal
   include_once(PEM_PATH . 'include/revision/revision_add.inc.php');
 
@@ -210,50 +213,27 @@ if (isset($_GET['eid']) && 1 == count($_GET))
       array_push(
         $tpl_all_extension_links,
         array(
-          'name' => l10n('Github page'),
-          'url' => $data['git_url'],
+          'id_link' => 'svn',
+          'name' => l10n('Trac page'),
+          'url' => str_replace('piwigo.org/svn/extensions', 'piwigo.org/dev/browser/extensions', $data['svn_url']),
           'language' => "All languages",
-          'description' => l10n('source code, bug/request tracker'),
+          'description' => l10n('source code'),  
         )
       );
     }
 
     $query = '
     SELECT id_link,
-          name,
-          url,
-          description
-      FROM '.PEM_LINKS_TABLE.'
-      WHERE idx_extension = '.$current_extension_page_id.'
-        AND (idx_language = 0 OR idx_language = '.$id_language.')
-      ORDER BY rank ASC
-    ;';
-    $result = pwg_query($query);
-
-    while ($row = pwg_db_fetch_assoc($result))
-    {
-      array_push(
-        $tpl_links,
-        array(
-          'id_link' => $row['id_link'],
-          'name' => $row['name'],
-          'url' => $row['url'],
-          'description' => $row['description'],
-          )
-        );
-    }  
-    $template->assign('links', $tpl_links);
-    
-    $query = '
-    SELECT id_link,
           lt.name,
           url,
           description,
-          it.name as lang
+          it.name as lang,
+          rank
       FROM '.PEM_LINKS_TABLE.' as lt
       LEFT JOIN '.PEM_LANG_TABLE.' as it
         ON lt.idx_language = it.id_language
         WHERE idx_extension = '.$current_extension_page_id.'
+        ORDER BY rank ASC
     ;';
     $result = pwg_query($query);
 
@@ -266,11 +246,79 @@ if (isset($_GET['eid']) && 1 == count($_GET))
           'name' => $row['name'],
           'url' => $row['url'],
           'language' => $row['lang'],
+          'rank' => $row['rank'],
+        )
+      );
+    }
+
+    $template->assign('links', $tpl_all_extension_links);
+
+    /**
+     * Get SVN GIT infos
+     */
+
+     $query = '
+SELECT svn_url, git_url, archive_root_dir, archive_name
+  FROM '.PEM_EXT_TABLE.'
+  WHERE id_extension = '.$page['extension_id'].'
+;';
+    $result = pwg_query($query);
+
+    list($svn_url, $git_url, $root_dir, $archive_name) = pwg_db_fetch_array($result);
+
+    $show_repo_infos = false;
+    if (!empty($svn_url))
+    {
+      $show_repo_infos = true;
+      $url = $svn_url;
+    }
+    elseif (!empty($git_url) and preg_match('/github/', $git_url))
+    {
+      $show_repo_infos = true;
+      $url = $git_url;
+    }
+
+    if ($show_repo_infos)
+    {
+      exec($conf['svn_path'].' info '.escapeshellarg($url), $svn_infos);
+
+      if (empty($svn_infos))
+      {
+        $svn_infos = array(l10n('Unable to retrieve SVN data!'));
+      }
+
+      $template->assign(
+        array(
+          'SVN_INFOS' => $svn_infos,
+        )
+      );
+    }
+
+    $template->assign(
+      array(
+        'ROOT_DIR' => $root_dir,
+        'ARCHIVE_NAME' => $archive_name,
+      )
+    );
+
+    if (!empty($git_url))
+    {
+      $template->assign(
+        array(
+          'TYPE' => 'git',
+          'URL' => $git_url,
           )
         );
     }
-    
-    $template->assign('all_extension_links', $tpl_all_extension_links);
+    else
+    {
+      $template->assign(
+        array(
+          'TYPE' => 'svn',
+          'URL' => $svn_url,
+          )
+        );
+    }
 
     // which revisions to display?
     $revision_ids = array();
@@ -577,9 +625,12 @@ if (isset($_GET['eid']) && 1 == count($_GET))
     $template->assign_var_from_handle('PEM_ADD_LINK_FORM', 'pem_add_link_form');
     
     // Assign template for edit related links modal
-    //TODO combine svn and links php
     $template->set_filename('pem_edit_related_link_form', realpath(PEM_PATH . 'template/modals/edit_related_link_form.tpl'));
     $template->assign_var_from_handle('PEM_EDIT_RELATED_LINK_FORM', 'pem_edit_related_link_form');
+
+    // Assign template for edit svn and git configuration
+    $template->set_filename('pem_edit_svn_git_config', realpath(PEM_PATH . 'template/modals/edit_svn_git_config.tpl'));
+    $template->assign_var_from_handle('PEM_EDIT_SVN_GIT_FORM', 'pem_edit_svn_git_config');
 
     // Assign template for edit revision modal
     $template->set_filename('pem_edit_revision_form', realpath(PEM_PATH . 'template/modals/edit_revision_form.tpl'));

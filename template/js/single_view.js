@@ -122,6 +122,21 @@ function setOwner(userId, extensionId)
     }
   });
 
+//Ajax requet to delete SVN/Git config
+function deleteSVNGitConfig(extensionId){
+  jQuery.ajax({
+    type: 'GET',
+    dataType: 'json',
+    async: false,
+    url: 'ws.php?format=json&method=pem.extensions.deleteSvnGitConfig&extension_id=' + extensionId ,
+    data: { ajaxload: 'true' },
+    success: function (data) {
+      if (data.stat == 'ok') {
+        // localStorage.setItem("message",data.message)
+        // window.location.reload(); 
+      }
+    }
+  });
 }
 
 function deleteExtension(extensionId)

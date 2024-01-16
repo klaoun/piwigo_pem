@@ -234,7 +234,7 @@
     <h3 class="mb-3">Revisions</h3>
 
     <div class="edit_mode mt-3 mb-4">
-      <button class="btn btn-tertiary">
+      <button class="btn btn-tertiary" data-bs-toggle="modal" data-bs-target="#editSvnGitModal">
         <i class="icon-git-alt"></i> SVN & Git configuration
       </button>
       <button class="btn btn-tertiary ms-3" data-bs-toggle="modal" data-bs-target="#addRevisionModal">
@@ -340,6 +340,7 @@
   {* {$PEM_EDIT_DESCRIPTION_FORM} *}
   {$PEM_EDIT_RELATED_LINK_FORM}
   {$PEM_EDIT_AUTHORS_FORM}
+  {$PEM_EDIT_SVN_GIT_FORM}
   {$PEM_ADD_REVISION_FORM}
 
 </div>
