@@ -72,26 +72,6 @@ if (empty($page['extension_id']))
   die('Incorrect extension identifier');
 }
 
-// $authors = get_extension_authors($page['extension_id']);
-
-// if (!in_array($user['id'], $authors) and !is_Admin($user['id']))
-// {
-//   die('You must be the extension author to modify it.');
-// }
-
-// $query = '
-// SELECT name
-//   FROM '.PEM_EXT_TABLE.'
-//   WHERE id_extension = '.$page['extension_id'].'
-// ;';
-// $result = pwg_query($query);
-
-// if (pwg_db_num_rows( pwg_query($query) ) == 0)
-// {
-//   message_die('Incorrect extension identifier');
-// }
-// list($page['extension_name']) = pwg_db_fetch_array($result);
-
 // +-----------------------------------------------------------------------+
 // |                           Form submission                             |
 // +-----------------------------------------------------------------------+
@@ -132,127 +112,66 @@ SELECT MAX(rank) AS current_rank
 
       $template->assign(
         array(
-          'MESSAGE' => 'New link added. Thank you.',
+          'MESSAGE' => 'New link added succesfully added.',
           'MESSAGE_TYPE' => 'success'
         )
       );
   }
   else if ("edit_link" == $_POST['pem_action'])
   {
-
-
     $data = array(
       'name'            => pwg_db_real_escape_string($_POST['link_name']),
       'url'             => pwg_db_real_escape_string($_POST['link_url']),
       'idx_extension'   => $page['extension_id'],
-      'id_link'   => pwg_db_real_escape_string($_POST['link_id']),
-      );
+      'id_link'         => pwg_db_real_escape_string($_POST['link_id']),
+    );
 
     if (!empty($_POST['link_language']))
     {
       $data['idx_language'] = pwg_db_real_escape_string($_POST['link_language']);
     }
 
-    single_update(
-      PEM_LINKS_TABLE,
-      $data,
-      array('id_link' => $_POST['link_id'])
+    if(is_numeric($data['id_link']) && 'git' != $data['id_link'])
+    {   
+      single_update(
+        PEM_LINKS_TABLE,
+        $data,
+        array('id_link' => $data['id_link'])
       );
-  }
-
-}
-
-// Used to change links order
-// if (isset($_POST['submit_order']))
-// {
-//   asort($_POST['linkRank'], SORT_NUMERIC);
-//   save_order_links(array_keys($_POST['linkRank']));
-// }
-
-if (isset($_GET['delete']) and is_numeric($_GET['delete']))
-{
-  $query = '
-DELETE
-  FROM '.PEM_LINKS_TABLE.'
-  WHERE id_link = '.$_GET['delete'].'
-    AND idx_extension = '.$page['extension_id'].'
+      
+      $template->assign(
+        array(
+          'MESSAGE' => 'This link has been succesfully updated.',
+          'MESSAGE_TYPE' => 'success'
+        )
+      );
+    }
+    else if(!is_numeric($data['id_link']) && 'git' == $data['id_link'] || 'svn' == $data['id_link'])
+    {
+      // first we reset both URLs
+      $query = '
+UPDATE '.PEM_EXT_TABLE.'
+  SET svn_url = NULL
+    , git_url = NULL
+  WHERE id_extension = '.$page['extension_id'].'
 ;';
-  pwg_query($query);
-
-  order_links($page['extension_id']);
-}
-
-// +-----------------------------------------------------------------------+
-// |                            Form display                               |
-// +-----------------------------------------------------------------------+
-
-$template->assign(
-  array(
-    'u_extension' => 'extension_view.php?eid='.$page['extension_id'],
-    'f_action' => 'extension_links.php?eid='.$page['extension_id'],
-    'extension_name' => $page['extension_name'],
-    'LINK_URL' => @$_POST['link_url'],
-    'LINK_NAME' => @$_POST['link_name'],
-    'LINK_DESC' => @$_POST['link_description'],
-    'LINK_LANG' => @$_POST['link_language'],
-    'LINK_ID' => @$_POST['link_id'],
-    )
-  );
-
-$tpl_links =array();
+      pwg_query($query);
   
-$query = '
-SELECT
-    id_link,
-    name,
-    url,
-    description,
-    rank
-  FROM '.PEM_LINKS_TABLE.'
-  WHERE idx_extension = '.$page['extension_id'].'
-  ORDER BY rank ASC
+      $query = '
+UPDATE '.PEM_EXT_TABLE.'
+SET '.$_POST['link_id'].'_url = "'.$data['url'].'"
+WHERE id_extension = '.$page['extension_id'].'
 ;';
-$result = pwg_query($query);
-while ($row = pwg_db_fetch_array($result))
-{
-  $description = '';
-
-  if (!empty($row['description']))
-  {
-    if (strlen($row['description']) > 50)
-    {
-      $description = substr($row['description'], 0, 50).'...';
-    }
-    else
-    {
-      $description = $row['description'];
-    }
-  }
-
-  array_push(
-    $tpl_links,
-    array(
-      'id_link' => $row['id_link'],
-      'name' => $row['name'],
-      'rank' => $row['rank'] * 10,
-      'description' => $description,
-      'url' => $row['url'],
-      'u_delete' =>
-        'extension_links.php?eid='.$page['extension_id'].
-        '&amp;delete='.$row['id_link'],
+    pwg_query($query);
+    
+    $template->assign(
+      array(
+        'MESSAGE' => 'This link has been succesfully updated.',
+        'MESSAGE_TYPE' => 'success'
       )
     );
+    }
+  }
 }
 
-$template->assign('links', $tpl_links);
-
-// +-----------------------------------------------------------------------+
-// |                           html code display                           |
-// +-----------------------------------------------------------------------+
-// flush_page_messages();
-// $tpl->assign_var_from_handle('main_content', 'extension_links');
-// include($root_path.'include/header.inc.php');
-// include($root_path.'include/footer.inc.php');
-// $tpl->parse('page');
-// $tpl->p();
 ?>
