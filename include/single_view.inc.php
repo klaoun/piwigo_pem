@@ -3,6 +3,10 @@ if (isset($_GET['eid']) && 1 == count($_GET))
 {
   global $conf, $user;
 
+// +-----------------------------------------------------------------------+
+// |                         Include functionnalites                       |
+// +-----------------------------------------------------------------------+
+
   include_once(PEM_PATH . 'include/functions_language.inc.php');
 
   // For general information modal
@@ -23,6 +27,10 @@ if (isset($_GET['eid']) && 1 == count($_GET))
   // For add revision modal
   include_once(PEM_PATH . 'include/revision/revision_add.inc.php');
 
+// +-----------------------------------------------------------------------+
+// |                         Get extension infos                           |
+// +-----------------------------------------------------------------------+
+
   $current_extension_page_id = $_GET['eid'];
 
   // Get current language id, transition to PEM plugin means that language id is the language code in the old PEM database
@@ -40,6 +48,7 @@ if (isset($_GET['eid']) && 1 == count($_GET))
 
   $data = get_extension_infos_of($current_extension_page_id);
 
+  // If extension exists get info
   if (!isset($data['id_extension']))
   {
     http_response_code(404);
@@ -66,7 +75,7 @@ if (isset($_GET['eid']) && 1 == count($_GET))
       $authors[$key] = $temp;
     }
 
-    //Check if user can make change to extension
+    //Check if user can make changes to extension
     $page['user_can_modify'] = false;
 
     if (isset($user['id']) and (is_Admin() or isTranslator($user['id']) or in_array($user['id'], $authors)))
@@ -105,7 +114,7 @@ if (isset($_GET['eid']) && 1 == count($_GET))
       }
     }
     
-    // download statistics
+    // Get download statistics
     $query = '
     SELECT
         id_revision,
@@ -123,8 +132,10 @@ if (isset($_GET['eid']) && 1 == count($_GET))
       $downloads_of_revision[ $row['id_revision'] ] = $row['nb_downloads'];
     }
 
+    // Assign single_view template
     $template->set_filename('pem_page', realpath(PEM_PATH . 'template/single_view.tpl'));
 
+    // Send data to template
     $template->assign(
       array(
         'extension_id' => $current_extension_page_id,
@@ -151,6 +162,7 @@ if (isset($_GET['eid']) && 1 == count($_GET))
       )
     );
 
+    // If user can modify send this info to template
     if (isset($user['id']))
     {
       if ($page['user_can_modify'])
@@ -186,6 +198,7 @@ if (isset($_GET['eid']) && 1 == count($_GET))
       }
     }
 
+    // If image is set send to template
     if ($screenshot_infos = get_extension_screenshot_infos($current_extension_page_id))
     {
       $template->assign(
@@ -193,9 +206,11 @@ if (isset($_GET['eid']) && 1 == count($_GET))
       );
     }
 
-    // Links associated to the current extension
-    $tpl_links = array();
+    /**
+     * Get link infos
+     */
 
+    // Links associated to the current extension
     $tpl_all_extension_links = array();
 
     // if the extension is hosted on github, add a link to the Github page
@@ -319,6 +334,10 @@ SELECT svn_url, git_url, archive_root_dir, archive_name
           )
         );
     }
+
+    /**
+     * Get revisions info
+     */
 
     // which revisions to display?
     $revision_ids = array();
@@ -445,7 +464,10 @@ SELECT svn_url, git_url, archive_root_dir, archive_name
       $template->assign('revisions', $tpl_revisions);
     }
 
-    // rating
+// +-----------------------------------------------------------------------+
+// |                         Extension rating                              |
+// +-----------------------------------------------------------------------+
+
     $rate_summary = array(
       'count' => 0, 
       'count_text' => sprintf(l10n('Rated %d times'), 0), 
@@ -497,7 +519,10 @@ SELECT svn_url, git_url, archive_root_dir, archive_name
       'rate' => $user_rate,
       ));
       
-    // REVIEWS
+// +-----------------------------------------------------------------------+
+// |                         Extension reviews                             |
+// +-----------------------------------------------------------------------+
+
     // total reviews in each language
     $current_language_id = get_current_language_id();
 
@@ -602,6 +627,10 @@ SELECT svn_url, git_url, archive_root_dir, archive_name
     $scores[0] = '--';
     asort($scores);
     $template->assign('scores', $scores);
+
+// +-----------------------------------------------------------------------+
+// |                         Assign modal tpls                             |
+// +-----------------------------------------------------------------------+
 
     // Assign template for general information modal
     $template->set_filename('pem_edit_general_info_form', realpath(PEM_PATH . 'template/modals/edit_general_info_form.tpl'));
