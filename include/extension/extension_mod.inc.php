@@ -165,7 +165,7 @@ DELETE
     
     $template->assign(
       array(
-        'MESSAGE' => 'Extension successfuly '.$post_type.'. Thank you.',
+        'MESSAGE' => 'Extension successfuly '.$post_type.'.',
         'MESSAGE_TYPE' => 'success'
       )
     );
