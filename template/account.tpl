@@ -7,11 +7,9 @@
 <div class="container" id="profile">
 
 {if isset($MESSAGE)}
-  <section>
-  <div class="mt-3 {if $MESSAGE_TYPE == "success"}infos{/if}">
-      <p class="my-2">{$MESSAGE}</p>
-    </div>
-  </section>
+<div class="alert {if $MESSAGE_TYPE == "success"}alert-success{/if} mt-3" role="alert">
+  <span>{$MESSAGE}</span><br>
+</div>
 {/if}
 
 {if $can_modify == true}
