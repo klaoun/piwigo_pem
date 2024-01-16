@@ -15,7 +15,7 @@
 {/if}
   
 
-{if $can_modify == true}
+{if isset($can_modify) && $can_modify == true}
   <section  class="mt-4 section-fluid">
     <div class="d-flex justify-content-end">
       <div class="form-check form-switch ">
@@ -37,7 +37,7 @@
   <section class="mt-4 section-fluid">
   <div class="row">
     <div class="col-md-6 position-relative" id="info-container">
-{if $can_modify == true}
+{if isset($can_modify) && $can_modify == true}
       <span class="circle-icon edit_mode position-absolute top-0 end-0 translate-middle" data-bs-toggle="modal" data-bs-target="#generalInfoModal">
         <i class="icon-pencil"></i>
       </span>
@@ -51,7 +51,7 @@
 {foreach from=$authors item=author}
         <a href = "{$PEM_ROOT_URL}index.php?uid={$author.uid}"><h4 class="author d-inline link">{$author.username}{if !$author@last}, {/if}</h4></a>
 {/foreach}
-{if $can_modify == true}
+{if isset($can_modify) && $can_modify == true}
   <span class="edit_mode secondary_icon" data-bs-toggle="modal" data-bs-target="#authorsModal">
     <i class="icon-pencil"></i>
   </span>
@@ -93,7 +93,7 @@
     </div>
 
     <div class="col-md-6 text-center position-relative" id="image-container">
-{if $can_modify == true}
+{if isset($can_modify) && $can_modify == true}
       <span class="circle-icon edit_mode position-absolute top-0 end-0 translate-middle" data-bs-toggle="modal" data-bs-target="#ImageModal">
         <i class="icon-pencil" ></i>
       </span>
@@ -199,6 +199,7 @@
             <td>
   {if $can_modify == true}
               <span class="circle-icon edit_mode me-2" data-bs-toggle="modal" data-bs-target="#RelatedLinkModal">
+  {if isset($can_modify) && $can_modify == true}
                 <i class="icon-pencil"></i>Edit
               </span>
               <span class="circle-icon secondary_action">
@@ -252,7 +253,7 @@
       <div id="rev{$rev.id}" class="changelogRevision card position-relative">
     {/if}
 
-  {if $can_modify}
+  {if isset($can_modify) && $can_modify == true}
       <div class="position-absolute end-0 me-5">
         <span class="circle-icon edit_mode main_action z-index me-2 pe-0" data-bs-toggle="modal" data-bs-target="#revsionInfoModal" onclick="popinToggleDisplay('generalInfo')">
           <i class="icon-pencil" ></i>
