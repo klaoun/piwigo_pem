@@ -141,6 +141,15 @@ function pem_ws_add_methods($arr)
     'Delete a link associated to an extension'
   );
 
+  $service->addMethod(
+    'pem.extensions.deleteSvnGitConfig',
+    'ws_pem_extensions_delete_svn_git_config',
+    array(
+      'extension_id' => array('type'=>WS_TYPE_INT|WS_TYPE_POSITIVE),
+    ),
+    'Delete svn/git configuration linked to extension'
+  );
+
 }
 
 /**
@@ -779,6 +788,23 @@ DELETE
   WHERE id_link = '.$params['link_id'].'
     AND idx_extension = '.$params['extension_id'].'
 ;';
+  pwg_query($query);
+}
+
+/**
+ * Delete a svn/git config linked to an extension
+ */
+function ws_pem_extensions_delete_svn_git_config($params, &$service)
+{
+  $query = '
+UPDATE '.PEM_EXT_TABLE.'
+SET svn_url = NULL,
+    git_url = NULL,
+    archive_root_dir = NULL,
+    archive_name = NULL
+WHERE id_extension = '.$params['extension_id'].'
+;';
+
   pwg_query($query);
 }
 
