@@ -150,6 +150,15 @@ function pem_ws_add_methods($arr)
     'Delete svn/git configuration linked to extension'
   );
 
+  $service->addMethod(
+    'pem.extensions.deleteExtension',
+    'ws_pem_extensions_delete_extension',
+    array(
+      'extension_id' => array('type'=>WS_TYPE_INT|WS_TYPE_POSITIVE),
+    ),
+    'Delete extension'
+  );
+
 }
 
 /**
@@ -776,7 +785,8 @@ INSERT INTO '.PEM_AUTHORS_TABLE.' (idx_extension, idx_user)
     pwg_query($query);
 
   }
- }
+}
+
 /**
  * Delete a link associated to an extension
  */
@@ -806,5 +816,62 @@ WHERE id_extension = '.$params['extension_id'].'
 ;';
 
   pwg_query($query);
+}
+
+/**
+ * Delete an extension
+ */
+function ws_pem_extensions_delete_extension($params, &$service)
+{
+
+// Delete all the revisions for the given extension
+  $query = '
+SELECT id_revision
+  FROM '.PEM_REV_TABLE.'
+  WHERE idx_extension = '.$params['extension_id'].'
+;';
+  $rev_to_delete = query2array($query, null, 'id_revision');
+  delete_revisions($rev_to_delete);
+
+// Deletes all the categories relations
+  $query = '
+DELETE
+  FROM '.PEM_EXT_CAT_TABLE.'
+  WHERE idx_extension = '.$params['extension_id'].'
+;';
+  pwg_query($query);
+
+// Deletes all the tags relations
+  $query = '
+DELETE
+  FROM '.PEM_EXT_TAG_TABLE.'
+  WHERE idx_extension = '.$params['extension_id'].'
+;';
+  pwg_query($query);
+
+// Deletes all the rates
+  $query = '
+DELETE
+  FROM '.PEM_RATE_TABLE.'
+  WHERE idx_extension = '.$params['extension_id'].'
+;';
+  pwg_query($query);
+
+// Deletes all the reviews
+  $query = '
+DELETE
+  FROM '.PEM_REVIEW_TABLE.'
+  WHERE idx_extension = '.$params['extension_id'].'
+;';
+  pwg_query($query);
+
+// And finally delete the extension
+  $query = '
+DELETE
+  FROM '.PEM_EXT_TABLE.'
+  WHERE id_extension = '.$params['extension_id'].'
+;';
+  pwg_query($query);
+
 }
 
