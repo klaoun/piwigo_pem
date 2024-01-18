@@ -131,6 +131,16 @@ function pem_ws_add_methods($arr)
     'Set a user as extension owner'
   );
 
+  $service->addMethod(
+    'pem.extensions.deleteLink',
+    'ws_pem_extensions_delete_link',
+    array(
+      'extension_id' => array('type'=>WS_TYPE_INT|WS_TYPE_POSITIVE),
+      'link_id' => array('type'=>WS_TYPE_INT|WS_TYPE_POSITIVE),
+    ),
+    'Delete a link associated to an extension'
+  );
+
 }
 
 /**
@@ -758,3 +768,17 @@ INSERT INTO '.PEM_AUTHORS_TABLE.' (idx_extension, idx_user)
 
   }
  }
+/**
+ * Delete a link associated to an extension
+ */
+function ws_pem_extensions_delete_link($params, &$service)
+{
+  $query = '
+DELETE
+  FROM '.PEM_LINKS_TABLE.'
+  WHERE id_link = '.$params['link_id'].'
+    AND idx_extension = '.$params['extension_id'].'
+;';
+  pwg_query($query);
+}
+
