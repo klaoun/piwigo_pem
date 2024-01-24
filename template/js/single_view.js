@@ -130,10 +130,17 @@ function deleteSVNGitConfig(extensionId){
     async: false,
     url: 'ws.php?format=json&method=pem.extensions.deleteSvnGitConfig&extension_id=' + extensionId ,
     data: { ajaxload: 'true' },
+function deleteExtension(extensionId, link)
+{
+  jQuery.ajax({
+    type: 'GET',
+    dataType: 'json',
+    async: false,
+    url: 'ws.php?format=json&method=pem.extensions.deleteExtension&extension_id=' + extensionId ,
+    data: { ajaxload: 'true' },
     success: function (data) {
       if (data.stat == 'ok') {
-        // localStorage.setItem("message",data.message)
-        // window.location.reload(); 
+        window.location.replace(link)
       }
     }
   });

@@ -22,11 +22,11 @@
         <input class="form-check-input" type="checkbox" role="switch" id="edit_mode">
         <label class="form-check-label" for="edit_mode">Edit mode</label>
       </div>
-  {if isset($u_owner) && $u_owner == true}
+  {if isset($u_owner) && $u_owner == true && $current_user_id}
       <div class="ms-4">
-        <a href="{$u_delete}" onclick="return confirm('{'Are you sure you want to delete this item?'|@translate|escape:javascript}');" class="grey-link" title="{'Delete link'|@translate}">
+        <span class="link-secondary link" data-bs-toggle="modal" data-bs-target="#deleteExtensionModal">
           <i class="icon-trash"></i>Delete extension
-        </a>
+        </span>
       </div>
   {/if}
     </div>
