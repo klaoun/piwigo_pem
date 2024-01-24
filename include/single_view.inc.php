@@ -672,6 +672,10 @@ SELECT svn_url, git_url, archive_root_dir, archive_name
     // Assign template for confirmation modal
     $template->set_filename('pem_delete_extension', realpath(PEM_PATH . 'template/modals/confirm_deletion.tpl'));
     $template->assign_var_from_handle('PEM_DELETE_EXTENSION', 'pem_delete_extension');
+
+    // Assign template for confirmation modal
+    $template->set_filename('pem_display_languages', realpath(PEM_PATH . 'template/modals/display_languages.tpl'));
+    $template->assign_var_from_handle('PEM_DISPLAY_LANGUAGES', 'pem_display_languages');
   }
 }
 else

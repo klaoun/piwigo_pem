@@ -149,3 +149,11 @@ button.link-primary{
   background: none;
   cursor: pointer;
 }
+
+/******
+Lists
+******/
+.list-group{
+  flex-direction:row;
+  flex-wrap:wrap;
+}
