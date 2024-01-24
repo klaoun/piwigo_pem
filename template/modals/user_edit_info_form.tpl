@@ -1,7 +1,7 @@
 <section id="userInfo-popin">
   <div>
     <div class="modal fade" id="userInfoModal" tabindex="-1" aria-labelledby="userInfoModalLabel" aria-hidden="true">
-      <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-dialog modal-dialog-centered modal-lg">
         <div class="modal-content">
           <div class="modal-header">
             <h5 class="modal-title" id="userInfoModalLabel"><i class="icon-user"></i>My profil</h5>
@@ -11,10 +11,18 @@
 
             <div class="modal-body">
 
+              <input type="hidden" name="user_id" value="{$USER.id}">
+
               {* User name *}
               <div class="mb-3 form-group">
-                <label for="extension_name" class="form-label w-100 ">Name</label>
-                <input type="text" name="extension_name" size="35" maxlength="255" {if isset($USER.username)}value="{$USER.username}"{/if} class="w-100"/>
+                <label for="user_name" class="form-label w-100 ">Username</label>
+                <input type="text" name="user_name" size="35" maxlength="255" {if isset($USER.username)}value="{$USER.username}"{/if} class="w-100 form-control"/>
+              </div>
+
+              {* User EMAIL *}
+              <div class="mb-3 form-group">
+               <label for="user_email" class="form-label w-100 ">Email</label>
+               <input type="email" name="user_email" {if isset($USER.username)}value="{$USER.email}"{/if} class="w-100 form-control"/>
               </div>
 
             </div>

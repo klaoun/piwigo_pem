@@ -8,6 +8,9 @@ if (isset($_GET['uid']) && 1 == count($_GET))
 
   $current_user_page_id = $_GET['uid'];
 
+  // For user info modal
+  include_once(PEM_PATH . 'include/user/user_mod.inc.php');
+
   // Assign template for new extension modal
   // Use extension mod because there is a multiple parts that are the same, it saves having the same code twice 
   include_once(PEM_PATH . 'include/extension/extension_mod.inc.php');
