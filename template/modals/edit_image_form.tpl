@@ -1,7 +1,7 @@
 <section id="Image-popin">
     <div>
       <div class="modal fade" id="ImageModal" tabindex="-1" aria-labelledby="ImageModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
           <div class="modal-content">
             <div class="modal-header">
               <h5 class="modal-title" id="ImageModalLabel"><i class="icon-image"></i>Edit images</h5>
