@@ -668,6 +668,10 @@ SELECT svn_url, git_url, archive_root_dir, archive_name
     // Assign template for add revision modal
     $template->set_filename('pem_add_revision_form', realpath(PEM_PATH . 'template/modals/add_revision_form.tpl'));
     $template->assign_var_from_handle('PEM_ADD_REVISION_FORM', 'pem_add_revision_form');
+
+    // Assign template for confirmation modal
+    $template->set_filename('pem_delete_extension', realpath(PEM_PATH . 'template/modals/confirm_deletion.tpl'));
+    $template->assign_var_from_handle('PEM_DELETE_EXTENSION', 'pem_delete_extension');
   }
 }
 else
