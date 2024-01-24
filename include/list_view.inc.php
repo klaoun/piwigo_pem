@@ -92,7 +92,18 @@ SELECT
     //   WHERE ecT.idx_category = '.$current_category_page_id.'
     // ;';
 
-    $query = '
+// Gets the available authors
+$query = '
+SELECT DISTINCT 
+    eT.idx_user as uid,
+    uT.username
+  FROM '.PEM_EXT_TABLE.' as eT
+  JOIN '.USERS_TABLE.' as uT on id = eT.idx_user
+;';
+
+$owners = query2array($query, 'uid');
+
+$query = '
 SELECT DISTINCT
     aT.idx_user as uid,
     uT.username
@@ -100,7 +111,9 @@ SELECT DISTINCT
     JOIN '.USERS_TABLE.' as uT on id = aT.idx_user
 ;';
 
-    $authors= query2array($query, 'uid');
+$authors= query2array($query, 'uid');
+
+$all_authors = array_merge_recursive($owners, $authors);
 
     //Get List of versions for filter
     $query = '
@@ -143,7 +156,7 @@ SELECT
       array(
       'PEM_PATH' => PEM_PATH,
       'CATEGORY' => $current_category_page_info,
-      'AUTHORS' => $authors,
+      'AUTHORS' => $all_authors,
       'VERSIONS' => $versions,
       'TAGS' => $tags,
       )

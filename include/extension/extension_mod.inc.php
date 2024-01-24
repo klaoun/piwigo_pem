@@ -188,7 +188,17 @@ SELECT
 
 $all_tags = query2array($query);
 
-// Gets the avaiable authors
+// Gets the available authors
+$query = '
+SELECT DISTINCT 
+    eT.idx_user as uid,
+    uT.username
+  FROM '.PEM_EXT_TABLE.' as eT
+  JOIN '.USERS_TABLE.' as uT on id = eT.idx_user
+;';
+
+$owners = query2array($query, 'uid');
+
 $query = '
 SELECT DISTINCT
     aT.idx_user as uid,
@@ -197,7 +207,7 @@ SELECT DISTINCT
     JOIN '.USERS_TABLE.' as uT on id = aT.idx_user
 ;';
 
-$all_authors= query2array($query, 'uid');
+$authors= query2array($query, 'uid');
 
 $template->assign(
   array(
