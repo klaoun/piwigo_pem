@@ -1,16 +1,5 @@
 <?php
 
-// define('INTERNAL', true);
-// $root_path = './';
-// require_once($root_path.'include/common.inc.php');
-
-// $tpl->set_filenames(
-//   array(
-//     'page' => 'page.tpl',
-//     'extension_links' => 'extension_links.tpl'
-//   )
-// );
-
 // +-----------------------------------------------------------------------+
 // |                             Functions                                 |
 // +-----------------------------------------------------------------------+
@@ -61,17 +50,6 @@ function save_order_links($sorted_link_ids)
 
 global $template;
 
-// We need a valid extension
-$page['extension_id'] =
-  (isset($_GET['eid']) and is_numeric($_GET['eid']))
-  ? $_GET['eid']
-  : '';
-
-if (empty($page['extension_id']))
-{
-  die('Incorrect extension identifier');
-}
-
 // +-----------------------------------------------------------------------+
 // |                           Form submission                             |
 // +-----------------------------------------------------------------------+
@@ -83,7 +61,7 @@ if (isset($_POST['pem_action']) and isset($_POST['submit']))
     $query = '
 SELECT MAX(rank) AS current_rank
   FROM '.PEM_LINKS_TABLE.'
-  WHERE idx_extension = '.$page['extension_id'].'
+  WHERE idx_extension = '.$_GET['eid'].'
 ;';
     list($current_rank) = pwg_db_fetch_array(pwg_query($query));
 
@@ -96,7 +74,7 @@ SELECT MAX(rank) AS current_rank
       'name'            => pwg_db_real_escape_string($_POST['link_name']),
       'url'             => pwg_db_real_escape_string($_POST['link_url']),
       'rank'            => $current_rank + 1,
-      'idx_extension'   => $page['extension_id'],
+      'idx_extension'   => $_GET['eid'],
       );
 
     if (!empty($_POST['link_language']))
@@ -122,7 +100,7 @@ SELECT MAX(rank) AS current_rank
     $data = array(
       'name'            => pwg_db_real_escape_string($_POST['link_name']),
       'url'             => pwg_db_real_escape_string($_POST['link_url']),
-      'idx_extension'   => $page['extension_id'],
+      'idx_extension'   => $_GET['eid'],
       'id_link'         => pwg_db_real_escape_string($_POST['link_id']),
     );
 
@@ -153,14 +131,14 @@ SELECT MAX(rank) AS current_rank
 UPDATE '.PEM_EXT_TABLE.'
   SET svn_url = NULL
     , git_url = NULL
-  WHERE id_extension = '.$page['extension_id'].'
+  WHERE id_extension = '.$_GET['eid'].'
 ;';
       pwg_query($query);
   
       $query = '
 UPDATE '.PEM_EXT_TABLE.'
 SET '.$_POST['link_id'].'_url = "'.$data['url'].'"
-WHERE id_extension = '.$page['extension_id'].'
+WHERE id_extension = '.$_GET['eid'].'
 ;';
     pwg_query($query);
     
