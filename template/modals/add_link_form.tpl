@@ -13,29 +13,23 @@
                 
                 <div class="mb-3 form-group">
                   <label for="link_name" class="col-12">{'Name'|@translate}</label>
-                  <input type="text" name="link_name" maxlength="50" value="{$LINK_NAME}" class="w-100 form-control" required>
+                  <input type="text" name="link_name" maxlength="50" class="w-100 form-control" required>
                   <p><small>Here are some link suggestions: "Github page", "Forum topic", "Issues", "Buy me a coffee" ...</small></p>
                 </div>
 
                 <div class="mb-3 form-group">
                   <label for="link_url" class="col-12">{'URL'|@translate}</label>
-                  <input type="url" name="link_url" size="50" maxlength="255" value="{$LINK_URL}" class="w-100 form-control" required>
+                  <input type="url" name="link_url" size="50" maxlength="255" class="w-100 form-control" required>
                 </div>
-
-                {if !empty($languages)}
-
-                    <label for="link_language" class="col-12">{'Language'|@translate}</label>
-                    
+{if !empty($languages)}
+                    <label for="link_language" class="col-12">{'Language'|@translate}</label>           
                     <select name="link_language" class="form-select w-100">
-                      <option value="en_UK" id="opt_en_UK" selected>English [UK]</option>
-
-                      {* This foreach can be used once we have different languages until then we use english *}
-                      {* {foreach from=$languages item=language}
-                      <option value="{$language.id}" {if $LINK_LANG==$language.id}selected{/if}>{$language.name}</option>
-                      {/foreach} *}
+                      <option value="null">All languages</option>
+  {foreach from=$languages item=language}
+                      <option value="{$language.id}">{$language.name}</option>
+  {/foreach}
                     </select>
-
-                  {/if}
+{/if}
           
 
             </div>
