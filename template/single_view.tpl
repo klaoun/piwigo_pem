@@ -135,6 +135,11 @@
   {/if}
       </div>
 {/if}
+{if !empty($ext_languages)}
+  <div class="px-3 py-2 border-left d-inline-block">
+    <span class="link" data-bs-toggle="modal" data-bs-target="#displayLanguagesModal"><i class="icon-language"></i> {'%s Available languages'|translate:{$ext_languages|@count}}</span>
+  </div>
+{/if}
     </div>
     
   </section>
