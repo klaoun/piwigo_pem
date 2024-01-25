@@ -9,13 +9,11 @@
             </div>
             
 
-            <form method="post" action="{$f_action}" enctype="multipart/form-data">
+            <form method="post" enctype="multipart/form-data">
               <div class="modal-body">
-                <legend>{'Add or replace screenshot'|@translate}</legend>
+                <label class="form-label w-100" for="picture">{'Add or replace screenshot'|translate}</label>
+                <input class="form-control" type="file" name="picture" maxlength="50" {if isset($f_picture_name)}value="{$f_picture_name}"{/if} required>
             
-                <strong>{'File'|@translate} *</strong>
-                <input type="file" name="picture" maxlength="50" {if isset($f_picture_name)}value="{$f_picture_name}"{/if}/>
-
               </div>
 
               <input type="hidden" name="pem_action" value="edit_screenshot">
