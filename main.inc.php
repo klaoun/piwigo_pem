@@ -79,8 +79,10 @@ function pem_user_init()
 {
   global $user, $page;
   $page['pem_domain_prefix'] = '';
-  //Set user language to 'en_GB'
-  $user['language'] = 'en_GB';
+
+  // Try to get browser language if true.
+  // If false, use $conf['default_language']
+  $conf['get_browser_language'] = false;
 
 }
 
@@ -88,13 +90,15 @@ function pem_user_init()
 add_event_handler('init', 'pem_init');
 function pem_init()
 {
+  global $lang;
+
   include_once(PEM_PATH . 'include/functions_pem.php');
-  
+
   //Load languages
   /* Load en_GB translation */
-  load_language('plugin.lang', PEM_PATH, array('language' => 'en_GB', 'no_fallback' => true));
+  load_language('common.lang', PEM_PATH, array('language' => 'en_GB', 'no_fallback' => true));
   /* Load user language translation */
-  load_language('plugin.lang', PEM_PATH);
+  load_language('common.lang', PEM_PATH);
 }
 
 /**
