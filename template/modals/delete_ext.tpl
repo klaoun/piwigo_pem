@@ -2,7 +2,7 @@
 <section id="deleteExtension-popin">
   <div>
     <div class="modal fade" id="deleteExtensionModal" tabindex="-1" aria-labelledby="deleteExtensionModalLabel" aria-hidden="true">
-      <div class="modal-dialog modal-dialog-centered modal-sm">
+      <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
           <div class="modal-header">
             <h5 class="modal-title" id="deleteExtensionModalLabel"><i class="icon-trash"></i> {'Delete extension'|translate}</h5>
