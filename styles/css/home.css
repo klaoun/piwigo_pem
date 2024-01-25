@@ -3,7 +3,9 @@ Images
 ******/
 
 .extension_image{
-  position:absolute;
-  top:50%;
-  transform:translateY(-50%);
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  max-height: 100%;
+  object-fit: cover;
 }
