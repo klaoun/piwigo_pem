@@ -1,7 +1,5 @@
 <?php
 
-$extension_infos = get_extension_infos_of($page['extension_id']);
-
 // +-----------------------------------------------------------------------+
 // |                           Form submission                             |
 // +-----------------------------------------------------------------------+
@@ -26,11 +24,11 @@ if (isset($_POST['pem_action']) and isset($_POST['submit']))
     {
       if (preg_match('/[^a-z0-9_-]/i', $_POST['root_dir']))
       {
-        message_die('Characters not allowed in archive root directory.');
+        die('Characters not allowed in archive root directory.');
       }
       if (preg_match('/[^a-z0-9_\-%\.]/i', $_POST['archive_name']))
       {
-        message_die('Characters not allowed in archive name.');
+        die('Characters not allowed in archive name.');
       }
 
       $root_dir = pwg_db_real_escape_string($_POST['root_dir']);
@@ -48,7 +46,7 @@ if (isset($_POST['pem_action']) and isset($_POST['submit']))
   UPDATE '.PEM_EXT_TABLE.'
     SET svn_url = NULL
       , git_url = NULL
-    WHERE id_extension = '.$page['extension_id'].'
+    WHERE id_extension = '.$_GET['eid'].'
   ;';
     pwg_query($query);
 
@@ -57,7 +55,7 @@ if (isset($_POST['pem_action']) and isset($_POST['submit']))
   SET '.$_POST['type'].'_url = "'.$url.'",
       archive_root_dir = "'.$root_dir.'",
       archive_name = "'.$archive_name.'"
-  WHERE id_extension = '.$page['extension_id'].';';
+  WHERE id_extension = '.$_GET['eid'].';';
 
     pwg_query($query);
 

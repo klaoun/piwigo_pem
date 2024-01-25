@@ -164,7 +164,7 @@
 {* Links block edit mode *}
   <section class="mt-5 pt-3 section-fluid position-relative edit_mode">
     <div class="edit_links">
-      <h3 class="mb-3">Related links</h3>
+      <h3 class="mb-3">{'Related links'|translate}</h3>
 
       <div class="my-3">
         <button class="btn btn-tertiary" data-bs-toggle="modal" data-bs-target="#addLinkModal">
@@ -182,28 +182,26 @@
         </thead>
         <tbody>
 
-{foreach from=$all_extension_links item=link}
+{foreach from=$links item=link}
           <tr>
             <td>
-              <a class="orange-link my-3" href="{$link.url}">
-                {if $link.name|stristr:"Github page"}<i class="icon-github"></i>{/if}
-                {if $link.name|stristr:"Issues"}<i class="icon-bug"></i>{/if}
-                {if $link.name|stristr:"Buy me a coffee"}<i class="icon-gift"></i>{/if}
-                {if $link.name|stristr:"Forum topic"}<i class="icon-message"></i>{/if}
-                {if $link.name|stristr:"Demo"}<i class="icon-message"></i>{/if}
+              <a class="orange-link my-3" href="{$link.url}" target="blank">
+                {if $link.name|stristr:"git"}<i class="icon-github"></i>{/if}
+                {if $link.name|stristr:"issues" || $link.name|stristr:"bug" }<i class="icon-bug"></i>{/if}
+                {if $link.name|stristr:"coffee"}<i class="icon-gift"></i>{/if}
+                {if $link.name|stristr:"forum"}<i class="icon-message"></i>{/if}
+                {if $link.name|stristr:"demo"}<i class="icon-piwigo"></i>{/if}
                 {$link.name}
               </a>
             </td>
             <td>
-  {if isset($link.lang)}
-                  <span class="ms-0 badge blue-badge d-inline">{$link.lang}</span>
+  {if isset($link.language)}
+                  <span class="ms-0 badge purple-badge d-inline">{$link.language}</span>
   {else}
                   <span class="ms-0 badge purple-badge d-inline">All languages</span>
   {/if}
             </td>
             <td>
-  {if $can_modify == true}
-              <span class="circle-icon edit_mode me-2" data-bs-toggle="modal" data-bs-target="#RelatedLinkModal">
   {if isset($can_modify) && $can_modify == true}
               <span class="circle-icon edit_mode me-2" data-bs-toggle="modal" data-bs-target="#editLinkModal" 
                 {if isset($link.id_link)}data-bs-link-id="{$link.id_link}"{/if}
@@ -213,9 +211,11 @@
               >
                 <i class="icon-pencil"></i>Edit
               </span>
-              <span class="circle-icon secondary_action">
+    {if $link.id_link !== "git" && $link.id_link !== "svn" }
+              <span class="circle-icon secondary_action" onclick="deleteLink({$link.id_link}, {$extension_id})">
                 <i class="icon-trash translate-middle"></i>Delete
               </span>
+    {/if}
   {/if}
             </td>
           </tr>
@@ -229,17 +229,19 @@
 {* Links block non edit mode *}
   <section class="mt-5 pt-3 section-fluid related_links">
 
-    <h3 class="mb-3">Related links</h3>
+    <h3 class="mb-3">{'Related links'|translate}</h3>
     <div class="d-flex justify-content-start flex-wrap">
   {foreach from=$links item=link}
-        {if $link.name|stristr:"Forum topic"}<i class="icon-message"></i>{/if}
+      <a class="orange-link py-3 pe-3" href="{$link.url}" target="_blank">
+        {if $link.name|stristr:"git"}<i class="icon-github"></i>{/if}
+        {if $link.name|stristr:"issues" || $link.name|stristr:"bug"}<i class="icon-bug"></i>{/if}
+        {if $link.name|stristr:"coffee"}<i class="icon-gift"></i>{/if}
+        {if $link.name|stristr:"forum"}<i class="icon-message"></i>{/if}
         {$link.name}
       </a>
   {/foreach}
     </div>
-
   </section>
-{* {/if} *}
 
 {*Revision block *}
   <section class="mt-5 pt-3 section-fluid">
@@ -350,8 +352,9 @@
   {$PEM_EDIT_IMAGE_FORM}
   {* TODO seperate the description into a seperate modal *}
   {* {$PEM_EDIT_DESCRIPTION_FORM} *}
-  {$PEM_EDIT_RELATED_LINK_FORM}
   {$PEM_EDIT_AUTHORS_FORM}
+  {$PEM_ADD_LINK_FORM}
+  {$PEM_EDIT_RELATED_LINK_FORM}
   {$PEM_EDIT_SVN_GIT_FORM}
   {$PEM_ADD_REVISION_FORM}
   {$PEM_DELETE_EXTENSION}
