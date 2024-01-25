@@ -39,16 +39,16 @@
             <div class="col-md-15 col-xs-6">
               <h5>{'Extensions'|translate}</h5>
                 <ul>
-                  <li><a href="//{$PORG_DOMAIN_PREFIX}piwigo.org/ext/">{'Themes'|translate}</a></li>
-                  <li><a href="//{$PORG_DOMAIN_PREFIX}piwigo.org/ext/">{'Plugins'|translate}</a> </li>
-                  <li><a href="//{$PORG_DOMAIN_PREFIX}piwigo.org/ext/">{'Languages'|translate}</a></li>
+                  <li><a href="piwigo.org/ext/">{'Themes'|translate}</a></li>
+                  <li><a href="piwigo.org/ext/">{'Plugins'|translate}</a> </li>
+                  <li><a href="piwigo.org/ext/">{'Languages'|translate}</a></li>
                 </ul>
             </div>
             <div class="col-md-15 col-xs-6">
               <h5>{'Support'|translate}</h5>
                 <ul>
-                  <li><a href="//{$PORG_DOMAIN_PREFIX}piwigo.org/forum/">{'Forum'|translate}</a></li>
-                  <li><a href="//{$PORG_DOMAIN_PREFIX}piwigo.org/doc/">{'Documentation'|translate}</a> </li>
+                  <li><a href="piwigo.org/forum/">{'Forum'|translate}</a></li>
+                  <li><a href="piwigo.org/doc/">{'Documentation'|translate}</a> </li>
                   <li><a href="https://piwigo.org/guides">{'Guides'|translate}</a></li>
                   <li><a href="https://piwigo.org/get_started">{'Get Started'|translate}</a></li>
                 </ul>
@@ -90,7 +90,7 @@
                 <a href="https://piwigo.org/contact"><span class="glyphicon glyphicon-envelope"></span>{'Contact'|translate}</a>
               </div>
               <div class="footer-copyright col-md-12 col-xs-6">
-                <p>Piwigo.org <span title="{$time}">©</span><br>2002 - {$CURRENT_YEAR}</p>
+                <p>Piwigo.org <span>©</span><br>2002 - {$CURRENT_YEAR}</p>
               </div>
             </div>
           </div>
