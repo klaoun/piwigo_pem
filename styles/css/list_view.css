@@ -64,12 +64,12 @@ Filter section
 }
 .extension_version_select{
   border: 1px solid #d0d0d0;
-  padding: 8px 8px;
-  background: transparent!important;
+  padding: 6px 8px;
+  background: white!important;
   color: #303030;
   font-family: inherit;
-  font-size: 13px;
-  line-height: 18px;
+  /* font-size: 13px;
+  line-height: 18px; */
   border-radius: 3px;
 }
 .form-control{

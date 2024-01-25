@@ -165,6 +165,19 @@ Buttons
   border:1px solid var(--main_orange);
 }
 
+.btn-danger,
+.btn-outline-secondary{
+  border-radius:0;
+  width: auto;
+  max-width: 300px;
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  padding: 15px 25px;
+  transition: all 0.2s;
+  text-transform: uppercase;
+}
+
 /******
 Links
 ******/
@@ -215,6 +228,16 @@ Inputs
 
 textarea{
   min-height:calc(2em + .75rem + 2px);
+}
+
+input.form-control:read-only{
+  color:var(--grey4);
+}
+
+input.form-control:read-only:focus{
+  border-color: transparent;
+  outline: 0;
+  box-shadow: none;
 }
 
 /*Switch*/
@@ -283,7 +306,8 @@ input[type="search"]:focus::-webkit-search-cancel-button{
 .selectize-dropdown{
   padding-right:0px;
 }
-.selectize-input,
+
+.selectize-control.single .selectize-input,
 .selectize-input .item, 
 .selectize-input .item.active, 
 .selectize-input [data-value]{
@@ -298,6 +322,14 @@ input[type="search"]:focus::-webkit-search-cancel-button{
 
 .current_user .remove{
   display:none;
+}
+
+.selectize-input > input{
+  width:100%!important;
+  line-height: normal!important;
+  font-size: 1rem!important;
+  font-weight: 400!important;
+  background: transparent!important;
 }
 
 /******
@@ -488,8 +520,8 @@ p.description{
 Modals
 ******/
 
-.modal-dialog{
-  max-width:750px;
+.modal.show .modal-dialog{
+  max-height:90%;
 }
 
 .modal-body{
@@ -565,6 +597,10 @@ Other
   border-right: 2px solid var(--grey4) !important;
 }
 
+.border-left{
+  border-left: 2px solid var(--grey4) !important;
+}
+
 .certification_blue{
   max-height:20px;
 }
@@ -577,4 +613,17 @@ Other
 
 .placeholder_image{
   opacity:.2;
+}
+
+.container {
+  width: 1170px;
+}
+
+.icon-star,
+.icon-star-half{
+  color:#f5c71a;
+}
+
+.table>:not(caption)>*>*{
+  vertical-align:middle;
 }

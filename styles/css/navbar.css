@@ -23,6 +23,7 @@
 .navbar-light .navbar-nav .nav-link:hover{
   color: var(--main_orange);
   text-decoration:underline;
+  cursor:pointer;
 }
   
 #link-back-porg{
@@ -40,6 +41,22 @@
  background-color:var(--main_orange);
  border-radius:25px;
  padding:3px;
+}
+
+@media (max-width: 1400px) {
+  .navbar-light .navbar-nav .nav-link{
+    font-size:14px;
+    font-weight:700;
+  }
+  #link-back-porg{
+    display:none!important;
+  }
+}
+
+@media (max-width: 992px) {
+  #link-back-porg{
+    display:inline-lock!important;
+  }
 }
 
 /*****
