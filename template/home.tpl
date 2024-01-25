@@ -7,8 +7,8 @@
     <div class="row py-5">
       <div class="col-6 position-relative">
         <div class="vertical-align ">
-          <h1 class="mt-2">Extensions for Piwigo</h1>
-          <h5 class="mt-2">Change appearance with themes. Add features with plugins. Extensions require just a few clicks to get installed. 350 extensions available, and growing!</h5>
+          <h1 class="mt-2">{'Extensions for Piwigo'|translate}</h1>
+          <h5 class="mt-2">{'Change appearance with themes. Add features with plugins. Extensions require just a few clicks to get installed. 350 extensions available, and growing!'|translate}</h5>
         </div>
       </div>
       <div class="col-6 ">
@@ -22,16 +22,16 @@
   {if $category.cid != 8}
     <div class="row py-5" id="category-{$category.cid}">
       <div class="mt-2 row">
-        <h2 class="col-10">{$category.name}s<span class="blue-badge extension-count">{$category.nb_extensions}</span></h2>
+        <h2 class="col-10">{'%ss'|translate:$category.name}<span class="blue-badge extension-count">{$category.nb_extensions}</span></h2>
         <div class="col-2 text-end">
-          <a href="{$PEM_ROOT_URL}index.php?cid={$category.cid}&page=1"><button class="btn btn-primary">See all<i class="icon-chevron-right"></i></button></a>
+          <a href="{$PEM_ROOT_URL}index.php?cid={$category.cid}&page=1"><button class="btn btn-primary">{'See all'|translate}<i class="icon-chevron-right"></i></button></a>
         </div>
       </div>
 
       <div class="row card-group d-flex align-items-stretch">
 
         <div class="col-md-6 col-sm-12 align-self-stretch spotlight extension_{$category.spotlight_extension.eid}">
-          <h4 class="mt-4">Spotlight</h4>
+          <h4 class="mt-4">{'Spotlight'|translate}</h4>
           <div class="col-12 pb-5 h-100">
             <div class="card h-100">
               <div class="row h-100">
@@ -45,7 +45,7 @@
                     <p class='description'>{$category.spotlight_extension.description}</p>
                   </div>
                   <div class="col-12 d-flex justify-content-end">
-                    <a class="white-link link" href="{$PEM_ROOT_URL}index.php?eid={$category.spotlight_extension.eid}">See  <i class="icon-chevron-right"></i></a>
+                    <a class="white-link link" href="{$PEM_ROOT_URL}index.php?eid={$category.spotlight_extension.eid}">{'See'|translate}  <i class="icon-chevron-right"></i></a>
                   </div>
                 </div>
               </div>
@@ -54,7 +54,7 @@
         </div>
         
         <div class="col-md-6 col-sm-12 align-self-stretch highest-rated">
-            <h4 class="mt-4">Highest rated</h4>
+            <h4 class="mt-4">{'Highest rated'|translate}</h4>
             <div class="col-12 pb-5 h-100">
               <div class="card h-100">
                 <div class="row h-100">
@@ -73,7 +73,7 @@
                       </div>
                     </div>
                     <div class="col-12 d-flex justify-content-end">
-                      <a class="link" href="{$PEM_ROOT_URL}index.php?eid={$category.spotlight_extension.eid}">See  <i class="icon-chevron-right"></i></a>
+                      <a class="link" href="{$PEM_ROOT_URL}index.php?eid={$category.highest_rated_extension.eid}">{'See'|translate}  <i class="icon-chevron-right"></i></a>
                     </div>
                   </div>
                 </div>
@@ -82,7 +82,7 @@
         </div>
 
         <div class="col-md-6 col-sm-12 align-self-stretch most-downloaded">
-            <h4 class="mt-4">Most downloaded</h4>
+            <h4 class="mt-4">{'Most downloaded'|translate}</h4>
             <div class="col-12 pb-5 h-100">
               <div class="card h-100">
                 <div class="row h-100">
@@ -99,7 +99,7 @@
                       </div>
                     </div>
                     <div class="col-12 d-flex justify-content-end">
-                      <a class="link" href="{$PEM_ROOT_URL}index.php?eid={$category.spotlight_extension.eid}">See  <i class="icon-chevron-right"></i></a>
+                      <a class="link" href="{$PEM_ROOT_URL}index.php?eid={$category.most_downloaded_extension.eid}">{'See'|translate}  <i class="icon-chevron-right"></i></a>
                     </div>
                   </div>
                 </div>
@@ -108,7 +108,7 @@
         </div>
 
         <div class="col-md-6 col-sm-12 align-self-stretch most-recent">
-            <h4 class="mt-4">Most recent</h4>
+            <h4 class="mt-4">{'Most recent'|translate}</h4>
             <div class="col-12 pb-5 h-100">
               <div class="card h-100">
                 <div class="row h-100">
@@ -126,7 +126,7 @@
                       </div>
                     </div>
                     <div class="col-12 d-flex justify-content-end">
-                      <a class="link" href="{$PEM_ROOT_URL}index.php?eid={$category.spotlight_extension.eid}">See  <i class="icon-chevron-right"></i></a>
+                      <a class="link" href="{$PEM_ROOT_URL}index.php?eid={$category.most_recent_extension.eid}">{'See'|translate}  <i class="icon-chevron-right"></i></a>
                     </div>
                   </div>
                 </div>
