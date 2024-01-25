@@ -108,47 +108,6 @@ function resize_picture(
 // exit();
 
 // +-----------------------------------------------------------------------+
-// |                           Initialization                              |
-// +-----------------------------------------------------------------------+
-
-if (!isset($user['id']))
-{
-  die('You must be connected to reach this page.');
-}
-
-// We need a valid extension
-$page['extension_id'] =
-  (isset($_GET['eid']) and is_numeric($_GET['eid']))
-  ? $_GET['eid']
-  : '';
-
-if (empty($page['extension_id']))
-{
-  die('Incorrect extension identifier');
-}
-
-$authors = get_extension_authors($page['extension_id']);
-
-// if (!in_array($user['id'], $authors) and !is_Admin($user['id']))
-// {
-//   die('You must be the extension author to modify it.');
-// }
-
-$query = '
-SELECT
-    name
-  FROM '.PEM_EXT_TABLE.'
-  WHERE id_extension = '.$page['extension_id'].'
-;';
-$result = pwg_query($query);
-
-if (pwg_db_num_rows( pwg_query($query) ) == 0)
-{
-  die('Unknown extension');
-}
-list($page['extension_name']) = pwg_db_fetch_array($result);
-
-// +-----------------------------------------------------------------------+
 // |                           Form submission                             |
 // +-----------------------------------------------------------------------+
 
@@ -160,11 +119,7 @@ if (isset($_POST['pem_action']) and isset($_POST['submit']) and "edit_screenshot
   }
   else
   {
-    // echo('<pre>');print_r(get_extension_dir($page['extension_id']));echo('</pre>');
-
-    $extension_dir = PEM_DIR.get_extension_dir($page['extension_id']);
-
-    // echo('<pre>');print_r($extension_dir);echo('</pre>');
+    $extension_dir = PEM_DIR.get_extension_dir($_GET['eid']);
 
     if (!is_dir($extension_dir)) {
       umask(0000);
@@ -173,7 +128,7 @@ if (isset($_POST['pem_action']) and isset($_POST['submit']) and "edit_screenshot
       }
     }
     
-    $temp_name = PEM_DIR.get_extension_dir($page['extension_id']).'/screenshot.tmp';
+    $temp_name = PEM_DIR.get_extension_dir($_GET['eid']).'/screenshot.tmp';
     if (!move_uploaded_file($_FILES['picture']['tmp_name'], $temp_name))
     {
       $page['errors'][] = l10n('Problem during upload');
@@ -191,7 +146,7 @@ if (isset($_POST['pem_action']) and isset($_POST['submit']) and "edit_screenshot
       }
       else
       {
-        $screenshot_filename = get_extension_screenshot_src($page['extension_id']);
+        $screenshot_filename = get_extension_screenshot_src($_GET['eid']);
 
         // does the upload screenshot needs a resize?
         $new_dimensions = get_picture_size(
@@ -222,7 +177,7 @@ if (isset($_POST['pem_action']) and isset($_POST['submit']) and "edit_screenshot
         }
 
         // create the thumbnail
-        $thumbnail_filename = get_extension_thumbnail_src($page['extension_id']);
+        $thumbnail_filename = get_extension_thumbnail_src($_GET['eid']);
 
         resize_picture(
           $screenshot_filename,
@@ -247,7 +202,7 @@ if (isset($_POST['pem_action']) and isset($_POST['submit']) and "edit_screenshot
 
 if (isset($_POST['submit_delete']))
 {
-  $screenshot_infos = get_extension_screenshot_infos($page['extension_id']);
+  $screenshot_infos = get_extension_screenshot_infos($_GET['eid']);
   
   if ($screenshot_infos)
   {
@@ -256,38 +211,4 @@ if (isset($_POST['submit_delete']))
   }
 }
 
-// +-----------------------------------------------------------------------+
-// |                            Form display                               |
-// +-----------------------------------------------------------------------+
-
-// $action = 'extension_screenshot.php?eid='.$page['extension_id'];
-
-$template->assign(
-  array(
-    'u_extension' => 'extension_view.php?eid='.$page['extension_id'],
-    // 'f_action' => $action,
-    'extension_name' => $page['extension_name'],
-    )
-  );
-
-if ($screenshot_infos = get_extension_screenshot_infos($page['extension_id']))
-{
-  $template->assign(
-    'current',
-    array(
-      'thumbnail_src' => $screenshot_infos['thumbnail_src'],
-      'u_screenshot'  => $screenshot_infos['screenshot_url'],
-      )
-    );
-}
-
-// +-----------------------------------------------------------------------+
-// |                           html code display                           |
-// +-----------------------------------------------------------------------+
-// flush_page_messages();
-// $tpl->assign_var_from_handle('main_content', 'extension_screenshot');
-// include($root_path.'include/header.inc.php');
-// include($root_path.'include/footer.inc.php');
-// $tpl->parse('page');
-// $tpl->p();
 ?>
