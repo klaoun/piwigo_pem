@@ -25,13 +25,13 @@ SELECT '.$conf['user_fields']['id'].' AS id
   }
   else
   {
-    $authors = get_extension_authors($page['extension_id']);
+    $authors = get_extension_authors($_GET['eid']);
 
     if (!in_array($author_id, $authors))
     {
       $query = '
 INSERT INTO '.PEM_AUTHORS_TABLE.' (idx_extension, idx_user)
-  VALUES ('.$page['extension_id'].', '.$author_id.')
+  VALUES ('.$_GET['eid'].', '.$author_id.')
 ;';
       pwg_query($query);
     }
