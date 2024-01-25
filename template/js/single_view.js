@@ -119,8 +119,20 @@ function setOwner(userId, extensionId)
         localStorage.setItem("message",data.message)
         window.location.reload(); 
       }
+// Ajax request to delete an link associated to an extension, found in single_view.tpl
+function deleteLink(linkId, extensionId)
+{
+  jQuery.ajax({
+    type: 'GET',
+    dataType: 'json',
+    async: false,
+    url: 'ws.php?format=json&method=pem.extensions.deleteLink&extension_id=' + extensionId + '&link_id=' + linkId ,
+    data: { ajaxload: 'true' },
+    success: function (data) {
+      window.location.reload(); 
     }
   });
+}
 
 //Ajax requet to delete SVN/Git config
 function deleteSVNGitConfig(extensionId){
