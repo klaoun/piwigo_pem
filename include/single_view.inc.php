@@ -217,14 +217,20 @@ if (isset($_GET['eid']) && 1 == count($_GET))
     if (isset($data['git_url']) and preg_match('/github/', $data['git_url']))
     {
       array_push(
-        $tpl_links,
+        $tpl_all_extension_links,
         array(
+          'id_link' => 'git',
           'name' => l10n('Github page'),
           'url' => $data['git_url'],
+          'language' => "All languages",
           'description' => l10n('source code, bug/request tracker'),
         )
       );
-
+    }
+    
+    // if the extension is hosted on piwigo.rg SVN repo, add a link to Trac
+    if (isset($data['svn_url']) and preg_match('#piwigo.org/svn/extensions#', $data['svn_url']))
+    {
       array_push(
         $tpl_all_extension_links,
         array(
@@ -242,6 +248,7 @@ if (isset($_GET['eid']) && 1 == count($_GET))
           lt.name,
           url,
           description,
+          lt.idx_language as id_lang,
           it.name as lang,
           rank
       FROM '.PEM_LINKS_TABLE.' as lt
@@ -260,12 +267,12 @@ if (isset($_GET['eid']) && 1 == count($_GET))
           'id_link' => $row['id_link'],
           'name' => $row['name'],
           'url' => $row['url'],
+          'id_lang' => $row['id_lang'],
           'language' => $row['lang'],
           'rank' => $row['rank'],
         )
       );
     }
-
     $template->assign('links', $tpl_all_extension_links);
 
     /**

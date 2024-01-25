@@ -21,20 +21,15 @@
                   <input type="url" name="link_url" id="link_url" size="50" maxlength="255" class="w-100 form-control" required>
                 </div>
 
-                {if !empty($languages)}
-
-                    <label for="link_language" class="col-12">{'Language'|@translate}</label>
-                    
+{if !empty($languages)}
+                    <label for="link_language" class="col-12">{'Language'|@translate}</label>            
                     <select name="link_language" id="link_language" class="form-select w-100">
-                      <option value="en_UK" id="opt_en_UK" selected>English [UK]</option>
-
-                      {* This foreach can be used once we have different languages until then we use english *}
-                      {* {foreach from=$languages item=language}
-                      <option value="{$language.id}" {if $LINK_LANG==$language.id}selected{/if}>{$language.name}</option>
-                      {/foreach} *}
+                      <option value="null">All languages</option>
+  {foreach from=$languages item=language}
+                      <option value="{$language.id}">{$language.name}</option>
+  {/foreach}
                     </select>
-
-                  {/if}
+{/if}
 
             </div>
 

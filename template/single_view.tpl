@@ -205,6 +205,12 @@
   {if $can_modify == true}
               <span class="circle-icon edit_mode me-2" data-bs-toggle="modal" data-bs-target="#RelatedLinkModal">
   {if isset($can_modify) && $can_modify == true}
+              <span class="circle-icon edit_mode me-2" data-bs-toggle="modal" data-bs-target="#editLinkModal" 
+                {if isset($link.id_link)}data-bs-link-id="{$link.id_link}"{/if}
+                {if isset($link.name)} data-bs-link-name="{$link.name}"{/if}
+                {if isset($link.url)} data-bs-link-url="{$link.url}" {/if}
+                {if isset($link.id_lang)} data-bs-link-lang="{$link.id_lang}"{/if}
+              >
                 <i class="icon-pencil"></i>Edit
               </span>
               <span class="circle-icon secondary_action">

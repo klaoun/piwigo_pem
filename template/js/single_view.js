@@ -151,6 +151,9 @@ function deleteExtension(extensionId)
   console.log("delete extension")
 }
 
+// Script used for editing link modal
+// The link data is saved in the data attributes of the edit button, 
+// This data is added to the modal on the modal show when thue button is clicked
 const editLinkModal = document.getElementById('editLinkModal');
 
 editLinkModal.addEventListener('show.bs.modal', event => {
@@ -160,15 +163,18 @@ editLinkModal.addEventListener('show.bs.modal', event => {
   const linkName = button.getAttribute('data-bs-link-name')
   const linkURL = button.getAttribute('data-bs-link-url')
   const linkLang = button.getAttribute('data-bs-link-lang')
+
   // Update the modal's content.
   const modalLinkID= editLinkModal.querySelector('#link_id')
   const modalLinkName = editLinkModal.querySelector('#link_name')
   const modalLinkUrl= editLinkModal.querySelector('#link_url')
-  const modalLinkLang= editLinkModal.querySelector('#link_lang')
+  const modalLinkLang= editLinkModal.querySelector('#link_language')
 
   modalLinkID.value = linkId
   modalLinkName.value = linkName
   modalLinkUrl.value = linkURL
   modalLinkLang.value = linkLang
+  modalLinkLang.value =linkLang
+});
 
 });
