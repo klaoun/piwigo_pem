@@ -159,6 +159,16 @@ function pem_ws_add_methods($arr)
     'Delete extension'
   );
 
+  $service->addMethod(
+    'pem.revisions.deleteRevision',
+    'ws_pem_revisions_delete_revision',
+    array(
+      'extension_id' => array('type'=>WS_TYPE_INT|WS_TYPE_POSITIVE),
+      'revision_id' => array('type'=>WS_TYPE_INT|WS_TYPE_POSITIVE),
+    ),
+    'Delete a revision associated to an extension'
+  );
+
 }
 
 /**
@@ -875,3 +885,42 @@ DELETE
 
 }
 
+function ws_pem_revisions_delete_revision($params, &$service)
+{
+  
+  $revision_infos_of = get_revision_infos_of(array($params['revision_id']));
+
+  @unlink(
+    get_revision_src(
+      $revision_infos_of[$params['revision_id']]['idx_extension'],
+      $params['revision_id'],
+      $revision_infos_of[$params['revision_id']]['url']
+    )
+  );
+
+  $query = '
+DELETE
+  FROM '.PEM_COMP_TABLE.'
+  WHERE idx_revision = '.$params['revision_id'].'
+;';
+  pwg_query($query);
+
+  $query = '
+DELETE
+  FROM '.PEM_REV_TABLE.'
+  WHERE id_revision = '.$params['revision_id'].'
+;';
+  pwg_query($query);
+
+
+//   $query = '
+// UPDATE '.PEM_EXT_TABLE.'
+// SET svn_url = NULL,
+//     git_url = NULL,
+//     archive_root_dir = NULL,
+//     archive_name = NULL
+// WHERE id_extension = '.$params['extension_id'].'
+// ;';
+
+//   pwg_query($query);
+}
