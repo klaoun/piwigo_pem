@@ -14,7 +14,7 @@
               {* Extension Authors *}
               <div class="mb-3 form-group">
                 <label for="extension_author_select" class="col-12">Authors</label>
-                <select class="extension_author_select col-12" data-selectize="author"
+                <select required class="extension_author_select col-12" data-selectize="author"
                   placeholder="{'Type in a search term'|translate}"
                   data-create="true" name="author">
                   <option selected>Type in a search term</option>
@@ -33,20 +33,15 @@
                 <div class="d-block">
                   <strong>{$author.username}</strong>
   {if $author.owner !== true}
-    {* {if $author.owner == true} *}
       <button class="link-primary" onclick="deleteAuthor({$author.uid}, {$extension_id})">{'Delete'|translate}</button>
       <p class="d-inline-block m-0">|</p>
       <button class="link-primary" onclick="setOwner({$author.uid}, {$extension_id})">{'Set as owner'|translate}</button>
-
-    {* {/if} *}
-
   {else}
       <p class="d-inline-block m-0">({'Owner'|translate})</p>
   {/if}
 {/foreach}
                 </div>
               </div>
-
             </div>
 
             <input type="hidden" name="pem_action" value="edit_authors">
