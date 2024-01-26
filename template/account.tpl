@@ -17,7 +17,7 @@
     <div class="d-flex justify-content-end">
       <div class="form-check form-switch ">
         <input class="form-check-input" type="checkbox" role="switch" id="edit_mode" >
-        <label class="form-check-label" for="edit_mode">Edit mode</label>
+        <label class="form-check-label" for="edit_mode"> {'Edit mode'|translate}</label>
       </div>                                            
     </div>
   </section>
@@ -39,7 +39,7 @@
       </div>
 {/if}
       <div class="col-4">
-        <p class="sub-text">Member since:</p>
+        <p class="sub-text">{'Member since:'|translate}</p>
         <p class="d-inline">{$USER.registration_date_formatted}</p><span class="badge blue-badge d-inline">{$USER.member_since}<span>
       </div>
     </div>
@@ -49,10 +49,10 @@
     <div class="row">
       <div class="col-12 d-flex justify-content-between">
         <div>
-          <h4 class="d-inline">Extensions by "{$USER.username}"</h4><span class="badge blue-badge d-inline">{$USER.nb_extensions}</span>
+          <h4 class="d-inline">{'Extensions by "%s"'|translate:$USER.username}</h4><span class="badge blue-badge d-inline">{$USER.nb_extensions}</span>
         </div>
 {if $can_modify == true}
-        <button data-bs-toggle="modal" data-bs-target="#addExtModal" class="btn btn-primary align-middle">Add an extension</button>
+        <button data-bs-toggle="modal" data-bs-target="#addExtModal" class="btn btn-primary align-middle">{'Add an extension'|translate}</button>
 {/if}
       </div>
 {if isset($extensions) || isset($other_extensions)}
@@ -60,12 +60,12 @@
         <table class="table">
           <thead>
             <tr>
-              <th>Name</th>
-              <th>Category</th>
-              <th>Publish date</th>
-              <th>Last update</th>
-              <th>Downloads</th>
-              <th>Rating</th>
+              <th>{'Name'|translate}</th>
+              <th>{'Category'|translate}</th>
+              <th>{'Publish date'|translate}</th>
+              <th>{'Last update'|translate}</th>
+              <th>{'Downloads'|translate}</th>
+              <th>{'Rating'|translate}</th>
             </tr>
           <thead>
           <tbody>
@@ -85,7 +85,7 @@
 {else}
   <div class="row">
       <div class="col-12">
-        <p>This user has not yet contributed any plugins</p>
+        <p>{'This user has not yet contributed any plugins'|translate}</p>
       </div>
     </div>
 {/if}
