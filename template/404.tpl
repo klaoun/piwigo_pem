@@ -8,7 +8,7 @@
 {if isset($MESSAGE)}
         {$MESSAGE}
 {else}
-      Sorry, the page you are looking for doesn't exist
+      {'Sorry, the page you are looking for doesn\'t exist'|translate}
 {/if}
       </h2>
     </div>
