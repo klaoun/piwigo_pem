@@ -5,7 +5,7 @@
 
 {if isset($SPOTLIGHTED)}
   <div class="col-12 py-4 spotlighted">
-    <h2>Spotlighted</h2>
+    <h2>{'Spotlighted'|translate}</h2>
     <div class="col-12 p-3 purple-gradient">
       <div class="row">
   {if $CATEGORY.spotlight_extension.screenshot}
@@ -19,7 +19,7 @@
           <p class="description">{$CATEGORY.spotlight_extension.description}</p>
         </div>
         <div class="col-md-2 col-md-2 d-flex justify-content-end align-items-end">
-          <a href="{$PEM_ROOT_URL}index.php?eid={$CATEGORY.spotlight_extension.eid}">Voir <i class="icon-chevron-right"></i></a>
+          <a href="{$PEM_ROOT_URL}index.php?eid={$CATEGORY.spotlight_extension.eid}">{'See'|translate} <i class="icon-chevron-right"></i></a>
         </div>
       </div>
     </div>
@@ -31,18 +31,18 @@
       <span class='badge blue-badge'>{$CATEGORY.extension_count}</span>
     </h4>
     <div class="d-flex filter_section">
-      <div class="filter_tab mx-2" onclick="toggleFilter()"><h5 >Filter</h5></div>
-      <label for="sort_order">Sort order</label>
+      <div class="filter_tab mx-2" onclick="toggleFilter()"><h5>{'Filter'|translate}</h5></div>
+      <label for="sort_order">{'Sort order'|translate}</label>
       <select name="sort_order" id="sort_order" class="form-control">
           <option value="date_desc">Newest to oldest</option>
           <option value="date_asc">Oldest to Newest</option>
           <option value="a_z">A to Z</option>
           <option value="z_a">Z to A</option>
       </select>
-      <form class="form-inline  cid-search-form">
+      <div class="form-inline  cid-search-form">
         <i class="icon-magnifying-glass"></i>
         <input id="cid-search" class="form-control mr-sm-2" placeholder="Search" aria-label="Search">
-      </form>
+      </div>
     </div>
   </div>
 
