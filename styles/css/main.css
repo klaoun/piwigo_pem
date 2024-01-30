@@ -122,7 +122,6 @@ Buttons
   box-shadow: 0 0 0 0.25rem var(--secondary_orange_50);
 }
 
-
 .btn-secondary{
   border:1px solid var(--main_orange);
   color: var(--main_orange);
@@ -177,6 +176,42 @@ Buttons
   transition: all 0.2s;
   text-transform: uppercase;
 }
+
+.btn-outline-primary{
+  color: var(--main_orange);
+  border-color: var(--main_orange);;
+}
+
+.btn-outline-primary:hover {
+  color: var(--white);
+  background-color: var(--main_orange);
+  border-color: var(--main_orange)
+}
+
+.btn-check:active+.btn-outline-primary,
+.btn-check:checked+.btn-outline-primary,
+.btn-outline-primary.active,
+.btn-outline-primary.dropdown-toggle.show,
+.btn-outline-primary:active{
+  color: var(--white);
+  background-color: var(--main_orange);
+  border-color: var(--main_orange);
+}
+.btn-check:active+.btn-outline-primary:focus,
+.btn-check:checked+.btn-outline-primary:focus,
+.btn-outline-primary.active:focus,
+.btn-outline-primary.dropdown-toggle.show:focus,
+.btn-outline-primary:active:focus,
+.btn-check:active+.btn-outline-primary:focus, 
+.btn-check:checked+.btn-outline-primary:focus,
+.btn-outline-primary.active:focus,
+.btn-outline-primary.dropdown-toggle.show:focus,
+.btn-outline-primary:active:focus,
+.btn-check:focus+.btn,
+.btn:focus{
+  box-shadow: 0 0 0 0.25rem rgba(255, 119, 0,.5)!important;
+}
+
 
 /******
 Links
@@ -325,7 +360,6 @@ input[type="search"]:focus::-webkit-search-cancel-button{
 }
 
 .selectize-input > input{
-  width:100%!important;
   line-height: normal!important;
   font-size: 1rem!important;
   font-weight: 400!important;
