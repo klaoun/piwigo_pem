@@ -31,7 +31,7 @@
 
               <div class="mb-3 form-group">
                 <label for="repository_url" class="col-12">{'Repository URL'|@translate}</label>
-                <input type="text" name="url" id="repository_url" size="30" class="w-100 form-control" {if isset($URL)}value="{$URL}"{/if} required>
+                <input type="text" name="url" id="repository_url" size="30" class="w-100 form-control" {if $TYPE == 'svn'}value="{$SVN_URL}" {else if $TYPE == 'git'}value="{$GIT_URL}" {/if} required>
               </div>
 
 {if $TYPE == 'svn'}
