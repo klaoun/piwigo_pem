@@ -21,3 +21,4 @@ define( 'PEM_TAG_TRANS_TABLE' , $prefixeTable.'pem_'.'tags_translations' );
 define( 'PEM_EXT_TAG_TABLE',    $prefixeTable.'pem_'.'extensions_tags' );
 define( 'PEM_RATE_TABLE',       $prefixeTable.'pem_'.'rates' );
 define( 'PEM_REVIEW_TABLE',     $prefixeTable.'pem_'.'reviews' );
+define('PEM_DOWNLOAD_LOG_TABLE', $prefixeTable.'pem_'.'download_log');
