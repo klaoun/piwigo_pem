@@ -12,48 +12,48 @@ function do_error($code, $str) {
 /***
   Sets the http status header (200,401,...)
  */
-function set_status_header($code, $text='')
-{
-  if (empty($text))
-  {
-    switch ($code)
-    {
-      case 200: $text='OK';break;
-      case 301: $text='Moved permanently';break;
-      case 302: $text='Moved temporarily';break;
-      case 304: $text='Not modified';break;
-      case 400: $text='Bad request';break;
-      case 401: $text='Authorization required';break;
-      case 403: $text='Forbidden';break;
-      case 404: $text='Not found';break;
-      case 500: $text='Server error';break;
-      case 503: $text='Service unavailable';break;
-    }
-  }
+// function set_status_header($code, $text='')
+// {
+//   if (empty($text))
+//   {
+//     switch ($code)
+//     {
+//       case 200: $text='OK';break;
+//       case 301: $text='Moved permanently';break;
+//       case 302: $text='Moved temporarily';break;
+//       case 304: $text='Not modified';break;
+//       case 400: $text='Bad request';break;
+//       case 401: $text='Authorization required';break;
+//       case 403: $text='Forbidden';break;
+//       case 404: $text='Not found';break;
+//       case 500: $text='Server error';break;
+//       case 503: $text='Service unavailable';break;
+//     }
+//   }
   
-  $protocol = $_SERVER["SERVER_PROTOCOL"];
-  if ( ('HTTP/1.1' != $protocol) && ('HTTP/1.0' != $protocol) )
-  {
-    $protocol = 'HTTP/1.0';
-  }
+//   $protocol = $_SERVER["SERVER_PROTOCOL"];
+//   if ( ('HTTP/1.1' != $protocol) && ('HTTP/1.0' != $protocol) )
+//   {
+//     $protocol = 'HTTP/1.0';
+//   }
   
-  if ( version_compare( phpversion(), '4.3.0', '>=' ) )
-  {
-    header( "$protocol $code $text", true, $code );
-  }
-  else
-  {
-    header( "$protocol $code $text" );
-  }
-}
+//   if ( version_compare( phpversion(), '4.3.0', '>=' ) )
+//   {
+//     header( "$protocol $code $text", true, $code );
+//   }
+//   else
+//   {
+//     header( "$protocol $code $text" );
+//   }
+// }
 
 // +-----------------------------------------------------------------------+
 // |                           Common includes                             |
 // +-----------------------------------------------------------------------+
 
 define('INTERNAL', true);
-$root_path = './';
-require_once($root_path.'include/common.inc.php');
+define('PHPWG_ROOT_PATH','../../');
+require_once(PHPWG_ROOT_PATH.'include/common.inc.php');
 
 // +-----------------------------------------------------------------------+
 // |                             Input checks                              |
@@ -86,8 +86,8 @@ elseif (isset($_GET['eid'])) {
     $get_rid_query = '
 SELECT
     MAX(id_revision)
-  FROM '.REV_TABLE.'
-    JOIN '.COMP_TABLE.' c ON c.idx_revision = id_revision
+  FROM '.PEM_REV_TABLE.'
+    JOIN '.PEM_COMP_TABLE.' c ON c.idx_revision = id_revision
   WHERE idx_extension = '.$_GET['eid'].'
     AND idx_version = '.$version.'
 ;';
@@ -98,12 +98,12 @@ SELECT
     $get_rid_query = '
 SELECT
     MAX(id_revision)
-  FROM '.REV_TABLE.'
+  FROM '.PEM_REV_TABLE.'
   WHERE idx_extension = '.$_GET['eid'].'
 ;';
   }
 
-  list($page['revision_id']) = pwg_dbfetch_row(pwg_query($get_rid_query));
+  list($page['revision_id']) = pwg_db_fetch_row(pwg_query($get_rid_query));
 }
 else {
   do_error(400, 'Invalid request, missing revision id');
@@ -136,6 +136,10 @@ $file = get_revision_src(
   $page['revision_id'],
   $revision_infos['url']
   );
+
+echo('<pre>');print_r($revision_infos['idx_extension']);echo('</pre>');
+echo('<pre>');print_r($page['revision_id']);echo('</pre>');
+echo('<pre>');print_r($revision_infos['url']);echo('</pre>');
 
 if (!@is_readable($file)) {
   do_error(404, "Requested file not readable - $file");
