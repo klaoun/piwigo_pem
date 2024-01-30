@@ -105,10 +105,9 @@ jQuery(document).ready(function () {
       </div>');
 
       getExtensionList(cid);
-
     }
 
-    // if value of iput is removed reset page to all extensions
+    // if value of input is removed reset page to all extensions
     if (jQuery("#cid-search").val().length == 0)
     {
       emptyContent()
