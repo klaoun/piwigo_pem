@@ -13,7 +13,7 @@
               {* Extension name *}
               <div class="mb-3 form-group">
                 <label for="extension_name" class="form-label w-100 ">Name</label>
-                <input type="text" name="extension_name" size="35" maxlength="255" value="{if isset($extension_name)}{$extension_name}{/if}" class="w-100 form-control" required {if $translator}disabled="disabled"{/if}/>
+                <input type="text" name="extension_name" size="35" maxlength="255" value="{if isset($extension_name)}{$extension_name}{/if}" class="w-100 form-control" required/>
               </div>
 
               {* Extension category *}
@@ -64,8 +64,7 @@
                     <br> *}
                   <input type="hidden" name="default_description" value="5" checked="checked">
                   <label for="extension_descriptions">Description</label>
-                  <textarea class="form-control" name="extension_descriptions[5]" id="desc_5" 
-                  {if $translator and !$language.id|@in_array:$translator_languages}disabled="disabled"{/if} required>{$description}</textarea>
+                  <textarea class="form-control" name="extension_descriptions[5]" id="desc_5"  required>{$description}</textarea>
                   {* </span>
                 {/foreach}
                 <p class="default_description"></p> *}
