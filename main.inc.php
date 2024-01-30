@@ -59,6 +59,7 @@ if (in_array(script_basename(), array('identification', 'register', 'password'))
     $template->assign(
       array(
         'PEM_ROOT_URL_PLUGINS' => $pem_root_url_pem,
+        'PEM_ROOT_URL' => get_absolute_root_url(),
       )
     );
     $template->smarty->setTemplateDir(PEM_DIR.'template');
@@ -137,6 +138,12 @@ function pem_load_content(){
   $meta_title = null;
   $meta_description = null;
 
+  // Common
+  // Language selection
+  include_once(PEM_PATH . 'include/functions_language.inc.php');
+  $interface_languages = get_interface_languages();
+
+  $template->assign('languages', $interface_languages);
 
   if (isset($_GET['cid']))
   {
@@ -193,6 +200,10 @@ function pem_load_footer(){
   global $template;
 
   $porg_root_url = get_absolute_root_url();
+
+  $template->assign(array(
+    'CURRENT_YEAR' => date('Y'),
+  ));
 
   $template->set_filenames(array('footer_pem' => realpath(PEM_PATH .'template/pem_footer.tpl')));
 
