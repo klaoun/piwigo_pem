@@ -30,7 +30,6 @@ if (isset($_GET['eid']) && 1 == count($_GET))
 // +-----------------------------------------------------------------------+
 // |                         Get extension infos                           |
 // +-----------------------------------------------------------------------+
-
   $current_extension_page_id = $_GET['eid'];
 
   // Get current language id, transition to PEM plugin means that language id is the language code in the old PEM database
@@ -62,18 +61,41 @@ if (isset($_GET['eid']) && 1 == count($_GET))
   }
   else
   {
+    $template->assign(array('CURRENT_LANG' => $id_language, ));
+
+    //Get List of versions for filter
+    $query = '
+    SELECT 
+        id_version,
+        version
+      FROM '.PEM_VER_TABLE.'
+      ORDER BY id_version DESC
+    ;';
+      $versions_of_pwg= query2array($query, 'id_version');
+
+      $template->assign(array('VERSIONS_PWG' => $versions_of_pwg, ));
+
     $authors = get_extension_authors($current_extension_page_id);
+
+    $owner_id = null;
 
     foreach ($authors as $key => $author)
     {
-
       $temp = array (
         "uid" => $author,
         "username" => get_author_name($author),
         "owner" => $author == $data['idx_user'] ? true : false,
       );
+      $author == $data['idx_user'] ? $owner_id = $data['idx_user'] : $owner_id = null;
+
       $authors[$key] = $temp;
     }
+
+    $template->assign(
+      array(
+        'owner_id' => $owner_id,
+      )
+    );
 
     //Check if user can make changes to extension
     $page['user_can_modify'] = false;
@@ -82,6 +104,14 @@ if (isset($_GET['eid']) && 1 == count($_GET))
     {
       $page['user_can_modify'] = true;
     }
+
+    $template->assign(
+      array(
+        'current_user_id' => $user['id'],
+        'current_user_name' => get_author_name($user['id']),
+        'PWG_TOKEN' => get_pwg_token(),
+      )
+    );
 
     //Check if user is extension owner
     $user['extension_owner'] = false;
@@ -132,21 +162,12 @@ if (isset($_GET['eid']) && 1 == count($_GET))
       $downloads_of_revision[ $row['id_revision'] ] = $row['nb_downloads'];
     }
 
-    // Assign single_view template
-    $template->set_filename('pem_page', realpath(PEM_PATH . 'template/single_view.tpl'));
-
-    // Send data to template
+    // Send extension data to template
     $template->assign(
       array(
         'extension_id' => $current_extension_page_id,
-        'extension_name' => htmlspecialchars(
-          strip_tags(stripslashes($data['name']))
-          ),
-        'description' => nl2br(
-          htmlspecialchars(
-            strip_tags(stripslashes($data['description']))
-            )
-          ),
+        'extension_name' => htmlspecialchars(strip_tags(stripslashes($data['name']))),
+        'description' => nl2br(htmlspecialchars(strip_tags(stripslashes($data['description'])))),
         'authors' => $authors,
         'first_date' => l10n('no revision yet'),
         'last_date'  => l10n('no revision yet'),
@@ -170,10 +191,6 @@ if (isset($_GET['eid']) && 1 == count($_GET))
         $template->assign(
           array(
             'can_modify' => $page['user_can_modify'],
-            // 'u_modify' => 'extension_mod.php?eid='.$current_extension_page_id,
-            // 'u_add_rev' => 'revision_add.php?eid='.$current_extension_page_id,
-            // 'u_links' => 'extension_links.php?eid='.$current_extension_page_id,
-            // 'u_screenshot'=> 'extension_screenshot.php?eid='.$current_extension_page_id,
             'translator' => !in_array($user['id'], $authors) && get_user_status() !='admin' && isTranslator($user['id']),
           )
         );
@@ -183,10 +200,8 @@ if (isset($_GET['eid']) && 1 == count($_GET))
         $template->assign(
           array(
             'u_owner' =>true,
-            'u_delete' => 'extension_del.php?eid='.$current_extension_page_id,
-            'u_authors' => 'extension_authors.php?eid='.$current_extension_page_id
-            )
-          );
+          )
+        );
       }
 
       $allow_svn_file_creation = conf_get_param('allow_svn_file_creation',false);
@@ -207,7 +222,7 @@ if (isset($_GET['eid']) && 1 == count($_GET))
     }
 
     /**
-     * Get link infos
+     * Get links infos
      */
 
     // Links associated to the current extension
@@ -280,9 +295,13 @@ if (isset($_GET['eid']) && 1 == count($_GET))
      */
 
      $query = '
-SELECT svn_url, git_url, archive_root_dir, archive_name
+SELECT 
+    svn_url,
+    git_url,
+    archive_root_dir,
+    archive_name
   FROM '.PEM_EXT_TABLE.'
-  WHERE id_extension = '.$page['extension_id'].'
+  WHERE id_extension = '.$_GET['eid'].'
 ;';
     $result = pwg_query($query);
 
@@ -328,7 +347,10 @@ SELECT svn_url, git_url, archive_root_dir, archive_name
       $template->assign(
         array(
           'TYPE' => 'git',
-          'URL' => $git_url,
+          // 'URL' => $git_url,
+          'GIT_URL' => $git_url,
+          'GIT_BRANCH' => 'master',
+
           )
         );
     }
@@ -337,7 +359,10 @@ SELECT svn_url, git_url, archive_root_dir, archive_name
       $template->assign(
         array(
           'TYPE' => 'svn',
-          'URL' => $svn_url,
+          // 'URL' => $svn_url,
+          'SVN_URL' => $svn_url,
+          'SVN_REVISION' => 'HEAD',
+
           )
         );
     }
@@ -373,13 +398,28 @@ SELECT svn_url, git_url, archive_root_dir, archive_name
       $versions_of = get_versions_of_revision($revision_ids);
       $languages_of = get_languages_of_revision($revision_ids);
       $diff_languages_of = get_diff_languages_of_extension($current_extension_page_id);
-      
+
+      $rev_languages_of_ids = array();
+      foreach($languages_of as $key => $rev){
+        $rev_languages_of_ids[$key] = array();
+        foreach($rev as $rev_lang)
+        {
+          array_push(
+            $rev_languages_of_ids[$key],$rev_lang['id_language']  
+          );
+        }
+      }
+
+      $template->assign(
+        'all_rev_languages_of_ids', json_encode($rev_languages_of_ids,JSON_NUMERIC_CHECK),
+      );
+
       $revisions = array();
 
       $query = '
     SELECT id_revision,
           version,
-          r.description  as default_description,
+          r.description as default_description,
           date,
           url,
           author,
@@ -405,12 +445,13 @@ SELECT svn_url, git_url, archive_root_dir, archive_name
         }
         if (!isset($last_date_set))
         {
-          $last_languages = get_languages_of_revision(array($row['id_revision']));
+          // $last_languages = get_languages_of_revision(array($row['id_revision']));
           $template->assign(array(
             'last_date' => date('Y-m-d', $row['date']),
             'last_date_formatted_since' => time_since($row['date'], $stop='month'),
             'download_last_url' => PEM_PATH.'download.php?rid='.$row['id_revision'],
-            'ext_languages' => array_shift($last_languages),
+            // 'ext_languages' => array_shift($last_languages),
+            // 'ext_languages_ids'=>
             ));
           $last_date_set = true;
         }
@@ -428,22 +469,24 @@ SELECT svn_url, git_url, archive_root_dir, archive_name
               $languages_of[$row['id_revision']] : array(),
             'languages_diff' => isset($diff_languages_of[$row['id_revision']]) ?
               $diff_languages_of[$row['id_revision']] : array(),
+            'rev_lang_ids' => isset($rev_languages_of_ids[$row['id_revision']]) ?
+              $rev_languages_of_ids[$row['id_revision']] : array(),
             'date' => format_date($row['date'], array('day_name','day','month','year')),
-            'author' => (count($authors) > 1 or $row['author'] != $data['idx_user']) ?
-                          get_author_name($row['author']) : '',
+            'author' => get_author_name($row['author']) ,
             'u_download' => PEM_PATH.'download.php?rid='.$row['id_revision'],
             'description' => nl2br(
               htmlspecialchars($row['description'])
               ),
             'can_modify' => $page['user_can_modify'],
             'u_modify' => 'revision_mod.php?rid='.$row['id_revision'],
-            'u_delete' => 'revision_del.php?rid='.$row['id_revision'],
+            'DELETE_REVISION' => 'revision_del.php?rid='.$row['id_revision'],
             'expanded' => isset($_GET['rid']) && $row['id_revision'] == $_GET['rid'],
             'downloads' => isset($downloads_of_revision[$row['id_revision']]) ? 
                             $downloads_of_revision[$row['id_revision']] : 0,
         );
 
         $first_date = $row['date'];
+      
       }
 
       $template->assign(
@@ -463,10 +506,7 @@ SELECT svn_url, git_url, archive_root_dir, archive_name
         });
       }
 
-      if (!isset($_GET['rid']))
-      {
-        $tpl_revisions[0]['expanded'] = true;
-      }
+      $tpl_revisions[0]['expanded'] = true;
 
       $template->assign('revisions', $tpl_revisions);
     }
@@ -526,9 +566,9 @@ SELECT svn_url, git_url, archive_root_dir, archive_name
       'rate' => $user_rate,
       ));
       
-// +-----------------------------------------------------------------------+
-// |                         Extension reviews                             |
-// +-----------------------------------------------------------------------+
+    // +-----------------------------------------------------------------------+
+    // |                         Extension reviews                             |
+    // +-----------------------------------------------------------------------+
 
     // total reviews in each language
     $current_language_id = get_current_language_id();
@@ -626,7 +666,6 @@ SELECT svn_url, git_url, archive_root_dir, archive_name
     }
     $user_review['form_action'] = $self_url.'&amp;action=add_review';
 
-
     // $user_review = is_array($user_review) ? array_map('stripslashes', $user_review) : stripslashes($user_review); 
     $template->assign('user_review', $user_review);
 
@@ -634,6 +673,178 @@ SELECT svn_url, git_url, archive_root_dir, archive_name
     $scores[0] = '--';
     asort($scores);
     $template->assign('scores', $scores);
+
+    // +-----------------------------------------------------------------------+
+    // |                         Revision descriptions                         |
+    // +-----------------------------------------------------------------------+
+    
+    // Get list of revisons linked to current extension
+    $query = '
+SELECT 
+  id_revision 
+  FROM '.PEM_REV_TABLE.' 
+  WHERE idx_extension = '.$_GET['eid'].'
+;';
+
+    $revision_ids_curent_ext = query2array($query, null, 'id_revision');
+    $rev_descriptions = array();
+
+    foreach($revision_ids_curent_ext as $rev)
+    {
+
+      // For revision default description
+      $query = '
+SELECT idx_language,
+       description
+  FROM '.PEM_REV_TABLE.'
+  WHERE id_revision = '.$rev.'
+;';
+
+      $result = pwg_query($query);
+      if ($row = pwg_db_fetch_assoc($result))
+      {
+        $rev_descriptions[$rev][$row['idx_language']] = $row['description'];
+      }
+
+      // For revision default description
+      $query = '
+SELECT idx_language,
+        description
+  FROM '.PEM_REV_TRANS_TABLE.'
+  WHERE idx_revision = '.$rev.'
+;';
+
+      $result = pwg_query($query);
+      if ($row = pwg_db_fetch_assoc($result))
+      {
+        $rev_descriptions[$rev][$row['idx_language']] = $row['description'];
+      }
+    }
+
+    $template->assign(
+      array(
+        'rev_descriptions' => $rev_descriptions,
+      )
+    );
+
+    // +-----------------------------------------------------------------------+
+    // |                     Extension & revision languages                    |
+    // +-----------------------------------------------------------------------+
+    $default_language = $interface_languages[$conf['default_language']]['code'];
+    // Get selected languages of last revision
+    $query = '
+SELECT MAX(id_revision) as id
+  FROM '.PEM_REV_TABLE.'
+  WHERE idx_extension = '.$_GET['eid'].'
+;';
+
+    if ($last_rev = pwg_db_fetch_assoc(pwg_query($query))
+      and !empty($last_rev['id']))
+    {
+      $language_ids_of_revision = get_language_ids_of_revision(array($last_rev['id']));
+      $selected_languages = !empty($language_ids_of_revision[$last_rev['id']]) ?
+        $language_ids_of_revision[$last_rev['id']] : array();
+    }
+
+    // by default the contributor accepts the agreement
+    $accept_agreement_checked = 'checked="checked"';
+
+    
+    if (!in_array($selected_author, $authors))
+    {
+      array_push($authors, $selected_author);
+    }
+
+    $template->assign(
+      array(
+        'use_agreement' => $conf['use_agreement'],
+        'agreement_description' => l10n('agreement_description'),
+        'default_language' => $default_language,
+        'file_needed' => true,
+        )
+      );
+      
+    // Get the main application versions listing
+    $query = '
+SELECT
+    id_version,
+    version
+  FROM '.PEM_VER_TABLE.'
+;';
+
+    // Get all extensions language listing
+    $query = '
+SELECT
+    id_language,
+    code,
+    name
+  FROM '.PEM_LANG_TABLE.'
+  ORDER BY name
+;';
+    $extensions_languages = query2array($query);
+    // $tpl_languages = array();
+    $ext_languages = array();
+    $extension_language_ids = array();
+
+    foreach($extensions_languages as $ext_lang)
+    {
+      // $name = trim(substr($ext_lang['name'], 0, -4));
+
+      if( in_array($ext_lang['id_language'], $selected_languages))
+      {
+        array_push(
+          $ext_languages,
+          array(
+            'id' => $ext_lang['id_language'],
+            'code' => $ext_lang['code'],
+            'name' => $ext_lang['name'],
+            )
+        );
+        array_push($extension_language_ids, $ext_lang['id_language']);
+      }
+    }
+
+    $template->assign(
+      array(
+        'ext_languages' => $ext_languages,
+        'extensions_languages_ids' => $extension_language_ids,
+      )
+    );
+    
+    $upload_methods = array('upload', 'git');
+    if ($conf['allow_download_url'])
+    {
+      array_push($upload_methods, 'url');
+      $template->assign(
+        array(
+          'DOWNLOAD_URL' => '',
+          )
+        );
+    }
+    if ($conf['allow_svn_file_creation'])
+    {
+      array_push($upload_methods, 'svn');
+    }
+
+    $file_type = 'upload';
+    if (!empty($svn_url))
+    {
+      $file_type = 'svn';
+    }
+    elseif (!empty($git_url))
+    {
+      $file_type = 'git';
+    }
+
+    $template->assign(
+      array(
+        'upload_methods' => $upload_methods,
+        'FILE_TYPE' => $file_type,
+        )
+      );
+
+    // Assign single_view template
+    $template->set_filename('pem_page', realpath(PEM_PATH . 'template/single_view.tpl'));
 
 // +-----------------------------------------------------------------------+
 // |                         Assign modal tpls                             |
