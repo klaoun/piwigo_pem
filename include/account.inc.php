@@ -155,6 +155,21 @@ SELECT
     )
   );
 
+
+  // Get available languages from Piwigo
+  $language_selected = PHPWG_DEFAULT_LANGUAGE;
+  foreach (get_languages() as $language_code => $language_name)
+  {
+    if ($user['language'] == $language_code)
+    {
+      $language_selected = $language_code;
+    }
+    $language_options[$language_code] = $language_name;
+  }
+
+  $template->assign('language_selected', $language_selected);
+  $template->assign('language_options', $language_options);
+
   // Assign template for edit user info modal
   $template->set_filename('pem_user_edit_info_form', realpath(PEM_PATH . 'template/modals/user_edit_info_form.tpl'));
   $template->assign_var_from_handle('PEM_USER_EDIT_INFO_FORM', 'pem_user_edit_info_form');
