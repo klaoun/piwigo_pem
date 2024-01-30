@@ -1,6 +1,7 @@
 <?php
 defined('PHPWG_ROOT_PATH') or die('Hacking attempt!');
 
+#[AllowDynamicProperties]
 class piwigo_pem_maintain extends PluginMaintain
 {
   private $installed = false;
