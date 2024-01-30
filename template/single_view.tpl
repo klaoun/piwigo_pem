@@ -67,11 +67,19 @@
         </a>
       </div>
 
-{if $extension_tags != null}
+{if isset($extension_tags)}
       <div>
   {foreach from=$extension_tags item=tag}
+    {if isset($tag.name)}
         <h5 class="tag d-inline">{$tag.name}{if !$tag@last}, {/if}</h5>
+        {/if}
   {/foreach}
+      </div>
+{/if}
+
+{if !empty($ext_languages)}
+      <div class="pt-3">
+        <span class="link" data-bs-toggle="modal" data-bs-target="#displayLanguagesModal"> {'%s Available languages'|translate:{$ext_languages|@count}}</span>
       </div>
 {/if}
 
@@ -113,33 +121,29 @@
   <section class="mt-5 pt-3 section-fluid">
     <div class="text-center">
 {if isset($extension_downloads)}
-      <div class="px-3 py-2 border-right d-inline-block">
+      <div class="px-3 py-2 d-inline-block">
         <span><i class="icon-download"></i>{$extension_downloads}</span>
       </div>
 {/if}
 {if isset($rate_summary.rating_score)}
-      <div class="px-3 py-2 border-right d-inline-block">
+      <div class="px-3 py-2 border-left d-inline-block">
         {$rate_summary.rating_score}
       </div>
 {/if}
 {if isset($latest_compatible_version) && $latest_compatible_version != null}
-      <div class="px-3 py-2 border-right d-inline-block">
+      <div class="px-3 py-2 border-left d-inline-block">
         <span><i class="icon-check"></i>Compatible with Piwigo {$latest_compatible_version}</span>
       </div>
 {/if}
 {if isset($first_date)}
-      <div class="px-3 py-2 d-inline-block">
+      <div class="px-3 py-2 border-left d-inline-block">
         <span><i class="icon-rocket"></i>{$first_date}</span>
   {if isset($first_date_formatted_since)}
         <span class='badge blue-badge d-inline'>{$first_date_formatted_since}</span>
   {/if}
       </div>
 {/if}
-{if !empty($ext_languages)}
-  <div class="px-3 py-2 border-left d-inline-block">
-    <span class="link" data-bs-toggle="modal" data-bs-target="#displayLanguagesModal"><i class="icon-language"></i> {'%s Available languages'|translate:{$ext_languages|@count}}</span>
-  </div>
-{/if}
+
     </div>
     
   </section>
@@ -259,7 +263,7 @@
 {if isset($revisions)}
     <div id="changelog" class="position-relative">
   {foreach from=$revisions item=rev}
-
+    <!-- rev{$rev.id} -->
     {if $rev@iteration == 1}
       <div id="rev{$rev.id}" class="changelogRevision card latest_rev mt-0 position-relative">
     {else}
@@ -268,10 +272,18 @@
 
   {if isset($can_modify) && $can_modify == true}
       <div class="position-absolute end-0 me-5">
-        <span class="circle-icon edit_mode main_action z-index me-2 pe-0" data-bs-toggle="modal" data-bs-target="#revsionInfoModal" onclick="popinToggleDisplay('generalInfo')">
-          <i class="icon-pencil" ></i>
+        <span class="circle-icon edit_mode main_action z-index me-2 pe-0" 
+          data-bs-toggle="modal" data-bs-target="#revisionInfoModal"
+          data-bs-rev_id="{$rev.id}" 
+          data-bs-version="{$rev.version}" 
+          data-bs-versions_compatible="{$rev.versions_compatible}"
+          data-bs-description="{$rev.description}"
+        >
+          <i class="icon-pencil"></i>
         </span>
-        <span class="edit_mode circle-icon secondary_action"><i class="icon-trash"></i></span>
+        <span class="edit_mode circle-icon secondary_action" onclick="deleteRevision({$rev.id}, {$extension_id})">
+          <i class="icon-trash translate-middle"></i>
+        </span>
       </div>
   {/if}
        
@@ -297,35 +309,53 @@
 
           {if !empty($rev.author)}
             <div class="mt-4">
-              <p>{'Added by'|@translate}: {$rev.author}</p>
+              <h5>{'Added by'|translate}</h5>
+              <p>{$rev.author}</p>
             </div>
           {/if}
 
           <div class="mt-4">
             <h5>Description</h5>
-            <p>{$rev.description}</p>
+      {* We have an array of all revsions and all descriptions in all languages *}
+      {foreach from=$rev_descriptions item=revision key=rev_id}
+        {if $rev_id == $rev.id}
+          {foreach from=$revision item=lang_desc key=lang_id}           
+            {if $lang_id == $CURRENT_LANG}
+              <p>{$lang_desc}</p>
+            {else}
+              {assign var="no_desc" value="true"}
+            {/if}
+          {/foreach}
+        {/if}
+      {/foreach}
+      {* If no description exists in current interface language we display default *}
+      {if $no_desc == true}
+        <p>{$rev.description}</p>
+      {/if}
+
+
           </div>
   
       {if !empty($rev.languages)}
-        {if !empty($rev.languages_diff)}
-          <div class="mt-4">
-            <h5>{'New languages'|@translate}:</h5>
-            {foreach from=$rev.languages_diff item=language name=flag}{strip}
-              <span class="langflag-{$language.code}" title="{$language.name}">{$language.name}</span>
-            {/strip}{/foreach}
-              {* <a href="#flags-{$rev.id}" class="flags-popup">{'Total :'|translate} {$rev.languages|@count}</a> *}
-            </p>
-          </div>
-        {/if}
           <div class="mt-4"> 
-            <h5>{'Available languages'|@translate}:</h5>
+            <h5>{'Available languages'|translate}:</h5>
         
             <div class="d-flex justify-content-start flex-wrap" >
-              {foreach from=$rev.languages item=language name=langs}{strip}
+              {foreach from=$rev.languages item=language name=langs}
                 <p class="me-3">{$language.name}</p>
               {/foreach}
             </div>
           </div>
+          {if !empty($rev.languages_diff)}
+            <div class="mt-4">
+              <h5>{'New languages'|translate}:</h5>
+              <div class="d-flex justify-content-start flex-wrap" >
+              {foreach from=$rev.languages_diff item=language name=flag}
+                <p class="me-3">{$language.name}</p>
+              {/foreach}
+              </div>
+            </div>
+          {/if}
       {/if}
 
           <div class="row mt-4">
@@ -362,9 +392,13 @@
 
 </div>
 
-<script src="{$PEM_ROOT_URL_PLUGINS}template/js/single_view.js" require="jquery"></script>
-
 <script>
   //allows any filters set in list view to be cleared 
   sessionStorage.clear()
+
+  var pwg_token = "{$PWG_TOKEN}";
+ 
 </script>
+
+<script src="{$PEM_ROOT_URL_PLUGINS}template/js/single_view.js" require="jquery"></script>
+
