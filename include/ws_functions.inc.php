@@ -69,7 +69,8 @@ function pem_ws_add_methods($arr)
     array(
       'category_id' => array(
         'default' => null,
-        'type'=>WS_TYPE_INT|WS_TYPE_POSITIVE,'info'=>'use category id'
+        'type'=>WS_TYPE_INT|WS_TYPE_POSITIVE,
+        'info'=>'use category id'
       ),
     ),
     'Get number of extensions, can filter for number of extensions per catetgory.'
@@ -117,6 +118,7 @@ function pem_ws_add_methods($arr)
     array(
       'extension_id' => array('type'=>WS_TYPE_INT|WS_TYPE_POSITIVE),
       'user_id' => array('type'=>WS_TYPE_INT|WS_TYPE_POSITIVE),
+      'pwg_token' =>  array(),
     ),
     'Remove a user from extension authors'
   );
@@ -127,6 +129,7 @@ function pem_ws_add_methods($arr)
     array(
       'extension_id' => array('type'=>WS_TYPE_INT|WS_TYPE_POSITIVE),
       'user_id' => array('type'=>WS_TYPE_INT|WS_TYPE_POSITIVE),
+      'pwg_token' =>  array(),
     ),
     'Set a user as extension owner'
   );
@@ -137,6 +140,7 @@ function pem_ws_add_methods($arr)
     array(
       'extension_id' => array('type'=>WS_TYPE_INT|WS_TYPE_POSITIVE),
       'link_id' => array('type'=>WS_TYPE_INT|WS_TYPE_POSITIVE),
+      'pwg_token' =>  array(),
     ),
     'Delete a link associated to an extension'
   );
@@ -146,6 +150,7 @@ function pem_ws_add_methods($arr)
     'ws_pem_extensions_delete_svn_git_config',
     array(
       'extension_id' => array('type'=>WS_TYPE_INT|WS_TYPE_POSITIVE),
+      'pwg_token' =>  array(),
     ),
     'Delete svn/git configuration linked to extension'
   );
@@ -155,8 +160,28 @@ function pem_ws_add_methods($arr)
     'ws_pem_extensions_delete_extension',
     array(
       'extension_id' => array('type'=>WS_TYPE_INT|WS_TYPE_POSITIVE),
+      'pwg_token' =>  array(),
     ),
     'Delete extension'
+  );
+
+  $service->addMethod(
+    'pem.revisions.getLanguageInfo',
+    'ws_pem_revisions_get_language_info',
+    array(
+      'extension_id' => array(
+        'type'=>WS_TYPE_INT|WS_TYPE_POSITIVE,
+        'flags'=>WS_PARAM_OPTIONAL,
+      ),
+      'revision_id' => array(
+        'type'=>WS_TYPE_INT|WS_TYPE_POSITIVE,
+        'flags'=>WS_PARAM_OPTIONAL,
+      ),
+      'svn_url' => array(
+        'flags'=>WS_PARAM_OPTIONAL,
+      ),
+    ),
+    'Get latest language info for a revision'
   );
 
   $service->addMethod(
@@ -165,6 +190,7 @@ function pem_ws_add_methods($arr)
     array(
       'extension_id' => array('type'=>WS_TYPE_INT|WS_TYPE_POSITIVE),
       'revision_id' => array('type'=>WS_TYPE_INT|WS_TYPE_POSITIVE),
+      'pwg_token' =>  array(),
     ),
     'Delete a revision associated to an extension'
   );
@@ -737,6 +763,7 @@ function ws_pem_extensions_delete_author($params, &$service)
   {
     die('missing user id');
   }
+
   
   $eid = $params['extension_id'];
   $uid = $params['user_id'];
@@ -747,8 +774,6 @@ DELETE FROM '.PEM_AUTHORS_TABLE.'
   AND idx_extension = '.$eid.'
 ;';
     pwg_query($query);
-
-
 }
 
 /**
@@ -802,6 +827,7 @@ INSERT INTO '.PEM_AUTHORS_TABLE.' (idx_extension, idx_user)
  */
 function ws_pem_extensions_delete_link($params, &$service)
 {
+
   $query = '
 DELETE
   FROM '.PEM_LINKS_TABLE.'
@@ -816,6 +842,7 @@ DELETE
  */
 function ws_pem_extensions_delete_svn_git_config($params, &$service)
 {
+
   $query = '
 UPDATE '.PEM_EXT_TABLE.'
 SET svn_url = NULL,
@@ -885,9 +912,12 @@ DELETE
 
 }
 
+/**
+ * Delete a revision linked to an extension
+ */
 function ws_pem_revisions_delete_revision($params, &$service)
 {
-  
+
   $revision_infos_of = get_revision_infos_of(array($params['revision_id']));
 
   @unlink(
@@ -911,16 +941,217 @@ DELETE
   WHERE id_revision = '.$params['revision_id'].'
 ;';
   pwg_query($query);
+}
 
+function ws_pem_revisions_get_language_info($params, &$service)
+{
+  //
+  // when we edit a revision, we have to find the SVN revision inside the
+  // archive
+  //
+  if (isset($params['revision_id'])) {
+    $query = '
+  SELECT
+      *
+    FROM '.PEM_REV_TABLE.'
+    WHERE id_revision = '.$params['revision_id'].'
+  ;';
+    $result = pwg_query($query);
+    while ($row = pwg_db_fetch_assoc($result)) {
+      $revision = $row;
+    }
 
-//   $query = '
-// UPDATE '.PEM_EXT_TABLE.'
-// SET svn_url = NULL,
-//     git_url = NULL,
-//     archive_root_dir = NULL,
-//     archive_name = NULL
-// WHERE id_extension = '.$params['extension_id'].'
-// ;';
+    $extract_dir = $conf['local_data_dir'].'/detect_lang/revision-'.$params['revision_id'];
+    exec('mkdir -p '.$extract_dir);
 
-//   pwg_query($query);
+    $archive_path = $root_path.get_revision_src($revision['idx_extension'], $params['revision_id'], $revision['url']);
+    exec('unzip '.$archive_path.' -d '.$extract_dir);
+    exec('find '.$extract_dir.' -name pem_metadata.txt | xargs cat | grep ^Revision', $exec_output);
+    exec('rm -rf '.$extract_dir);
+    
+    if (count($exec_output) > 0) {
+      if (preg_match('/^Revision:\s*(\d+)/', $exec_output[0], $matches)) {
+        $page['svn'] = $matches[1];
+      }
+    }
+
+    if (!isset($page['svn'])) {
+      $output = array(
+        'stat' => 'ko',
+        'error_message' => 'revision not generated from SVN',
+        );
+
+        echo json_encode($output);
+        exit;
+    }
+
+    $params['extension_id'] = $revision['idx_extension'];
+  }
+
+  //
+  // make sure we have the required page parameters (whatever the input was
+  // eid+svn or just rid)
+  //
+  $required_params = array('extension_id', 'svn_url');
+  foreach ($required_params as $required_param) {
+    if (!isset($params[$required_param])) {
+      die('"'.$required_param.'" is a required parameter');
+    }
+  }
+
+  //
+  // find the reference revision_id based on the extension id: the most recent
+  // revision
+  //
+  $ref_revision_id = null;
+
+  $query = '
+  SELECT
+      id_revision
+    FROM '.PEM_REV_TABLE.'
+    WHERE idx_extension = '.$params['extension_id'];
+
+  if (isset($revision)) {
+    $query.= '
+      AND date < '.$revision['date'].'
+  ';
+  }
+
+  $query .= '
+    ORDER BY date DESC
+    LIMIT 1
+  ;';
+  $result = pwg_query($query);
+  while ($row = pwg_db_fetch_assoc($result)) {
+    $ref_revision_id = $row['id_revision'];
+  }
+
+  //
+  // details about languages
+  //
+  $info_of_language = array();
+
+  $query = '
+  SELECT
+      id_language,
+      code,
+      name
+    FROM '.PEM_LANG_TABLE.'
+  ;';
+  $result = pwg_query($query);
+  while ($row = pwg_db_fetch_assoc($result)) {
+    if (isset($conf['language_english_names'][$row['code']])) {
+      $row['english_name'] = $conf['language_english_names'][$row['code']];
+    }
+    
+    $info_of_language[ $row['code'] ] = $row;
+  }
+
+  // what is the list of languages in reference revision (the previous
+  // revision, most of the time)
+  $languages_old = array();
+
+  $query = '
+  SELECT
+      code
+    FROM '.PEM_REV_LANG_TABLE.'
+      JOIN '.PEM_LANG_TABLE.' ON idx_language = id_language
+    WHERE idx_revision = '.$ref_revision_id.'
+  ;';
+  $result = pwg_query($query);
+  while ($row = pwg_db_fetch_assoc($result)) {
+    $languages_old[] = $row['code'];
+  }
+
+  //
+  // what is the list of languages in SVN
+  //
+  // 1) get the SVN URL
+  $svn_url = null;
+
+  $query = '
+  SELECT
+      svn_url,
+      git_url
+    FROM '.PEM_EXT_TABLE.'
+      JOIN '.PEM_REV_TABLE.' ON id_extension = idx_extension
+    WHERE id_revision = '.$ref_revision_id.'
+  ;';
+  $result = pwg_query($query);
+  while ($row = pwg_db_fetch_assoc($result)) {
+    $svn_url = $row['svn_url'];
+
+    if (isset($row['git_url']) and preg_match('/github/', $row['git_url'])) {
+      $svn_url = $row['git_url'].'/trunk';
+    }
+  }
+
+  $svn_command = 'svn list -r'.$page['svn'].' '.$svn_url.'/language';
+  $svn_output = null;
+  exec($svn_command, $svn_output);
+
+  $languages_cur = array();
+  $language_ids = array();
+
+  foreach ($svn_output as $lang) {
+    if (preg_match('#^([a-z]{2,3}_[A-Z]{2,3})#', $lang, $matches)) {
+      $languages_cur[] = $matches[1];
+
+      if (isset($info_of_language[ $matches[1] ])) {
+        $language_ids[] = $info_of_language[ $matches[1] ]['id_language'];
+      }
+    }
+  }
+
+  //
+  // new languages
+  //
+  $languages_new = array_diff($languages_cur, $languages_old);
+
+  $desc_extra = '';
+  if (count($languages_new) > 0) {
+    $desc_extra = 'New languages:';
+  }
+
+  foreach ($languages_new as $lang) {
+    if (isset($info_of_language[$lang])) {
+      $desc_extra.= "\n".'* ';
+      if (isset($info_of_language[$lang]['english_name'])) {
+        $desc_extra.= $info_of_language[$lang]['english_name'].' ('.$info_of_language[$lang]['name'].')';
+      }
+      else {
+        $desc_extra.= $info_of_language[$lang]['name'];
+      }
+    }
+    
+    $svn_command = 'svn log '.$svn_url.'/language/'.$lang.' | grep ", thanks to :"';
+    $svn_output = null;
+    exec($svn_command, $svn_output);
+
+    $translators = array();
+
+    foreach ($svn_output as $svn_output_line) {
+      if (preg_match('/, thanks to : (.+)$/', $svn_output_line, $matches)) {
+        $translators = array_merge($translators, explode(' & ', $matches[1]));
+      }
+    }
+
+    if (count($translators) > 0) {
+      $desc_extra.= ', thanks to '.implode(', ', array_unique($translators));
+    }
+  }
+
+  $rev_lang_info = array(
+    'language_ids' => $language_ids,
+    'desc_extra' => $desc_extra,
+  );
+
+  if (!isset($_REQUEST['format']))
+  {
+    //Echo to be compatible with previous version of Piwigo
+    echo serialize($rev_lang_info);
+    exit;
+  }
+
+  return $rev_lang_info;  
 }
