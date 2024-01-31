@@ -1,4 +1,4 @@
-function display_changelog( revision_id )
+function display_changelog(revision_id)
 {
   var element = document.getElementById( 'changelog_' + revision_id );
   
@@ -12,6 +12,7 @@ function display_changelog( revision_id )
   }
 }
 
+// Collapse and expand the selected revision
 function revToggleDisplay(headerId, contentId)
 {
   var revHeader = document.getElementById(headerId);
@@ -58,67 +59,84 @@ jQuery(document).ready(function () {
     plugins: ["remove_button"],
   })
 
-  jQuery('#extensions_languages').selectize({
+  jQuery('#addRevisionModal .revison_languages').selectize({
     plugins: ["remove_button"],
   })
-  
+
+  jQuery('#revisionInfoModal .revison_languages').selectize({
+    plugins: ["remove_button"],
+  })
+
+  showHideDetectLang();
+
+  // Depending on file type hide detectLang option
+  jQuery("input[type=radio][name=file_type]").change(function()
+  {
+    showOnlyThisChild('upload_types', this.value+'_type');
+    showHideDetectLang();
+  });
+
+  // Used to display different textArea for revision description
+  $('input[name="default_description"]').click(function () {
+    set_default_description(this.value);
+  });
+
+  // Hide all description blocks, display the one linked to the selected language
+  // For add revision modal
+  $("#addRevisionModal .desc").hide();
+  var selected_desc_lang = jQuery('#addRevisionModal #lang_desc_select').val();
+  jQuery('#addRevisionModal #desc_block_'+selected_desc_lang).show()
+
+  jQuery('#addRevisionModal #lang_desc_select').on('change', function() {
+    $("#addRevisionModal .desc").hide();
+    var selected_desc_lang = jQuery('#addRevisionModal #lang_desc_select').val();
+    jQuery('#addRevisionModal #desc_block_'+selected_desc_lang).show()
+  });
+
+  // Hide all description blocks, display the one linked to the selected language
+  // For Edit revision modal
+  $("#revisionInfoModal .desc").hide();
+  var selected_desc_lang = jQuery('#revisionInfoModal #lang_desc_select').val();
+  jQuery('#revisionInfoModal #desc_block_'+selected_desc_lang).show()
+
+  jQuery('#revisionInfoModal #lang_desc_select').on('change', function() {
+    $("#revisionInfoModal .desc").hide();
+    var selected_desc_lang = jQuery('#revisionInfoModal #lang_desc_select').val();
+    jQuery('#revisionInfoModal #desc_block_'+selected_desc_lang).show()
+  });
+
 });
 
-
-function showOnlyThisChild(parentId, childIdtoShow)
-{
-  var parent = document.getElementById(parentId);
-  var children = parent.childNodes;
-  var n = children.length;
-
-  for (i=0; i<n; i++)
-  {
-    var child = children[i];
-    if (child.id != undefined)
-    {
-      if (child.id == childIdtoShow)
-      {
-        child.style.display = 'block';
-      }
-      else
-      {
-        child.style.display = 'none';
-      }
-    }
-  }
-}
-
+// Ajax request to delete an author, found in the edit_authors_form.tpl modal
 function deleteAuthor(userId, extensionId)
 {
   jQuery.ajax({
     type: 'GET',
     dataType: 'json',
     async: false,
-    url: 'ws.php?format=json&method=pem.extensions.deleteAuthor&extension_id=' + extensionId + '&user_id=' + userId ,
+    url: 'ws.php?format=json&method=pem.extensions.deleteAuthor&extension_id=' + extensionId + '&user_id=' + userId + '&pwg_token=' + pwg_token,
     data: { ajaxload: 'true' },
     success: function (data) {
-      if (data.stat == 'ok') {
-        localStorage.setItem("message",data.message)
-        window.location.reload(); 
-      }
+      window.location.reload(); 
     }
   });
-
 }
 
+// Ajax request to set the owner of an extension, found in the edit_authors.tpl modal
 function setOwner(userId, extensionId)
 {
   jQuery.ajax({
     type: 'GET',
     dataType: 'json',
     async: false,
-    url: 'ws.php?format=php&method=pem.extensions.setOwner&extension_id=' + extensionId + '&user_id=' + userId ,
+    url: 'ws.php?format=php&method=pem.extensions.setOwner&extension_id=' + extensionId + '&user_id=' + userId + '&pwg_token=' + pwg_token ,
     data: { ajaxload: 'true' },
     success: function (data) {
-      if (data.stat == 'ok') {
-        localStorage.setItem("message",data.message)
-        window.location.reload(); 
-      }
+      window.location.reload(); 
+    }
+  });
+}
+
 // Ajax request to delete an link associated to an extension, found in single_view.tpl
 function deleteLink(linkId, extensionId)
 {
@@ -126,7 +144,7 @@ function deleteLink(linkId, extensionId)
     type: 'GET',
     dataType: 'json',
     async: false,
-    url: 'ws.php?format=json&method=pem.extensions.deleteLink&extension_id=' + extensionId + '&link_id=' + linkId ,
+    url: 'ws.php?format=json&method=pem.extensions.deleteLink&extension_id=' + extensionId + '&link_id=' + linkId + '&pwg_token=' + pwg_token,
     data: { ajaxload: 'true' },
     success: function (data) {
       window.location.reload(); 
@@ -140,15 +158,22 @@ function deleteSVNGitConfig(extensionId){
     type: 'GET',
     dataType: 'json',
     async: false,
-    url: 'ws.php?format=json&method=pem.extensions.deleteSvnGitConfig&extension_id=' + extensionId ,
+    url: 'ws.php?format=json&method=pem.extensions.deleteSvnGitConfig&extension_id=' + extensionId + '&pwg_token=' + pwg_token,
     data: { ajaxload: 'true' },
+    success: function (data) {
+      window.location.reload(); 
+    }
+  });
+}
+
+// Ajax request to delete an extension
 function deleteExtension(extensionId, link)
 {
   jQuery.ajax({
     type: 'GET',
     dataType: 'json',
     async: false,
-    url: 'ws.php?format=json&method=pem.extensions.deleteExtension&extension_id=' + extensionId ,
+    url: 'ws.php?format=json&method=pem.extensions.deleteExtension&extension_id=' + extensionId + '&pwg_token=' + pwg_token,
     data: { ajaxload: 'true' },
     success: function (data) {
       if (data.stat == 'ok') {
@@ -158,9 +183,19 @@ function deleteExtension(extensionId, link)
   });
 }
 
-function deleteExtension(extensionId)
+// Ajax request to delete a revision from an extension
+function deleteRevision(revisionId,extensionId )
 {
-  console.log("delete extension")
+  jQuery.ajax({
+    type: 'GET',
+    dataType: 'json',
+    async: false,
+    url: 'ws.php?format=json&method=pem.revisions.deleteRevision&extension_id=' + extensionId + '&revision_id=' + revisionId+ '&pwg_token=' + pwg_token,
+    data: { ajaxload: 'true' },
+    success: function (data) {
+      window.location.reload(); 
+    }
+  });
 }
 
 // Script used for editing link modal
@@ -174,19 +209,135 @@ editLinkModal.addEventListener('show.bs.modal', event => {
   const linkId = button.getAttribute('data-bs-link-id')
   const linkName = button.getAttribute('data-bs-link-name')
   const linkURL = button.getAttribute('data-bs-link-url')
-  const linkLang = button.getAttribute('data-bs-link-lang')
 
   // Update the modal's content.
   const modalLinkID= editLinkModal.querySelector('#link_id')
   const modalLinkName = editLinkModal.querySelector('#link_name')
   const modalLinkUrl= editLinkModal.querySelector('#link_url')
-  const modalLinkLang= editLinkModal.querySelector('#link_language')
 
   modalLinkID.value = linkId
   modalLinkName.value = linkName
   modalLinkUrl.value = linkURL
-  modalLinkLang.value = linkLang
-  modalLinkLang.value =linkLang
 });
 
+// Script used for editing revision modal
+// The link data is saved in the data attributes of the edit button, 
+// This data is added to the modal on the modal show when thue button is clicked
+// const editRevisionModal = document.getElementById('revisionInfoModal');
+const editRevisionModal = document.getElementById('revisionInfoModal');
+editRevisionModal.addEventListener('show.bs.modal', event => {
+  const button = event.relatedTarget
+  // Extract info from data-bs-* attributes
+  const revId = button.getAttribute('data-bs-rev_id')
+  const revDescription = button.getAttribute('data-bs-link-description')
+  const revVersionCompatible = button.getAttribute('data-bs-link-versions_compatible')
+  const current_rev_edit =button.getAttribute('data-bs-rev_id')
+
+  // Update the modal's content.
+  const modalRevId= editRevisionModal.querySelector('#revisionInfoModal #revision_id')
+  const modalRevVersionCompatible = editRevisionModal.querySelector('#revisionInfoModal .revision_compatible_versions')
+  const modalRevDescription= editRevisionModal.querySelector('#revisionInfoModal #revision_descriptions')
+  const modalRevLanguages= editRevisionModal.querySelector('#revisionInfoModal.revison_languages')
+
+  modalRevId.value = revId
+  modalRevDescription.value = revDescription
+
+  // Fill selectize with already avaiable languages
+  modalRevLanguages.value(all_revision_languages[current_rev_edit]).change()
+  modalRevVersionCompatible.value(revVersionCompatible).change()
+
 });
+
+// Depending on selected file type display according inputs
+function showOnlyThisChild(parentId, childIdtoShow)
+{
+  var parent = jQuery('#'+parentId);
+  var divsToChange = jQuery(parent[0]).children();
+
+  jQuery(divsToChange).each(function(i, child){
+    if (child.id == childIdtoShow)
+    {
+      jQuery('.modal #'+child.id).removeClass('d-none');
+      jQuery('.modal #'+child.id).addClass('d-block');
+    }
+    else
+    {
+      jQuery('.modal #'+child.id).removeClass('d-block');
+      jQuery('.modal #'+child.id).addClass('d-none');
+    }
+  })
+
+  return false;
+}
+
+// Toggle detectLang link
+function showHideDetectLang() {
+  if (jQuery("input[name=file_type]:checked").val() == "svn" || jQuery("input[name=file_type]:checked").val() == "git")
+  {
+    jQuery(".modal .detectLang").show();
+  }
+  else 
+  {
+    jQuery(".modal .detectLang").hide();
+  }
+}
+
+function detectLang()
+{
+  var file_type = jQuery("input[name=file_type]:checked").val();
+  var url = "'ws.php?format=json&method=";
+
+  url+= "eid={$extension_id}&svn=";
+
+  var file_type = jQuery("input[name=file_type]:checked").val();
+
+  if (file_type == "svn") {
+    url+= jQuery("input[name=svn_revision]").val();
+  }
+  else {
+    url+= 'HEAD';
+  }
+
+  jQuery.ajax({
+    url: url,
+    type:"GET",
+    beforeSend: function() {
+      jQuery("#detectLangLoad").show();
+    },
+    success:function(data) {
+      jQuery("#detectLangLoad").hide();
+
+      var data = jQuery.parseJSON(data);
+      if (data.stat == 'ok') {
+        var new_desc = jQuery(".desc_en_UK").val();
+        if (new_desc != "") {
+          new_desc+= "\n\n";
+        }
+        new_desc+= data.desc_extra;
+
+        jQuery(".desc_en_UK").val(new_desc);
+
+        /* reset the list of checked languages */
+        jQuery('#extensions_languages option').removeAttr('selected').trigger("list:updated");
+
+        jQuery.each(data.language_ids, function(i, language_id) {
+          jQuery('#extensions_languages option[value="'+language_id+'"]')
+            .attr('selected', 'selected')
+            .trigger("list:updated")
+          ;
+        });
+      }
+      else {
+        var error_message = "error#1, a problem has occured";
+        if (typeof data.error_message != "undefined") {
+          error_message = data.error_message;
+        }
+        alert(error_message);
+      }
+    },
+    error:function(XMLHttpRequest, textStatus, errorThrows) {
+      jQuery("#detectLangLoad").hide();
+      alert("error#2, a problem has occured");
+    }
+  });
+}
