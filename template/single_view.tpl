@@ -103,7 +103,7 @@
     <div class="col-md-6 text-center position-relative" id="image-container">
 {if isset($can_modify) && $can_modify == true}
       <span class="circle-icon edit_mode position-absolute top-0 end-0 translate-middle" data-bs-toggle="modal" data-bs-target="#ImageModal">
-        <i class="icon-pencil" ></i>
+        <i class="icon-pencil"></i>
       </span>
 {/if}
 
@@ -270,7 +270,7 @@
       <div id="rev{$rev.id}" class="changelogRevision card position-relative">
     {/if}
 
-  {if isset($can_modify) && $can_modify == true}
+    {if isset($can_modify) && $can_modify == true}
       <div class="position-absolute end-0 me-5">
         <span class="circle-icon edit_mode main_action z-index me-2 pe-0" 
           data-bs-toggle="modal" data-bs-target="#revisionInfoModal"
@@ -285,7 +285,7 @@
           <i class="icon-trash translate-middle"></i>
         </span>
       </div>
-  {/if}
+    {/if}
        
   
         <div id="rev{$rev.id}_header" {if $rev.expanded} class="changelogRevisionHeaderExpanded pb-4" {else} class="changelogRevisionHeaderCollapsed pb-0"{/if} onclick="revToggleDisplay('rev{$rev.id}_header', 'rev{$rev.id}_content')">
@@ -317,46 +317,46 @@
           <div class="mt-4">
             <h5>Description</h5>
       {* We have an array of all revsions and all descriptions in all languages *}
-      {foreach from=$rev_descriptions item=revision key=rev_id}
-        {if $rev_id == $rev.id}
-          {foreach from=$revision item=lang_desc key=lang_id}           
-            {if $lang_id == $CURRENT_LANG}
+    {foreach from=$rev_descriptions item=revision key=rev_id}
+      {if $rev_id == $rev.id}
+        {foreach from=$revision item=lang_desc key=lang_id}           
+          {if $lang_id == $CURRENT_LANG}
               <p>{$lang_desc}</p>
-            {else}
-              {assign var="no_desc" value="true"}
-            {/if}
-          {/foreach}
-        {/if}
-      {/foreach}
-      {* If no description exists in current interface language we display default *}
-      {if $no_desc == true}
-        <p>{$rev.description}</p>
+          {else}
+            {assign var="no_desc" value="true"}
+          {/if}
+        {/foreach}
       {/if}
+    {/foreach}
+      {* If no description exists in current interface language we display default *}
+    {if $no_desc == true}
+        <p>{$rev.description}</p>
+    {/if}
 
 
           </div>
   
-      {if !empty($rev.languages)}
+    {if !empty($rev.languages)}
           <div class="mt-4"> 
             <h5>{'Available languages'|translate}:</h5>
         
             <div class="d-flex justify-content-start flex-wrap" >
-              {foreach from=$rev.languages item=language name=langs}
+      {foreach from=$rev.languages item=language name=langs}
                 <p class="me-3">{$language.name}</p>
-              {/foreach}
+      {/foreach}
             </div>
           </div>
-          {if !empty($rev.languages_diff)}
+      {if !empty($rev.languages_diff)}
             <div class="mt-4">
               <h5>{'New languages'|translate}:</h5>
               <div class="d-flex justify-content-start flex-wrap" >
-              {foreach from=$rev.languages_diff item=language name=flag}
+        {foreach from=$rev.languages_diff item=language name=flag}
                 <p class="me-3">{$language.name}</p>
-              {/foreach}
+        {/foreach}
               </div>
             </div>
-          {/if}
       {/if}
+    {/if}
 
           <div class="row mt-4">
             <a href="{$rev.u_download}" title="{'Download revision'|@translate} {$rev.version}" rel="nofollow">
