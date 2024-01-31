@@ -18,55 +18,12 @@
 // | USA.                                                                  |
 // +-----------------------------------------------------------------------+
 
-/* this file contains functions for language management */
-
-/**
- * returns the corresponding value from $lang if existing. Else, the key is
- * returned
- *
- * @param string key
- * @return string
- */
-// function l10n($key)
-// {
-//   global $lang, $conf;
-
-//   if ($conf['debug_l10n'] and !isset($lang[$key]) and !empty($key))
-//   {
-//     trigger_error('[l10n] language key "'.$key.'" is not defined', E_USER_WARNING);
-//   }
-
-//   return isset($lang[$key]) ? $lang[$key] : $key;
-// }
-
-/**
- * includes a language file
- */
-// function load_language($filename, $no_fallback = false, $dirname = './')
-// {
-//   global $conf, $lang;
-
-//   $dirname .= 'language/';
-
-//   $selected_language_file = $dirname . $_SESSION['language']['code'] . '/' . $filename;
-//   $default_language_file = $dirname . $conf['default_language'] . '/' . $filename;
-
-//   if (file_exists($selected_language_file))
-//   {
-//     @include($selected_language_file);
-//   }
-//   elseif (!$no_fallback and file_exists( $default_language_file))
-//   {
-//     @include($default_language_file);
-//   }
-// }
-
 /**
  * tries to determine the visitor language from SESSION, SERVER and config
  */
 function get_current_language()
 {
-  global $db, $conf;
+  global $db, $conf, $user;
   
   $language = null;
   
@@ -83,8 +40,9 @@ function get_current_language()
   
   if (empty($language) or !is_array($language))
   {
+    $language = $user['language'];
 
-    conf_get_param('get_browser_language',true)
+    $get_browser_language = conf_get_param('get_browser_language',true);
     
     if ($get_browser_language)
     {
