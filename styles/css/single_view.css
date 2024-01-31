@@ -5,7 +5,7 @@ specific css styles for single_view tpl
 /******
 Titles
 ******/
-h4.author{
+#single_view h4.author{
   font-size: 30px;
   font-weight: 700;
   text-align: left;
@@ -14,7 +14,7 @@ h4.author{
   transition: all 1s;
 }
 
-h3.category{
+#single_view h3.category{
   font-size: 30px;
   font-weight: 700;
   text-align: left;
@@ -25,7 +25,7 @@ h3.category{
 /******
 Body text
 ******/
-p.revision-version{
+#single_view p.revision-version{
   color:var(--grey4);
   font-weight: 700;
   margin-left: 10px;
@@ -42,7 +42,7 @@ Buttons
 Borders
 ******/
 
-.border-right{
+#single_view .border-right{
   border-right:2px solid var(--grey4);
 }
 
@@ -57,12 +57,14 @@ header Image
 #single_view .screenshot_image{
   height:300px;
   max-width:100%;
+  object-fit:contain;
+  object-position:top center;
 }
 
 /******
 Revisions
 ******/
-.changelogRevision.card{
+#single_view .changelogRevision.card{
   background-color:  var(--grey5);
   padding:20px;
   border-radius:15px;
@@ -71,80 +73,80 @@ Revisions
   border:none;
 }
 
-.changelogRevision.card p{
+#single_view .changelogRevision.card p{
   margin-bottom:0;
 }
 
-#changelog .changelogRevision.latest_rev{
+#single_view #changelog .changelogRevision.latest_rev{
   background-color:  var(--main_orange);
   color: var(--white);
 }
 
-.changelogRevision.card h4{
+#single_view .changelogRevision.card h4{
   /* font-size:20px; */
   font-weight:700;
   margin-bottom:0;
 }
 
-#changelog .changelogRevision.latest_rev h4,
+#single_view #changelog .changelogRevision.latest_rev h4,
 #changelog .changelogRevision.latest_rev h5{
   color: var(--white);
 }
 
-#changelog .changelogRevision .changelogRevisionHeaderExpanded {
+#single_view #changelog .changelogRevision .changelogRevisionHeaderExpanded {
   border-bottom:2px solid var(--grey4);
 }
 
-#changelog .changelogRevision.latest_rev .changelogRevisionHeaderExpanded {
+#single_view #changelog .changelogRevision.latest_rev .changelogRevisionHeaderExpanded {
   border-bottom:2px solid var(--white);
 }
 
-#changelog .changelogRevision .btn-tertiary{
+#single_view #changelog .changelogRevision .btn-tertiary{
   border:1px solid var(--main_orange);
   color: var(--main_orange);
   background:var(--white)
 }
 
-.secondary_action:hover{
+#single_view .secondary_action:hover{
   color:white;
   border:1px solid var(--main_orange);
 }
 
-.edit_links .circle-icon{
+#single_view .edit_links .circle-icon{
   padding: 5px 10px;
 }
 
-#changelog .changelogRevision.latest_rev .circle-icon.main_action{
+#single_view #changelog .changelogRevision.latest_rev .circle-icon.main_action{
   color: var(--white);
   border: 1px solid var(--secondary_orange);
   background-color:var(--secondary_orange);
 }
 
-#changelog .changelogRevision.latest_rev .circle-icon.secondary_action{
+#single_view #changelog .changelogRevision.latest_rev .circle-icon.secondary_action{
   color: var(--white);
   border: 1px solid var(--white);
   background-color:transparent;
 }
 
-#changelog .changelogRevision.latest_rev .circle-icon.secondary_action:hover,
-#changelog .changelogRevision.latest_rev .circle-icon.main_action:hover{
+#single_view #changelog .changelogRevision.latest_rev .circle-icon.secondary_action:hover,
+#single_view #changelog .changelogRevision.latest_rev .circle-icon.main_action:hover{
   color: var(--main_orange);
   border: 1px solid var(--white);
   background-color:var(--white);
 }
 
-.form-select {
+#single_view .form-select {
   line-height: normal;
 }
 
-.revision_title_container {
+#single_view .revision_title_container {
   cursor:pointer;
 }
 
 /******
 Links
 ******/
-button.link-primary{
+#single_view button.link-primary{
   border: none;
   background: none;
   cursor: pointer;
@@ -153,7 +155,11 @@ button.link-primary{
 /******
 Lists
 ******/
-.list-group{
+#single_view .list-group{
   flex-direction:row;
   flex-wrap:wrap;
+}
+
+#single_view .list-group-flush>.list-group-item{
+  border: 0;
 }
