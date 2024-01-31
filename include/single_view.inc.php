@@ -76,7 +76,7 @@ if (isset($_GET['eid']) && 1 == count($_GET))
       $template->assign(array('VERSIONS_PWG' => $versions_of_pwg, ));
 
     $authors = get_extension_authors($current_extension_page_id);
-
+    $add_current_user = (in_array($user['id'],$authors))? false :true;
     $owner_id = null;
 
     foreach ($authors as $key => $author)
@@ -109,6 +109,7 @@ if (isset($_GET['eid']) && 1 == count($_GET))
       array(
         'current_user_id' => $user['id'],
         'current_user_name' => get_author_name($user['id']),
+        'add_current_user' => $add_current_user,
         'PWG_TOKEN' => get_pwg_token(),
       )
     );
