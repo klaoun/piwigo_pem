@@ -34,24 +34,26 @@
                 <input type="text" name="url" id="repository_url" size="30" class="w-100 form-control" {if $TYPE == 'svn'}value="{$SVN_URL}" {else if $TYPE == 'git'}value="{$GIT_URL}" {/if} required>
               </div>
 
-{if $TYPE == 'svn'}
-  {if isset($ROOT_DIR)}
-              <div class="mb-3 form-group">
+              <div id="config_type" class="col-12 mt-2">
+
+{if isset($ROOT_DIR)}
+              <div id="svn_config" class="mb-3 form-group">
                 <label for="root_dir" class="col-12">{'Archive root directory'|@translate}</label>
                 <input type="text" name="root_dir" id="root_dir" size="30" class="w-100 form-control" {if isset($ROOT_DIR)}value="{$ROOT_DIR}"{/if}>
               </div>
-  {/if}
-
-  {if isset($ARCHIVE_NAME)}
-              <div class="mb-3 form-group">
-                <label for="archive_name" class="col-12">{'Archive name'|@translate}</label>
-                <input type="text" name="archive_name" id="archive_name" size="30" class="w-100 form-control" {if isset(ARCHIVE_NAME)}value="{$ARCHIVE_NAME}"{/if}>
-                <p class="form-text">{'% will be replaced by version number'|@translate}</p>
-              </div>
-  {/if}
 {/if}
 
-{if isset($URL)}
+{if isset($ARCHIVE_NAME)}
+              <div id="" class="mb-3 form-group">
+                <label for="archive_name" class="col-12">{'Archive name'|@translate}</label>
+                <input type="text" name="archive_name" id="archive_name" size="30" class="w-100 form-control" {if isset($ARCHIVE_NAME)}value="{$ARCHIVE_NAME}"{/if}>
+                <p class="form-text">{'% will be replaced by version number'|@translate}</p>
+              </div>
+{/if}
+
+            </div>
+
+{if isset($GIT_URL) ||isset($SVN_URL)}
               <div class="mb-3 form-group">
                 <button class="link-primary" onclick="deleteSVNGitConfig({$extension_id})">{'Delete SVN/Git data'|translate}</button>
               </div>
