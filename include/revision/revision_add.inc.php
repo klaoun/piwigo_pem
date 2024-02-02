@@ -15,7 +15,6 @@ $result = pwg_query($query);
 
 list($page['extension_name'], $ext_user, $svn_url, $git_url, $archive_root_dir, $archive_name) = pwg_db_fetch_array($result);
 
-
 $authors = get_extension_authors($_GET['eid']);
 
 // +-----------------------------------------------------------------------+
@@ -27,7 +26,6 @@ if (isset($_POST['pem_action']) and isset($_POST['submit']))
   if("add_revision" == $_POST['pem_action'] or "edit_revision" == $_POST['pem_action'])
   {
 
-    echo('<pre>');print_r($_POST);echo('</pre>');
   // The file is mandatory only when we add a revision, not when we modify it
   $file_to_upload = null;
   if ("add_revision" == $_POST['pem_action'])
@@ -432,7 +430,6 @@ DELETE
 
     if ($file_to_upload != 'none')
     {
-
       // Moves the file to its final destination:
       // upload/extension-X/revision-Y
       $extension_dir = $conf['upload_dir'].'extension-'.$_GET['eid'];
@@ -476,7 +473,6 @@ DELETE
           $archive_files = array();
           $len = strlen($archive_root_dir) + 1;
           $main_file = ($extension_category == '12' ? 'main.inc.php' : 'themeconf.inc.php');
-          // echo('<pre>');print_r($list);echo('</pre>');
           foreach ($list as $file)
           {
             array_push($archive_files, substr($file['filename'], $len));
