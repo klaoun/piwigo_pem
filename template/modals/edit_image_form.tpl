@@ -4,7 +4,7 @@
         <div class="modal-dialog modal-dialog-centered modal-lg">
           <div class="modal-content">
             <div class="modal-header">
-              <h5 class="modal-title" id="ImageModalLabel"><i class="icon-image"></i>Edit images</h5>
+              <h5 class="modal-title" id="ImageModalLabel"><i class="icon-image"></i> {'Edit images'|translate}</h5>
               <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             
@@ -21,9 +21,9 @@
               <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                 <div class="spinner-border d-none" role="status">
-                  <span class="visually-hidden">Loading...</span>
+                  <span class="visually-hidden">{'Loading...'|translate}</span>
                 </div>
-                <input type="submit" class="btn btn-primary" value="{'Save Changes'|@translate}" name="submit" onclick="onSubmitDisplaySpinner('ImageModalForm');"/>
+                <input type="submit" class="btn btn-primary" value="{'Save Changes'|translate}" name="submit" onclick="onSubmitDisplaySpinner('ImageModalForm');"/>
               </div>
 
             </form>
