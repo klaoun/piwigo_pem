@@ -9,41 +9,41 @@
     <div class="w-100"> 
 
       <h1 class="text-center">
-        <i class="icon-arrow-right-from-bracket"></i>Create an account
+        <i class="icon-arrow-right-from-bracket"></i>{'Create an account'|translate}
       </h1>
 
-      <form class=" properties" method="post" action="{$F_ACTION}" name="register_form" id="register_form">
+      <form class=" properties" method="post" action="{$F_ACTION}" name="register_form" id="register_form" autocomplete="off">
 
 {include file='infos_errors.tpl'}
 
         <div class="form-group mx-auto">
-          <label for="mail_address">* {'Email address'|@translate}</label>
+          <label for="mail_address">* {'Email address'|translate}</label>
           <input type="email" class="form-control w-100" name="mail_address" id="mail_address" placeholder="Email" value="{$F_EMAIL}">
         </div>
 
         <div class="form-group mx-auto pt-3">
-          <label for="login">* {'Username'|@translate}</label>
+          <label for="login">* {'Username'|translate}</label>
           <input type="text" class="form-control w-100"name="login" id="login" value="{$F_LOGIN}"  placeholder="Username">
         </div>
 
         <div class="form-group mx-auto pt-3">
-          <label for="password">* {'Password'|@translate}</label>
+          <label for="password">* {'Password'|translate}</label>
           <input type="password" class="form-control w-100" name="password" id="password" >
         </div>
 
         <div class="form-group mx-auto pt-3">
-          <label for="password_conf">* {'Confirm Password'|@translate}</label>
+          <label for="password_conf">* {'Confirm Password'|translate}</label>
           <input type="password" class="form-control w-100" name="password_conf" id="password_conf" >
         </div>
 
         <div class="form-group mx-auto pt-3">
-          <label for="send_password_by_mail">{'Send my connection settings by email'|@translate}</label>
+          <label for="send_password_by_mail">{'Send my connection settings by email'|translate}</label>
           <input type="checkbox" name="send_password_by_mail" id="send_password_by_mail" value="1" checked="checked">
         </div>
 
         <div class="text-center">
           <input type="hidden" name="key" value="{$F_KEY}" >
-          <input type="submit" name="submit" value="{'Register'|@translate}" class="btn btn-primary mt-4 w-100">
+          <input type="submit" name="submit" value="{'Register'|translate}" class="btn btn-primary mt-4 w-100">
         </div>
 
       </form>
