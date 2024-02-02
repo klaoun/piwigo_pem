@@ -34,14 +34,14 @@
       <div class="filter_tab mx-2" onclick="toggleFilter()"><h5>{'Filter'|translate}</h5></div>
       <label for="sort_order">{'Sort order'|translate}</label>
       <select name="sort_order" id="sort_order" class="form-control">
-          <option value="date_desc">Newest to oldest</option>
-          <option value="date_asc">Oldest to Newest</option>
-          <option value="a_z">A to Z</option>
-          <option value="z_a">Z to A</option>
+          <option value="date_desc">{'Newest to oldest'|translate}</option>
+          <option value="date_asc">{'Oldest to Newest'|translate}</option>
+          <option value="a_z">{'A to Z'|translate}</option>
+          <option value="z_a">{'Z to A'|translate}</option>
       </select>
       <div class="form-inline  cid-search-form">
         <i class="icon-magnifying-glass"></i>
-        <input id="cid-search" class="form-control mr-sm-2" placeholder="Search" aria-label="Search">
+        <input id="cid-search" class="form-control mr-sm-2" placeholder="{'Search'|translate}" aria-label="Search">
       </div>
     </div>
   </div>
@@ -50,9 +50,9 @@
     <div class="row">
 
       <div class="col-md-4 form-group version_filter_container">
-        <span id="extension_version_select" class="col-12 pb-2">Compatible version of Piwigo</span>
+        <span id="extension_version_select" class="col-12 pb-2">{'Compatible version of Piwigo'|translate}</span>
         <select class="extension_version_select w-100">
-          <option selected value="all">All versions</option>
+          <option selected value="all">{'All versions'}</option>
 {foreach from=$VERSIONS item=version}
           <option value="{$version.id_version}">{$version.version}</option>
 {/foreach}
@@ -61,7 +61,7 @@
 
       <div class="col-md-4">
         <div class="form-group">
-          <span id="extension_author_select" class="col-12 pb-2">Authors</span>
+          <span id="extension_author_select" class="col-12 pb-2">{'Authors'|translate}</span>
           <select class="extension_author_select" data-selectize="authors"
             placeholder="{'Select authors'|translate}"
             data-create="true" name="authors[]" multiple style="width:calc(100% + 2px);">
@@ -74,7 +74,7 @@
 
       <div class="col-md-4">
         <div class="form-group">
-          <span id="extension_tag_select" class="col-12 pb-2">Tags</span>
+          <span id="extension_tag_select" class="col-12 pb-2">{'Tags'|translate}</span>
           <select class="extension_tag_select" data-selectize="tags"
             placeholder="{'Select tags'|translate}"
             data-create="true" name="tags[]" multiple style="width:calc(100% + 2px);">
@@ -92,13 +92,11 @@
 
     <div class="d-flex justify-content-center spinner">
       <div class="spinner-border" role="status"></div>
-      <span class="sr-only ms-3 align-middle">Loading...</span>
+      <span class="sr-only ms-3 align-middle">{'Loading...'|translate}</span>
     </div>
 
     <div class="extension_info card" id="jango_fett">
       <div class="row card-body">
-
-      
 
         <div class="col col-4 text-center extension_image_container">
           <div class="extension_image_div">
@@ -115,7 +113,7 @@
         <div class="col col-5 extension_description_container">
           <p class="card-text extension_description"></p>
           <a class="more_info_link" href="{$PEM_ROOT_URL}index.php?eid=" >
-            <button class="btn btn-primary">Discover this {$CATEGORY.name}</button>
+            <button class="btn btn-primary">{'Discover this %s'|translate:{$CATEGORY.name}}</button>
           </a>
         </div>
 
