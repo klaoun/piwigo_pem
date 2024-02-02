@@ -111,6 +111,7 @@ WHERE id_extension = '.$pem_spotlight_extensions[$category['cid']].'
   $categories[$i]['spotlight_extension'] = null;
   if (isset($pem_spotlight_extensions[$category['cid'] ])) {
     $categories[$i]['spotlight_extension'] = $pem_spotlight_extensions[ $category['cid'] ];
+    $categories[$i]['spotlight_extension']['description'] = stripslashes($categories[$i]['spotlight_extension']['description']);
 
     //Get screenshot info
     $screenshot_infos = get_extension_screenshot_infos(
@@ -151,6 +152,7 @@ SELECT
   $categories[$i]['highest_rated_extension'] = null;
   if (isset($pem_highest_rated_extensions[$category['cid'] ])) {
     $categories[$i]['highest_rated_extension'] = $pem_highest_rated_extensions[ $category['cid'] ];
+    $categories[$i]['highest_rated_extension']['description'] = stripslashes($categories[$i]['highest_rated_extension']['description']);
 
     //Get screenshot info
     $screenshot_infos = get_extension_screenshot_infos(
@@ -194,6 +196,8 @@ FROM '.PEM_REV_TABLE.' AS r
   $categories[$i]['most_downloaded_extension'] = null;
   if (isset($pem_most_downloaded_extensions[$category['cid']])) {
     $categories[$i]['most_downloaded_extension'] = $pem_most_downloaded_extensions[$category['cid']];
+    $categories[$i]['most_downloaded_extension']['description'] = stripslashes($categories[$i]['most_downloaded_extension']['description']);
+
 
     //Get screenshot info
     $screenshot_infos = get_extension_screenshot_infos(
@@ -218,6 +222,8 @@ FROM '.PEM_REV_TABLE.' AS r
   $categories[$i]['most_recent_extension'] = null;
   if (isset($pem_most_recent_extensions[$category['cid'] ])) {
     $categories[$i]['most_recent_extension'] = $pem_most_recent_extensions[ $category['cid'] ];
+    $categories[$i]['most_recent_extension']['description'] = stripslashes($categories[$i]['most_recent_extension']['description']);
+
 
     //Get screenshot info
     $screenshot_infos = get_extension_screenshot_infos(
