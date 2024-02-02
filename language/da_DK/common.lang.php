@@ -170,7 +170,6 @@ $lang['releases'] = 'udgivelser';
 $lang['Choose compatibility versions...'] = 'Vælg kompabilitetsversioner ...';
 
 $lang['Tags'] = 'Tags';
-$lang['Type in a search term'] = 'Skriv et søgeord';
 $lang['No results'] = 'Ingen resultater';
 $lang['Searching...'] = 'Søger ...';
 $lang['new'] = 'new';

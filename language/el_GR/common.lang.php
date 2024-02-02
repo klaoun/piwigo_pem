@@ -170,7 +170,6 @@ $lang['releases'] = 'εκδόσεις';
 $lang['Choose compatibility versions...'] = 'Επιλέξτε εκδόσεις συμβατότητας...';
 
 $lang['Tags'] = 'Ετικέτες';
-$lang['Type in a search term'] = 'Πληκτρολογήστε έναν όρο αναζήτησης';
 $lang['No results'] = 'Δεν υπάρχουν αποτελέσματα';
 $lang['Searching...'] = 'Αναζήτηση...';
 $lang['new'] = 'new';

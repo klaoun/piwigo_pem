@@ -168,7 +168,6 @@ $lang['Download last revision'] = 'Scaricare l\'ultima revisione';
 $lang['releases'] = 'release';
 $lang['Choose compatibility versions...'] = 'Scegliere le versioni compatibili...';
 $lang['Tags'] = 'Tags';
-$lang['Type in a search term'] = 'Digitare un termine per la ricerca';
 $lang['No results'] = 'Nessun risultato';
 $lang['Searching...'] = 'Ricerca...';
 $lang['new'] = 'nuovo';

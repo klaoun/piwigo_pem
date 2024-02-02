@@ -164,7 +164,6 @@ $lang['Download last revision'] = 'Letzte Version runterladen';
 $lang['releases'] = 'Freigeben';
 $lang['Choose compatibility versions...'] = 'Wähle kompatible Version...';
 $lang['Tags'] = 'Tags';
-$lang['Type in a search term'] = 'Suchbegriff eingeben';
 $lang['No results'] = 'Keine Ergebnisse';
 $lang['Searching...'] = 'Suche...';
 $lang['new'] = 'neu';

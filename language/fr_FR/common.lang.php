@@ -172,7 +172,6 @@ $lang['releases'] = 'versions';
 $lang['Choose compatibility versions...'] = 'Choisissez les versions compatibles...';
 
 $lang['Tags'] = 'Tags';
-$lang['Type in a search term'] = 'Entrez un tag';
 $lang['No results'] = 'Aucun résultat';
 $lang['Searching...'] = 'recherche en cours...';
 $lang['new'] = 'nouveau';
