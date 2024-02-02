@@ -379,8 +379,7 @@ DELETE
 function get_extension_dir($extension_id)
 {
   global $conf;
-
-  return $conf['upload_dir'].'/extension-'.$extension_id;
+  return $conf['upload_dir'].'extension-'.$extension_id;
 }
 
 /**
@@ -388,7 +387,9 @@ function get_extension_dir($extension_id)
  */
 function get_revision_src($extension_id, $revision_id, $url)
 {
-  return PEM_DIR.get_extension_dir($extension_id)
+  global $conf;
+
+  return $conf['upload_dir'].get_extension_dir($extension_id)
     .'/revision-'.$revision_id
     .'/'.$url
   ;
@@ -399,15 +400,17 @@ function get_revision_src($extension_id, $revision_id, $url)
  */
 function get_extension_thumbnail_src($extension_id)
 {
-  return PEM_DIR.get_extension_dir($extension_id).'/thumbnail.jpg';
+  global $conf;
+  return get_extension_dir($extension_id).'/thumbnail.jpg';
 }
 
 /**
  * gets extension screenshot url
  */
 function get_extension_screenshot_src($extension_id)
-{
-  return PEM_DIR.get_extension_dir($extension_id).'/screenshot.jpg';
+{ 
+  global $conf;
+  return get_extension_dir($extension_id).'/screenshot.jpg';
 }
 
 /**
@@ -417,12 +420,13 @@ function get_extension_screenshot_infos($extension_id)
 {
   $thumbnail_src  = get_extension_thumbnail_src($extension_id);
   $screenshot_src = get_extension_screenshot_src($extension_id);
-  
+
   if (is_file($thumbnail_src) and is_file($screenshot_src))
   {
+    $stat = stat( get_extension_dir($extension_id).'/screenshot.jpg');
     return array(
       'thumbnail_src'  => $thumbnail_src,
-      'screenshot_url' => $screenshot_src,
+      'screenshot_url' => $screenshot_src.'?'.$stat['mtime'],
       );
   }
   else
@@ -541,12 +545,15 @@ SELECT
 /**
  * returns extensions published in these categories (and/or mode)
  */
-function get_extension_ids_for_categories($category_ids, $mode=null) {
-  if (count($category_ids) == 0) {
+function get_extension_ids_for_categories($category_ids, $mode=null)
+{
+  if (count($category_ids) == 0)
+  {
     return array();
   }
 
-  if (!in_array($mode, array('or', 'and'))) {
+  if (!in_array($mode, array('or', 'and')))
+  {
     $mode = 'and';
   }
 
@@ -652,7 +659,14 @@ SELECT
 ;';
 
   $result = pwg_query($query);
-  while ($row = pwg_db_fetch_assoc($result)) {
+  while ($row = pwg_db_fetch_assoc($result))
+  {
+
+    if(empty($row['idx_extension']))
+    {
+      continue;
+    }
+
     $id_extension = $row['idx_extension'];
 
     if (empty($row['name']))
@@ -669,10 +683,13 @@ SELECT
     $cat_list_for[$id_extension]['name']= $row['name'];
 
   }
-
+  
   $categories_of_extension = array();
   foreach ($extension_ids as $extension_id) {
-    $categories_of_extension[$extension_id] = $cat_list_for[$extension_id];
+    if (isset($cat_list_for[$extension_id]))
+    {
+      $categories_of_extension[$extension_id] = $cat_list_for[$extension_id];
+    }
   }
 
   return $categories_of_extension;
@@ -741,17 +758,18 @@ SELECT
  */
 function get_extension_ids_for_user($user_id) {
   $query = '
-SELECT
-    id_extension
- FROM '.PEM_EXT_TABLE.'
- WHERE idx_user = '.$user_id.'
-UNION ALL
-SELECT
-    idx_extension AS id_extension
- FROM '.PEM_AUTHORS_TABLE.'
- WHERE idx_user = '.$user_id.'
-;';
-  return query2array($query, null, 'id_extension');
+  SELECT
+      id_extension
+    FROM '.PEM_EXT_TABLE.'
+    WHERE idx_user = '.$user_id.'
+  UNION ALL
+  SELECT
+      idx_extension AS id_extension
+    FROM '.PEM_AUTHORS_TABLE.'
+    WHERE idx_user = '.$user_id.'
+  ;';
+
+  return array_unique(query2array($query, null, 'id_extension'));
 }
 
 /**
@@ -765,7 +783,7 @@ function get_extension_authors($extension_id)
 SELECT idx_user
   FROM '.PEM_EXT_TABLE.'
   WHERE id_extension = '.$extension_id.'
-UNION ALL
+UNION
 SELECT idx_user
   FROM '.PEM_AUTHORS_TABLE.'
   WHERE idx_extension = '.$extension_id.'
@@ -879,7 +897,7 @@ SELECT id_revision, id_language, code, name
  * find extensions matching the search string
  *
  * search is performed on 
- *   extension name (10 points), 
+ *   extension name (100 points), 
  *   tags (8 pts),
  *   author name (8pts), 
  *   description (6 pts), 
@@ -909,7 +927,9 @@ function get_extension_ids_for_search($search) {
         )
       )
     );
-  $add_bracked = create_function('&$s','$s="(".$s.")";');
+  $add_bracked = function (string &$s) {
+    $s = "(" . $s . ")";
+  };
   
   // search on extension name
   $word_clauses = array();
@@ -1089,6 +1109,7 @@ SELECT
  * perform the filter
  */
 function get_filtered_extension_ids($filter) {
+
   $filtered_sets = array();
 
   if (isset($filter['id_version'])) {
@@ -1107,6 +1128,8 @@ function get_filtered_extension_ids($filter) {
   }
   
   if (isset($filter['tag_ids'])) {
+    $filter['tag_ids'] = explode(',',$filter['tag_ids'][0]);
+
     $filtered_sets['tag_ids'] = get_extension_ids_for_tags(
       $filter['tag_ids'],
       $filter['tag_mode']
@@ -1131,7 +1154,7 @@ function get_filtered_extension_ids($filter) {
       $set
       );
   }
-  
+
   return array_unique($filtered_extension_ids);
 }
 
@@ -1525,22 +1548,32 @@ SELECT
  */
 function pem_extensions_get_count($category_id = null)
 {
-  $query = '
-SELECT 
-  COUNT(id_extension) as count
-  FROM '.PEM_EXT_TABLE.' AS extensions
-    LEFT JOIN '.PEM_EXT_CAT_TABLE.' AS categories
-      ON extensions.id_extension = categories.idx_extension';
-
-  if(isset($category_id))
+  if (isset($category_id))
   {
-    $query .= ' WHERE categories.idx_category = '.$category_id;
+    $category_ids[$category_id] = $category_id;
+    $filtered_extension_ids =  get_extension_ids_for_categories($category_ids);
+    $filtered_extension_ids_string = implode(
+      ',',
+      $filtered_extension_ids
+    );
   }
 
-  $query .= '
-;';
-  $row = pwg_db_fetch_assoc(pwg_query($query));
-  $count_of_extensions = $row['count'];
+  $query = '
+  SELECT
+      idx_extension
+    FROM '.PEM_REV_TABLE.' ';
+  if (isset($filtered_extension_ids)) {
+    if (count($filtered_extension_ids) > 0) {
+      $query.= '
+    WHERE idx_extension IN ('.$filtered_extension_ids_string.')';
+    }
+  }
+  $query.= '
+    GROUP BY idx_extension
+  ;';
+
+  $extension_ids = query2array($query);
+  $count_of_extensions = count($extension_ids);
   
   return $count_of_extensions;
 }
