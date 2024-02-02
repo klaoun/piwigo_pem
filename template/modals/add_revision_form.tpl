@@ -7,7 +7,7 @@
             <h5 class="modal-title" id="generalInfoModalLabel"><i class="icon-code-commit"></i> Add a revision</h5>
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
-          <form method="POST" enctype="multipart/form-data">
+          <form method="POST" enctype="multipart/form-data" autocomplete="off" id="addRevisionForm">
 
             <div class="modal-body">
 
@@ -103,7 +103,7 @@
               {*  Description *}
               <div class="mb-3 form-group">
                 <div class="form-group">
-                  <label for="revision_lang_desc_select" class="col-12">{'Description language'|translate}</label>
+                  <label for="revision_lang_desc_select" id="revision_lang_desc_select" class="col-12">{'Description language'|translate}</label>
                   <select name="lang_desc_select" id="lang_desc_select" class="form-select w-100">
 {foreach from=$languages item=language}
                     <option value="{$language.id}" id="opt_{$language.id}" {if $default_language == $language.code}selected{/if}>{$language.name}</option>
@@ -116,7 +116,7 @@
                   <div id="desc_block_{$language.id}" class="desc" style="display: none;">
                     <input type="radio"  name="default_description" value="{$language.id}" {if $default_language == $language.code}checked{/if} hidden>
                     <textarea class="form-control" name="revision_descriptions[{$language.id}]" id="desc_{$language.id}" {if $language.code eq 'en_UK'} class="desc_{$language.code}"{/if} {if $default_language == 5}required{/if}></textarea>
-                    {if $default_language == $language.code}<p>{'Default description'|translate}</p>{/if}
+                    {if $default_language == $language.code}<p><small>{'Default description'|translate}</small></p>{/if}
                   </div>
 {/foreach}
                 </div>
@@ -170,7 +170,10 @@
 
             <div class="modal-footer">
               <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{'Close'|translate}</button>
-              <input type="submit" class="btn btn-primary" value="Submit" name="submit" />
+              <div class="spinner-border d-none" role="status">
+                <span class="visually-hidden">Loading...</span>
+              </div>
+              <input type="submit" class="btn btn-primary" value="Submit" name="submit" onclick="onSubmitDisplaySpinner('addRevisionForm');"/>
             </div>
 
           </form>
