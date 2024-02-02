@@ -4,20 +4,20 @@
       <div class="modal-dialog modal-dialog-centered modal-lg">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title" id="authorsModalLabel"><i class="icon-user"></i>My profil</h5>
+            <h5 class="modal-title" id="authorsModalLabel"><i class="icon-user"></i>{'My profil'|translate}</h5>
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
           <form method="POST" enctype="multipart/form-data" autocomplete="off" id="editAuthorsForm">
 
             <div class="modal-body">
-              <h4>Add authors</h4>
+              <h4>{'Add authors'|translate}</h4>
               {* Extension Authors *}
               <div class="mb-3 form-group">
-                <label for="extension_author_select" class="col-12">Authors</label>
+                <label for="extension_author_select" class="col-12">{'Authors'|translate}</label>
                 <select required class="extension_author_select col-12" data-selectize="author"
                   placeholder="{'Type in a search term'|translate}"
                   data-create="true" name="author">
-                  <option selected>Type in a search term</option>
+                  <option selected>{'Type in a search term'|translate}</option>
 {foreach from=$ALL_AUTHORS item=author}
   {if in_array($author, $authors)}
   {else}
@@ -27,7 +27,7 @@
                 </select>
               </div>
 
-              <h4>Manage authors</h4>
+              <h4>{'Manage authors'|translate}</h4>
               <div>
 {foreach from=$authors item=author}
                 <div class="d-block">
@@ -49,7 +49,7 @@
             <div class="modal-footer mt-3">
               <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{'Close'|translate}</button>
               <div class="spinner-border d-none" role="status">
-                <span class="visually-hidden">Loading...</span>
+                <span class="visually-hidden">{'Loading...'|translate}</span>
               </div>
               <input type="submit" class="btn btn-primary" value="Submit" name="submit" onclick="onSubmitDisplaySpinner('editAuthorsForm');"/>
             </div>
