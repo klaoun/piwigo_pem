@@ -305,7 +305,7 @@
         <div id="rev{$rev.id}_content" class="changelogRevisionContent pt-4" {if !$rev.expanded} style="display:none" {/if}>
           
           <div class="d-flex justify-content-start">
-            <p class="me-4">{'Released on %s'|translate $rev.date}</p>
+            <p class="me-4">{'Released on %s'|translate:$rev.date}</p>
             <p class="me-4"><i class="icon-check"></i>{'Compatible with Piwigo'|translate:$rev.versions_compatible}</p>
             <p class="me-4"><i class="icon-download"></i>{$rev.downloads}</p>
           </div>
