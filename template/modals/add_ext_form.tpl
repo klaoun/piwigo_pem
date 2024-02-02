@@ -7,7 +7,7 @@
             <h5 class="modal-title" id="addExtModalLabel"><i class="icon-circle-plus"></i>Add extension</h5>
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
-          <form method="POST" enctype="multipart/form-data">
+          <form method="POST" enctype="multipart/form-data" autocomplete="off" id="addExtForm">
 
             <div class="modal-body">
               {* Extension name *}
@@ -35,8 +35,11 @@
             <input type="hidden" name="pem_action" value="add_ext">
 
             <div class="modal-footer">
-              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-              <input type="submit" class="btn btn-primary" value="{'Submit'|@translate}" name="submit" />
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{'Close'|translate}</button>
+              <div class="spinner-border d-none" role="status">
+                <span class="visually-hidden">Loading...</span>
+              </div>
+              <input type="submit" class="btn btn-primary" value="Submit" name="submit" onclick="onSubmitDisplaySpinner('addExtForm');"/>
             </div>
 
           </form>

@@ -7,7 +7,7 @@
             <h5 class="modal-title" id="userInfoModalLabel"><i class="icon-user"></i>My profil</h5>
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
-          <form method="post" enctype="multipart/form-data">
+          <form method="post" enctype="multipart/form-data" autocomplete="off" id="userInfoForm">
 
             <div class="modal-body">
 
@@ -40,7 +40,10 @@
 
             <div class="modal-footer">
               <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-              <input type="submit" class="btn btn-primary" value="{'Save Changes'|@translate}" name="submit" />
+              <div class="spinner-border d-none" role="status">
+                <span class="visually-hidden">Loading...</span>
+              </div>
+              <input type="submit" class="btn btn-primary" value="{'Save Changes'|@translate}" name="submit" onclick="onSubmitDisplaySpinner('userInfoForm');"/>
             </div>
 
           </form>
