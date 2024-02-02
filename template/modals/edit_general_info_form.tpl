@@ -4,7 +4,7 @@
     <div class="modal-dialog modal-dialog-centered modal-lg">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title" id="generalInfoModalLabel"><i class="icon-circle-info"></i>General information</h5>
+            <h5 class="modal-title" id="generalInfoModalLabel"><i class="icon-circle-info"></i>{'General information'|translate}</h5>
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
           <form method="POST" enctype="multipart/form-data" autocomplete="off" id="generalInfoForm">
@@ -12,13 +12,13 @@
             <div class="modal-body">
               {* Extension name *}
               <div class="mb-3 form-group">
-                <label for="extension_name" class="form-label w-100 ">Name</label>
+                <label for="extension_name" class="form-label w-100 ">{'Name'|translate}</label>
                 <input type="text" name="extension_name" size="35" maxlength="255" value="{if isset($extension_name)}{$extension_name}{/if}" class="w-100 form-control" required/>
               </div>
 
               {* Extension category *}
               <div class="mb-3 form-group">
-                <label for="extension_category_select" class="col-12">Category</label>
+                <label for="extension_category_select" class="col-12">{'Category'|translate}</label>
         
                 <select class="form-select w-100" id="extension_category_select" name="extension_category[]">
 {foreach from=$CATEGORIES_INFO item=category}
@@ -29,7 +29,7 @@
 
               {* Extension Tags *}
               <div class="mb-3 form-group">
-                <label for="extension_tag_select" class="col-12">Tags</label>
+                <label for="extension_tag_select" class="col-12">{'Tags'|translate}</label>
                 <select class="extension_tag_select" data-selectize="tags"
                 placeholder="{'Select tags'|translate}"
                 data-create="true" name="tags[]" multiple style="width:calc(100% + 2px);">
@@ -46,28 +46,26 @@
 
               <div class="mb-3 form-group">
                 <div>
-                  <label for="extension_lang_desc_select" class="col-12">Description language</label>
-                  <select name="extension_lang_desc_select" class="form-select w-100">
-                    <option value="en_UK" id="opt_en_UK" selected>English [UK]</option>
-                  {* {foreach from=$languages item=language} *}
-                    {* <option value="{$language.code}" id="opt_{$language.code}" {if $default_language == $language.id}selected="selected"{/if}>  *}
-                      {* {if empty($descriptions[$language.id])}&#x2718;{else}&#x2714;{/if} &nbsp;{$language.name} *}
-                        {* {$language.name} *}
-                      {* </option> *}
-                  {* {/foreach} *}
+                  <label for="extension_lang_desc_select" class="col-12">{'Description language'|translate}</label>
+                  <select name="extension_lang_desc_select" id="lang_desc_select" class="form-select w-100">
+{foreach from=$languages item=language}
+  {if $default_language == $language.code}
+                    <option value="{$language.id}" id="opt_{$language.id}" selected>{$language.name}</option>
+  {/if}
+{/foreach}
                   </select>
                 </div>
                 <div class="pt-3">
-                {*{foreach from=$languages item=language}
-                  <span id="span_{$language.id}" class="desc" style="display: none;">
-                    <label><input type="radio" name="default_description" value="{$language.id}" {if $default_language == $language.id}checked="checked"{/if} {if $translator}disabled="disabled"{/if}> {'Default description'|@translate}</label>
-                    <br> *}
-                  <input type="hidden" name="default_description" value="5" checked="checked">
-                  <label for="extension_descriptions">Description</label>
-                  <textarea class="form-control" name="extension_descriptions[5]" id="desc_5"  required>{$description}</textarea>
-                  {* </span>
-                {/foreach}
-                <p class="default_description"></p> *}
+{foreach from=$languages item=language}
+  {if $default_language == $language.code}
+                  <div id="desc_block_{$language.id}" class="desc" style="display: none;">
+                    <input type="radio"  name="default_description" value="{$language.id}" checked hidden>
+                    <textarea class="form-control" name="extension_descriptions[{$language.id}]" id="desc_{$language.id}" {if $language.code eq 'en_UK'} class="desc_{$language.code}"{/if} {if $default_language == 5}required{/if}
+                      value="{if isset($description)}{$description}{/if}"></textarea>
+                    <p><small>{'Default description'|translate} {$language.code}</small></p>
+                  </div>
+  {/if}
+{/foreach}
                 </div>
               </div>
 
@@ -76,11 +74,11 @@
             <input type="hidden" name="pem_action" value="edit_general_info">
 
             <div class="modal-footer">
-              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{'Close'|translate}</button>
               <div class="spinner-border d-none" role="status">
-                <span class="visually-hidden">Loading...</span>
+                <span class="visually-hidden">{'Loading...'|translate}</span>
               </div>
-              <input type="submit" class="btn btn-primary" value="{'Save Changes'|@translate}" name="submit" onclick="onSubmitDisplaySpinner('generalInfoForm');"/>
+              <input type="submit" class="btn btn-primary" value="{'Save Changes'|translate}" name="submit" onclick="onSubmitDisplaySpinner('generalInfoForm');"/>
             </div>
 
           </form>
