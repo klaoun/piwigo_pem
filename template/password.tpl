@@ -8,7 +8,7 @@
   <section class=" mx-4 col-xs-12 col-md-4 col-lg-3 col-xl-3 position-absolute vertical-horizontal-align">
     <div class="w-100"> 
       <h1 class="text-center">
-        <i class="icon-lock"></i>Forgotten password ?
+        <i class="icon-lock"></i>{'Forgotten password ?'|translate}
       </h1>
 
 
@@ -20,11 +20,11 @@
 
   {if $action == 'lost'}
         <div class="alert alert-info" role="alert">
-          <p class="m-0">{'Please enter your username or email address.'|@translate} {'You will receive a link to create a new password via email.'|@translate}</p>
+          <p class="m-0">{'Please enter your username or email address.'|translate} {'You will receive a link to create a new password via email.'|translate}</p>
         </div>
 
         <div class="w-100 form-group mx-auto pt-3">
-          <label for="username_or_email">* {'Username or email'|@translate}</label>
+          <label for="username_or_email">* {'Username or email'|translate}</label>
           <input type="text" class="form-control w-100" name="username_or_email" id="username_or_email" {if isset($username_or_email)} value="{$username_or_email}"{/if}>
         </div>
 
@@ -35,21 +35,21 @@
   {elseif $action == 'reset'}
 
         <div class="alert alert-info" role="alert">
-          <p>{'Hello'|@translate} <em>{$username}</em>. Please enter your new password below.</p>
+          <p>{'Hello'|translate} <em>{$username}</em>. {'Please enter your new password below.'|translate}</p>
         </div>
 
         <div class="w-100 form-group mx-auto pt-3">
-          <label for="use_new_pwd">* {'New password'|@translate}</label>
+          <label for="use_new_pwd">* {'New password'|translate}</label>
           <input type="password" class="form-control w-100" name="use_new_pwd" id="use_new_pwd" value="">
         </div>
 
         <div class="w-100 form-group mx-auto pt-3">
-          <label for="passwordConf">* {'Confirm Password'|@translate}</label>
+          <label for="passwordConf">* {'Confirm Password'|translate}</label>
           <input type="password" class="form-control w-100" name="passwordConf" id="passwordConf" value="">
         </div>
 
         <div class="text-center">
-          <input type="submit" name="submit" value="{'Change my password'|@translate}"class="btn btn-primary mt-4 w-100"> 
+          <input type="submit" name="submit" value="{'Change my password'|translate}"class="btn btn-primary mt-4 w-100"> 
         </div>
 
   {/if}
@@ -58,7 +58,7 @@
 {/if}
 
       <div class="w-100 text-center mt-4">
-        <a class="link-primary orange-link link" href="{$PEM_ROOT_URL}identification.php">{'Cancel'|@translate}</a>
+        <a class="link-primary orange-link link" href="{$PEM_ROOT_URL}identification.php">{'Cancel'|translate}</a>
       </div>
 
     </div>
