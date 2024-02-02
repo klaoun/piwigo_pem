@@ -4,7 +4,7 @@
 <div id="single_view" class="container">
   <section class="section-fluid">
     <a href="{$PEM_ROOT_URL}index.php?cid={$extension_categories.id_category}&page=1" class="orange-link">
-      <i class="icon-chevron-left"></i>Back to {$extension_categories.name}s
+      <i class="icon-chevron-left"></i>{'Back to %ss'|translate:$extension_categories.name}
     </a>
   </section>
 
@@ -25,7 +25,7 @@
   {if isset($u_owner) && $u_owner == true && $current_user_id}
       <div class="ms-4">
         <span class="link-secondary link" data-bs-toggle="modal" data-bs-target="#deleteExtensionModal">
-          <i class="icon-trash"></i>Delete extension
+          <i class="icon-trash"></i>{'Delete extension'|translate}
         </span>
       </div>
   {/if}
@@ -85,13 +85,13 @@
 
       <div class="mt-5">
 {if isset($download_last_url)}
-        <a href="{$download_last_url}" rel="nofollow" target="_blank"><button class="btn btn-primary d-inline">Download</button></a>
+        <a href="{$download_last_url}" rel="nofollow" target="_blank"><button class="btn btn-primary d-inline">{'Download'|translate}</button></a>
 {else}
-        <button class="btn btn-secondary d-inline disabled" disabled>Download</button>
+        <button class="btn btn-secondary d-inline disabled" disabled>{'Download'|translate}</button>
 {/if}
 
 {if isset($revisions)}
-        <p class="revision-version d-inline ml-3">Revision {$revisions[0]['version']}</p>
+        <p class="revision-version d-inline ml-3">{'Revision %s'|translate:$revisions[0]['version']}</p>
 {/if}
 
 {if isset($last_date_formatted_since)}
@@ -132,7 +132,7 @@
 {/if}
 {if isset($latest_compatible_version) && $latest_compatible_version != null}
       <div class="px-3 py-2 border-left d-inline-block">
-        <span><i class="icon-check"></i>Compatible with Piwigo {$latest_compatible_version}</span>
+        <span><i class="icon-check"></i>{'Compatible with Piwigo %s'|translate:$latest_compatible_version}</span>
       </div>
 {/if}
 {if isset($first_date)}
@@ -172,16 +172,16 @@
 
       <div class="my-3">
         <button class="btn btn-tertiary" data-bs-toggle="modal" data-bs-target="#addLinkModal">
-          <i class="icon-link"></i>Add a link
+          <i class="icon-link"></i>{'Add a link'|translate}
         </button>
       </div>
 
       <table class="table">
         <thead>
           <tr>
-            <th scope="col">Links</th>
-            <th scope="col">Language</th>
-            <th scope="col">Action</th>
+            <th scope="col">{'Links'|translate}</th>
+            <th scope="col">{'Language'|translate}</th>
+            <th scope="col">{'Action'|translate}</th>
           </tr>
         </thead>
         <tbody>
@@ -202,7 +202,7 @@
   {if isset($link.language)}
                   <span class="ms-0 badge purple-badge d-inline">{$link.language}</span>
   {else}
-                  <span class="ms-0 badge purple-badge d-inline">All languages</span>
+                  <span class="ms-0 badge purple-badge d-inline">{'All languages'|translate}</span>
   {/if}
             </td>
             <td>
@@ -217,7 +217,7 @@
               </span>
     {if $link.id_link !== "git" && $link.id_link !== "svn" }
               <span class="circle-icon secondary_action" onclick="deleteLink({$link.id_link}, {$extension_id})">
-                <i class="icon-trash translate-middle"></i>Delete
+                <i class="icon-trash translate-middle"></i>{'Delete'|translate}
               </span>
     {/if}
   {/if}
@@ -249,14 +249,14 @@
 
 {*Revision block *}
   <section class="mt-5 pt-3 section-fluid">
-    <h3 class="mb-3">Revisions</h3>
+    <h3 class="mb-3">{'Revisions'|translate}</h3>
 
     <div class="edit_mode mt-3 mb-4">
       <button class="btn btn-tertiary" data-bs-toggle="modal" data-bs-target="#editSvnGitModal">
-        <i class="icon-git-alt"></i> SVN & Git configuration
+        <i class="icon-git-alt"></i> {'SVN & Git configuration'|translate}
       </button>
       <button class="btn btn-tertiary ms-3" data-bs-toggle="modal" data-bs-target="#addRevisionModal">
-        <i class="icon-circle-plus"></i> Add a revision
+        <i class="icon-circle-plus"></i> {'Add a revision'|translate}
       </button>
     </div>
 
@@ -275,9 +275,12 @@
         <span class="circle-icon edit_mode main_action z-index me-2 pe-0" 
           data-bs-toggle="modal" data-bs-target="#revisionInfoModal"
           data-bs-rev_id="{$rev.id}" 
-          data-bs-version="{$rev.version}" 
-          data-bs-versions_compatible="{$rev.versions_compatible}"
-          data-bs-description="{$rev.description}"
+          data-bs-rev_version_name="{$rev.version}" 
+          data-bs-rev_versions_compatible="{$rev.ids_versions_compatible}"
+          data-bs-rev_default_description_lang="{$rev.default_description_lang_id}"
+          data-bs-rev_default_description ="{$rev.default_description}"
+          data-bs-rev_description_lang="{$rev.current_description_lang_id}"
+          data-bs-rev_description ="{$rev.current_description}"
         >
           <i class="icon-pencil"></i>
         </span>
@@ -290,7 +293,7 @@
   
         <div id="rev{$rev.id}_header" {if $rev.expanded} class="changelogRevisionHeaderExpanded pb-4" {else} class="changelogRevisionHeaderCollapsed pb-0"{/if} onclick="revToggleDisplay('rev{$rev.id}_header', 'rev{$rev.id}_content')">
             <div class="revision_title_container d-flex justify-content-between">
-              <h4 class="revisionTitle">{'Revision'|@translate} {$rev.version}</h4>
+              <h4 class="revisionTitle">{'Revision'|translate} {$rev.version}</h4>
               <div class="">
  
                 <span><i {if $rev.expanded}class="icon-chevron-down"{else}class="icon-chevron-right"{/if}></i>
@@ -302,8 +305,8 @@
         <div id="rev{$rev.id}_content" class="changelogRevisionContent pt-4" {if !$rev.expanded} style="display:none" {/if}>
           
           <div class="d-flex justify-content-start">
-            <p class="me-4">Released on {$rev.date}</p>
-            <p class="me-4"><i class="icon-check"></i>Compatible with Piwigo {$rev.versions_compatible}</p>
+            <p class="me-4">{'Released on %s'|translate $rev.date}</p>
+            <p class="me-4"><i class="icon-check"></i>{'Compatible with Piwigo'|translate:$rev.versions_compatible}</p>
             <p class="me-4"><i class="icon-download"></i>{$rev.downloads}</p>
           </div>
 
@@ -315,7 +318,7 @@
           {/if}
 
           <div class="mt-4">
-            <h5>Description</h5>
+            <h5>{'Description'|translate}</h5>
       {* We have an array of all revsions and all descriptions in all languages *}
     {foreach from=$rev_descriptions item=revision key=rev_id}
       {if $rev_id == $rev.id}
@@ -330,7 +333,7 @@
     {/foreach}
       {* If no description exists in current interface language we display default *}
     {if $no_desc == true}
-        <p>{$rev.description}</p>
+        <p>{$rev.default_description}</p>
     {/if}
 
 
@@ -359,9 +362,9 @@
     {/if}
 
           <div class="row mt-4">
-            <a href="{$rev.u_download}" title="{'Download revision'|@translate} {$rev.version}" rel="nofollow">
+            <a href="{$rev.u_download}" title="{'Download revision'|translate} {$rev.version}" rel="nofollow">
               <button class="btn btn-tertiary">
-                <i class="icon-download"></i>Download this revision
+                <i class="icon-download"></i>{'Download this revision'|translate}
               </button>
             </a>
           </div>
@@ -372,7 +375,7 @@
   {/foreach}
     </div> <!-- changelog -->
 {else}
-    <p>{'No revision available for this extension.'|@translate}</p>
+    <p>{'No revision available for this extension.'|translate}</p>
 {/if}
     
   </section>
@@ -397,6 +400,7 @@
   sessionStorage.clear()
 
   var pwg_token = "{$PWG_TOKEN}";
+  var all_revision_languages = {$all_rev_languages_of_ids};
  
 </script>
 
