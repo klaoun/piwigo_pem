@@ -67,6 +67,7 @@ SELECT
       $result= query2array($query);
       
       $current_category_page_info['spotlight_extension'] = $result[0];
+      $current_category_page_info['spotlight_extension']['description'] = stripslashes($current_category_page_info['spotlight_extension']['description']);
 
       //Get screenshot info
       $screenshot_infos = get_extension_screenshot_infos(
@@ -77,23 +78,8 @@ SELECT
       
     }
 
-    //Get List of authors for filter
-
-    // Temporary query for authors, they aren't filtered by category at the moment
-    //   $query = '
-    // SELECT DISTINCT
-    //     aT.idx_user as uid,
-    //     uT.username,
-    //     ecT.idx_category as cid,
-    //     aT.idx_extension as eid
-    //   FROM '.PEM_AUTHORS_TABLE.' as aT
-    //     JOIN '.USERS_TABLE.' as uT on id = aT.idx_user
-    //     JOIN '.PEM_EXT_CAT_TABLE.' as ecT on ecT.idx_extension = aT.idx_extension
-    //   WHERE ecT.idx_category = '.$current_category_page_id.'
-    // ;';
-
-// Gets the available authors
-$query = '
+    // Gets the available authors
+    $query = '
 SELECT DISTINCT 
     eT.idx_user as uid,
     uT.username
@@ -101,9 +87,9 @@ SELECT DISTINCT
   JOIN '.USERS_TABLE.' as uT on id = eT.idx_user
 ;';
 
-$owners = query2array($query, 'uid');
+    $owners = query2array($query, 'uid');
 
-$query = '
+    $query = '
 SELECT DISTINCT
     aT.idx_user as uid,
     uT.username
@@ -111,9 +97,9 @@ SELECT DISTINCT
     JOIN '.USERS_TABLE.' as uT on id = aT.idx_user
 ;';
 
-$authors= query2array($query, 'uid');
+    $authors= query2array($query, 'uid');
 
-$all_authors = array_merge_recursive($owners, $authors);
+    $all_authors = array_merge_recursive($owners, $authors);
 
     //Get List of versions for filter
     $query = '
