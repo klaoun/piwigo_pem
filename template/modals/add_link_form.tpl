@@ -4,7 +4,7 @@
       <div class="modal-dialog modal-dialog-centered modal-lg">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title" id="addLinkModalLabel"><i class="icon-circle-plus"></i> Create a new link</h5>
+            <h5 class="modal-title" id="addLinkModalLabel"><i class="icon-circle-plus"></i> {'Create a new link'|translate}</h5>
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
           <form method="POST" enctype="multipart/form-data" autocomplete="off" id="addLinkForm">
@@ -12,19 +12,19 @@
             <div class="modal-body"> 
                 
                 <div class="mb-3 form-group">
-                  <label for="link_name" class="col-12">{'Name'|@translate}</label>
+                  <label for="link_name" class="col-12">{'Name'|translate}</label>
                   <input type="text" name="link_name" maxlength="50" class="w-100 form-control" required>
-                  <p><small>Here are some link suggestions: "Github page", "Forum topic", "Issues", "Buy me a coffee" ...</small></p>
+                  <p><small>{'Here are some link suggestions: "Github page", "Forum topic", "Issues", "Buy me a coffee" ...'|translate}</small></p>
                 </div>
 
                 <div class="mb-3 form-group">
-                  <label for="link_url" class="col-12">{'URL'|@translate}</label>
+                  <label for="link_url" class="col-12">{'URL'|translate}</label>
                   <input type="url" name="link_url" size="50" maxlength="255" class="w-100 form-control" required>
                 </div>
 {if !empty($languages)}
-                    <label for="link_language" class="col-12">{'Language'|@translate}</label>           
+                    <label for="link_language" class="col-12">{'Language'|translate}</label>           
                     <select name="link_language" class="form-select w-100">
-                      <option value="null">All languages</option>
+                      <option value="null">{'All languages'|translate}</option>
   {foreach from=$languages item=language}
                       <option value="{$language.id}">{$language.name}</option>
   {/foreach}
@@ -39,7 +39,7 @@
             <div class="modal-footer">
               <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{'Close'|translate}</button>
               <div class="spinner-border d-none" role="status">
-                <span class="visually-hidden">Loading...</span>
+                <span class="visually-hidden">{'Loading...'|translate}</span>
               </div>
               <input type="submit" class="btn btn-primary" value="Submit" name="submit" onclick="onSubmitDisplaySpinner('addLinkForm');"/>
             </div>
