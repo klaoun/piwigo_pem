@@ -5,7 +5,7 @@
       <div class="modal-dialog modal-dialog modal-dialog-scrollable modal-lg">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title" id="editSvnGitModalLabel"><i class="icon-git-alt"></i> SVN and Git configuration</h5>
+            <h5 class="modal-title" id="editSvnGitModalLabel"><i class="icon-git-alt"></i> {'SVN & Git configuration'|translate}</h5>
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
 
@@ -13,7 +13,7 @@
             
             <div class="modal-body">
 
-              <h4>Edit configuration</h4>
+              <h4>{'Edit configuration'|translate}</h4>
 
               <div class="mb-3 form-check d-inline-block">
                 <input class="form-check-input" type="radio" name="type" id="type_svn" value="svn" {if $TYPE == 'svn'} checked="checked"{/if}>
@@ -30,7 +30,7 @@
               </div>
 
               <div class="mb-3 form-group">
-                <label for="repository_url" class="col-12">{'Repository URL'|@translate}</label>
+                <label for="repository_url" class="col-12">{'Repository URL'|translate}</label>
                 <input type="text" name="url" id="repository_url" size="30" class="w-100 form-control" {if $TYPE == 'svn'}value="{$SVN_URL}" {else if $TYPE == 'git'}value="{$GIT_URL}" {/if} required>
               </div>
 
@@ -38,16 +38,16 @@
 
 {if isset($ROOT_DIR)}
               <div id="svn_config" class="mb-3 form-group">
-                <label for="root_dir" class="col-12">{'Archive root directory'|@translate}</label>
+                <label for="root_dir" class="col-12">{'Archive root directory'|translate}</label>
                 <input type="text" name="root_dir" id="root_dir" size="30" class="w-100 form-control" {if isset($ROOT_DIR)}value="{$ROOT_DIR}"{/if}>
               </div>
 {/if}
 
 {if isset($ARCHIVE_NAME)}
               <div id="" class="mb-3 form-group">
-                <label for="archive_name" class="col-12">{'Archive name'|@translate}</label>
+                <label for="archive_name" class="col-12">{'Archive name'|translate}</label>
                 <input type="text" name="archive_name" id="archive_name" size="30" class="w-100 form-control" {if isset($ARCHIVE_NAME)}value="{$ARCHIVE_NAME}"{/if}>
-                <p class="form-text">{'% will be replaced by version number'|@translate}</p>
+                <p class="form-text">{'% will be replaced by version number'|translate}</p>
               </div>
 {/if}
 
@@ -61,7 +61,7 @@
 
               
 {if isset($SVN_INFOS) && !empty($SVN_INFOS)}
-                <h4>Information</h4>
+                <h4>{'Information'|translate}</h4>
   {foreach from=$SVN_INFOS item=info}
                 <p>{$info}</p>
   {/foreach}
@@ -74,9 +74,9 @@
             <div class="modal-footer">
               <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
               <div class="spinner-border d-none" role="status">
-                <span class="visually-hidden">Loading...</span>
+                <span class="visually-hidden">{'Loading...'|translate}</span>
               </div>
-              <input type="submit" class="btn btn-primary" value="{'Save Changes'|@translate}" name="submit" onclick="onSubmitDisplaySpinner('editSvnGitForm');"/>
+              <input type="submit" class="btn btn-primary" value="{'Save Changes'|translate}" name="submit" onclick="onSubmitDisplaySpinner('editSvnGitForm');"/>
             </div>
           </form>
         </div>
