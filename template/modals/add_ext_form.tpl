@@ -4,7 +4,7 @@
       <div class="modal-dialog modal-dialog-centered modal-lg">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title" id="addExtModalLabel"><i class="icon-circle-plus"></i>Add extension</h5>
+            <h5 class="modal-title" id="addExtModalLabel"><i class="icon-circle-plus"></i>{'Add extension'|translate}</h5>
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
           <form method="POST" enctype="multipart/form-data" autocomplete="off" id="addExtForm">
@@ -21,7 +21,7 @@
 
               {* Extension category *}
               <div class="mb-3 form-group">
-                <label for="extension_category_select" class="col-12">Category</label>
+                <label for="extension_category_select" class="col-12">{'Category'|translate}</label>
         
                 <select class="form-select w-100" id="extension_category_select" name="extension_category[]">
 {foreach from=$CATEGORIES_INFO item=category}
@@ -37,7 +37,7 @@
             <div class="modal-footer">
               <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{'Close'|translate}</button>
               <div class="spinner-border d-none" role="status">
-                <span class="visually-hidden">Loading...</span>
+                <span class="visually-hidden">{'Loading...'|translate}</span>
               </div>
               <input type="submit" class="btn btn-primary" value="Submit" name="submit" onclick="onSubmitDisplaySpinner('addExtForm');"/>
             </div>
