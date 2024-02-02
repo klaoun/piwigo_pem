@@ -4,7 +4,7 @@
       <div class="modal-dialog modal-dialog-centered modal-lg">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title" id="userInfoModalLabel"><i class="icon-user"></i>My profil</h5>
+            <h5 class="modal-title" id="userInfoModalLabel"><i class="icon-user"></i>{'My profil'|translate}</h5>
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
           <form method="post" enctype="multipart/form-data" autocomplete="off" id="userInfoForm">
@@ -15,20 +15,20 @@
 
               {* User name *}
               <div class="mb-3 form-group">
-                <label for="user_name" class="form-label w-100 ">Username</label>
+                <label for="user_name" class="form-label w-100 ">{'Username'|translate}</label>
                 <input type="text" name="user_name" size="35" maxlength="255" {if isset($USER.username)}value="{$USER.username}"{/if} class="w-100 form-control"/>
               </div>
 
               {* User EMAIL *}
               <div class="mb-3 form-group">
-               <label for="user_email" class="form-label w-100 ">Email</label>
+               <label for="user_email" class="form-label w-100 ">{'Email'|translate}</label>
                <input type="email" name="user_email" {if isset($USER.username)}value="{$USER.email}"{/if} class="w-100 form-control"/>
               </div>
 
               {* User LANGUAGE *}
 
               <div class="mb-3 form-group">
-                <label class="user_language" class="form-label w-100">{'Language'|@translate}</label>
+                <label class="user_language" class="form-label w-100">{'Language'|translate}</label>
                 <select name="user_language" class="form-select w-100">
                   {html_options options=$language_options selected=$language_selected}
                 </select>
@@ -39,11 +39,11 @@
             <input type="hidden" name="pem_action" value="edit_user_info">
 
             <div class="modal-footer">
-              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{'Close'|translate}</button>
               <div class="spinner-border d-none" role="status">
-                <span class="visually-hidden">Loading...</span>
+                <span class="visually-hidden">{'Loading...'|translate}</span>
               </div>
-              <input type="submit" class="btn btn-primary" value="{'Save Changes'|@translate}" name="submit" onclick="onSubmitDisplaySpinner('userInfoForm');"/>
+              <input type="submit" class="btn btn-primary" value="{'Save Changes'|translate}" name="submit" onclick="onSubmitDisplaySpinner('userInfoForm');"/>
             </div>
 
           </form>
