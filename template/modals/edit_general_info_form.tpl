@@ -41,8 +41,8 @@
                 </select>
               </div>
 
-              {* Extension description, at the moment only text area is avalaible,
-                TODO add language select, and move description to seperate modal *}
+              {* Extension description, it is only possible to edit the current selected user to avoid overriding translations,
+                TODO add language select forother languages, and move description to seperate modal *}
 
               <div class="mb-3 form-group">
                 <div>
@@ -60,8 +60,7 @@
   {if $default_language == $language.code}
                   <div id="desc_block_{$language.id}" class="desc" style="display: none;">
                     <input type="radio"  name="default_description" value="{$language.id}" checked hidden>
-                    <textarea class="form-control" name="extension_descriptions[{$language.id}]" id="desc_{$language.id}" {if $language.code eq 'en_UK'} class="desc_{$language.code}"{/if} {if $default_language == 5}required{/if}
-                      value="{if isset($description)}{$description}{/if}"></textarea>
+                    <textarea class="form-control" name="extension_descriptions[{$language.id}]" id="desc_{$language.id}" {if $language.code eq 'en_UK'} class="desc_{$language.code}"{/if} {if $default_language == 5}required{/if}>{$default_description}</textarea>
                     <p><small>{'Default description'|translate} {$language.code}</small></p>
                   </div>
   {/if}

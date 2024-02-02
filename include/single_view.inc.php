@@ -55,7 +55,7 @@ if (isset($_GET['eid']) && 1 == count($_GET))
 
     $template->assign(
       array(
-        'MESSAGE' => 'Sorry, this extension doesn\'t exist.',
+        'MESSAGE' => l10n('Sorry, this extension doesn\'t exist.'),
       )
     );
   }
@@ -169,6 +169,7 @@ if (isset($_GET['eid']) && 1 == count($_GET))
         'extension_id' => $current_extension_page_id,
         'extension_name' => htmlspecialchars(strip_tags(stripslashes($data['name']))),
         'description' => nl2br(htmlspecialchars(strip_tags(stripslashes($data['description'])))),
+        'default_description' => nl2br(htmlspecialchars(strip_tags(stripslashes($data['default_description'])))),
         'authors' => $authors,
         'first_date' => l10n('no revision yet'),
         'last_date'  => l10n('no revision yet'),
@@ -440,10 +441,6 @@ SELECT
       $result = pwg_query($query);  
       while ($row = pwg_db_fetch_assoc($result))
       {
-        if (empty($row['description']))
-        {
-          $row['description'] = $row['default_description'];
-        }
         if (!isset($last_date_set))
         {
           // $last_languages = get_languages_of_revision(array($row['id_revision']));
