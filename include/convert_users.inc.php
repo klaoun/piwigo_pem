@@ -65,7 +65,8 @@ mass_inserts(USERS_TABLE, array_keys($inserts[2]),$inserts);
  */
 $admin_ids = conf_get_param('admin_users',array());
 $translator_ids = array_keys(conf_get_param('translator_users',array()));
-$all_pem_user_ids =
+$guest_id = conf_get_param('guest_id',1);
+$webmaster_id = conf_get_param('webmaster_id',2);
 
 $query ='
 SELECT 
@@ -80,7 +81,7 @@ foreach($result as $user)
   $temp_user['user_id'] = $user['idx_user'];
 
   //check user Id and set status accordingly
-  if ($user['idx_user'] == $conf['webmaster_id'])
+  if ($user['idx_user'] == $webmaster_id)
   {
     $temp_user['status'] = 'webmaster';
     $level = max( $conf['available_permission_levels'] );
@@ -89,7 +90,7 @@ foreach($result as $user)
   {
     $temp_user['status'] = 'admin';
   }
-  elseif (($user['idx_user'] == $conf['guest_id']) or ($user['idx_user'] == $conf['default_user_id']))
+  elseif (($user['idx_user'] == $guest_id) or ($user['idx_user'] == $conf['default_user_id']))
   {
     $temp_user['status'] = 'guest';
   }
