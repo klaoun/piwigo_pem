@@ -10,7 +10,7 @@ function pem_get_pages()
     'plugins' => 'Plugins',
     'themes' => 'Themes',
     'tools' => 'Tools',
-    'languages' => 'Langauges',
+    'languages' => 'Languages',
     'account' => 'Account',
   );
 }
