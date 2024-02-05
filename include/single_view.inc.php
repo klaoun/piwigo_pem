@@ -399,6 +399,8 @@ SELECT
     {
       $versions_of = get_versions_of_revision($revision_ids);
       $languages_of = get_languages_of_revision($revision_ids);
+      $all_languages = get_all_ext_languages();
+
       $diff_languages_of = get_diff_languages_of_extension($current_extension_page_id);
 
       $rev_languages_of_ids = array();
@@ -407,13 +409,16 @@ SELECT
         foreach($rev as $rev_lang)
         {
           array_push(
-            $rev_languages_of_ids[$key],$rev_lang['id_language']  
+            $rev_languages_of_ids[$key], $rev_lang['id_language']  
           );
         }
       }
 
       $template->assign(
-        'all_rev_languages_of_ids', json_encode($rev_languages_of_ids,JSON_NUMERIC_CHECK),
+        array(
+          'all_languages' => get_all_ext_languages(),
+          'all_rev_languages_of_ids' => json_encode($rev_languages_of_ids,JSON_NUMERIC_CHECK),
+        )
       );
 
       $revisions = array();
@@ -443,18 +448,17 @@ SELECT
       {
         if (!isset($last_date_set))
         {
-          // $last_languages = get_languages_of_revision(array($row['id_revision']));
           $template->assign(array(
             'last_date' => date('Y-m-d', $row['date']),
             'last_date_formatted_since' => time_since($row['date'], $stop='month'),
             'download_last_url' => PEM_PATH.'download.php?rid='.$row['id_revision'],
-            // 'ext_languages' => array_shift($last_languages),
-            // 'ext_languages_ids'=>
             ));
           $last_date_set = true;
         }
 
         $is_first_revision = false;
+        $ids_versions_compatible = get_version_ids_of_revision([$row['id_revision']]);
+        $default_language_id = $interface_languages[$conf['default_language']]['id'];
 
         $tpl_revisions[] = array(
             'id' => $row['id_revision'],
@@ -463,6 +467,8 @@ SELECT
               ', ',
               $versions_of[ $row['id_revision'] ]
               ),
+            'ids_versions_compatible' => isset($ids_versions_compatible[$row['id_revision']])?
+              implode(', ',$ids_versions_compatible[$row['id_revision']]) : null,
             'languages' => isset($languages_of[$row['id_revision']]) ?
               $languages_of[$row['id_revision']] : array(),
             'languages_diff' => isset($diff_languages_of[$row['id_revision']]) ?
@@ -471,10 +477,14 @@ SELECT
               $rev_languages_of_ids[$row['id_revision']] : array(),
             'date' => format_date($row['date'], array('day_name','day','month','year')),
             'author' => get_author_name($row['author']) ,
+            'author_id' => $row['author'] ,
             'u_download' => PEM_PATH.'download.php?rid='.$row['id_revision'],
-            'description' => nl2br(
-              htmlspecialchars($row['description'])
+            'default_description_lang_id' => $default_language_id,
+            'default_description' => nl2br(
+              htmlspecialchars($row['default_description'])
               ),
+            'current_description_lang_id' => ($id_language != $default_language_id) ? $id_language : $default_language_id,
+            'current_description' => isset($row['description']) ? nl2br(htmlspecialchars($row['description'])) : '',
             'can_modify' => $page['user_can_modify'],
             'u_modify' => 'revision_mod.php?rid='.$row['id_revision'],
             'DELETE_REVISION' => 'revision_del.php?rid='.$row['id_revision'],
@@ -505,7 +515,6 @@ SELECT
       }
 
       $tpl_revisions[0]['expanded'] = true;
-
       $template->assign('revisions', $tpl_revisions);
     }
 
@@ -729,6 +738,7 @@ SELECT idx_language,
     // |                     Extension & revision languages                    |
     // +-----------------------------------------------------------------------+
     $default_language = $interface_languages[$conf['default_language']]['code'];
+    
     // Get selected languages of last revision
     $query = '
 SELECT MAX(id_revision) as id
