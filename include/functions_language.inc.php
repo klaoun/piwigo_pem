@@ -112,4 +112,21 @@ SELECT id_language AS id,
   return $cache['interface_languages'];
 }
 
+/**
+ * returns available languages names for a set of revisions
+ */
+function get_all_ext_languages()
+{
+  $query = '
+SELECT 
+    id_language, name 
+  FROM '.PEM_LANG_TABLE.'
+  WHERE extensions = true
+;';
+  $languages = query2array($query,'id_language');
+
+  return $languages;
+}
+
+
 ?>
