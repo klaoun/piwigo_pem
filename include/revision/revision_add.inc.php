@@ -610,9 +610,9 @@ DELETE
 
     // Inserts the revisions <-> languages
     $inserts = array();
-    if (!empty($_POST['extensions_languages']))
+    if (!empty($_POST['revision_languages']))
     {
-      foreach ($_POST['extensions_languages'] as $language_id)
+      foreach ($_POST['revision_languages'] as $language_id)
       {
         array_push(
           $inserts,
@@ -629,125 +629,35 @@ DELETE
         );
     }
 
-    $template->assign(
-      array(
-        'MESSAGE' => 'Revision successfuly added..',
-        'MESSAGE_TYPE' => 'success'
-      )
-    );
-    // message_success(
-    //   'Revision successfuly added.',
-    //   sprintf(
-    //     'extension_view.php?eid=%u&amp;rid=%u#rev%u',
-    //     $_POST['eid'],
-    //     $_POST['rid'],
-    //     $_POST['rid']
-    //     )
-    //   );
+    if ("add_revision" == $_POST['pem_action'])
+    {
+      $template->assign(
+        array(
+          'MESSAGE' => l10n('Revision successfuly added.'),
+          'MESSAGE_TYPE' => 'success'
+        )
+      );
+    }
+    else if ("edit_revision" == $_POST['pem_action'])
+    {
+      $template->assign(
+        array(
+          'MESSAGE' => l10n('Revision successfuly modified.'),
+          'MESSAGE_TYPE' => 'success'
+        )
+      );
+    }
 
     unset($_POST);
   }
 }
 }
 
-// +-----------------------------------------------------------------------+
-// |                            Form display                               |
-// +-----------------------------------------------------------------------+
-
-// if ("edit_revision" == $_POST['pem_action'])
-// {
-//   $version_ids_of_revision = get_version_ids_of_revision(
-//     array($page['revision_id'])
-//     );
-
-//   $language_ids_of_revision = get_language_ids_of_revision(
-//     array($page['revision_id'])
-//     );
-
-//   $version = isset($_POST['revision_version']) ? $_POST['revision_version'] : $revision_infos_of[ $page['revision_id'] ]['version'];
-//   $selected_versions = isset($_POST['compatible_versions']) ? $_POST['compatible_versions'] : $version_ids_of_revision[ $page['revision_id'] ];
-//   $selected_author = isset($_POST['author']) ? $_POST['author'] : $revision_infos_of[ $page['revision_id'] ]['author'];
-  // $selected_languages = isset($_POST['extensions_languages']) ? $_POST['extensions_languages'] : 
-  //   (!empty($language_ids_of_revision[$page['revision_id']]) ? $language_ids_of_revision[$page['revision_id']] : array());
-
-//   $accept_agreement = get_boolean(
-//     $revision_infos_of[ $page['revision_id'] ]['accept_agreement'],
-//     false // default value
-//     );
-  
-//   if ($accept_agreement)
-//   {
-//     $accept_agreement_checked = 'checked="checked"';
-//   }
-//   else
-//   {
-//     $accept_agreement_checked = '';
-//   }
-
-//   // Get descriptions
-//   $descriptions = array();
-//   if (isset($_POST['revision_descriptions']))
-//   {
-//     $descriptions = $_POST['revision_descriptions'];
-//     $default_language = $interface_languages[$conf['default_language']]['id'];
-//   }
-//   else
-//   {
-//     $query = '
-// SELECT idx_language,
-//        description
-//   FROM '.PEM_REV_TABLE.'
-//   WHERE id_revision = '.$page['revision_id'].'
-// ;';
-//     $result = pwg_query($query);
-//     if ($row = pwg_db_fetch_assoc($result))
-//     {
-//       $descriptions[$row['idx_language']] = $row['description'];
-//       $default_language = $row['idx_language'];
-//     }
-
-//     $query = '
-// SELECT idx_language,
-//        description
-//   FROM '.PEM_REV_TRANS_TABLE.'
-//   WHERE idx_revision = '.$page['revision_id'].'
-// ;';
-//     $result = pwg_query($query);
-//     while($row = pwg_db_fetch_assoc($result))
-//     {
-//       $descriptions[$row['idx_language']] = $row['description'];
-//     }
-//   }
-  
-//   $tpl->assign('IN_EDIT', true);
-//   $tpl->assign('revision_id', $page['revision_id']);
-// }
-// else
-// {
-  $version = isset($_POST['revision_version']) ? $_POST['revision_version'] : '';
-  $descriptions = isset($_POST['revision_descriptions']) ? $_POST['revision_descriptions'] : array();
-  $selected_versions = isset($_POST['compatible_versions']) ? $_POST['compatible_versions'] : array();
-  $selected_author = isset($_POST['author']) ? $_POST['author'] : $user['id'];
-  $selected_languages = isset($_POST['extensions_languages']) ? $_POST['extensions_languages'] : array();
-
-
-// }
-
-
-// if ("add_revision" == $_POST['pem_action']  and $conf['allow_svn_file_creation']
-//   and !empty($svn_url) and !empty($archive_name))
-// {
-//   $template->assign(
-//     array(
-//       'allow_svn_file_creation' => true,
-//       'SVN_URL' => isset($_POST['svn_url']) ? $_POST['svn_url'] : $svn_url,
-//       'GIT_URL' => isset($_POST['git_url']) ? $_POST['git_url'] : $git_url,
-//       'SVN_REVISION' => isset($_POST['svn_revision']) ? $_POST['svn_revision'] : 'HEAD',
-//     )
-//   );
-// }
-
-
+$version = isset($_POST['revision_version']) ? $_POST['revision_version'] : '';
+$descriptions = isset($_POST['revision_descriptions']) ? $_POST['revision_descriptions'] : array();
+$selected_versions = isset($_POST['compatible_versions']) ? $_POST['compatible_versions'] : array();
+$selected_author = isset($_POST['author']) ? $_POST['author'] : $user['id'];
+$selected_languages = isset($_POST['extensions_languages']) ? $_POST['extensions_languages'] : array();
 
 
 ?>
