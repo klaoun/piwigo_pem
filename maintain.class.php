@@ -62,6 +62,9 @@ class piwigo_pem_maintain extends PluginMaintain
     {
       pwg_query('ALTER TABLE `' . $this->table . '` ADD `last_reminder` DATETIME;');
     }
+
+    // Convert pem users to piwigo user, only to be called on first install of PEM plugin with and exisiting database
+    // include( PHPWG_ROOT_PATH.'plugins/piwigo_pem/include/convert_users.inc.php');
   }
 
   /**
