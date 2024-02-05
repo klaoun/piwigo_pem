@@ -149,7 +149,7 @@
                   placeholder="{'Choose available languages'|translate}"
                   data-create="true" name="extensions_languages[]" multiple style="width:calc(100% + 2px);">
   {foreach from=$languages item=lang}
-                    <option value="{$lang.id}" {if in_array($lang.id,$extensions_languages_ids)}selected{/if}>[{$lang.code}] {$lang.name}</option>
+                    <option value="{$lang.id}" {if in_array($lang.id,$extensions_languages_ids)}selected{/if}>{$lang.name}</option>
   {/foreach}
                   </select>
                 </div>
