@@ -13,40 +13,32 @@ else if (isset($_GET['uid']))
 }
 
 // Form submitted
-if (isset($_POST['submit']))
+if (empty($page['errors']) and isset($_POST['pem_action']) and isset($_POST['submit']))
 {
+  if("edit_general_info" == $_POST['pem_action'] || "add_ext" == $_POST['pem_action'])
+  {
 
-  // Checks that all the fields have been well filled
-  $required_fields = array(
-    'extension_name',
-    'extension_category'
+    // Checks that all the fields have been well filled
+    $required_fields = array(
+      'extension_name',
+      'extension_category'
     );
 
-  foreach ($required_fields as $field)
-  {
-
-    if (empty($_POST[$field]))
+    foreach ($required_fields as $field)
     {
-      $page['errors'][] = l10n('Some fields are missing');
-      break;
-    }
-  }
 
-  if (empty($page['errors']))
-  {
+      if (empty($_POST[$field]))
+      {
+        $page['errors'][] = l10n('Some fields are missing');
+        break;
+      }
+    }
 
     // this action comes from single_view, we have an eid that is set
-    if (isset($_POST['pem_action']) and isset($_POST['submit']) and "edit_general_info" == $_POST['pem_action'])
+    if ("edit_general_info" == $_POST['pem_action'])
     {
 
-      $authors = get_extension_authors($current_extension_page_id);
-
-      if (!in_array($user['id'], $authors) and !is_Admin($user['id']) and !isTranslator($user['id']))
-      {
-        die('You must be the extension author to modify it.');
-      }
-
-      if (empty($_POST['extension_descriptions'][@$_POST['default_description']]))
+      if (empty($_POST['extension_descriptions'][$_POST['default_description']]))
       {
         $page['errors'][] = l10n('Default description can not be empty');
       }
@@ -62,13 +54,14 @@ UPDATE '.PEM_EXT_TABLE.'
 
       pwg_query($query);
 
-      $query = '
-DELETE
-  FROM '.PEM_EXT_TRANS_TABLE.'
-  WHERE idx_extension = '.$current_extension_page_id.'
-;';
+// This is commented to not remove all translations of descriptions when we edit an extension
+//       $query = '
+// DELETE
+//   FROM '.PEM_EXT_TRANS_TABLE.'
+//   WHERE idx_extension = '.$current_extension_page_id.'
+// ;';
 
-      pwg_query($query);
+//       pwg_query($query);
 
       $query = '
 DELETE
@@ -208,6 +201,8 @@ SELECT DISTINCT
 ;';
 
 $authors= query2array($query, 'uid');
+
+$all_authors = array_merge_recursive($owners, $authors);
 
 $template->assign(
   array(
