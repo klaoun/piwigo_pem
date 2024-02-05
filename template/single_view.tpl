@@ -278,9 +278,10 @@
           data-bs-rev_version_name="{$rev.version}" 
           data-bs-rev_versions_compatible="{$rev.ids_versions_compatible}"
           data-bs-rev_default_description_lang="{$rev.default_description_lang_id}"
-          data-bs-rev_default_description ="{$rev.default_description}"
+          data-bs-rev_default_description="{$rev.default_description}"
           data-bs-rev_description_lang="{$rev.current_description_lang_id}"
-          data-bs-rev_description ="{$rev.current_description}"
+          data-bs-rev_description="{$rev.current_description}"
+          data-bs-rev_author="{$rev.author_id}"
         >
           <i class="icon-pencil"></i>
         </span>
@@ -306,7 +307,7 @@
           
           <div class="d-flex justify-content-start">
             <p class="me-4">{'Released on %s'|translate:$rev.date}</p>
-            <p class="me-4"><i class="icon-check"></i>{'Compatible with Piwigo'|translate:$rev.versions_compatible}</p>
+            <p class="me-4"><i class="icon-check"></i>{'Compatible with Piwigo %s'|translate:$rev.versions_compatible}</p>
             <p class="me-4"><i class="icon-download"></i>{$rev.downloads}</p>
           </div>
 
@@ -320,19 +321,19 @@
           <div class="mt-4">
             <h5>{'Description'|translate}</h5>
       {* We have an array of all revsions and all descriptions in all languages *}
+
     {foreach from=$rev_descriptions item=revision key=rev_id}
       {if $rev_id == $rev.id}
+      {if !array_key_exists($CURRENT_LANG, $revision)}{assign var="no_desc" value="true"}{/if}
         {foreach from=$revision item=lang_desc key=lang_id}           
           {if $lang_id == $CURRENT_LANG}
               <p>{$lang_desc}</p>
-          {else}
-            {assign var="no_desc" value="true"}
           {/if}
         {/foreach}
       {/if}
     {/foreach}
       {* If no description exists in current interface language we display default *}
-    {if $no_desc == true}
+    {if isset($no_desc) && $no_desc == true}
         <p>{$rev.default_description}</p>
     {/if}
 
@@ -400,8 +401,11 @@
   sessionStorage.clear()
 
   var pwg_token = "{$PWG_TOKEN}";
-  var all_revision_languages = {$all_rev_languages_of_ids};
- 
+  var all_revision_languages = {if isset($all_rev_languages_of_ids)}{$all_rev_languages_of_ids}{else}null{/if};
+  const VERSIONS_PWG =  {if isset($VERSIONS_PWG)}{json_encode($VERSIONS_PWG)}{/if};
+  const ALL_LANGUAGES = {if isset($all_languages)}{json_encode($all_languages)}{/if};
+  var extensions_languages_ids = {if isset($extensions_languages_ids)}{json_encode($extensions_languages_ids)}{/if}
+    
 </script>
 
 <script src="{$PEM_ROOT_URL_PLUGINS}template/js/single_view.js" require="jquery"></script>
