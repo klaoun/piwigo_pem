@@ -25,8 +25,9 @@
         </li>
 {/foreach}
         <li class="nav-item fw-bold position-relative" id="account-link">
-          <a class="nav-link pe-0" href="{$ACCOUNT_URL}"><i class="icon-user"></i>{'Your account'|translate}</a>
+          
 {if $USER_STATUS != 'guest'}
+          <a class="nav-link pe-0 hide-text-overflow-150" href="{$ACCOUNT_URL}"><i class="icon-user"></i>{$USER_USERNAME}</a>
           <div id="account-dropdown" class="dropdown">
             <div class="dropdown-content d-flex flex-column ">
   {if $USER_STATUS == 'webmaster' or $USER_STATUS == 'admin'}
@@ -35,6 +36,8 @@
               <a class="w-100" href="{$PEM_ROOT_URL}?act=logout">{'Logout'|translate}</a>
             </div>
           </div>
+{else}
+  <a class="nav-link pe-0" href="{$ACCOUNT_URL}"><i class="icon-user"></i>{'Login'|translate}</a>
 {/if}
         </li>
       </ul>

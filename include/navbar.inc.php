@@ -31,6 +31,7 @@ $template->assign(
     'CATEGORIES_INFO' => $categories,
     'ACCOUNT_URL' => $account_url,
     'USER_STATUS' => $user['status'],
+    'USER_USERNAME' => $user['username'],
   )
 );
 
