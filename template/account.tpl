@@ -31,7 +31,7 @@
           <i class="icon-pencil"></i>
         </span>
  {/if}
-        <h3>{$USER.username}</h3>
+        <h3 class="hide-text-overflow-300">{$USER.username}</h3>
        {if isset($USER.group)}<h5>{$USER.group}</h5>{/if }
       </div>
 {if isset($USER.links)}
@@ -49,7 +49,10 @@
     <div class="row">
       <div class="col-12 d-flex justify-content-between">
         <div>
-          <h4 class="d-inline">{'Extensions by "%s"'|translate:$USER.username}</h4><span class="badge blue-badge d-inline">{$USER.nb_extensions}</span>
+          <h4 class="d-inline-block m-0">{'Extensions by'|translate} "</h4>
+          <h4 class="hide-text-overflow-300 d-inline-block align-bottom m-0">{$USER.username}</h4>
+          <h4 class="d-inline-block  m-0">" </h4>
+          <span class="badge blue-badge d-inline">{$USER.nb_extensions}</span>
         </div>
 {if $can_modify == true}
         <button data-bs-toggle="modal" data-bs-target="#addExtModal" class="btn btn-primary align-middle">{'Add an extension'|translate}</button>

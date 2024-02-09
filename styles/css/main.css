@@ -661,3 +661,17 @@ Other
 .table>:not(caption)>*>*{
   vertical-align:middle;
 }
+
+.hide-text-overflow-150 {
+  max-width:150px;
+  white-space: nowrap;
+  overflow:hidden;
+  text-overflow: ellipsis;
+}
+
+.hide-text-overflow-300 {
+  max-width:300px;
+  white-space: nowrap;
+  overflow:hidden;
+  text-overflow: ellipsis;
+}
