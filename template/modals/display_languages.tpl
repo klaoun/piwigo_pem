@@ -12,7 +12,7 @@
             <ul class="list-group list-group-flush">
 {if !empty($ext_languages)}
   {foreach from=$ext_languages item=lang}
-              <li class="list-group-item col-6">{$lang.name}</li>
+              <li class="list-group-item col-4 text-start">{$lang.name}</li>
   {/foreach}
 {/if}
           </ul>
