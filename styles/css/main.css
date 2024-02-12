@@ -13,6 +13,10 @@
   --light_blue_font: #6CADD9;
   --light_purple_background: #ede8fe;
   --light_purple_font: #a054dd;
+  --light_orange_background: #ffe9cf;
+  --light_orange_font: #ffa744;
+  --light_green_background: #d6ffcf;
+  --light_green_font: #6ece5e;
 
   /*colors for infos, errors, warnings and messages */
   --message_green:#0a0;
@@ -374,7 +378,6 @@ Badges
   color:var(--light_blue_font);
   padding: 5px 10px;
   border-radius: 25px;
-  margin-left: 10px;
   font-size: 13px;
   font-weight: 700;
 }
@@ -384,7 +387,24 @@ Badges
   color:var(--light_purple_font);
   padding: 5px 10px;
   border-radius: 25px;
-  margin-left: 10px;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.orange-badge{
+  background-color: var(--light_orange_background);
+  color:var(--light_orange_font);
+  padding: 5px 10px;
+  border-radius: 25px;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.green-badge{
+  background-color: var(--light_green_background);
+  color:var(--light_green_font);
+  padding: 5px 10px;
+  border-radius: 25px;
   font-size: 13px;
   font-weight: 700;
 }

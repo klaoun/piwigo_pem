@@ -49,7 +49,9 @@
 
       <div>
 {foreach from=$authors item=author}
-        <a href = "{$PEM_ROOT_URL}index.php?uid={$author.uid}"><h4 class="author d-inline link">{$author.username}{if !$author@last}, {/if}</h4></a>
+        <a href = "{$PEM_ROOT_URL}index.php?uid={$author.uid}">
+          <span class="badge green-badge d-inline me-2d-inline link"><i class="icon-user"></i>{$author.username}</span>
+          </a>
 {/foreach}
 {if isset($can_modify) && $can_modify == true}
   <span class="edit_mode secondary_icon" data-bs-toggle="modal" data-bs-target="#authorsModal">
@@ -61,6 +63,7 @@
       <div class="mt-5">
           <h3 class="category ">
             <a href="{$PEM_ROOT_URL}index.php?cid={$extension_categories.id_category}&page=1" class="orange-link">
+            <i class="{$CATEGORIES_INFO[$extension_categories.id_category].icon_class}"></i>
               {$extension_categories.name}
             </a>
           </h3>
@@ -71,7 +74,8 @@
       <div>
   {foreach from=$extension_tags item=tag}
     {if isset($tag.name)}
-        <h5 class="tag d-inline">{$tag.name}{if !$tag@last}, {/if}</h5>
+        <span class="badge orange-badge d-inline me-2">{$tag.name}</span>
+        {* <h5 class="tag d-inline">{$tag.name}{if !$tag@last}, {/if}</h5> *}
         {/if}
   {/foreach}
       </div>
@@ -95,7 +99,7 @@
 {/if}
 
 {if isset($last_date_formatted_since)}
-        <span class='badge blue-badge d-inline'>{$last_date_formatted_since}</span>
+        <span class='badge blue-badge d-inline ms-2'>{$last_date_formatted_since}</span>
 {/if}
       </div>
     </div>
@@ -139,7 +143,7 @@
       <div class="px-3 py-2 border-left d-inline-block">
         <span><i class="icon-rocket"></i>{$first_date}</span>
   {if isset($first_date_formatted_since)}
-        <span class='badge blue-badge d-inline'>{$first_date_formatted_since}</span>
+        <span class='badge blue-badge d-inline ms-2'>{$first_date_formatted_since}</span>
   {/if}
       </div>
 {/if}
