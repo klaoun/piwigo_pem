@@ -168,8 +168,8 @@ if (isset($_GET['eid']) && 1 == count($_GET))
       array(
         'extension_id' => $current_extension_page_id,
         'extension_name' => htmlspecialchars(strip_tags(stripslashes($data['name']))),
-        'description' => nl2br(htmlspecialchars(strip_tags(stripslashes($data['description'])))),
-        'default_description' => nl2br(htmlspecialchars(strip_tags(stripslashes($data['default_description'])))),
+        'description' => htmlspecialchars(strip_tags(stripslashes($data['description']))),
+        'default_description' => htmlspecialchars(strip_tags(stripslashes($data['default_description']))),
         'authors' => $authors,
         'first_date' => l10n('no revision yet'),
         'last_date'  => l10n('no revision yet'),
