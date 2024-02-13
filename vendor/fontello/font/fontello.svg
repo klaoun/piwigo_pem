@@ -1,7 +1,7 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
 <svg xmlns="http://www.w3.org/2000/svg">
-<metadata>Copyright (C) 2023 by original authors @ fontello.com</metadata>
+<metadata>Copyright (C) 2024 by original authors @ fontello.com</metadata>
 <defs>
 <font id="fontello" horiz-adv-x="1000" >
 <font-face font-family="fontello" font-weight="400" font-stretch="normal" units-per-em="1000" ascent="850" descent="-150" />
@@ -93,6 +93,8 @@
 <glyph glyph-name="grip-vertical" unicode="&#xe82d;" d="M78 163l94 0c43 0 78-35 78-79l0-93c0-44-35-79-78-79l-94 0c-43 0-78 35-78 79l0 93c0 44 35 79 78 79z m375 0l94 0c43 0 78-35 78-79l0-93c0-44-35-79-78-79l-94 0c-43 0-78 35-78 79l0 93c0 44 35 79 78 79z m-375 62c-43 0-78 35-78 78l0 94c0 43 35 78 78 78l94 0c43 0 78-35 78-78l0-94c0-43-35-78-78-78l-94 0z m375 250l94 0c43 0 78-35 78-78l0-94c0-43-35-78-78-78l-94 0c-43 0-78 35-78 78l0 94c0 43 35 78 78 78z m-375 63c-43 0-78 35-78 78l0 93c0 44 35 79 78 79l94 0c43 0 78-35 78-79l0-93c0-43-35-78-78-78l-94 0z m375 250l94 0c43 0 78-35 78-79l0-93c0-43-35-78-78-78l-94 0c-43 0-78 35-78 78l0 93c0 44 35 79 78 79z" horiz-adv-x="625" />
 
 <glyph glyph-name="lock" unicode="&#xe82e;" d="M281 569v-94h313v94c0 86-70 156-156 156s-157-70-157-156z m-125-94v94c0 155 126 281 282 281s281-126 281-281v-94h31c69 0 125-56 125-125v-375c0-69-56-125-125-125h-625c-69 0-125 56-125 125v375c0 69 56 125 125 125h31z" horiz-adv-x="875" />
+
+<glyph glyph-name="tag" unicode="&#xe82f;" d="M0 694v-292c0-33 13-65 37-89l343-344c49-48 128-48 177 0l261 261c49 49 49 128 0 177l-344 344c-23 23-55 36-88 36h-292c-52 1-94-41-94-93z m219-63a63 63 0 1 0 0-125 63 63 0 1 0 0 125z" horiz-adv-x="875" />
 
 <glyph glyph-name="star-half" unicode="&#xe831;" d="M625 115l0 0 52-27 166-89-32 190-9 56 40 40 137 136-188 27-57 9-25 52-84 171 0 0v-565z m342-192c4-24-6-47-25-61s-45-16-66-5l-251 134-250-134c-21-11-47-9-66 5s-29 37-26 61l49 284-204 202c-17 16-23 41-15 64s27 39 50 42l280 41 126 259c11 21 32 35 56 35s46-14 57-35l125-259 281-41c23-3 43-20 50-42s1-48-15-64l-204-202 48-284z" horiz-adv-x="1250" />
 
