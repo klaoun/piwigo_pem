@@ -43,49 +43,50 @@
       </span>
 {/if}
 
-      <div>
+      <div class="position-relative">
         <h2>{if isset($extension_name)}{$extension_name}{/if}</h2>
       </div>
 
-      <div>
+      <div class="mt-3 position-relative">
+        <h4 class="category ">
+          <a href="{$PEM_ROOT_URL}index.php?cid={$extension_categories.id_category}&page=1" class="orange-link">
+            <i class="{$CATEGORIES_INFO[$extension_categories.id_category].icon_class} me-1"></i>{$extension_categories.name}
+          </a>
+        </h4>
+      </div>
+
+      <div class="mt-5">
+        <div class="position-relative mb-1">
 {foreach from=$authors item=author}
-        <a href = "{$PEM_ROOT_URL}index.php?uid={$author.uid}">
-          <span class="badge green-badge d-inline me-2d-inline link"><i class="icon-user"></i>{$author.username}</span>
+          <a href="{$PEM_ROOT_URL}index.php?uid={$author.uid}" class="badge green-badge me-2 mb-3 hide-text-overflow-150">
+            <i class="icon-user"></i>{$author.username}
           </a>
 {/foreach}
 {if isset($can_modify) && $can_modify == true}
-  <span class="edit_mode secondary_icon" data-bs-toggle="modal" data-bs-target="#authorsModal">
-    <i class="icon-pencil"></i>
-  </span>
+          <span class="circle-icon secondary_action edit_mode position-absolute" data-bs-toggle="modal" data-bs-target="#authorsModal">
+            <i class="icon-pencil"></i>
+          </span>
 {/if}
-      </div> 
-
-      <div class="mt-5">
-          <h3 class="category ">
-            <a href="{$PEM_ROOT_URL}index.php?cid={$extension_categories.id_category}&page=1" class="orange-link">
-            <i class="{$CATEGORIES_INFO[$extension_categories.id_category].icon_class}"></i>
-              {$extension_categories.name}
-            </a>
-          </h3>
-        </a>
-      </div>
+        </div> 
 
 {if isset($extension_tags)}
-      <div>
+        <div class="position-relative mb-3">
   {foreach from=$extension_tags item=tag}
     {if isset($tag.name)}
-        <span class="badge orange-badge d-inline me-2">{$tag.name}</span>
-        {* <h5 class="tag d-inline">{$tag.name}{if !$tag@last}, {/if}</h5> *}
-        {/if}
+          <span class="badge orange-badge mb-2"><i class="icon-tag"></i>{$tag.name}</span>
+    {/if}
   {/foreach}
-      </div>
+        </div>
 {/if}
 
 {if !empty($ext_languages)}
-      <div class="pt-3">
-        <span class="link" data-bs-toggle="modal" data-bs-target="#displayLanguagesModal"> {'%s Available languages'|translate:{$ext_languages|@count}}</span>
-      </div>
+        <div class="position-relative mb-3">
+          <span class="link badge purple-badge"  data-bs-toggle="modal" data-bs-target="#displayLanguagesModal">
+            <i class="icon-language"></i> {'%s Available languages'|translate:{$ext_languages|@count}}
+          </span>
+        </div>
 {/if}
+      </div>
 
       <div class="mt-5">
 {if isset($download_last_url)}

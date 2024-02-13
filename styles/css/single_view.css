@@ -55,7 +55,8 @@ header Image
 }
 
 #single_view .screenshot_image{
-  height:300px;
+  max-height:350px!important;
+  height:100%;
   max-width:100%;
   object-fit:contain;
   object-position:top center;
