@@ -197,11 +197,13 @@
           <tr>
             <td>
               <a class="orange-link my-3" href="{$link.url}" target="blank">
-                {if $link.name|stristr:"git"}<i class="icon-github"></i>{/if}
-                {if $link.name|stristr:"issues" || $link.name|stristr:"bug" }<i class="icon-bug"></i>{/if}
-                {if $link.name|stristr:"coffee"}<i class="icon-gift"></i>{/if}
-                {if $link.name|stristr:"forum"}<i class="icon-message"></i>{/if}
-                {if $link.name|stristr:"demo"}<i class="icon-piwigo"></i>{/if}
+                {if $link.name|stristr:"git"}<i class="icon-github"></i>
+                {else if $link.name|stristr:"issues" || $link.name|stristr:"bug" }<i class="icon-bug"></i>
+                {else if $link.name|stristr:"coffee"}<i class="icon-gift"></i>
+                {else if $link.name|stristr:"forum"}<i class="icon-message"></i>
+                {else if $link.name|stristr:"demo"}<i class="icon-piwigo"></i>
+                {else}<i class="icon-link"></i>
+                {/if}
                 {$link.name}
               </a>
             </td>
@@ -244,10 +246,13 @@
     <div class="d-flex justify-content-start flex-wrap">
   {foreach from=$links item=link}
       <a class="orange-link py-3 pe-3" href="{$link.url}" target="_blank">
-        {if $link.name|stristr:"git"}<i class="icon-github"></i>{/if}
-        {if $link.name|stristr:"issues" || $link.name|stristr:"bug"}<i class="icon-bug"></i>{/if}
-        {if $link.name|stristr:"coffee"}<i class="icon-gift"></i>{/if}
-        {if $link.name|stristr:"forum"}<i class="icon-message"></i>{/if}
+        {if $link.name|stristr:"git"}<i class="icon-github"></i>
+        {else if $link.name|stristr:"issues" || $link.name|stristr:"bug" }<i class="icon-bug"></i>
+        {else if $link.name|stristr:"coffee"}<i class="icon-gift"></i>
+        {else if $link.name|stristr:"forum"}<i class="icon-message"></i>
+        {else if $link.name|stristr:"demo"}<i class="icon-piwigo"></i>
+        {else}<i class="icon-link"></i>
+        {/if}
         {$link.name}
       </a>
   {/foreach}
