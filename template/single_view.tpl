@@ -261,7 +261,7 @@
 
 {*Revision block *}
   <section class="mt-5 pt-3 section-fluid">
-    <h3 class="mb-3">{'Revisions'|translate}</h3>
+    <h3 class="mb-3">{'Revisions'|translate} <span class="badge blue-badge d-inline align-middle">{$count_rev}</span></h3>
 
     <div class="edit_mode mt-3 mb-4">
       <button class="btn btn-tertiary" data-bs-toggle="modal" data-bs-target="#editSvnGitModal">

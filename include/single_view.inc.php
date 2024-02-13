@@ -418,6 +418,7 @@ SELECT
         array(
           'all_languages' => get_all_ext_languages(),
           'all_rev_languages_of_ids' => json_encode($rev_languages_of_ids,JSON_NUMERIC_CHECK),
+          'count_rev' => count($revision_ids),
         )
       );
 
