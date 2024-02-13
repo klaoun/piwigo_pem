@@ -177,7 +177,7 @@ if (isset($_GET['eid']) && 1 == count($_GET))
             ', ',
             $versions_of_extension[$current_extension_page_id]
           ),
-        'latest_compatible_version' =>  end($versions_of_extension[$current_extension_page_id]),
+        'latest_compatible_version' => end($versions_of_extension[$current_extension_page_id]),
         'extension_downloads' => $extension_downloads,
         'extension_categories' => $categories_of_extension[$current_extension_page_id],
         'extension_tags' => empty($tags_of_extension[$current_extension_page_id]) ? array() : $tags_of_extension[$current_extension_page_id],
@@ -848,8 +848,26 @@ SELECT
       array(
         'upload_methods' => $upload_methods,
         'FILE_TYPE' => $file_type,
-        )
-      );
+      )
+    );
+
+    //Get List of versions for filter
+    $query = '
+    SELECT 
+        id_version,
+        version
+      FROM '.PEM_VER_TABLE.'
+      ORDER BY id_version DESC
+      LIMIT 1
+    ;';
+    $result = query2array($query);
+    $pwg_latest_version = $result[0];
+
+    $template->assign(
+      array(
+        'pwg_latest_version' => $pwg_latest_version,
+      )
+    );
 
     // Assign single_view template
     $template->set_filename('pem_page', realpath(PEM_PATH . 'template/single_view.tpl'));

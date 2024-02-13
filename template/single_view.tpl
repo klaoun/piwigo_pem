@@ -135,11 +135,13 @@
         {$rate_summary.rating_score}
       </div>
 {/if}
-{if isset($latest_compatible_version) && $latest_compatible_version != null}
       <div class="px-3 py-2 border-left d-inline-block">
-        <span><i class="icon-check"></i>{'Compatible with Piwigo %s'|translate:$latest_compatible_version}</span>
-      </div>
+{if isset($latest_compatible_version) && $latest_compatible_version == $pwg_latest_version.version} 
+        <span><i class="icon-check green-font"></i>{'Compatible with the latest version of Piwigo'|translate}</span>
+{else}
+        <span><i class="icon-cross red-font"></i>{'Not compatible with the latest version of Piwigo'|translate}</span>
 {/if}
+      </div>
 {if isset($first_date)}
       <div class="px-3 py-2 border-left d-inline-block">
         <span><i class="icon-rocket"></i>{$first_date}</span>
