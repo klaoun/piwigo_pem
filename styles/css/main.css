@@ -615,6 +615,7 @@ Edit mode
 
 .edit_mode{
   display:none;
+  z-index:99;
 }
 
 .secondary_action{
