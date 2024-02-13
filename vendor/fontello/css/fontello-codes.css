@@ -7,7 +7,7 @@
 .icon-gift:before { content: '\e805'; } /* '' */
 .icon-github:before { content: '\e806'; } /* '' */
 .icon-language:before { content: '\e807'; } /* '' */
-.icon-link:before { content: '\e808'; } /* '' */
+.icon-link-1:before { content: '\e808'; } /* '' */
 .icon-magnifying-glass:before { content: '\e809'; } /* '' */
 .icon-mobile-screen-button:before { content: '\e80a'; } /* '' */
 .icon-message:before { content: '\e80b'; } /* '' */
@@ -44,6 +44,7 @@
 .icon-grip-vertical:before { content: '\e82d'; } /* '' */
 .icon-lock:before { content: '\e82e'; } /* '' */
 .icon-tag:before { content: '\e82f'; } /* '' */
+.icon-link:before { content: '\e830'; } /* '' */
 .icon-star-half:before { content: '\e831'; } /* '' */
 .icon-star-empty:before { content: '\e832'; } /* '' */
 .icon-circle-notch-solid:before { content: '\e85e'; } /* '' */
