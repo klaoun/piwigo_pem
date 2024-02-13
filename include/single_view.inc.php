@@ -194,6 +194,7 @@ if (isset($_GET['eid']) && 1 == count($_GET))
           array(
             'can_modify' => $page['user_can_modify'],
             'translator' => !in_array($user['id'], $authors) && get_user_status() !='admin' && isTranslator($user['id']),
+            'admin' => get_user_status() =='admin',
           )
         );
       }
@@ -201,7 +202,7 @@ if (isset($_GET['eid']) && 1 == count($_GET))
       {
         $template->assign(
           array(
-            'u_owner' =>true,
+            'u_owner' => true,
           )
         );
       }

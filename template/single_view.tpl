@@ -22,12 +22,14 @@
         <input class="form-check-input" type="checkbox" role="switch" id="edit_mode">
         <label class="form-check-label" for="edit_mode">Edit mode</label>
       </div>
-  {if isset($u_owner) && $u_owner == true && $current_user_id}
+  {if isset($can_modify)}
+    {if isset($u_owner) || isset($admin)}
       <div class="ms-4">
         <span class="link-secondary link" data-bs-toggle="modal" data-bs-target="#deleteExtensionModal">
           <i class="icon-trash"></i>{'Delete extension'|translate}
         </span>
       </div>
+    {/if}
   {/if}
     </div>
   </section>
