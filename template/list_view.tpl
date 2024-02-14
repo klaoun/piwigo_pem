@@ -27,13 +27,12 @@
 {/if}
 
   <div class="d-flex content_header">
-    <h4>{$CATEGORY.name_plural_EN}
-      <span class='badge blue-badge'>{$CATEGORY.extension_count}</span>
+    <h4>{"%ss"|translate:$CATEGORY.name} <span class='badge blue-badge'>{$CATEGORY.extension_count}</span>
     </h4>
     <div class="d-flex filter_section">
-      <div class="filter_tab mx-2" onclick="toggleFilter()"><h5>{'Filter'|translate}</h5></div>
+      <div class="filter_tab mx-2 hover-pointer" onclick="toggleFilter()"><h5>{'Filter'|translate}</h5></div>
       <label for="sort_order">{'Sort order'|translate}</label>
-      <select name="sort_order" id="sort_order" class="form-control">
+      <select name="sort_order" id="sort_order" class="form-control hover-pointer">
           <option value="date_desc">{'Newest to oldest'|translate}</option>
           <option value="date_asc">{'Oldest to Newest'|translate}</option>
           <option value="a_z">{'A to Z'|translate}</option>
@@ -105,7 +104,7 @@
 
         <div class="col col-3">
           <h5 class="card-title extension_name my-2"></h5>
-          <div class="card-text extension_authors my-2"></div>
+          <div class="card-text extension_authors my-2 hide-text-overflow-150  "></div>
           <div class="extension_score my-2"></div>
           <div class="d-flex my-2"><i class="icon-download"></i><p class="card-text extension_number_downloads"></p></div>
         </div>

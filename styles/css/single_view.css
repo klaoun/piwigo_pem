@@ -136,6 +136,10 @@ Revisions
   background-color:var(--white);
 }
 
+.changelogRevision .circle-icon{
+  padding:6px;
+}
+
 #single_view .form-select {
   line-height: normal;
 }
