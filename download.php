@@ -137,10 +137,6 @@ $file = get_revision_src(
   $revision_infos['url']
   );
 
-echo('<pre>');print_r($revision_infos['idx_extension']);echo('</pre>');
-echo('<pre>');print_r($page['revision_id']);echo('</pre>');
-echo('<pre>');print_r($revision_infos['url']);echo('</pre>');
-
 if (!@is_readable($file)) {
   do_error(404, "Requested file not readable - $file");
 }
