@@ -27,7 +27,7 @@
 {/if}
 
   <div class="d-flex content_header">
-    <h4>{"%ss"|translate:$CATEGORY.name} <span class='badge blue-badge'>{$CATEGORY.extension_count}</span>
+    <h4>{"%ss"|translate:$CATEGORY.name}<span class='badge blue-badge'>{$CATEGORY.extension_count}</span>
     </h4>
     <div class="d-flex filter_section">
       <div class="filter_tab mx-2 hover-pointer" onclick="toggleFilter()"><h5>{'Filter'|translate}</h5></div>

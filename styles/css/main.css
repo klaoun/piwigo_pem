@@ -398,6 +398,8 @@ a.badge:hover{
   font-size: 14px;
   font-weight: 700;
   line-height:15px;
+  vertical-align:middle;
+  margin-left:10px;
 }
 
 .blue-badge{

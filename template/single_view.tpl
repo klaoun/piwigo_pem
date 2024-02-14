@@ -60,7 +60,7 @@
       <div class="mt-5">
         <div class="position-relative mb-1">
 {foreach from=$authors item=author}
-          <a href="{$PEM_ROOT_URL}index.php?uid={$author.uid}" class="badge green-badge me-2 mb-3 hide-text-overflow-150">
+          <a href="{$PEM_ROOT_URL}index.php?uid={$author.uid}" class="badge green-badge me-2 mb-3 hide-text-overflow-150 ms-0">
             <i class="icon-user"></i>{$author.username}
           </a>
 {/foreach}
@@ -75,7 +75,7 @@
         <div class="position-relative mb-3">
   {foreach from=$extension_tags item=tag}
     {if isset($tag.name)}
-          <span class="badge orange-badge mb-2"><i class="icon-tag"></i>{$tag.name}</span>
+          <span class="badge orange-badge mb-2 ms-0"><i class="icon-tag"></i>{$tag.name}</span>
     {/if}
   {/foreach}
         </div>
@@ -83,7 +83,7 @@
 
 {if !empty($ext_languages)}
         <div class="position-relative mb-3">
-          <span class="link badge purple-badge"  data-bs-toggle="modal" data-bs-target="#displayLanguagesModal">
+          <span class="link badge purple-badge ms-0"  data-bs-toggle="modal" data-bs-target="#displayLanguagesModal">
             <i class="icon-language"></i> {'%s Available languages'|translate:{$ext_languages|@count}}
           </span>
         </div>
@@ -98,7 +98,7 @@
 {/if}
 
 {if isset($revisions)}
-        <p class="revision-version d-inline ml-3">{'Revision %s'|translate:$revisions[0]['version']}</p>
+        <p class="revision-version d-inline">{'Revision %s'|translate:$revisions[0]['version']}</p>
 {/if}
 
 {if isset($last_date_formatted_since)}
