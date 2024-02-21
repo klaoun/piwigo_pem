@@ -255,7 +255,7 @@ function getExtensionList(cid) {
             //add authors, there can be multiple, that is the reason for the foreach
             $.each(this.authors, function(key, value) 
             {
-              jQuery('#extension_'+extension_id+' .extension_authors').append( "<a class='link' href='"+PEM_ROOT_URL+"index.php?uid="+key+"'>"+value+"</a>");
+              jQuery('#extension_'+extension_id+' .extension_authors').append( "<a class='badge green-badge me-2 mb-3 hide-text-overflow-150 ms-0' href='"+PEM_ROOT_URL+"index.php?uid="+key+"'><i class='icon-user'></i>"+value+"</a>");
             });
 
             //If extensions has rating score then display it
