@@ -294,6 +294,11 @@ function getExtensionList(cid) {
             }
           });
 
+          if ( filters != "")
+          {
+            jQuery('.filter_tab h5').append('<span class="badge blue-badge">'+ data.result.nb_extensions_filtered +'</span>');
+          }
+
           var extensions_per_page = data.result.extensions_per_page;
           var nb_extensions_filtered = data.result.nb_extensions_filtered;
           var nb_total_pages = Math.ceil(nb_extensions_filtered/extensions_per_page)
