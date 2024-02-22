@@ -317,16 +317,19 @@ function detectLang()
     const linkId = buttonEditLink.getAttribute('data-bs-link-id')
     const linkName = buttonEditLink.getAttribute('data-bs-link-name')
     const linkURL = buttonEditLink.getAttribute('data-bs-link-url')
+    const linkLang = buttonEditLink.getAttribute('data-bs-link-lang')
 
     // Get the modal's input
     const modalLinkID= editLinkModal.querySelector('#link_id')
     const modalLinkName = editLinkModal.querySelector('#link_name')
     const modalLinkUrl= editLinkModal.querySelector('#link_url')
+    const modalLinkLang= editLinkModal.querySelector('#link_language')
 
     // Update the modal's content.
     modalLinkID.value = linkId
     modalLinkName.value = linkName
     modalLinkUrl.value = linkURL
+    modalLinkLang.value = linkLang
   });
 
   // Script used for editing revision modal
