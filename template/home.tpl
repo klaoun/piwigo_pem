@@ -85,7 +85,7 @@
                       </div>
                     </div>
                     <div class="col-12 d-flex justify-content-end">
-                      <a class="link" href="{$PEM_ROOT_URL}index.php?eid={$category.highest_rated_extension.eid}">{'See'|translate} <i class="icon-chevron-right"></i></a>
+                      <a class="link-primary orange-link " href="{$PEM_ROOT_URL}index.php?eid={$category.highest_rated_extension.eid}">{'See'|translate} <i class="icon-chevron-right"></i></a>
                     </div>
                   </div>
                 </div>
@@ -116,7 +116,7 @@
                       </div>
                     </div>
                     <div class="col-12 d-flex justify-content-end">
-                      <a class="link" href="{$PEM_ROOT_URL}index.php?eid={$category.most_downloaded_extension.eid}">{'See'|translate} <i class="icon-chevron-right"></i></a>
+                      <a class="link-primary orange-link " href="{$PEM_ROOT_URL}index.php?eid={$category.most_downloaded_extension.eid}">{'See'|translate} <i class="icon-chevron-right"></i></a>
                     </div>
                   </div>
                 </div>
@@ -148,7 +148,7 @@
                       </div>
                     </div>
                     <div class="col-12 d-flex justify-content-end">
-                      <a class="link" href="{$PEM_ROOT_URL}index.php?eid={$category.most_recent_extension.eid}">{'See'|translate} <i class="icon-chevron-right"></i></a>
+                      <a class="link-primary orange-link " href="{$PEM_ROOT_URL}index.php?eid={$category.most_recent_extension.eid}">{'See'|translate} <i class="icon-chevron-right"></i></a>
                     </div>
                   </div>
                 </div>
