@@ -114,11 +114,13 @@
       </span>
 {/if}
 
+      <div class="image-background w-100 h-100 position-relative">
 {if isset($screenshot)}
-      <img class="img-fluid screenshot_image" src="{$screenshot}">
+        <img class="img-fluid extension_image position-absolute vertical-horizontal-align" src="{$screenshot}">
 {else}
-      <img class="img-fluid placeholder_image" src="{$PEM_ROOT_URL_PLUGINS}images/image-solid.svg"> 
+        <i class="icon-image position-absolute vertical-horizontal-align"></i>
 {/if}
+      </div>
     </div>
   </div>
 

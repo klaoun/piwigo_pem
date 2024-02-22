@@ -49,9 +49,8 @@ Borders
 /******
 header Image
 ******/
-#single_view .placeholder_image{
-  margin:0 auto;
-  max-width:50%;
+#single_view .image-background i{
+  font-size:100px;
 }
 
 #single_view .screenshot_image{
@@ -60,6 +59,10 @@ header Image
   max-width:100%;
   object-fit:contain;
   object-position:top center;
+}
+
+#single_view .image-background{
+  height:50vh!important;
 }
 
 /******

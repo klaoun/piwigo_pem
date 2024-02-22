@@ -8,9 +8,10 @@
     <h2>{'Spotlighted'|translate}</h2>
     <div class="col-12 p-3 purple-gradient">
       <div class="row">
-  {if $CATEGORY.spotlight_extension.screenshot}
-        <img class="col-md-2" src="{$CATEGORY.spotlight_extension.screenshot}">
-        <div class="col-md-8">
+        <div class="col-2">
+          <div class="image-background position-relative">
+  {if isset($CATEGORY.spotlight_extension.screenshot)}
+            <img class="img-fluid extension_image position-absolute vertical-horizontal-align" src="{$CATEGORY.spotlight_extension.screenshot}">
   {else}
         <img class="col-md-2" src="{$PEM_DIR}images/image-solid.svg">
         <div class="col-md-8">

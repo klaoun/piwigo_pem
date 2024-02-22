@@ -36,8 +36,15 @@
             <div class="card h-100">
               <div class="row h-100">
                 <div class="col-4 image-column position-relative">
-                  <img class="img-fluid extension_image w-100 pe-3 {if isset($category.spotlight_extension.screenshot_class)}{$category.spotlight_extension.screenshot_class}{/if} "
-                  src="{$category.spotlight_extension.screenshot_src}">
+                  <div class="image-background w-100 h-100 position-relative">
+{if isset($category.spotlight_extension.screenshot_src)}
+                    <img class="img-fluid extension_image w-100" src="{$category.spotlight_extension.screenshot_src}">
+{else}
+                  <div class="image-background">
+                    <i class="icon-image vertical-align vertical-horizontal-align"></i>
+                  </div>
+{/if}
+                  </div>
                 </div>
                 <div class="col-8 d-flex info-column align-content-between flex-wrap">
                   <div class="col-12">
@@ -58,9 +65,14 @@
             <div class="col-12 pb-5 h-100">
               <div class="card h-100">
                 <div class="row h-100">
-                  <div class="col-4 image-column position-relative">
-                    <img class="img-fluid extension_image w-100 pe-3 {if isset($category.highest_rated_extension.screenshot_class)}{$category.highest_rated_extension.screenshot_class}{/if} "
-                      src="{$category.highest_rated_extension.screenshot_src}">
+                <div class="col-4 image-column position-relative">
+                  <div class="image-background w-100 h-100 position-relative">
+{if isset($category.highest_rated_extension.screenshot_src)}
+                    <img class="img-fluid extension_image w-100" src="{$category.highest_rated_extension.screenshot_src}">
+{else}
+                    <i class="icon-image vertical-align vertical-horizontal-align"></i>
+{/if}
+                    </div>
                   </div>
                   <div class="col-8 d-flex info-column align-content-between flex-wrap">
                     <div class="col-12">
@@ -87,8 +99,13 @@
               <div class="card h-100">
                 <div class="row h-100">
                   <div class="col-4 image-column position-relative">
-                    <img class="img-fluid extension_image w-100 pe-3 {if isset($category.most_downloaded_extension.screenshot_class)}{$category.most_downloaded_extension.screenshot_class}{/if} "
-                    src="{$category.most_downloaded_extension.screenshot_src}">
+                    <div class="image-background w-100 h-100 position-relative">
+{if isset($category.most_downloaded_extension.screenshot_src)}
+                      <img class="img-fluid extension_image w-100" src="{$category.most_downloaded_extension.screenshot_src}">
+{else}
+                      <i class="icon-image vertical-align vertical-horizontal-align"></i>               
+{/if}
+                    </div>
                   </div>
                   <div class="col-8 d-flex info-column align-content-between flex-wrap">
                     <div class="col-12">
@@ -113,8 +130,13 @@
               <div class="card h-100">
                 <div class="row h-100">
                   <div class="col-4 image-column position-relative">
-                    <img class="img-fluid extension_image w-100 pe-3 {if isset($category.most_recent_extension.screenshot_class)}{$category.most_recent_extension.screenshot_class}{/if} "
-                    src="{$category.most_recent_extension.screenshot_src}">
+                    <div class="image-background w-100 h-100 position-relative">
+{if isset($category.most_recent_extension.screenshot_src)}
+                      <img class="img-fluid extension_image w-100" src="{$category.most_recent_extension.screenshot_src}">
+{else}
+                      <i class="icon-image position-absolute vertical-horizontal-align"></i>
+{/if}
+                    </div>
                   </div>
                   <div class="col-8 d-flex info-column align-content-between flex-wrap">
                     <div class="col-12">

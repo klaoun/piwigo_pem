@@ -14,6 +14,18 @@ Titles
 }
 
 /******
+Spotlighted extension
+******/
+.spotlighted .image-background{
+  height:150px;
+}
+
+.spotlighted .image-background img{
+  max-width:100%;
+  max-height:100%;
+}
+
+/******
 Content header
 ******/
 
@@ -235,12 +247,8 @@ Extension cards
   margin-right:15px;
 }
 
-.placeholder_image{
-  max-width:200px;
-}
-
-.extension_image_div img{
-  max-height:400px;
+.extension_image_div{
+  height:250px;
 }
 
 /******
