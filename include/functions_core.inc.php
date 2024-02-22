@@ -400,7 +400,6 @@ function get_revision_src($extension_id, $revision_id, $url)
  */
 function get_extension_thumbnail_src($extension_id)
 {
-  global $conf;
   return get_extension_dir($extension_id).'/thumbnail.jpg';
 }
 
@@ -409,7 +408,6 @@ function get_extension_thumbnail_src($extension_id)
  */
 function get_extension_screenshot_src($extension_id)
 { 
-  global $conf;
   return get_extension_dir($extension_id).'/screenshot.jpg';
 }
 
@@ -484,6 +482,8 @@ UPDATE '.PEM_REV_TABLE.'
  * returns the number of downloads for an extension
  */
 function get_download_of_extension($extension_ids) {
+  global $user;
+
   if (count($extension_ids) == 0) {
     return array();
   }
@@ -506,10 +506,21 @@ SELECT
   $result = pwg_query($query);
 
   while ($row = pwg_db_fetch_assoc($result)) {
-    $downloads_of_extension[ $row['extension_id'] ] = $row['sum_downloads'];
+    if("fr_FR" == $user['language'])
+    {
+      $downloads_of_extension[ $row['extension_id'] ] = number_format($row['sum_downloads'], 0, ',', ' ');;
+    }
+    else{
+      $downloads_of_extension[ $row['extension_id'] ] = number_format($row['sum_downloads']);
+    }
   }
 
   return $downloads_of_extension;
+}
+
+function numsize($size,$round=2){
+  $unit=['', 'K', 'M', 'G', 'T'];
+  return round($size/pow(1000,($i=floor(log($size,1000)))),$round).$unit[$i];
 }
 
 /**
