@@ -263,17 +263,17 @@ if (isset($_GET['eid']) && 1 == count($_GET))
 
     $query = '
     SELECT id_link,
-          lt.name,
-          url,
-          description,
-          lt.idx_language as id_lang,
-          it.name as lang,
-          rank
-      FROM '.PEM_LINKS_TABLE.' as lt
-      LEFT JOIN '.PEM_LANG_TABLE.' as it
-        ON lt.idx_language = it.id_language
+          lT.name,
+          lT.url,
+          lT.description,
+          lT.idx_language as id_lang,
+          iT.name as lang,
+          lT.rank
+      FROM '.PEM_LINKS_TABLE.' as lT
+      LEFT JOIN '.PEM_LANG_TABLE.' as iT
+        ON lT.idx_language = iT.id_language
         WHERE idx_extension = '.$current_extension_page_id.'
-        ORDER BY rank ASC
+        ORDER BY lT.rank ASC
     ;';
     $result = pwg_query($query);
 
