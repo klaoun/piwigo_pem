@@ -226,8 +226,8 @@ $lang['Most recent'] = 'Most recent';
 $lang['See all'] = 'See all';
 $lang['See'] = 'See';
 $lang['Edit mode'] = 'Edit mode';
-$lang['Member since:'] = 'Member since:';
-$lang['Extensions by "%s"'] = 'Extensions by "%s"';
+$lang['Member since'] = 'Member since';
+$lang['Extensions by'] = 'Extensions by';
 $lang['Publish date'] = 'Publish date';
 $lang['Last update'] = 'Last update';
 $lang['Rating'] = 'Rating';
@@ -281,6 +281,8 @@ $lang['Edit link'] = 'Edit link';
 $lang['Edit Revision'] = 'Edit Revision';
 $lang['Edit configuration'] = 'Edit configuration';
 $lang['Information'] = 'Information';
+$lang['Compatible with the latest version of Piwigo'] = 'Compatible with the latest version of Piwigo';
+$lang['Not compatible with the latest version of Piwigo'] = 'Not compatible with the latest version of Piwigo';
 
 // For footer
 $lang['Donate'] = 'Donate';
