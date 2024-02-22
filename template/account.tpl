@@ -25,7 +25,7 @@
 
   <section class="section-fluid my-5">
     <div class="row">
-      <div class="col-4 border-right position-relative">
+      <div class="col-6 border-right position-relative">
 {if $can_modify == true}
         <span class="circle-icon edit_mode position-absolute top-0 end-0 translate-middle" data-bs-toggle="modal" data-bs-target="#userInfoModal">
           <i class="icon-pencil"></i>
@@ -34,13 +34,17 @@
         <h3 class="hide-text-overflow-300">{$USER.username}</h3>
        {if isset($USER.group)}<h5>{$USER.group}</h5>{/if }
       </div>
-{if isset($USER.links)}
-      <div class="col-4 border-right">
-      </div>
-{/if}
-      <div class="col-4">
-        <p class="sub-text">{'Member since:'|translate}</p>
-        <p class="d-inline">{$USER.registration_date_formatted}</p><span class="badge blue-badge d-inline">{$USER.member_since}<span>
+      <div class="col-6 d-flex flex-column align-items-start justify-content-evenly">
+        <div class="p-1">
+          <p class="d-inline"><span class="sub-text">{'Member since'|translate}</span>
+            {$USER.registration_date_formatted}<span class="badge blue-badge d-inline">{$USER.member_since}<span>
+          </p>
+        </div>
+        <div class="p-1">
+          <p class="d-inline"><span class="sub-text">Last activity</span>
+            {$USER.registration_date_formatted}<span class="badge blue-badge d-inline">{$USER.member_since}<span>
+          </p>
+        </div>
       </div>
     </div>
   </section>
@@ -49,9 +53,7 @@
     <div class="row">
       <div class="col-12 d-flex justify-content-between">
         <div>
-          <h4 class="d-inline-block m-0">{'Extensions by'|translate} "</h4>
-          <h4 class="hide-text-overflow-300 d-inline-block align-bottom m-0">{$USER.username}</h4>
-          <h4 class="d-inline-block  m-0">" </h4>
+          <h4 class="d-inline-block m-0">{'Extensions'|translate}</h4>
           <span class="badge blue-badge d-inline">{$USER.nb_extensions}</span>
         </div>
 {if $can_modify == true}
@@ -60,7 +62,7 @@
       </div>
 {if isset($extensions) || isset($other_extensions)}
       <div class="col-12 my-5">
-        <table class="table">
+        <table class="table table-striped">
           <thead>
             <tr>
               <th>{'Name'|translate}</th>
