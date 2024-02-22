@@ -19,52 +19,29 @@ class piwigo_pem_maintain extends PluginMaintain
     include(PHPWG_ROOT_PATH.'admin/include/functions_install.inc.php');
     global $prefixeTable, $conf;
 
-    if (empty($conf['pem_conf']))
-    {
-      conf_update_param('pem_conf', $this->default_conf, true);
-    }
-    else
-    {
-      $old_conf = safe_unserialize($conf['pem_conf']);
-
-      conf_update_param('pem_conf', $old_conf, true);
-    }
-
-    // Create tables
-    execute_sqlfile(
-      PHPWG_ROOT_PATH.'plugins/piwigo_pem/install/pem_structure-mysql.sql',
-      'pem_',
-      $prefixeTable.'pem_',
-      'mysql'
-    );
-
     $this->table =  $prefixeTable.'pem_'.'categories';
 
-    // add icon_class to categories table to make displaying categories easier
-    $result = pwg_query('SHOW COLUMNS FROM `'.$this->table.'` LIKE "icon_class";');
-    if (!pwg_db_num_rows($result))
-    {
-      pwg_query('ALTER TABLE `' . $this->table . '` ADD `icon_class` varchar(50);');
-    }
+    //add remind every and last-reminder to user_infos to be able to convert existing pem users into piwigo users
 
-    //add remind every and last-reminder to user_infos to ba able to convert existing pem users into piwigo users
-
-    $this->table =  $prefixeTable.'pem_'.'user_infos';
+    $this->table =  $prefixeTable.'user_infos';
     
-    $result = pwg_query('SHOW COLUMNS FROM `'.$this->table.'` LIKE "remind_every";');
+    $result = pwg_query('SHOW COLUMNS FROM `'.$this->table.'` LIKE "pem_remind_every";');
     if (!pwg_db_num_rows($result))
     {
-      pwg_query('ALTER TABLE `' . $this->table . '` ADD `remind_every` ENUM (`day`,`week`,`month`)  default `week`;');
+      pwg_query('ALTER TABLE `' . $this->table . '` ADD `pem_remind_every` ENUM ("day","week","month")  default "week";');
     }
 
-    $result = pwg_query('SHOW COLUMNS FROM `'.$this->table.'` LIKE "last_reminder";');
+    $result = pwg_query('SHOW COLUMNS FROM `'.$this->table.'` LIKE "pem_last_reminder";');
     if (!pwg_db_num_rows($result))
     {
-      pwg_query('ALTER TABLE `' . $this->table . '` ADD `last_reminder` DATETIME;');
+      pwg_query('ALTER TABLE `' . $this->table . '` ADD `pem_last_reminder` DATETIME;');
     }
 
     // Convert pem users to piwigo user, only to be called on first install of PEM plugin with and exisiting database
-    // include( PHPWG_ROOT_PATH.'plugins/piwigo_pem/include/convert_users.inc.php');
+    if(isset($_GET['convert_users']) and $conf['start_converting_users'] == $_GET['convert_users'])
+    {
+      include( PHPWG_ROOT_PATH.'plugins/piwigo_pem/include/convert_users.inc.php');
+    }
   }
 
   /**
