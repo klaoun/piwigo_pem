@@ -306,103 +306,103 @@ function detectLang()
   });
 }
 
-  // Script used for editing link modal
-  // The link data is saved in the data attributes of the edit button, 
-  // This data is added to the modal on the modal show when thue button is clicked
-  const editLinkModal = document.getElementById('editLinkModal');
+// Script used for editing link modal
+// The link data is saved in the data attributes of the edit button, 
+// This data is added to the modal on the modal show when thue button is clicked
+const editLinkModal = document.getElementById('editLinkModal');
 
-  editLinkModal.addEventListener('show.bs.modal', event => {
-    const buttonEditLink = event.relatedTarget
-    // Extract info from data-bs-* attributes
-    const linkId = buttonEditLink.getAttribute('data-bs-link-id')
-    const linkName = buttonEditLink.getAttribute('data-bs-link-name')
-    const linkURL = buttonEditLink.getAttribute('data-bs-link-url')
-    const linkLang = buttonEditLink.getAttribute('data-bs-link-lang')
+editLinkModal.addEventListener('show.bs.modal', event => {
+  const buttonEditLink = event.relatedTarget
+  // Extract info from data-bs-* attributes
+  const linkId = buttonEditLink.getAttribute('data-bs-link-id')
+  const linkName = buttonEditLink.getAttribute('data-bs-link-name')
+  const linkURL = buttonEditLink.getAttribute('data-bs-link-url')
+  const linkLang = buttonEditLink.getAttribute('data-bs-link-lang')
 
-    // Get the modal's input
-    const modalLinkID= editLinkModal.querySelector('#link_id')
-    const modalLinkName = editLinkModal.querySelector('#link_name')
-    const modalLinkUrl= editLinkModal.querySelector('#link_url')
-    const modalLinkLang= editLinkModal.querySelector('#link_language')
+  // Get the modal's input
+  const modalLinkID= editLinkModal.querySelector('#link_id')
+  const modalLinkName = editLinkModal.querySelector('#link_name')
+  const modalLinkUrl= editLinkModal.querySelector('#link_url')
+  const modalLinkLang= editLinkModal.querySelector('#link_language')
 
-    // Update the modal's content.
-    modalLinkID.value = linkId
-    modalLinkName.value = linkName
-    modalLinkUrl.value = linkURL
-    modalLinkLang.value = linkLang
-  });
+  // Update the modal's content.
+  modalLinkID.value = linkId
+  modalLinkName.value = linkName
+  modalLinkUrl.value = linkURL
+  modalLinkLang.value = linkLang
+});
 
-  // Script used for editing revision modal
-  // The link data is saved in the data attributes of the edit button, 
-  // This data is added to the modal on the modal show when thue button is clicked
-  // const editRevisionModal = document.getElementById('revisionInfoModal');
-  const editRevisionModal = document.getElementById('revisionInfoModal');
-  editRevisionModal.addEventListener('show.bs.modal', event => {
+// Script used for editing revision modal
+// The link data is saved in the data attributes of the edit button, 
+// This data is added to the modal on the modal show when thue button is clicked
+// const editRevisionModal = document.getElementById('revisionInfoModal');
+const editRevisionModal = document.getElementById('revisionInfoModal');
+editRevisionModal.addEventListener('show.bs.modal', event => {
 
-    const buttonEditRev = event.relatedTarget
+  const buttonEditRev = event.relatedTarget
 
-    // Extract info from data-bs-* attributes
-    const revId = buttonEditRev.getAttribute('data-bs-rev_id')
-    const revVersionName = buttonEditRev.getAttribute('data-bs-rev_version_name')
-    const revDescription = buttonEditRev.getAttribute('data-bs-rev_description')
-    const revDescriptionLang = buttonEditRev.getAttribute('data-bs-rev_description_lang')
-    const revDefaultDescription = buttonEditRev.getAttribute('data-bs-rev_default_description')
-    const revDefaultDescriptionLang = buttonEditRev.getAttribute('data-bs-rev_default_description_lang')
-    const revVersionsCompatible = buttonEditRev.getAttribute('data-bs-rev_versions_compatible')
-    const revAuthor = buttonEditRev.getAttribute('data-bs-rev_author')
-    const arrayRevVersionsCompatible = revVersionsCompatible.split(',')
-    jQuery(arrayRevVersionsCompatible).each(function(i) {
-      arrayRevVersionsCompatible[i] = parseInt(arrayRevVersionsCompatible[i])
-    })
-    const current_rev_edit = buttonEditRev.getAttribute('data-bs-rev_id')
-
-
-    // Get the modal's input
-    const modalRevId= editRevisionModal.querySelector('#rid')
-    const modalRevVersion= editRevisionModal.querySelector('#revision_version')
-    const modalRevDescriptionLang= editRevisionModal.querySelector('#revision_lang_desc_select')
-
-    // Fills inputs 
-    modalRevId.value = revId
-    modalRevVersion.value = revVersionName
-    jQuery('#author_'+revAuthor).prop('checked', true);
+  // Extract info from data-bs-* attributes
+  const revId = buttonEditRev.getAttribute('data-bs-rev_id')
+  const revVersionName = buttonEditRev.getAttribute('data-bs-rev_version_name')
+  const revDescription = buttonEditRev.getAttribute('data-bs-rev_description')
+  const revDescriptionLang = buttonEditRev.getAttribute('data-bs-rev_description_lang')
+  const revDefaultDescription = buttonEditRev.getAttribute('data-bs-rev_default_description')
+  const revDefaultDescriptionLang = buttonEditRev.getAttribute('data-bs-rev_default_description_lang')
+  const revVersionsCompatible = buttonEditRev.getAttribute('data-bs-rev_versions_compatible')
+  const revAuthor = buttonEditRev.getAttribute('data-bs-rev_author')
+  const arrayRevVersionsCompatible = revVersionsCompatible.split(',')
+  jQuery(arrayRevVersionsCompatible).each(function(i) {
+    arrayRevVersionsCompatible[i] = parseInt(arrayRevVersionsCompatible[i])
+  })
+  const current_rev_edit = buttonEditRev.getAttribute('data-bs-rev_id')
 
 
-    if(revDescription != revDefaultDescriptionLang)
-    {
-      const modalRevDefaultDescription= editRevisionModal.querySelector('#desc_'+revDefaultDescriptionLang)
-      jQuery(modalRevDefaultDescription).val(revDefaultDescription).change()
-      jQuery(modalRevDescriptionLang).val(revDefaultDescriptionLang).change()
+  // Get the modal's input
+  const modalRevId= editRevisionModal.querySelector('#rid')
+  const modalRevVersion= editRevisionModal.querySelector('#revision_version')
+  const modalRevDescriptionLang= editRevisionModal.querySelector('#revision_lang_desc_select')
 
-      const modalRevDescription= editRevisionModal.querySelector('#desc_'+revDescriptionLang)
-      jQuery(modalRevDescription).val(revDescription).change()
-      jQuery(modalRevDescriptionLang).val(revDescriptionLang).change()
-    }
-    else
-    {
-      const modalRevDescription= editRevisionModal.querySelector('#desc_'+revDescriptionLang)
-      jQuery(modalRevDescription).val(revDescription).change()
-      jQuery(modalRevDescriptionLang).val(revDescriptionLang).change()
-    }
+  // Fills inputs 
+  modalRevId.value = revId
+  modalRevVersion.value = revVersionName
+  jQuery('#author_'+revAuthor).prop('checked', true);
 
-    jQuery('#revisionInfoModal .revison_languages').selectize({
-      plugins: ["remove_button"],
-      items : all_revision_languages[current_rev_edit],
-      valueField: 'id_language',
-      labelField: 'name',
-      searchField: 'name',
-      maxItems: null,
-      options:ALL_LANGUAGES,
-    })
 
-    jQuery('#revisionInfoModal .revision_compatible_versions').selectize({
-      plugins: ["remove_button"],
-      items:arrayRevVersionsCompatible,
-      valueField: 'id_version',
-      labelField: 'version',
-      searchField: 'version',
-      maxItems: null,
-      options:VERSIONS_PWG,
-    })
+  if(revDescription != revDefaultDescriptionLang)
+  {
+    const modalRevDefaultDescription= editRevisionModal.querySelector('#desc_'+revDefaultDescriptionLang)
+    jQuery(modalRevDefaultDescription).val(revDefaultDescription).change()
+    jQuery(modalRevDescriptionLang).val(revDefaultDescriptionLang).change()
 
-  });
+    const modalRevDescription= editRevisionModal.querySelector('#desc_'+revDescriptionLang)
+    jQuery(modalRevDescription).val(revDescription).change()
+    jQuery(modalRevDescriptionLang).val(revDescriptionLang).change()
+  }
+  else
+  {
+    const modalRevDescription= editRevisionModal.querySelector('#desc_'+revDescriptionLang)
+    jQuery(modalRevDescription).val(revDescription).change()
+    jQuery(modalRevDescriptionLang).val(revDescriptionLang).change()
+  }
+
+  jQuery('#revisionInfoModal .revison_languages').selectize({
+    plugins: ["remove_button"],
+    items : all_revision_languages[current_rev_edit],
+    valueField: 'id_language',
+    labelField: 'name',
+    searchField: 'name',
+    maxItems: null,
+    options:ALL_LANGUAGES,
+  })
+
+  jQuery('#revisionInfoModal .revision_compatible_versions').selectize({
+    plugins: ["remove_button"],
+    items:arrayRevVersionsCompatible,
+    valueField: 'id_version',
+    labelField: 'version',
+    searchField: 'version',
+    maxItems: null,
+    options:VERSIONS_PWG,
+  })
+
+});
