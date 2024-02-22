@@ -17,6 +17,12 @@ DELETE FROM '.USERS_TABLE.'
 
 pwg_query($query);
 
+$query = '
+DELETE FROM '.USER_INFOS__TABLE.'
+  WHERE id IN (1,2)';
+
+pwg_query($query);
+
 //Recreate guest user with different id
 $inserts = array(
   array(
@@ -46,6 +52,7 @@ $user_ids = array();
 //For each user add to piwigo users with original ids
 foreach($result as $user)
 {
+  $temp_user = array();
   $temp_user['id'] = $user['id_user'];
   $temp_user['username'] = $user['username'];
   $temp_user['password'] = $user['password'];
@@ -54,7 +61,6 @@ foreach($result as $user)
   $inserts[$temp_user['id']] = $temp_user;
 
   array_push($user_ids, $temp_user['id']);
-  $temp_user = array();
 }
 
 //Insert all pem users into piwigo users table
@@ -78,6 +84,7 @@ $result = query2array($query);
 
 foreach($result as $user)
 {
+  $temp_user = array();
   $temp_user['user_id'] = $user['idx_user'];
 
   //check user Id and set status accordingly
@@ -129,6 +136,5 @@ foreach($result as $user)
     array('user_id' => $temp_user['user_id'])
   );
 
-  $temp_user = array();
 }
 
