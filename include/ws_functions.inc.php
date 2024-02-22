@@ -378,7 +378,6 @@ function ws_pem_extensions_get_list($params, &$service)
     array_push(
       $revisions,
       array(
-        'revision_id' => $revision_id,
         'extension_id' => $extension_id,
         'extension_name' => $extension_infos_of[$extension_id]['name'],
         'rating_score' => $extension_infos_of[$extension_id]['rating_score'],
@@ -406,16 +405,11 @@ function ws_pem_extensions_get_list($params, &$service)
         'screenshot_url' => $screenshot_infos
           ? $screenshot_infos['screenshot_url']
           : null,
-        'revision_url' => sprintf(
-          'extension_view.php?eid=%u&amp;rid=%u#rev%u',
-          $extension_id,
-          $revision_id,
-          $revision_id
-          ),
         'downloads' => isset($download_of_extension[$extension_id]) ?
                         $download_of_extension[$extension_id] : 0,
         'categories' => $categories_of_extension[$extension_id],
-        'tags' => empty($tags_of_extension[$extension_id]) ? array() : $tags_of_extension[$extension_id] ,
+        'tags' => empty($tags_of_extension[$extension_id]) ? array() : $tags_of_extension[$extension_id],
+        'revision_name' => $revision_infos_of[$revision_id]['version'],
       )
     );
   }
@@ -764,7 +758,6 @@ function ws_pem_extensions_delete_author($params, &$service)
     die('missing user id');
   }
 
-  
   $eid = $params['extension_id'];
   $uid = $params['user_id'];
 

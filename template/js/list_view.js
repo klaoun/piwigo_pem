@@ -252,6 +252,12 @@ function getExtensionList(cid) {
             //Fill extension card line with info
             jQuery('#extension_'+extension_id+' .extension_name').text(this.extension_name);
 
+            //If extension has a revision
+            if(this.revision_name != null)
+            {
+              jQuery('#extension_'+extension_id+' .extension_name').append( "<span class='badge blue-badge'>"+this.revision_name+"</span>"); 
+            }
+
             //add authors, there can be multiple, that is the reason for the foreach
             $.each(this.authors, function(key, value) 
             {
