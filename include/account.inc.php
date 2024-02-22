@@ -130,8 +130,8 @@ SELECT
   $current_user_page_infos = get_user_infos_of(explode(' ', $current_user_page_id));
   $current_user_page_infos = $current_user_page_infos[$current_user_page_id];
 
-  $registration_date_formatted = format_date($current_user_page_infos['registration_date']);
-  $member_since = time_since($current_user_page_infos['registration_date'], $stop='month');
+  $registration_date_formatted = format_date($current_user_page_infos['registration_date'], array('month','year'));
+  $member_since = time_since($current_user_page_infos['registration_date'], $stop='year');
 
   // $current_user_page_infos['username'] = $user['username']; 
   $current_user_page_infos['registration_date_formatted'] = $registration_date_formatted;
@@ -139,7 +139,7 @@ SELECT
 
   // Assign user info to tpl
   if(in_array($current_user_page_id , $conf['admin_users'])){
-    $current_user_page_infos['group'] = 'Piwigo team <img class="certification_blue" src="'.get_absolute_root_url() . PEM_PATH.'images/CertificationBlue.svg"/>';
+    $current_user_page_infos['group'] = 'Piwigo team <img class="certification_pink" src="'.get_absolute_root_url() . PEM_PATH.'images/CertificationPink.svg"/>';
   }
   else if (in_array($current_user_page_id , $conf['translator_users']))
   {
