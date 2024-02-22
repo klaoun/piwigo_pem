@@ -48,8 +48,6 @@ SELECT
     // Set number of extensions for this category
     $current_category_page_info['extension_count'] = pem_extensions_get_count($current_category_page_id);
 
-    $current_category_page_info['name_plural_EN'] = $current_category_page_info['name'].'s';
-
     //Get spotlighted extension, exclude languages
     $pem_spotlight_extensions_ids = conf_get_param('pem_spotlight_extensions',array());
 

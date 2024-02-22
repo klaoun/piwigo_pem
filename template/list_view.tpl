@@ -1,7 +1,7 @@
 <link rel="stylesheet" type="text/css" href="{$PEM_ROOT_URL_PLUGINS}styles/css/list_view.css">
 
 {*Start of list_view tpl*}
-<div id="list_view" class="container">
+<div id="list_view" class="container category-{$CATEGORY.cid}">
 
 {if isset($SPOTLIGHTED)}
   <div class="col-12 py-4 spotlighted">
@@ -13,9 +13,11 @@
   {if isset($CATEGORY.spotlight_extension.screenshot)}
             <img class="img-fluid extension_image position-absolute vertical-horizontal-align" src="{$CATEGORY.spotlight_extension.screenshot}">
   {else}
-        <img class="col-md-2" src="{$PEM_DIR}images/image-solid.svg">
-        <div class="col-md-8">
+            <i class="icon-image position-absolute vertical-horizontal-align"></i>
   {/if}
+          </div>
+        </div>
+        <div class="col-md-8">
           <h3>{$CATEGORY.spotlight_extension.name}</h3>
           <p class="description">{$CATEGORY.spotlight_extension.description}</p>
         </div>
@@ -39,9 +41,9 @@
           <option value="a_z">{'A to Z'|translate}</option>
           <option value="z_a">{'Z to A'|translate}</option>
       </select>
-      <div class="form-inline  cid-search-form">
+      <div class="form-inline  cid-search-form ">
         <i class="icon-magnifying-glass"></i>
-        <input id="cid-search" class="form-control mr-sm-2" placeholder="{'Search'|translate}" aria-label="Search">
+        <input id="cid-search" class="form-control me-0" placeholder="{'Search'|translate}" aria-label="Search">
       </div>
     </div>
   </div>
@@ -88,41 +90,51 @@
     </div>
   </div>
 
-  <div class="extensions_container">
+  <div class="extensions_container row">
 
     <div class="d-flex justify-content-center spinner">
       <div class="spinner-border" role="status"></div>
       <span class="sr-only ms-3 align-middle">{'Loading...'|translate}</span>
     </div>
 
-    <div class="extension_info card" id="jango_fett">
+    <div class="extension_info {if {$CATEGORY.cid} == 8}col-6 align-self-stretch{else}col-12{/if}" id="jango_fett">
+      <div class="card">
       <div class="row card-body">
 
-        <div class="col col-4 text-center extension_image_container">
-          <div class="extension_image_div">
+    {if {$CATEGORY.cid} != 8}
+        <div class="col col-4 text-center extension_image_container ps-0">
+          <div class="extension_image_div h-100">
+            <div class="image-background w-100 h-100 position-relative">
+            </div>
           </div>
         </div>
+    {/if}
 
-        <div class="col col-3">
+        <div class="col {if {$CATEGORY.cid} == 8}col-4 {else}col-4{/if}">
           <h5 class="card-title extension_name my-2"></h5>
-          <div class="card-text extension_authors my-2 hide-text-overflow-150  "></div>
+          <div class="card-text extension_authors my-2"></div>
           <div class="extension_score my-2"></div>
           <div class="d-flex my-2"><i class="icon-download"></i><p class="card-text extension_number_downloads"></p></div>
         </div>
 
-        <div class="col col-5 extension_description_container">
-          <p class="card-text extension_description"></p>
-          <a class="more_info_link" href="{$PEM_ROOT_URL}index.php?eid=" >
-            <button class="btn btn-primary">{'Discover this %s'|translate:{$CATEGORY.name}}</button>
-          </a>
+        <div class="col {if {$CATEGORY.cid} == 8}col-8{else}col-4{/if} extension_description_container">
+          <div class="d-flex flex-column  h-100">
+            <p class="card-text extension_description "></p>
+            <div class="d-flex justify-content-end mt-auto">
+              <a class="more_info_link" href="{$PEM_ROOT_URL}index.php?eid=" >
+                <button class="btn btn-primary">{'Discover'|translate}</button>
+              </a>
+            </div>
+          </div>
         </div>
 
+      </div>
       </div>
     </div>
 
   </div>
 
-  <div class="pagination text-center justify-content-center">
+  <div class="pagination text-center justify-content-center mt-5">
     <a class="align-middle d-none" id="previous_page" href="{$PEM_ROOT_URL}index.php?" ><i class="icon-chevron-left"></i></a>
     <div class="page_buttons align-middle">
     </div>
