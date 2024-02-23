@@ -18,9 +18,9 @@
 // | USA.                                                                  |
 // +-----------------------------------------------------------------------+
 
-// define('INTERNAL', true);
-// $root_path = '../';
-// require_once($root_path.'include/common.inc.php');
+define('INTERNAL', true);
+$root_path = '../';
+require_once($root_path.'include/common.inc.php');
 
 $query = '
 SELECT
