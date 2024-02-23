@@ -130,25 +130,25 @@
   <section class="mt-5 pt-3 section-fluid">
     <div class="text-center">
 {if isset($extension_downloads)}
-      <div class="px-3 py-2 d-inline-block">
-        <span><i class="icon-download"></i>{$extension_downloads}</span>
+      <div class="px-3 py-1 d-inline-block">
+        <span><i class="icon-download me-1"></i>{$extension_downloads}</span>
       </div>
 {/if}
 {if isset($rate_summary.rating_score)}
-      <div class="px-3 py-2 border-left d-inline-block">
+      <div class="px-3 py-1 border-left d-inline-block">
         {$rate_summary.rating_score}
       </div>
 {/if}
       <div class="px-3 py-2 border-left d-inline-block">
 {if isset($latest_compatible_version) && $latest_compatible_version == $pwg_latest_version.version} 
-        <span><i class="icon-check green-font"></i>{'Compatible with the latest version of Piwigo'|translate}</span>
+        <span><i class="icon-check green-font me-1"></i>{'Compatible with the latest version of Piwigo'|translate}</span>
 {else}
-        <span><i class="icon-cross red-font"></i>{'Not compatible with the latest version of Piwigo'|translate}</span>
+        <span><i class="icon-cross red-font me-1"></i>{'Not compatible with the latest version of Piwigo'|translate}</span>
 {/if}
       </div>
 {if isset($first_date)}
-      <div class="px-3 py-2 border-left d-inline-block">
-        <span><i class="icon-rocket"></i>{$first_date}</span>
+      <div class="px-3 py-1 border-left d-inline-block">
+        <span><i class="icon-rocket me-1"></i>{$first_date}</span>
   {if isset($first_date_formatted_since)}
         <span class='badge blue-badge d-inline ms-2'>{$first_date_formatted_since}</span>
   {/if}
@@ -183,7 +183,7 @@
 
       <div class="my-3">
         <button class="btn btn-tertiary" data-bs-toggle="modal" data-bs-target="#addLinkModal">
-          <i class="icon-link"></i>{'Add a link'|translate}
+          <i class="icon-link me-2"></i>{'Add a link'|translate}
         </button>
       </div>
 
