@@ -18,9 +18,7 @@
 // | USA.                                                                  |
 // +-----------------------------------------------------------------------+
 
-define('INTERNAL', true);
 $root_path = '../';
-require_once($root_path.'include/common.inc.php');
 
 function ajax_reply()
 {
@@ -67,7 +65,7 @@ if (isset($page['rid'])) {
   $query = '
 SELECT
     *
-  FROM '.REV_TABLE.'
+  FROM '.PEM_REV_TABLE.'
   WHERE id_revision = '.$page['rid'].'
 ;';
   $result = $db->query($query);
@@ -120,7 +118,7 @@ $page['ref_revision_id'] = null;
 $query = '
 SELECT
     id_revision
-  FROM '.REV_TABLE.'
+  FROM '.PEM_REV_TABLE.'
   WHERE idx_extension = '.$page['eid'];
 
 if (isset($revision)) {
@@ -148,7 +146,7 @@ SELECT
     id_language,
     code,
     name
-  FROM '.LANG_TABLE.'
+  FROM '.PEM_LANG_TABLE.'
 ;';
 $result = pwg_query($query);
 while ($row = mysql_fetch_assoc($result)) {
@@ -166,8 +164,8 @@ $languages_old = array();
 $query = '
 SELECT
     code
-  FROM '.REV_LANG_TABLE.'
-    JOIN '.LANG_TABLE.' ON idx_language = id_language
+  FROM '.PEM_REV_LANG_TABLE.'
+    JOIN '.PEM_LANG_TABLE.' ON idx_language = id_language
   WHERE idx_revision = '.$page['ref_revision_id'].'
 ;';
 $result = pwg_query($query);
@@ -187,8 +185,8 @@ $query = '
 SELECT
     svn_url,
     git_url
-  FROM '.EXT_TABLE.'
-    JOIN '.REV_TABLE.' ON id_extension = idx_extension
+  FROM '.PEM_EXT_TABLE.'
+    JOIN '.PEM_REV_TABLE.' ON id_extension = idx_extension
   WHERE id_revision = '.$page['ref_revision_id'].'
 ;';
 $result = pwg_query($query);

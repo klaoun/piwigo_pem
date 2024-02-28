@@ -18,10 +18,6 @@
 // | USA.                                                                  |
 // +-----------------------------------------------------------------------+
 
-define('INTERNAL', true);
-$root_path = '../';
-require_once($root_path.'include/common.inc.php');
-
 // if a category_id is given, it will say the number of extensions available
 // for each version, but all versions are returned.
 
@@ -37,12 +33,12 @@ $query = '
 SELECT
     idx_version,
     COUNT(DISTINCT(r.idx_extension)) AS counter
-  FROM '.COMP_TABLE.' AS c
-    JOIN '.REV_TABLE.' AS r ON r.id_revision = c.idx_revision';
+  FROM '.PEM_COMP_TABLE.' AS c
+    JOIN '.PEM_REV_TABLE.' AS r ON r.id_revision = c.idx_revision';
 if (isset($category_id)) {
   $query.= '
-    JOIN '.EXT_TABLE.' AS e ON e.id_extension = r.idx_extension
-    JOIN '.EXT_CAT_TABLE.'  AS ec ON ec.idx_extension = e.id_extension
+    JOIN '.PEM_EXT_TABLE.' AS e ON e.id_extension = r.idx_extension
+    JOIN '.PEM_EXT_CAT_TABLE.'  AS ec ON ec.idx_extension = e.id_extension
   WHERE idx_category = '.$category_id.'
 ';
 }
@@ -55,7 +51,7 @@ $query = '
 SELECT
     id_version,
     version
-  FROM '.VER_TABLE.'
+  FROM '.PEM_VER_TABLE.'
 ;';
 $versions = array_reverse(
   versort(

@@ -18,10 +18,6 @@
 // | USA.                                                                  |
 // +-----------------------------------------------------------------------+
 
-define('INTERNAL', true);
-$root_path = '../';
-require_once($root_path.'include/common.inc.php');
-
 $page['nb_extensions'] = 10;
 
 // TODO: shouldn't this web API method be in get_revision_list.php? (with
@@ -66,7 +62,7 @@ SELECT
     r.idx_extension,
     MAX(r.id_revision) AS id_revision,
     MAX(r.date) AS max_date
-  FROM '.REV_TABLE.' r';
+  FROM '.PEM_REV_TABLE.' r';
 if (isset($page['filtered_extension_ids'])) {
   if (count($page['filtered_extension_ids']) > 0) {
     $query.= '

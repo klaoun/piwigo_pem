@@ -18,15 +18,11 @@
 // | USA.                                                                  |
 // +-----------------------------------------------------------------------+
 
-define('INTERNAL', true);
-$root_path = '../';
-require_once($root_path.'include/common.inc.php');
-
 $query = '
 SELECT
     idx_category,
     COUNT(*) AS counter
-  FROM '.EXT_CAT_TABLE.'
+  FROM '.PEM_CAT_TABLE.'
   GROUP BY idx_category
 ;';
 $nb_ext_of_category = query2array($query, 'idx_category', 'counter');
@@ -36,8 +32,8 @@ SELECT
     id_category AS id,
     c.name AS default_name,
     ct.name    
-  FROM '.CAT_TABLE.' AS c
-  LEFT JOIN '.CAT_TRANS_TABLE.' AS ct
+  FROM '.PEM_CAT_TABLE.' AS c
+  LEFT JOIN '.PEM_CAT_TRANS_TABLE.' AS ct
     ON c.id_category = ct.idx_category
     AND ct.idx_language = '.$_SESSION['language']['id'].'
   ORDER BY name ASC

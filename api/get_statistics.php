@@ -30,9 +30,6 @@
 // - list of 10 most popular extensions, with extension id and number of downloads
 // - list of 10 most active extensions, with extension id and number of revisions
 
-define('INTERNAL', true);
-$root_path = '../';
-require_once($root_path.'include/common.inc.php');
 
 // +-----------------------------------------------------------------------+
 // |                              functions                                |
@@ -83,7 +80,7 @@ if (count($filter) > 0) {
 $query = '
 SELECT
     COUNT(*)
-  FROM '.EXT_TABLE;
+  FROM '.PEM_EXT_TABLE;
 
 if (count($filter) > 0) {
   $query.= '
@@ -101,7 +98,7 @@ list($output['nb_extensions']) = pwg_db_fetch_row(pwg_query($query));
 $query = '
 SELECT
     COUNT(*)
-  FROM '.REV_TABLE;
+  FROM '.PEM_REV_TABLE;
 
 if (count($filter) > 0) {
   $query.= '
@@ -120,7 +117,7 @@ list($output['nb_revisions']) = pwg_db_fetch_row(pwg_query($query));
 $query = '
 SELECT
     DISTINCT(idx_user)
-  FROM '.EXT_TABLE;
+  FROM '.PEM_EXT_TABLE;
 
 if (count($filter) > 0) {
   $query.= '
@@ -139,11 +136,11 @@ $output['contributor_ids'] = $contributor_ids;
 $query = '
 SELECT
     COUNT(*)
-  FROM '.DOWNLOAD_LOG_TABLE;
+  FROM '.PEM_DOWNLOAD_LOG_TABLE;
 
 if (count($filter) > 0) {
   $query.= '
-    JOIN '.REV_TABLE.' ON idx_revision = id_revision
+    JOIN '.PEM_REV_TABLE.' ON idx_revision = id_revision
   WHERE idx_extension IN ('.$page['filtered_extension_ids_string'].')';
 }
   
@@ -163,8 +160,8 @@ $query = '
 SELECT
     idx_user,
     COUNT(*) AS counter
-  FROM '.REV_TABLE.'
-   JOIN '.EXT_TABLE.' ON idx_extension = id_extension';
+  FROM '.PEM_REV_TABLE.'
+   JOIN '.PEM_EXT_TABLE.' ON idx_extension = id_extension';
 
 if (count($filter) > 0) {
   $query.= '
@@ -211,8 +208,8 @@ SELECT
     e.name,
     MAX(r.id_revision) AS id_revision,
     MAX(r.date) AS max_date
-  FROM '.REV_TABLE.' r
-    JOIN '.EXT_TABLE.' e ON id_extension = idx_extension';
+  FROM '.PEM_REV_TABLE.' r
+    JOIN '.PEM_EXT_TABLE.' e ON id_extension = idx_extension';
 if (count($filter) > 0) {
     $query.= '
   WHERE idx_extension IN ('.$page['filtered_extension_ids_string'].')';
@@ -262,7 +259,7 @@ else {
   $query = '
 SELECT
     id_extension
-  FROM '.EXT_TABLE.'
+  FROM '.PEM_EXT_TABLE.'
 ;';
   $extension_ids = query2array($query, null, 'id_extension');
 }
@@ -303,8 +300,8 @@ SELECT
     r.idx_extension,
     e.name,
     COUNT(*) AS counter
-  FROM '.REV_TABLE.' r
-    JOIN '.EXT_TABLE.' e ON id_extension = idx_extension';
+  FROM '.PEM_REV_TABLE.' r
+    JOIN '.PEM_EXT_TABLE.' e ON id_extension = idx_extension';
 if (count($filter) > 0) {
     $query.= '
   WHERE idx_extension IN ('.$page['filtered_extension_ids_string'].')';
