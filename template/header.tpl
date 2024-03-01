@@ -7,7 +7,7 @@
 
     {* Bootstrap CSS *}
     <link rel="stylesheet" type="text/css" href="{$PEM_ROOT_URL_PLUGINS}vendor/bootstrap/css/bootstrap.min.css">
-    <link rel="stylesheet" type="text/css" href="{$PEM_ROOT_URL_PLUGINS}fonts/open-sans/open-sans.css">
+    <link rel="stylesheet" type="text/css" href="{$PEM_ROOT_URL}admin/themes/default/fonts/open-sans/open-sans.css">
 
     {* Jquery *}
     <script src="{$PEM_ROOT_URL_PLUGINS}vendor/jquery/jquery-3.6.0.min.js"></script>
