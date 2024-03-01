@@ -98,7 +98,6 @@ DELETE
       $post_type ='added';
     }
 
-
     // Insert translations
     $inserts = array();
     if (isset($_POST['extension_descriptions']))
@@ -156,9 +155,15 @@ DELETE
       mass_inserts(PEM_EXT_TAG_TABLE, array_keys($inserts[0]), $inserts);
     }
     
+    $message = l10n('Extension successfully '.$post_type.'.');
+    if ("add_ext" == $_POST['pem_action'])
+    {
+      $message .= ' <a href ="'.get_root_url().'index.php?eid='.$current_extension_page_id.'">See it here</a>';
+    }
+
     $template->assign(
       array(
-        'MESSAGE' => 'Extension successfuly '.$post_type.'.',
+        'MESSAGE' => $message,
         'MESSAGE_TYPE' => 'success'
       )
     );
