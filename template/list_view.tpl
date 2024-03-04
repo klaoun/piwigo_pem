@@ -33,6 +33,7 @@
     <h4>{"%ss"|translate:$CATEGORY.name}<span class='badge blue-badge'>{$CATEGORY.extension_count}</span>
     </h4>
     <div class="d-flex filter_section">
+      <span id="filtered_extensions_number"></span>
       <div class="filter_tab mx-2 hover-pointer" onclick="toggleFilter()"><h5>{'Filter'|translate}</h5></div>
       <label for="sort_order">{'Sort order'|translate}</label>
       <select name="sort_order" id="sort_order" class="form-control hover-pointer">
@@ -111,10 +112,17 @@
     {/if}
 
         <div class="col {if {$CATEGORY.cid} == 8}col-4 {else}col-4{/if}">
-          <h5 class="card-title extension_name my-2"></h5>
+          <a class="extension_name_link" href="{$PEM_ROOT_URL}index.php?eid=" >
+            <h5 class="card-title extension_name my-2">
+              <span class='badge blue-badge revision_name {if {$CATEGORY.cid} == 8}d-none{/if}'></span>
+            </h5>
+          </a>
           <div class="card-text extension_authors my-2"></div>
           <div class="extension_score my-2"></div>
-          <div class="d-flex my-2"><i class="icon-download"></i><p class="card-text extension_number_downloads"></p></div>
+          <div class="d-flex my-2">
+            <i class="icon-download"></i><p class="card-text extension_number_downloads"></p>
+          </div>
+          <div class="d-flex my-2 piwigo-compatibility"></div>
         </div>
 
         <div class="col {if {$CATEGORY.cid} == 8}col-8{else}col-4{/if} extension_description_container">
@@ -150,6 +158,8 @@ var PEM_NO_EXTENSIONS =  `{$PEM_NO_EXTENSIONS}`;
 var PEM_ROOT_URL = '{$PEM_ROOT_URL}';
 var PEM_ROOT_URL_PLUGINS = '{$PEM_ROOT_URL_PLUGINS}';
 
+// Variables for translation
+const FILTERED_EXTENSIONS = `{"filtered extensions"|translate|escape:javascript}`;
 
 </script>
 

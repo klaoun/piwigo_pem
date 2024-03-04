@@ -11,7 +11,11 @@ jQuery(document).ready(function () {
   var filter_version = sessionStorage.getItem("filter_version") ? sessionStorage.getItem("filter_version") : null;
   var filter_authors = sessionStorage.getItem("filter_authors") ? sessionStorage.getItem("filter_authors") : null;
   var filter_tags = sessionStorage.getItem("filter_tags") ? sessionStorage.getItem("filter_tags") : null;
-  var filter_search = sessionStorage.getItem("filter_search") ? sessionStorage.getItem("filter_search") : null;
+  
+  if(sessionStorage.getItem("filter_search") != null && sessionStorage.getItem("filter_search").length > 2)
+  {
+    var filter_search = sessionStorage.getItem("filter_search") ? sessionStorage.getItem("filter_search") : null;
+  }
 
   // if we change category page reset filters
   if(storedcid != cid){
@@ -51,7 +55,7 @@ jQuery(document).ready(function () {
     jQuery('.filter_tab').addClass("toggled");
   }
 
-  if(filter_search != null)
+  if(filter_search != null && filter_search.length > 2)
   {
     jQuery("#cid-search").val(filter_search).change()
   }
@@ -93,25 +97,30 @@ jQuery(document).ready(function () {
 
   //For word search 
   jQuery("#cid-search").on('keyup', function(e) {
-    
+    emptyContent()
+    updatePageParam()
+    // Ajax request to get all extension information from specific category
     if (jQuery("#cid-search").val().length > 2)
     {
-      emptyContent()
-      updatePageParam()
       $('.extensions_container').append('\
       <div class="d-flex justify-content-center">\
         <div class="spinner-border" role="status"></div>\
         <span class="sr-only ms-3 align-middle">Loading...</span>\
       </div>');
 
-      getExtensionList(cid);
-    }
+      var timeout = null;
 
+      if (timeout) {  
+        clearTimeout(timeout);
+      }
+      timeout = setTimeout(function() {
+        getExtensionList(cid);
+      }, 1000);
+
+    }
     // if value of input is removed reset page to all extensions
     if (jQuery("#cid-search").val().length == 0)
     {
-      emptyContent()
-      updatePageParam()
       getExtensionList(cid);
     }
 
@@ -135,8 +144,10 @@ function emptyContent()
   jQuery(".extensions_container > *:not('#jango_fett')").remove();
   jQuery(".extensions_container .spinner").remove();
   jQuery(".page_buttons > *").remove();
-  jQuery('#previous_page').addClass('d-none').removeClass('d-inline-block')
-  jQuery('#next_page').addClass('d-none').removeClass('d-inline-block')
+  jQuery('#previous_page').addClass('d-none').removeClass('d-inline-block');
+  jQuery('#next_page').addClass('d-none').removeClass('d-inline-block');
+  jQuery('.filter_tab h5 span').replaceWith('');
+  jQuery('#filtered_extensions_number').text('');
 }
 
 // Called when filter is changed to set page to 1
@@ -184,7 +195,6 @@ function createFilterString()
   return filters;
 }
 
-// Ajax request to get all extension information from specific category
 function getExtensionList(cid) {
   emptyContent()
 
@@ -247,15 +257,17 @@ function getExtensionList(cid) {
               .data("rating_score", this.rating_score)
               .data("downloads", this.downloads)
               .data("about", this.about)
+              .data("last_revision_name", this.revision_name)
+              .data("last_revision_date", this.revision_date)
             ;
 
             //Fill extension card line with info
-            jQuery('#extension_'+extension_id+' .extension_name').text(this.extension_name);
+            jQuery('#extension_'+extension_id+' .extension_name').prepend(this.extension_name);
 
             //If extension has a revision
             if(this.revision_name != null)
             {
-              jQuery('#extension_'+extension_id+' .extension_name').append( "<span class='badge blue-badge'>"+this.revision_name+"</span>"); 
+              jQuery('#extension_'+extension_id+' .extension_name .revision_name').text( this.revision_name); 
             }
 
             //add authors, there can be multiple, that is the reason for the foreach
@@ -267,7 +279,7 @@ function getExtensionList(cid) {
             //If extensions has rating score then display it
             if(this.rating_score != null)
             {
-              jQuery('#extension_'+extension_id+' .extension_score').html(this.rating_score_stars + this.rating_score); 
+              jQuery('#extension_'+extension_id+' .extension_score').html(this.rating_score_stars + "<span class='ms-2 align-middle'>"+this.rating_score + '</span>'); 
             }
             jQuery('#extension_'+extension_id+' .extension_number_downloads').text(this.downloads);
 
@@ -284,25 +296,37 @@ function getExtensionList(cid) {
             }
             var _href = jQuery('#extension_'+extension_id+' .more_info_link').attr('href')
             jQuery('#extension_'+extension_id+' .more_info_link').attr('href', _href + extension_id)
+            jQuery('#extension_'+extension_id+' .extension_name_link').attr('href', _href + extension_id)
             
             // If extension has image then display it
             if(this.screenshot_url != null)
             {
-              jQuery('#extension_'+extension_id+' .extension_image_div').append('\
-                <img class="img-fluid extension_image" src="'+this.screenshot_url +'">'
+              jQuery('#extension_'+extension_id+' .extension_image_div .image-background').append('\
+                <img class="extension_image position-absolute vertical-horizontal-align" src="'+this.screenshot_url +'">'
               )
             }
             else
             {
-              jQuery('#extension_'+extension_id+' .extension_image_div').append('\
-                <img class="img-fluid extension_image placeholder_image" src="'+ PEM_ROOT_URL_PLUGINS +'images/image-solid.svg">'
+              jQuery('#extension_'+extension_id+' .extension_image_div .image-background').append('\
+                <i class="icon-image position-absolute vertical-horizontal-align"></i>'
               )
             }
-          });
 
-          if ( filters != "")
+            //Display if extension compatible with latest version of Piwigo
+            if (this.compatible_latest_pwg_version == true)
+            {
+              jQuery('#extension_'+extension_id+' .piwigo-compatibility').append('<i class="icon-check green-font"></i><p class="card-text">Compatible with the latest version of Piwigo</p>')
+            }
+            else
+            {
+              jQuery('#extension_'+extension_id+' .piwigo-compatibility').append('<i class="icon-cross red-font"></i><p class="card-text">Not compatible with the latest version of Piwigo</p>')
+            }
+          });
+          console.log(data)
+
+          if ( data.result.nb_extensions_filtered != data.result.nb_total_extensions)
           {
-            jQuery('.filter_tab h5').append('<span class="badge blue-badge">'+ data.result.nb_extensions_filtered +'</span>');
+            jQuery('#filtered_extensions_number').append('<b>'+ data.result.nb_extensions_filtered +'</b> '+ FILTERED_EXTENSIONS );
           }
 
           var extensions_per_page = data.result.extensions_per_page;
@@ -321,8 +345,8 @@ function getExtensionList(cid) {
           if(1 == nb_total_pages)
           {
             // If nb pages = 1
-            jQuery('#previous_page').replaceWith(jQuery('<span id="#previous_page" class="disabled"><i class="icon-chevron-left"></i></spn>'))
-            jQuery('#next_page').replaceWith(jQuery('<span id="#next_page" class="disabled"><i class="icon-chevron-right"></i></span>'))
+            jQuery('#previous_page').replaceWith(jQuery('<span id="previous_page" class="disabled"><i class="icon-chevron-left"></i></span>'))
+            jQuery('#next_page').replaceWith(jQuery('<span id="next_page" class="disabled"><i class="icon-chevron-right"></i></span>'))
           }
           if(page > 1 && page != nb_total_pages)
           {
@@ -335,14 +359,14 @@ function getExtensionList(cid) {
             // If page is first
             jQuery('#next_page').attr('href', pagination_href + 'cid=' + cid + '&page=' + (parseInt(page)+1))
             // Disable previous arrow
-            jQuery('#previous_page').replaceWith(jQuery('<span id="#previous_page" class="disabled"><i class="icon-chevron-left"></i></spn>'))
+            jQuery('#previous_page').replaceWith(jQuery('<span id="previous_page" class="disabled"><i class="icon-chevron-left"></i></span>'))
           }
           else if(page == nb_total_pages)
           {
             // If page is last 
             jQuery('#previous_page').attr('href', pagination_href + 'cid=' + cid + '&page=' + (parseInt(page)-1))
             // disable next arrow
-            jQuery('#next_page').replaceWith(jQuery('<span id="#next_page" class="disabled"><i class="icon-chevron-right"></i></span>'))
+            jQuery('#next_page').replaceWith(jQuery('<span id="next_page" class="disabled"><i class="icon-chevron-right"></i></span>'))
           }
 
           // These display the different page numbers
