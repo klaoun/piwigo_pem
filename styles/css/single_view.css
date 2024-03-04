@@ -69,12 +69,13 @@ header Image
 Revisions
 ******/
 #single_view .changelogRevision.card{
-  background-color:  var(--grey5);
-  padding:20px;
-  border-radius:15px;
-  box-shadow: 0 0 5px var(--grey4);
-  margin-bottom:30px;
+  background-color:  var(--grey6);
+  padding:7px;
+  border-radius:5px;
   border:none;
+  box-shadow: 0px 0px 20px 0px rgba(0,0,0,0.25);
+  margin:30px 0;
+  height:90%;
 }
 
 #single_view .changelogRevision.card p{
@@ -96,7 +97,6 @@ Revisions
 #changelog .changelogRevision.latest_rev h5{
   color: var(--white);
 }
-
 #single_view #changelog .changelogRevision .changelogRevisionHeaderExpanded {
   border-bottom:2px solid var(--grey4);
 }
@@ -105,10 +105,20 @@ Revisions
   border-bottom:2px solid var(--white);
 }
 
+#single_view #changelog .changelogRevision.latest_rev .btn-tertiary{
+  border:1px solid var(--white);
+  color:var(--white);
+}
+
+#single_view #changelog .changelogRevision.latest_rev .badge {
+  color:var(--third_orange)!important;
+  background-color:var(--fourth_orange)!important;
+}
+
 #single_view #changelog .changelogRevision .btn-tertiary{
-  border:1px solid var(--main_orange);
-  color: var(--main_orange);
-  background:var(--white)
+  border:1px solid var(--grey4);
+  color: var(--grey4);
+  background:transparent;
 }
 
 #single_view .secondary_action:hover{

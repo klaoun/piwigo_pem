@@ -87,6 +87,8 @@
             <i class="icon-language"></i> {'%s Available languages'|translate:{$ext_languages|@count}}
           </span>
         </div>
+
+        
 {/if}
       </div>
 
@@ -139,7 +141,7 @@
         {$rate_summary.rating_score}
       </div>
 {/if}
-      <div class="px-3 py-2 border-left d-inline-block">
+      <div class="px-3 py-1 border-left d-inline-block">
 {if isset($latest_compatible_version) && $latest_compatible_version == $pwg_latest_version.version} 
         <span><i class="icon-check green-font me-1"></i>{'Compatible with the latest version of Piwigo'|translate}</span>
 {else}
@@ -200,12 +202,12 @@
 {foreach from=$links item=link}
           <tr>
             <td>
-              <a class="orange-link my-3" href="{$link.url}" target="blank">
+              <a class="link-primary orange-link my-3" href="{$link.url}" target="blank">
                 {if $link.name|stristr:"git"}<i class="icon-github"></i>
-                {else if $link.name|stristr:"issues" || $link.name|stristr:"bug" }<i class="icon-bug"></i>
-                {else if $link.name|stristr:"coffee"}<i class="icon-gift"></i>
-                {else if $link.name|stristr:"forum"}<i class="icon-message"></i>
-                {else if $link.name|stristr:"demo"}<i class="icon-piwigo"></i>
+                {else if $link.name|stristr:l10n("issues") || $link.name|stristr:"bug" }<i class="icon-bug"></i>
+                {else if $link.name|stristr:l10n("coffee")}<i class="icon-gift"></i>
+                {else if $link.name|stristr:l10n("forum")}<i class="icon-message"></i>
+                {else if $link.name|stristr:l10n("demo")}<i class="icon-piwigo"></i>
                 {else}<i class="icon-link"></i>
                 {/if}
                 {$link.name}
@@ -214,8 +216,6 @@
             <td>
   {if isset($link.language)}
                   <span class="ms-0 badge purple-badge d-inline">{$link.language}</span>
-  {else}
-                  <span class="ms-0 badge purple-badge d-inline">{'All languages'|translate}</span>
   {/if}
             </td>
             <td>
@@ -251,10 +251,10 @@
   {foreach from=$links item=link}
       <a class="orange-link py-3 pe-3" href="{$link.url}" target="_blank">
         {if $link.name|stristr:"git"}<i class="icon-github"></i>
-        {else if $link.name|stristr:"issues" || $link.name|stristr:"bug" }<i class="icon-bug"></i>
-        {else if $link.name|stristr:"coffee"}<i class="icon-gift"></i>
-        {else if $link.name|stristr:"forum"}<i class="icon-message"></i>
-        {else if $link.name|stristr:"demo"}<i class="icon-piwigo"></i>
+        {else if $link.name|stristr:l10n("issues") || $link.name|stristr:"bug" }<i class="icon-bug"></i>
+        {else if $link.name|stristr:l10n("coffee")}<i class="icon-gift"></i>
+        {else if $link.name|stristr:l10n("forum")}<i class="icon-message"></i>
+        {else if $link.name|stristr:l10n("demo")}<i class="icon-piwigo"></i>
         {else}<i class="icon-link"></i>
         {/if}
         {$link.name}
@@ -285,57 +285,66 @@
     {else}
       <div id="rev{$rev.id}" class="changelogRevision card position-relative">
     {/if}
-
-    {if isset($can_modify) && $can_modify == true}
-      <div class="position-absolute end-0 me-5">
-        <span class="circle-icon edit_mode main_action z-index me-2 pe-0" 
-          data-bs-toggle="modal" data-bs-target="#revisionInfoModal"
-          data-bs-rev_id="{$rev.id}" 
-          data-bs-rev_version_name="{$rev.version}" 
-          data-bs-rev_versions_compatible="{$rev.ids_versions_compatible}"
-          data-bs-rev_default_description_lang="{$rev.default_description_lang_id}"
-          data-bs-rev_default_description="{$rev.default_description}"
-          data-bs-rev_description_lang="{$rev.current_description_lang_id}"
-          data-bs-rev_description="{$rev.current_description}"
-          data-bs-rev_author="{$rev.author_id}"
-        >
-          <i class="icon-pencil"></i>
-        </span>
-        <span class="edit_mode circle-icon secondary_action" onclick="deleteRevision({$rev.id}, {$extension_id})">
-          <i class="icon-trash translate-middle"></i>
-        </span>
-      </div>
-    {/if}
-       
-  
+      <div class="card-body">
+      
         <div id="rev{$rev.id}_header" {if $rev.expanded} class="changelogRevisionHeaderExpanded pb-4" {else} class="changelogRevisionHeaderCollapsed pb-0"{/if} onclick="revToggleDisplay('rev{$rev.id}_header', 'rev{$rev.id}_content')">
             <div class="revision_title_container d-flex justify-content-between">
               <h4 class="revisionTitle">{'Revision'|translate} {$rev.version}</h4>
-              <div class="">
- 
+              <div class="d-flex justify-content-end align-items-center">
+                <a href="{$rev.u_download}" title="{'Download revision'|translate} {$rev.version}" rel="nofollow" class="circle-icon main_action white-link me-2">
+                  <i class="icon-download"></i>
+                </a>
+    {if isset($can_modify) && $can_modify == true}
+                <span class="circle-icon edit_mode main_action me-2" 
+                  data-bs-toggle="modal" data-bs-target="#revisionInfoModal"
+                  data-bs-rev_id="{$rev.id}" 
+                  data-bs-rev_version_name="{$rev.version}" 
+                  data-bs-rev_versions_compatible="{$rev.ids_versions_compatible}"
+                  data-bs-rev_default_description_lang="{$rev.default_description_lang_id}"
+                  data-bs-rev_default_description="{$rev.default_description}"
+                  data-bs-rev_description_lang="{$rev.current_description_lang_id}"
+                  data-bs-rev_description="{$rev.current_description}"
+                  data-bs-rev_author="{$rev.author_id}"
+                >
+                  <i class="icon-pencil"></i>
+                </span>
+                <span class="edit_mode circle-icon secondary_action me-2" onclick="deleteRevision({$rev.id}, {$extension_id})">
+                  <i class="icon-trash translate-middle"></i>
+                </span>
+    {/if}
                 <span><i {if $rev.expanded}class="icon-chevron-down"{else}class="icon-chevron-right"{/if}></i>
               </div>
             </div>
-            {* <span class="revisionDate"> {$rev.downloads} {'Downloads'|@translate}, {'Released on'|@translate} {$rev.date}</span> *}
+
+            
         </div>
     
         <div id="rev{$rev.id}_content" class="changelogRevisionContent pt-4" {if !$rev.expanded} style="display:none" {/if}>
           
           <div class="d-flex justify-content-start">
-            <p class="me-4">{'Released on %s'|translate:$rev.date}</p>
-            <p class="me-4"><i class="icon-check"></i>{'Compatible with Piwigo %s'|translate:$rev.versions_compatible}</p>
-            <p class="me-4"><i class="icon-download"></i>{$rev.downloads}</p>
+            <p class="me-4"><i class="icon-rocket me-1"></i>{'Released on %s'|translate:$rev.date}</p>
+            <p class="me-4"><i class="icon-piwigo me-1"></i>{'Compatible with Piwigo %s'|translate:$rev.versions_compatible}</p>
+            <p class="me-4"><i class="icon-download me-1"></i>{$rev.downloads}</p>
+    {if !empty($rev.author)}
+              <span>
+              <a href="{$PEM_ROOT_URL}index.php?uid={$rev.author_id}" class="badge green-badge me-4 ms-0 hide-text-overflow-150">
+                  <i class="icon-user"></i>{$rev.author}
+              </a>
+              </span>
+    {/if}
+    {if !empty($rev.languages)}
+              <span class="link badge purple-badge ms-0"  data-bs-toggle="modal" data-bs-target="#displayLanguagesModal"
+                {if isset($rev.languages)}data-bs-rev-languages='{json_encode($rev.languages)}'{/if}
+                {if isset($rev.languages_diff)}data-bs-new-languages='{json_encode($rev.languages_diff)}'{/if}
+              >
+                <i class="icon-language"></i> 
+                {'%s Available languages'|translate:{$rev.languages|@count}}
+                {if !empty($rev.languages_diff)}, {'%s new'|translate:{$rev.languages_diff|@count}}{/if}
+              </span>
+    {/if}
           </div>
 
-          {if !empty($rev.author)}
-            <div class="mt-4">
-              <h5>{'Added by'|translate}</h5>
-              <p>{$rev.author}</p>
-            </div>
-          {/if}
-
           <div class="mt-4">
-            <h5>{'Description'|translate}</h5>
       {* We have an array of all revsions and all descriptions in all languages *}
 
     {foreach from=$rev_descriptions item=revision key=rev_id}
@@ -352,42 +361,20 @@
     {if isset($no_desc) && $no_desc == true}
         <p>{$rev.default_description}</p>
     {/if}
-
-
           </div>
-  
-    {if !empty($rev.languages)}
-          <div class="mt-4"> 
-            <h5>{'Available languages'|translate}:</h5>
-        
-            <div class="d-flex justify-content-start flex-wrap" >
-      {foreach from=$rev.languages item=language name=langs}
-                <p class="me-3">{$language.name}</p>
-      {/foreach}
-            </div>
-          </div>
-      {if !empty($rev.languages_diff)}
-            <div class="mt-4">
-              <h5>{'New languages'|translate}:</h5>
-              <div class="d-flex justify-content-start flex-wrap" >
-        {foreach from=$rev.languages_diff item=language name=flag}
-                <p class="me-3">{$language.name}</p>
-        {/foreach}
-              </div>
-            </div>
-      {/if}
-    {/if}
 
           <div class="row mt-4">
-            <a href="{$rev.u_download}" title="{'Download revision'|translate} {$rev.version}" rel="nofollow">
-              <button class="btn btn-tertiary">
-                <i class="icon-download"></i>{'Download this revision'|translate}
-              </button>
-            </a>
+            <div class="d-flex justify-content-end">
+              <a href="{$rev.u_download}" title="{'Download revision'|translate} {$rev.version}" rel="nofollow">
+                <button class="btn btn-tertiary">
+                  <i class="icon-download"></i>{'Download this revision'|translate}
+                </button>
+              </a>
+            </div>
           </div>
 
         </div>
-
+        </div>
       </div> <!-- rev{$rev.id} -->
   {/foreach}
     </div> <!-- changelog -->
@@ -416,11 +403,11 @@
   //allows any filters set in list view to be cleared 
   sessionStorage.clear()
 
-  var pwg_token = "{$PWG_TOKEN}";
+  var pwg_token = `{$PWG_TOKEN}`;
   var all_revision_languages = {if isset($all_rev_languages_of_ids)}{$all_rev_languages_of_ids}{else}null{/if};
-  const VERSIONS_PWG =  {if isset($VERSIONS_PWG)}{json_encode($VERSIONS_PWG)}{/if};
-  const ALL_LANGUAGES = {if isset($all_languages)}{json_encode($all_languages)}{/if};
-  var extensions_languages_ids = {if isset($extensions_languages_ids)}{json_encode($extensions_languages_ids)}{/if}
+  const VERSIONS_PWG =  {if isset($VERSIONS_PWG)}{json_encode($VERSIONS_PWG)}{else}null{/if};
+  const ALL_LANGUAGES = {if isset($all_languages)}{json_encode($all_languages)}{else}null{/if};
+  var extensions_languages_ids = {if isset($extensions_languages_ids)}{json_encode($extensions_languages_ids)}{else}null{/if}
     
 </script>
 
