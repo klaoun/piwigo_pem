@@ -406,3 +406,35 @@ editRevisionModal.addEventListener('show.bs.modal', event => {
   })
 
 });
+
+// Script used for display languages modal
+// The link data is saved in the data attributes of the edit button, 
+// This data is added to the modal on the modal show when thue button is clicked
+const displayLanguagesModal = document.getElementById('displayLanguagesModal');
+
+displayLanguagesModal.addEventListener('show.bs.modal', event => {
+  jQuery('#displayLanguagesModal .list-group').empty()
+  const buttonDisplayLink = event.relatedTarget
+  // Extract info from data-bs-* attributes
+  const rev_languages = buttonDisplayLink.getAttribute('data-bs-rev-languages')
+  const new_languages = buttonDisplayLink.getAttribute('data-bs-new-languages')
+
+  var langs = JSON.parse(rev_languages);
+  var new_langs = JSON.parse(new_languages);
+
+  var new_lang_ids = [];
+  jQuery(new_langs).each(function(i, new_lang){
+    new_lang_ids.push(new_lang.id_language);
+  }); 
+
+  jQuery(langs).each(function(i, lang){
+    if(jQuery.inArray(lang.id_language, new_lang_ids) !== -1)
+    {
+      jQuery('#displayLanguagesModal .list-group').append('<li class="list-group-item col-4 text-start purple-font"><i class="icon-circle-plus"></i>'+lang.name+'</li>')
+    }
+    else{
+      jQuery('#displayLanguagesModal .list-group').append('<li class="list-group-item col-4 text-start">'+lang.name+'</li>')
+    }
+  });
+
+});

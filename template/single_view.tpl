@@ -83,7 +83,8 @@
 
 {if !empty($ext_languages)}
         <div class="position-relative mb-3">
-          <span class="link badge purple-badge ms-0"  data-bs-toggle="modal" data-bs-target="#displayLanguagesModal">
+          <span class="link badge purple-badge ms-0"  data-bs-toggle="modal" data-bs-target="#displayLanguagesModal"
+          {if isset($ext_languages)}data-bs-rev-languages='{json_encode($ext_languages)}'{/if}>
             <i class="icon-language"></i> {'%s Available languages'|translate:{$ext_languages|@count}}
           </span>
         </div>
