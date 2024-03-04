@@ -59,7 +59,7 @@ if (isset($_POST['pem_action']) and isset($_POST['submit']))
   if ("add_link" == $_POST['pem_action'])
   {
     $query = '
-SELECT MAX(rank) AS current_rank
+SELECT MAX(`rank`) AS current_rank
   FROM '.PEM_LINKS_TABLE.'
   WHERE idx_extension = '.$_GET['eid'].'
 ;';
