@@ -40,6 +40,10 @@
 // +-----------------------------------------------------------------------+
 // |                            reduce data set                            |
 // +-----------------------------------------------------------------------+
+define('PHPWG_ROOT_PATH', '../../../');
+
+include_once(PHPWG_ROOT_PATH .'include/common.inc.php');
+include_once('../include/constants.inc.php');
 
 $output = array();
 $filter = array();
@@ -173,9 +177,9 @@ $query.= '
   ORDER BY COUNT(*) DESC
   LIMIT 10
 ;';
-$result = $db->query($query);
+$result = pwg_query($query);
 
-while ($row = mysql_fetch_assoc($result)) {
+while ($row = pwg_db_fetch_assoc($result)) {
   array_push($contributor_ids, $row['idx_user']);
   array_push(
     $contributors,
@@ -220,7 +224,7 @@ $query.= '
   LIMIT 10
 ;';
 $result = pwg_query($query);
-while ($row = mysql_fetch_assoc($result)) {
+while ($row = pwg_db_fetch_assoc($result)) {
   $duration = sprintf('%u', (time() - $row['max_date']) / (60*60*24));
   if ($duration == 0) {
     $duration_string = 'today';
@@ -313,7 +317,7 @@ $query.= '
 ;';
 
 $result = pwg_query($query);
-while ($row = mysql_fetch_assoc($result)) {
+while ($row = pwg_db_fetch_assoc($result)) {
   array_push(
     $most_active,
     array(
