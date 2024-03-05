@@ -17,6 +17,13 @@
 // | Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, |
 // | USA.                                                                  |
 // +-----------------------------------------------------------------------+
+define('PHPWG_ROOT_PATH', '../../../');
+
+include_once(PHPWG_ROOT_PATH .'include/common.inc.php');
+include_once('../include/constants.inc.php');
+include_once('../include/functions_language.inc.php');
+
+$interface_languages = get_interface_languages();
 
 $required_params = array('version');
 foreach ($required_params as $required_param) {
@@ -115,7 +122,7 @@ SELECT
     a.idx_extension       AS extension_id,
     u.'.$username_field.' AS name
   FROM '.PEM_AUTHORS_TABLE.'     AS a
-  INNER JOIN '.PEM_USERS_TABLE.' AS u ON a.idx_user = u.'.$userid_field;
+  INNER JOIN '.USERS_TABLE.' AS u ON a.idx_user = u.'.$userid_field;
 
 if (isset($extension_include))
 {
@@ -130,7 +137,7 @@ if (isset($extension_exclude))
 
 $extension_authors = array();
 $result = pwg_query($query);
-while ($row = mysql_fetch_assoc($result))
+while ($row = pwg_db_fetch_assoc($result))
 {
   if (!isset($extension_authors[$row['extension_id']]))
   {
@@ -156,7 +163,7 @@ SELECT DISTINCT
   FROM '.PEM_REV_TABLE.' AS r
     INNER JOIN '.PEM_EXT_TABLE.'      AS e  ON e.id_extension = r.idx_extension
     INNER JOIN '.PEM_COMP_TABLE.'     AS c  ON c.idx_revision = r.id_revision
-    INNER JOIN '.PEM_USERS_TABLE.'    AS u  ON u.'.$userid_field.' = e.idx_user
+    INNER JOIN '.USERS_TABLE.'    AS u  ON u.'.$userid_field.' = e.idx_user
     LEFT JOIN '.PEM_EXT_TRANS_TABLE.' AS et
       ON et.idx_extension = e.id_extension
       AND et.idx_language = '.$_SESSION['language']['id'].'
@@ -202,7 +209,7 @@ $extension_ids = array();
 $revision_ids = array();
 $revisions = array();
 $result = pwg_query($query);
-while ($row = mysql_fetch_assoc($result)) {
+while ($row = pwg_db_fetch_assoc($result)) {
   $row['revision_date'] = date('Y-m-d H:i:s', $row['revision_date']);
   
   $row['file_url'] = sprintf(
