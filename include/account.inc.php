@@ -102,7 +102,7 @@ SELECT
 
     foreach ($extension_ids as $extension_id)
     {  
-     
+      
       if(isset($extension_infos_of[$extension_id]['name']))
       {
         $extension = array(
@@ -156,7 +156,7 @@ SELECT
   $query ='
   SELECT 
       `occured_on`
-    FROM piwigo_pem_activity
+    FROM '.ACTIVITY_TABLE.'
     WHERE object = "user" 
       AND object_id = '.$current_user_page_id.'
     ORDER BY `occured_on` DESC
