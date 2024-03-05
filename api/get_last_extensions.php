@@ -20,8 +20,8 @@
 
 define('PHPWG_ROOT_PATH', '../../../');
 
-include_once(PHPWG_ROOT_PATH .'/include/constants.inc.php');
-include_once(PHPWG_ROOT_PATH .'/include/common.inc.php');
+include_once(PHPWG_ROOT_PATH .'include/constants.inc.php');
+include_once(PHPWG_ROOT_PATH .'include/common.inc.php');
 include_once('../include/constants.inc.php');
 
 $page['nb_extensions'] = 10;
