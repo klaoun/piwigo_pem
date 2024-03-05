@@ -18,11 +18,21 @@
 // | USA.                                                                  |
 // +-----------------------------------------------------------------------+
 
+define('PHPWG_ROOT_PATH', '../../../');
+
+include_once(PHPWG_ROOT_PATH .'/include/constants.inc.php');
+include_once(PHPWG_ROOT_PATH .'/include/common.inc.php');
+include_once('../include/constants.inc.php');
+include_once('../include/functions_language.inc.php');
+
+// Language selection
+$_SESSION['language'] = get_current_language();
+
 $query = '
 SELECT
     idx_category,
     COUNT(*) AS counter
-  FROM '.PEM_CAT_TABLE.'
+  FROM '.PEM_EXT_CAT_TABLE.'
   GROUP BY idx_category
 ;';
 $nb_ext_of_category = query2array($query, 'idx_category', 'counter');
@@ -31,7 +41,7 @@ $query = '
 SELECT
     id_category AS id,
     c.name AS default_name,
-    ct.name    
+    ct.name
   FROM '.PEM_CAT_TABLE.' AS c
   LEFT JOIN '.PEM_CAT_TRANS_TABLE.' AS ct
     ON c.id_category = ct.idx_category
