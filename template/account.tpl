@@ -36,15 +36,13 @@
       </div>
       <div class="col-6 d-flex flex-column align-items-start justify-content-evenly">
         <div class="p-1">
-          <p class="d-inline"><span class="sub-text">{'Member since'|translate}</span>
-            {$USER.registration_date_formatted}<span class="badge blue-badge d-inline">{$USER.member_since}<span>
-          </p>
+          <p class="d-inline">{'Member since %s'|translate:$USER.registration_date_formatted}<span class="badge blue-badge d-inline">{$USER.member_since}</span></p>
         </div>
+        {if isset($USER.last_activity_formatted)}
         <div class="p-1">
-          <p class="d-inline"><span class="sub-text">Last activity</span>
-            {$USER.registration_date_formatted}<span class="badge blue-badge d-inline">{$USER.member_since}<span>
-          </p>
+          <p class="d-inline">{'Last activity %s'|translate:$USER.last_activity_formatted}<span class="badge blue-badge d-inline">{$USER.last_activity_since}</span></p>
         </div>
+        {/if}
       </div>
     </div>
   </section>
@@ -65,22 +63,53 @@
         <table class="table table-striped">
           <thead>
             <tr>
+              <th></th>
               <th>{'Name'|translate}</th>
-              <th>{'Category'|translate}</th>
-              <th>{'Publish date'|translate}</th>
+              <th>{'Age'|translate}</th>
               <th>{'Last update'|translate}</th>
-              <th>{'Downloads'|translate}</th>
+              <th>{'Compatibility'|translate}</th>
+              <th class="text-center"><i class="icon-download"></i></th>
               <th>{'Rating'|translate}</th>
             </tr>
           <thead>
           <tbody>
   {foreach from=$extensions item=extension}
             <tr>
-              <td><a class="link" href="{$PEM_ROOT_URL}index.php?eid={$extension.id}">{$extension.name}</a></td>
-              <td>{$extension.category}</td>
-              <td>{$extension.publish_date}</td>
+              <td class="text-center grey-font">
+                <i class="
+                {if $extension.category == "Plugin"}
+                  icon-puzzle-piece
+                {else if $extension.category == "Theme"}
+                  icon-palette
+                {else if $extension.category == "Tool"}
+                  icon-screwdriver-wrench
+                {else if $extension.category == "Language"}
+                  icon-language
+                {/if}
+                "></i>
+              </td>
+              <td><a class="link orange-link" href="{$PEM_ROOT_URL}index.php?eid={$extension.id}">{$extension.name}</a></td>
+              <td>
+              {if !empty($extension.age)}
+                <span class="ms-0 badge blue-badge pem-tooltip">
+                  {$extension.age}
+                  <span class="pem-tooltiptext">{$extension.publish_date}</span>
+                </span>
+              {/if}
+              </td>
               <td>{$extension.last_updated}</td>
-              <td>{$extension.nb_downloads}</td>
+              <td>
+                <span class="compatibility compatibility-first">
+                  <i class="icon-code-branch"></i>{$extension.compatibility_first}
+                </span>
+                <i class="icon-arrow-right"></i>
+                <span class="compatibility compatibility-last">
+                  <i class="icon-code-branch"></i>{$extension.compatibility_last}
+                </span>
+              </td>
+              <td class="space-mono-regular text-end">
+                {if $extension.nb_downloads > 0}{$extension.nb_downloads}{/if}
+              </td>
               <td>{if $extension.rating_score}{$extension.rating_score}({$extension.total_rates}){/if}</td>
             </tr>
   {/foreach}

@@ -1,4 +1,27 @@
-.sub-text{
+#profile .sub-text{
   color: var(--grey4);
   font-weight: 700;
 }
+
+#profile .compatibility{
+  border-radius: 5px;
+  padding: 0px 5px;
+  font-weight: bold;
+  font-size: 12px;
+}
+
+#profile .compatibility-first{
+  color: var(--grey2);
+  background: var(--grey5);
+}
+
+#profile .compatibility-last{
+  background-color: var(--main_orange);
+  color: var(--white);
+}
+
+#profile .icon-arrow-right{
+  font-size:12px;
+  color:var(--grey3);
+}
+

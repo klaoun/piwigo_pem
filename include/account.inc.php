@@ -64,6 +64,7 @@ SELECT
     while ($row = pwg_db_fetch_array($result))
     {
       $publish_extension_date_of[ $row['idx_extension'] ] = format_date($row['date']);
+      $age[ $row['idx_extension'] ] = time_since($row['date'], 'month', null, false);
     }
 
     //This query is used to get the date of the extensions last update, 
@@ -82,7 +83,7 @@ FROM '.PEM_REV_TABLE.'
     $revision_of = $revision_ids_of = array();
     while ($row = pwg_db_fetch_array($result))
     {
-      $last_revision_date_of[ $row['idx_extension'] ] = format_date($row['date']);
+      $last_revision_date_of[ $row['idx_extension'] ] = format_date($row['date'], array('day','month','year'));
     }
 
     $extension_infos_of = get_extension_infos_of($extension_ids);
@@ -100,7 +101,8 @@ SELECT
     $total_rates_of_extension = query2array($query, 'idx_extension', 'total');
 
     foreach ($extension_ids as $extension_id)
-    {
+    {  
+     
       if(isset($extension_infos_of[$extension_id]['name']))
       {
         $extension = array(
@@ -113,6 +115,9 @@ SELECT
           'nb_downloads' => isset($download_of_extension[$extension_id]) ? $download_of_extension[$extension_id] : '',
           'last_updated'=> isset($last_revision_date_of[$extension_id]) ? $last_revision_date_of[$extension_id] : '',
           'publish_date' => isset($publish_extension_date_of[$extension_id]) ? $publish_extension_date_of[$extension_id] : '',
+          'age' => isset($age[$extension_id]) ? $age[$extension_id] : '',
+          'compatibility_first' => '',
+          'compatibility_last' => '',
         );
   
         if (in_array($extension_id, $extension_ids))
@@ -147,6 +152,24 @@ SELECT
   }
 
   $current_user_page_infos['nb_extensions'] = count($extension_ids);
+
+  $query ='
+  SELECT 
+      `occured_on`
+    FROM piwigo_pem_activity
+    WHERE object = "user" 
+      AND object_id = '.$current_user_page_id.'
+    ORDER BY `occured_on` DESC
+    LIMIT 1
+  ';
+
+  $result = pwg_db_fetch_row(pwg_query($query));
+
+  if(!is_null($result))
+  {
+    $current_user_page_infos['last_activity_formatted'] = format_date(strtotime($result[0]));
+    $current_user_page_infos['last_activity_since'] = time_since(strtotime($result[0]), $stop ='day');
+  }
 
   $template->assign(
     array(
