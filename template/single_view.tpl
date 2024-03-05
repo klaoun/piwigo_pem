@@ -401,9 +401,6 @@
 </div>
 
 <script>
-  //allows any filters set in list view to be cleared 
-  sessionStorage.clear()
-
   var pwg_token = `{$PWG_TOKEN}`;
   var all_revision_languages = {if isset($all_rev_languages_of_ids)}{$all_rev_languages_of_ids}{else}null{/if};
   const VERSIONS_PWG =  {if isset($VERSIONS_PWG)}{json_encode($VERSIONS_PWG)}{else}null{/if};
