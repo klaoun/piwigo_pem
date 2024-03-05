@@ -1,5 +1,12 @@
 <?php
+
 global $prefixeTable;
+define('DEFAULT_PREFIX_TABLE', 'piwigo_');
+
+if (!isset($prefixeTable))
+{
+  $prefixeTable = DEFAULT_PREFIX_TABLE;
+}
 
 define( 'PEM_EXT_TABLE',        $prefixeTable.'pem_'.'extensions' );
 define( 'PEM_CAT_TABLE' ,       $prefixeTable.'pem_'.'categories' );
