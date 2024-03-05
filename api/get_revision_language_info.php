@@ -17,8 +17,10 @@
 // | Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, |
 // | USA.                                                                  |
 // +-----------------------------------------------------------------------+
+define('PHPWG_ROOT_PATH', '../../../');
 
-$root_path = '../';
+include_once(PHPWG_ROOT_PATH .'include/common.inc.php');
+include_once('../include/constants.inc.php');
 
 function ajax_reply()
 {
@@ -69,7 +71,7 @@ SELECT
   WHERE id_revision = '.$page['rid'].'
 ;';
   $result = $db->query($query);
-  while ($row = mysql_fetch_assoc($result)) {
+  while ($row = pwg_db_fetch_assoc($result)) {
     $revision = $row;
   }
 
@@ -132,7 +134,7 @@ $query .= '
   LIMIT 1
 ;';
 $result = pwg_query($query);
-while ($row = mysql_fetch_assoc($result)) {
+while ($row = pwg_db_fetch_assoc($result)) {
   $page['ref_revision_id'] = $row['id_revision'];
 }
 
@@ -149,7 +151,7 @@ SELECT
   FROM '.PEM_LANG_TABLE.'
 ;';
 $result = pwg_query($query);
-while ($row = mysql_fetch_assoc($result)) {
+while ($row = pwg_db_fetch_assoc($result)) {
   if (isset($conf['language_english_names'][$row['code']])) {
     $row['english_name'] = $conf['language_english_names'][$row['code']];
   }
@@ -169,7 +171,7 @@ SELECT
   WHERE idx_revision = '.$page['ref_revision_id'].'
 ;';
 $result = pwg_query($query);
-while ($row = mysql_fetch_assoc($result)) {
+while ($row = pwg_db_fetch_assoc($result)) {
   $languages_old[] = $row['code'];
 }
 
@@ -190,7 +192,7 @@ SELECT
   WHERE id_revision = '.$page['ref_revision_id'].'
 ;';
 $result = pwg_query($query);
-while ($row = mysql_fetch_assoc($result)) {
+while ($row = pwg_db_fetch_assoc($result)) {
   $svn_url = $row['svn_url'];
 
   if (isset($row['git_url']) and preg_match('/github/', $row['git_url'])) {
