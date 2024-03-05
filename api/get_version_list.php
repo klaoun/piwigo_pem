@@ -21,11 +21,9 @@
 // if a category_id is given, it will say the number of extensions available
 // for each version, but all versions are returned.
 
-define('PHPWG_ROOT_PATH','../../');
+define('PHPWG_ROOT_PATH', '../../../');
 
-include_once(PHPWG_ROOT_PATH .'/include/constants.inc.php');
-include_once(PHPWG_ROOT_PATH .'/include/common.inc.php');
-
+include_once(PHPWG_ROOT_PATH .'include/common.inc.php');
 include_once('../include/constants.inc.php');
 
 $category_id = null;
