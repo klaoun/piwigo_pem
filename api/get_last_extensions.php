@@ -18,6 +18,12 @@
 // | USA.                                                                  |
 // +-----------------------------------------------------------------------+
 
+define('PHPWG_ROOT_PATH', '../../../');
+
+include_once(PHPWG_ROOT_PATH .'/include/constants.inc.php');
+include_once(PHPWG_ROOT_PATH .'/include/common.inc.php');
+include_once('../include/constants.inc.php');
+
 $page['nb_extensions'] = 10;
 
 // TODO: shouldn't this web API method be in get_revision_list.php? (with
@@ -27,7 +33,7 @@ $page['nb_extensions'] = 10;
 $filtered_sets = array();
 if (isset($_GET['categories'])) {
   $categories = $_GET['categories'];
-  
+
   if (!preg_match('/^\d+(,\d+)*$/', $categories)) {
     die('unexpected categories identifier');
   }
@@ -55,7 +61,7 @@ if (count($filtered_sets) > 0) {
 }
 
 // TODO: merge this code with what include/index_view_standard.inc.php does
-// 
+//
 // retrieve N last updated extensions
 $query = '
 SELECT
