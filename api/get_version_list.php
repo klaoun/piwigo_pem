@@ -119,12 +119,12 @@ SELECT
     dbengine,
     dbversion
   FROM pwg_hosting_details
-  WHERE uuid = \''.$db->escape($input_data['uuid']).'\'
+  WHERE uuid = \''.pwg_db_real_escape_string($input_data['uuid']).'\'
   ORDER BY created_on DESC
   LIMIT 1
 ;';
   $result = pwg_query($query);
-  while ($row = $db->fetch_assoc($result))
+  while ($row = pwg_db_fetch_assoc($result))
   {
     $existing_hosting_details = $row;
   }
@@ -156,7 +156,7 @@ UPDATE pwg_hosting_details
   }
   else
   {
-    $input_data = $db->escape_array($input_data);
+    $input_data = pwg_db_real_escape_string($input_data);
     
     $query = '
 INSERT INTO pwg_hosting_details

@@ -29,6 +29,198 @@ function ajax_reply()
   exit();
 }
 
+/**
+ * returns true if the url is absolute (begins with http)
+ *
+ * @param string $url
+ * @returns boolean
+ */
+function url_is_remote($url)
+{
+  if ( strncmp($url, 'http://', 7)==0
+    or strncmp($url, 'https://', 8)==0 )
+  {
+    return true;
+  }
+  return false;
+}
+
+/*
+ * Retrieve data from external URL.
+ *
+ * @param string $src
+ * @param string|Ressource $dest - can be a file ressource or string
+ * @param array $get_data - data added to request url
+ * @param array $post_data - data transmitted with POST
+ * @param string $user_agent
+ * @param int $step (internal use)
+ * @return bool 
+ */
+function fetchRemote($src, &$dest, $get_data=array(), $post_data=array(), $user_agent='Piwigo', $step=0)
+{ 
+  global $conf;
+  
+  // Try to retrieve data from local file?
+  if (!url_is_remote($src))
+  { 
+    $content = @file_get_contents($src);
+    if ($content !== false)
+    {
+      is_resource($dest) ? @fwrite($dest, $content) : $dest = $content;
+      return true; 
+    }  
+    else
+    { 
+      return false;
+    }
+  }
+ 
+  // After 3 redirections, return false
+  if ($step > 3) return false;
+ 
+  // Initialization
+  $method  = empty($post_data) ? 'GET' : 'POST';
+  $request = empty($post_data) ? '' : http_build_query($post_data, '', '&');
+  if (!empty($get_data))
+  { 
+    $src .= strpos($src, '?') === false ? '?' : '&';
+    $src .= http_build_query($get_data, '', '&');
+  }
+  
+  // Initialize $dest
+  is_resource($dest) or $dest = '';
+
+  // Try curl to read remote file
+  // TODO : remove all these @
+  if (function_exists('curl_init') && function_exists('curl_exec'))
+  {
+    $ch = @curl_init();
+
+    if (isset($conf['use_proxy']) && $conf['use_proxy'])
+    { 
+      @curl_setopt($ch, CURLOPT_HTTPPROXYTUNNEL, 0);
+      @curl_setopt($ch, CURLOPT_PROXY, $conf['proxy_server']);
+      if (isset($conf['proxy_auth']) && !empty($conf['proxy_auth']))
+      {
+        @curl_setopt($ch, CURLOPT_PROXYUSERPWD, $conf['proxy_auth']);
+      }  
+    } 
+
+    @curl_setopt($ch, CURLOPT_URL, $src);
+    @curl_setopt($ch, CURLOPT_HEADER, 1);
+    @curl_setopt($ch, CURLOPT_USERAGENT, $user_agent);
+    @curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+    if ($method == 'POST')
+    {
+      @curl_setopt($ch, CURLOPT_POST, 1);
+      @curl_setopt($ch, CURLOPT_POSTFIELDS, $request);
+    }
+    $content = @curl_exec($ch);
+    $header_length = @curl_getinfo($ch, CURLINFO_HEADER_SIZE);
+    $status = @curl_getinfo($ch, CURLINFO_HTTP_CODE);
+    @curl_close($ch);
+    if ($content !== false and $status >= 200 and $status < 400)
+    {
+      if (preg_match('/Location:\s+?(.+)/', substr($content, 0, $header_length), $m))
+      {
+        return fetchRemote($m[1], $dest, array(), array(), $user_agent, $step+1);
+      }
+      $content = substr($content, $header_length);
+      is_resource($dest) ? @fwrite($dest, $content) : $dest = $content;
+      return true;
+    }
+  }
+
+  // Try file_get_contents to read remote file
+  if (ini_get('allow_url_fopen'))
+  { 
+    $opts = array(
+      'http' => array(
+        'method' => $method,
+        'user_agent' => $user_agent,
+      )
+    );
+    if ($method == 'POST')
+    {
+      $opts['http']['content'] = $request;
+    }
+    $context = @stream_context_create($opts);
+    $content = @file_get_contents($src, false, $context);
+    if ($content !== false)
+    {
+      is_resource($dest) ? @fwrite($dest, $content) : $dest = $content;
+      return true;
+    }
+  }
+
+  // Try fsockopen to read remote file
+  $src = parse_url($src);
+  $host = $src['host'];
+  $path = isset($src['path']) ? $src['path'] : '/';
+  $path .= isset($src['query']) ? '?'.$src['query'] : '';
+
+  if (($s = @fsockopen($host,80,$errno,$errstr,5)) === false)
+  {
+    return false;
+  }
+
+  $http_request  = $method." ".$path." HTTP/1.0\r\n";
+  $http_request .= "Host: ".$host."\r\n";
+  if ($method == 'POST')
+  {
+    $http_request .= "Content-Type: application/x-www-form-urlencoded;\r\n";
+    $http_request .= "Content-Length: ".strlen($request)."\r\n";
+  }
+  $http_request .= "User-Agent: ".$user_agent."\r\n";
+  $http_request .= "Accept: */*\r\n";
+  $http_request .= "\r\n";
+  $http_request .= $request;
+
+  fwrite($s, $http_request);
+
+  $i = 0;
+  $in_content = false;
+  while (!feof($s))
+  {
+    $line = fgets($s);
+
+    if (rtrim($line,"\r\n") == '' && !$in_content)
+    {
+      $in_content = true;
+      $i++;
+      continue;
+    }
+    if ($i == 0)
+    { 
+      if (!preg_match('/HTTP\/(\\d\\.\\d)\\s*(\\d+)\\s*(.*)/',rtrim($line,"\r\n"), $m))
+      {
+        fclose($s);
+        return false;
+      }
+      $status = (integer) $m[2];
+      if ($status < 200 || $status >= 400)
+      {
+        fclose($s);
+        return false;
+      }
+    }
+    if (!$in_content)
+    {
+      if (preg_match('/Location:\s+?(.+)$/',rtrim($line,"\r\n"),$m))
+      {
+        fclose($s);
+        return fetchRemote(trim($m[1]),$dest,array(),array(),$user_agent,$step+1);
+      }
+      $i++;
+      continue;
+    }
+    is_resource($dest) ? @fwrite($dest, $line) : $dest .= $line;
+    $i++;
+  }
+  fclose($s);
+  return true;
+}
+
 //
 // Check input parameters. Either rid or eid+svn.
 //
@@ -67,10 +259,10 @@ if (isset($page['rid'])) {
   $query = '
 SELECT
     *
-  FROM '.PEM_REV_TABLE.'
+  FROM '.REV_TABLE.'
   WHERE id_revision = '.$page['rid'].'
 ;';
-  $result = $db->query($query);
+  $result = pwg_query($query);
   while ($row = pwg_db_fetch_assoc($result)) {
     $revision = $row;
   }
@@ -120,7 +312,7 @@ $page['ref_revision_id'] = null;
 $query = '
 SELECT
     id_revision
-  FROM '.PEM_REV_TABLE.'
+  FROM '.REV_TABLE.'
   WHERE idx_extension = '.$page['eid'];
 
 if (isset($revision)) {
@@ -148,7 +340,7 @@ SELECT
     id_language,
     code,
     name
-  FROM '.PEM_LANG_TABLE.'
+  FROM '.LANG_TABLE.'
 ;';
 $result = pwg_query($query);
 while ($row = pwg_db_fetch_assoc($result)) {
@@ -166,8 +358,8 @@ $languages_old = array();
 $query = '
 SELECT
     code
-  FROM '.PEM_REV_LANG_TABLE.'
-    JOIN '.PEM_LANG_TABLE.' ON idx_language = id_language
+  FROM '.REV_LANG_TABLE.'
+    JOIN '.LANG_TABLE.' ON idx_language = id_language
   WHERE idx_revision = '.$page['ref_revision_id'].'
 ;';
 $result = pwg_query($query);
@@ -182,32 +374,49 @@ while ($row = pwg_db_fetch_assoc($result)) {
 //
 // 1) get the SVN URL
 $svn_url = null;
+$git_url = null;
+$language_candidates = array();
 
 $query = '
 SELECT
     svn_url,
     git_url
-  FROM '.PEM_EXT_TABLE.'
-    JOIN '.PEM_REV_TABLE.' ON id_extension = idx_extension
+  FROM '.EXT_TABLE.'
+    JOIN '.REV_TABLE.' ON id_extension = idx_extension
   WHERE id_revision = '.$page['ref_revision_id'].'
+  LIMIT 1
 ;';
 $result = pwg_query($query);
 while ($row = pwg_db_fetch_assoc($result)) {
-  $svn_url = $row['svn_url'];
+  if (!empty($row['svn_url']))
+  {
+    $svn_url = $row['svn_url'];
+  }
 
-  if (isset($row['git_url']) and preg_match('/github/', $row['git_url'])) {
-    $svn_url = $row['git_url'].'/trunk';
+  if (!empty($row['git_url']) and preg_match('/github/', $row['git_url'])) {
+    $git_url = $row['git_url'];
   }
 }
 
-$svn_command = 'svn list -r'.$page['svn'].' '.$svn_url.'/language';
-$svn_output = null;
-exec($svn_command, $svn_output);
+if (!empty($svn_url))
+{
+  $svn_command = 'svn list -r'.$page['svn'].' '.$svn_url.'/language';
+  exec($svn_command, $language_candidates);
+}
+
+if (!empty($git_url))
+{
+  // from https://github.com/plegall/Piwigo-check_files_integrity
+  // to   https://api.github.com/repos/plegall/Piwigo-check_files_integrity/contents/language
+  $github_api_url = str_replace('//github.com', '//api.github.com/repos', $git_url).'/contents/language';
+  fetchRemote($github_api_url, $result);
+  $language_candidates = array_column(json_decode($result, true), 'name');
+}
 
 $languages_cur = array();
 $language_ids = array();
 
-foreach ($svn_output as $lang) {
+foreach ($language_candidates as $lang) {
   if (preg_match('#^([a-z]{2,3}_[A-Z]{2,3})#', $lang, $matches)) {
     $languages_cur[] = $matches[1];
 
@@ -239,6 +448,8 @@ foreach ($languages_new as $lang) {
     }
   }
   
+  if (!empty($svn_url))
+  {
   $svn_command = 'svn log '.$svn_url.'/language/'.$lang.' | grep ", thanks to :"';
   $svn_output = null;
   exec($svn_command, $svn_output);
@@ -253,6 +464,7 @@ foreach ($languages_new as $lang) {
 
   if (count($translators) > 0) {
     $desc_extra.= ', thanks to '.implode(', ', array_unique($translators));
+  }
   }
 }
 
