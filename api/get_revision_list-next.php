@@ -119,7 +119,7 @@ $query = '
 SELECT
     a.idx_extension       AS extension_id,
     u.'.$username_field.' AS name
-  FROM '.AUTHORS_TABLE.'     AS a
+  FROM '.PEM_AUTHORS_TABLE.'     AS a
   INNER JOIN '.USERS_TABLE.' AS u ON a.idx_user = u.'.$userid_field;
 
 if (isset($extension_include))
@@ -159,14 +159,14 @@ SELECT DISTINCT
     r.description         AS default_revision_description,
     rt.description        AS revision_description,
     u.'.$username_field.' AS author_name
-  FROM '.REV_TABLE.' AS r
-    INNER JOIN '.EXT_TABLE.'      AS e  ON e.id_extension = r.idx_extension
-    INNER JOIN '.COMP_TABLE.'     AS c  ON c.idx_revision = r.id_revision
+  FROM '.PEM_REV_TABLE.' AS r
+    INNER JOIN '.PEM_EXT_TABLE.'      AS e  ON e.id_extension = r.idx_extension
+    INNER JOIN '.PEM_COMP_TABLE.'     AS c  ON c.idx_revision = r.id_revision
     INNER JOIN '.USERS_TABLE.'    AS u  ON u.'.$userid_field.' = e.idx_user
-    LEFT JOIN '.EXT_TRANS_TABLE.' AS et
+    LEFT JOIN '.PEM_EXT_TRANS_TABLE.' AS et
       ON et.idx_extension = e.id_extension
       AND et.idx_language = '.$_SESSION['language']['id'].'
-    LEFT JOIN '.REV_TRANS_TABLE.' AS rt
+    LEFT JOIN '.PEM_REV_TRANS_TABLE.' AS rt
       ON rt.idx_revision = r.id_revision
       AND rt.idx_language = '.$_SESSION['language']['id'].'
   WHERE c.idx_version IN ( ' . $version . ' )';
@@ -267,7 +267,7 @@ $query = '
 SELECT
     idx_extension,
     COUNT(*) AS counter
-  FROM '.RATE_TABLE.' 
+  FROM '.PEM_RATE_TABLE.' 
   WHERE idx_extension IN ('.implode(',', $extension_ids).')
   GROUP BY idx_extension
 ;';
@@ -362,8 +362,8 @@ function get_raw_tags_of_extension($extension_ids) {
 SELECT idx_extension,
        id_tag,
        name
-  FROM '.TAG_TABLE.' AS t
-  LEFT JOIN '.EXT_TAG_TABLE.' AS et
+  FROM '.PEM_TAG_TABLE.' AS t
+  LEFT JOIN '.PEM_EXT_TAG_TABLE.' AS et
     ON et.idx_tag = t.id_tag
   WHERE et.idx_extension IN ('.implode(',', $extension_ids).')
 ;';

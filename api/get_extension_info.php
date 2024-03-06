@@ -40,7 +40,7 @@ SELECT
     id_extension,
     name,
     username
-  FROM '.EXT_TABLE.' AS e
+  FROM '.PEM_EXT_TABLE.' AS e
     JOIN '.USERS_TABLE.' AS u ON u.id_user = e.idx_user
   WHERE id_extension = '.$_GET['eid'].'
 ';
