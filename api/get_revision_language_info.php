@@ -29,22 +29,6 @@ function ajax_reply()
   exit();
 }
 
-/**
- * returns true if the url is absolute (begins with http)
- *
- * @param string $url
- * @returns boolean
- */
-function url_is_remote($url)
-{
-  if ( strncmp($url, 'http://', 7)==0
-    or strncmp($url, 'https://', 8)==0 )
-  {
-    return true;
-  }
-  return false;
-}
-
 /*
  * Retrieve data from external URL.
  *

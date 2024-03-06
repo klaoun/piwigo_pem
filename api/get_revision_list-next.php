@@ -21,7 +21,9 @@ define('PHPWG_ROOT_PATH', '../../../');
 
 include_once(PHPWG_ROOT_PATH .'include/common.inc.php');
 include_once('../include/constants.inc.php');
+include_once('../include/functions_language.inc.php');
 
+$interface_languages = get_interface_languages();
 
 $required_params = array('version');
 foreach ($required_params as $required_param) {
@@ -281,50 +283,6 @@ foreach ($revisions as $revision_index => $revision)
 {
   $revisions[$revision_index]['nb_ratings'] = isset($nb_ratings_of_extension[ $revision['extension_id'] ]) ? $nb_ratings_of_extension[ $revision['extension_id'] ] : 0;
 } 
-
-
-/**
- * returns the absolute url to the root of PWG
- * @param boolean with_scheme if false - does not add http://toto.com
- */
-function get_absolute_root_url($with_scheme=true)
-{
-  // TODO - add HERE the possibility to call PWG functions from external scripts
-  $url = '';
-  if ($with_scheme)
-  {
-    $is_https = false;
-    if (isset($_SERVER['HTTPS']) &&
-      ((strtolower($_SERVER['HTTPS']) == 'on') or ($_SERVER['HTTPS'] == 1)))
-    {
-      $is_https = true;
-      $url .= 'https://';
-    }
-    else
-    {
-      $url .= 'http://';
-    }
-    if (isset($_SERVER['HTTP_X_FORWARDED_HOST']))
-    {
-      $url .= $_SERVER['HTTP_X_FORWARDED_HOST'];
-    }
-    else
-    {
-      $url .= $_SERVER['HTTP_HOST'];
-      if ( (!$is_https && $_SERVER['SERVER_PORT'] != 80)
-            ||($is_https && $_SERVER['SERVER_PORT'] != 443))
-      {
-        $url_port = ':'.$_SERVER['SERVER_PORT'];
-        if (strrchr($url, ':') != $url_port)
-        {
-          $url .= $url_port;
-        }
-      }
-    }
-  }
-  $url .= cookie_path();
-  return $url;
-}
 
 // screenshot, thumbnail, versions and tags
 $conf['upload_dir'] = '../'.$conf['upload_dir'];
