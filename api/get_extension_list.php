@@ -30,7 +30,7 @@ SELECT
     name,
     username
   FROM '.PEM_EXT_TABLE.' AS e
-    JOIN '.USERS_TABLE.' AS u ON u.id_user = e.idx_user
+    JOIN '.USERS_TABLE.' AS u ON u.user_id = e.idx_user
 ';
 $result = pwg_query($query);
 while ($row = pwg_db_fetch_assoc($result))

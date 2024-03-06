@@ -41,7 +41,7 @@ SELECT
     name,
     username
   FROM '.PEM_EXT_TABLE.' AS e
-    JOIN '.USERS_TABLE.' AS u ON u.id_user = e.idx_user
+    JOIN '.USERS_TABLE.' AS u ON u.user_id = e.idx_user
   WHERE id_extension = '.$_GET['eid'].'
 ';
 $result = pwg_query($query);
