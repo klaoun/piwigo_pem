@@ -18,9 +18,10 @@
 // | USA.                                                                  |
 // +-----------------------------------------------------------------------+
 
-define('INTERNAL', true);
-$root_path = '../';
-require_once($root_path.'include/common.inc.php');
+define('PHPWG_ROOT_PATH', '../../../');
+
+include_once(PHPWG_ROOT_PATH .'include/common.inc.php');
+include_once('../include/constants.inc.php');
 
 $extension_infos_of = array();
 
