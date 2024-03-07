@@ -112,22 +112,42 @@
     {/if}
 
         <div class="col {if {$CATEGORY.cid} == 8}col-4 {else}col-4{/if}">
-          <a class="extension_name_link" href="{$PEM_ROOT_URL}index.php?eid=" >
-            <h5 class="card-title extension_name my-2">
-              <span class='badge blue-badge revision_name {if {$CATEGORY.cid} == 8}d-none{/if}'></span>
-            </h5>
-          </a>
-          <div class="card-text extension_authors my-2"></div>
+          <div class="d-flex">
+            <a class="extension_name_link d-inline" href="{$PEM_ROOT_URL}index.php?eid=" >
+              <h5 class="card-title extension_name mb-2"></h5>
+            </a>
+            <span class="certification certification-blue d-none pem-tooltip ms-2">
+              <img src="{$PEM_PATH}/images/CertificationBlue.svg">
+              <span class="pem-tooltiptext">{'This plugin has been updated recently'|@translate}</span>
+            </span>
+            <span class="certification certification-orange d-none pem-tooltip ms-2" >
+              <img src="{$PEM_PATH}/images/CertificationOrange.svg">
+              <span class="pem-tooltiptext">{'This plugin was updated less than 6 months ago'|@translate}</span>
+            </span>
+            <span class="certification certification-grey d-none pem-tooltip ms-2" >
+              <img src="{$PEM_PATH}/images/Certification.svg">
+              <span class="pem-tooltiptext">{'This plugin has no recent updates'|@translate}</span>
+            </span>
+            <span class="certification certification-ghost d-none pem-tooltip ms-2" >
+              <img src="{$PEM_PATH}/images/CertificationGhost.svg">
+              <span class="pem-tooltiptext">{'This plugin has not been updated in 3 years !'|@translate}</span>
+            </span>
+          </div>
+          <div class="my-2">
+            <span class='badge blue-badge revision_name ms-0 {if {$CATEGORY.cid} == 8}d-none{else}d-inline-block{/if}'></span>
+            <div class="extension_authors d-inline-block"></div>
+          </div>
+         
           <div class="extension_score my-2"></div>
           <div class="d-flex my-2">
-            <i class="icon-download"></i><p class="card-text extension_number_downloads"></p>
+            <i class="icon-download"></i><p class="extension_number_downloads"></p>
           </div>
           <div class="d-flex my-2 piwigo-compatibility"></div>
         </div>
 
         <div class="col {if {$CATEGORY.cid} == 8}col-8{else}col-4{/if} extension_description_container">
           <div class="d-flex flex-column  h-100">
-            <p class="card-text extension_description "></p>
+            <p class="extension_description "></p>
             <div class="d-flex justify-content-end mt-auto">
               <a class="more_info_link" href="{$PEM_ROOT_URL}index.php?eid=" >
                 <button class="btn btn-primary">{'Discover'|translate}</button>

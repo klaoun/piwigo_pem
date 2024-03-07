@@ -367,6 +367,19 @@ function ws_pem_extensions_get_list($params, &$service)
   $categories_of_extension = get_categories_of_extension($extension_ids);
   $tags_of_extension = get_tags_of_extension($extension_ids);
 
+  //Get List of versions for filter
+  $query = '
+  SELECT 
+      id_version,
+      version
+    FROM '.PEM_VER_TABLE.'
+    ORDER BY id_version DESC
+    LIMIT 1
+  ;';
+  $result = query2array($query);
+  $pwg_latest_version = $result[0];
+
+
   $revisions = array();
 
   foreach ($revision_ids as $revision_id)
@@ -374,6 +387,38 @@ function ws_pem_extensions_get_list($params, &$service)
     $extension_id = $revision_infos_of[$revision_id]['idx_extension'];
     $authors = get_extension_authors($extension_id);
     $screenshot_infos = get_extension_screenshot_infos($extension_id);
+
+
+    $versions_of_extension = get_versions_of_extension(array($extension_id));
+    $last_ext_rev = end($versions_of_extension[$extension_id]);
+    
+    $compatible_latest_pwg_version = false;
+    if ($pwg_latest_version['version'] == $last_ext_rev)
+    {
+      $compatible_latest_pwg_version = true;
+    }
+
+    // Compare lat revision date for certification
+    $date = new DateTime();
+    $date->setTimestamp($revision_infos_of[$revision_id]['date']);
+    $now = new DateTime();
+    
+    $last_revision_diff = $now->diff($date);
+    $certification = 1;
+
+    if ($last_revision_diff->days < 90) // if the last revision is new of 3 month or less
+    {
+      $certification = 3;
+    }
+    elseif ($last_revision_diff->days < 180) // 6 month or less
+    {
+      $certification = 2;
+    }
+    elseif ($last_revision_diff->y > 3) // 3 years or less
+    {
+      $certification = 0;
+    }
+    // Between 6 month and 3 years : certification = 1
 
     array_push(
       $revisions,
@@ -399,6 +444,7 @@ function ws_pem_extensions_get_list($params, &$service)
             )
           ),
         'date' => date('Y-m-d', $revision_infos_of[$revision_id]['date']),
+        'certification' => $certification,
         'thumbnail_src' => $screenshot_infos
           ? $screenshot_infos['thumbnail_src']
           : null,
@@ -410,6 +456,7 @@ function ws_pem_extensions_get_list($params, &$service)
         'categories' => $categories_of_extension[$extension_id],
         'tags' => empty($tags_of_extension[$extension_id]) ? array() : $tags_of_extension[$extension_id],
         'revision_name' => $revision_infos_of[$revision_id]['version'],
+        'compatible_latest_pwg_version' => $compatible_latest_pwg_version, 
       )
     );
   }

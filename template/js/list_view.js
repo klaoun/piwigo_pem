@@ -224,7 +224,7 @@ function getExtensionList(cid) {
     success: function (data) {
       if (data.stat == 'ok') {
         var extensions = data.result.revisions;
-      
+
         // Empty container div to avoid adding extensions twice when filters are changed
         jQuery(".extensions_container > *:not('#jango_fett')").remove();
         jQuery(".page_buttons > *").remove();
@@ -264,16 +264,34 @@ function getExtensionList(cid) {
             //Fill extension card line with info
             jQuery('#extension_'+extension_id+' .extension_name').prepend(this.extension_name);
 
+            if (this.certification == 3)
+            {
+              jQuery('#extension_'+extension_id+' .certification-blue').removeClass('d-none');
+            }
+            else if (this.certification == 2)
+            {
+              jQuery('#extension_'+extension_id+' .certification-orange').removeClass('d-none');
+            }
+            else if (this.certification == 1)
+            {
+              jQuery('#extension_'+extension_id+' .certification-grey').removeClass('d-none');
+            }
+            else if (this.certification == 0)
+            {
+              jQuery('#extension_'+extension_id+' .certification-ghost').removeClass('d-none');
+            }
+
             //If extension has a revision
             if(this.revision_name != null)
             {
-              jQuery('#extension_'+extension_id+' .extension_name .revision_name').text( this.revision_name); 
+              jQuery('#extension_'+extension_id+' .revision_name').text( this.revision_name); 
             }
+
 
             //add authors, there can be multiple, that is the reason for the foreach
             $.each(this.authors, function(key, value) 
             {
-              jQuery('#extension_'+extension_id+' .extension_authors').append( "<a class='badge green-badge me-2 mb-3 hide-text-overflow-150 ms-0' href='"+PEM_ROOT_URL+"index.php?uid="+key+"'><i class='icon-user'></i>"+value+"</a>");
+              jQuery('#extension_'+extension_id+' .extension_authors').append( "<a class='badge green-badge me-2 hide-text-overflow-150 ms-0' href='"+PEM_ROOT_URL+"index.php?uid="+key+"'><i class='icon-user'></i>"+value+"</a>");
             });
 
             //If extensions has rating score then display it
@@ -322,7 +340,6 @@ function getExtensionList(cid) {
               jQuery('#extension_'+extension_id+' .piwigo-compatibility').append('<i class="icon-cross red-font"></i><p class="card-text">Not compatible with the latest version of Piwigo</p>')
             }
           });
-          console.log(data)
 
           if ( data.result.nb_extensions_filtered != data.result.nb_total_extensions)
           {
