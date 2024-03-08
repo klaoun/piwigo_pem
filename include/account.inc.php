@@ -105,6 +105,7 @@ FROM '.PEM_REV_TABLE.'
       $extension_infos_of = get_extension_infos_of($extension_ids);
       $download_of_extension = get_download_of_extension($extension_ids);
       $category_of_extension = get_categories_of_extension($extension_ids);
+      $compatible_version_of_extensions = get_versions_of_extension($extension_ids);
 
       $query = '
 SELECT 
@@ -117,8 +118,8 @@ SELECT
       $total_rates_of_extension = query2array($query, 'idx_extension', 'total');
 
       foreach ($extension_ids as $extension_id)
-      {  
-        
+      {
+
         if(isset($extension_infos_of[$extension_id]['name']))
         {
           $extension = array(
@@ -132,13 +133,13 @@ SELECT
             'last_updated'=> isset($last_revision_date_of[$extension_id]) ? $last_revision_date_of[$extension_id] : '',
             'publish_date' => isset($publish_extension_date_of[$extension_id]) ? $publish_extension_date_of[$extension_id] : '',
             'age' => isset($age[$extension_id]) ? $age[$extension_id] : '',
-            'compatibility_first' => '',
-            'compatibility_last' => '',
+            'compatibility_first' => !empty($compatible_version_of_extensions[$extension_id]) ? $compatible_version_of_extensions[$extension_id][0] : '',
+            'compatibility_last' => !empty($compatible_version_of_extensions[$extension_id]) ? end($compatible_version_of_extensions[$extension_id]) : '',
           );
     
           if (in_array($extension_id, $extension_ids))
           {
-            $template->append('extensions', $extension);
+            $extensions[$extension_id] = $extension;
           }
         }
         else
@@ -146,6 +147,11 @@ SELECT
           continue;
         }
       }
+      $name  = array_column($extensions, 'name');
+
+      array_multisort($name, SORT_ASC, SORT_STRING, $extensions);
+
+      $template->assign('extensions', $extensions);
     }
 
     $current_user_page_infos = get_user_infos_of(explode(' ', $current_user_page_id));
