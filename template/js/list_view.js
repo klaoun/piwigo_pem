@@ -284,7 +284,7 @@ function getExtensionList(cid) {
             //If extension has a revision
             if(this.revision_name != null)
             {
-              jQuery('#extension_'+extension_id+' .revision_name').text( this.revision_name); 
+              jQuery('#extension_'+extension_id+' .revision_name').html('<i class="icon-code-branch"></i>'+ this.revision_name); 
             }
 
 
