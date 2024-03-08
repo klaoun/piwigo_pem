@@ -168,7 +168,6 @@ SELECT
 SELECT
     e.id_extension as eid,
     name,
-    SUM(nb_downloads) AS download_count,
     e.description,
     c.idx_category as cid
 FROM '.PEM_REV_TABLE.' AS r
@@ -178,7 +177,6 @@ FROM '.PEM_REV_TABLE.' AS r
     ON e.id_extension = c.idx_extension
     WHERE e.id_extension = '.$pem_most_downloaded_extensions[$category['cid']].'
       GROUP BY r.idx_extension
-      ORDER BY download_count DESC 
 ;';
   $result = query2array($query);
   $pem_most_downloaded_extensions[$category['cid']] = $result[0];
@@ -195,9 +193,18 @@ FROM '.PEM_REV_TABLE.' AS r
       $pem_most_downloaded_extensions[$category['cid']]['eid']
     );
 
+    $download_count = get_download_of_extension(
+      array($pem_most_downloaded_extensions[$category['cid']]['eid'])
+    );
+
     if(!empty($screenshot_infos))
     {
       $categories[$i]['most_downloaded_extension']['screenshot_src'] = $screenshot_infos['screenshot_url'];
+    }
+
+    if(!empty($download_count))
+    {
+      $categories[$i]['most_downloaded_extension']['download_count'] = $download_count[$pem_most_downloaded_extensions[$category['cid']]['eid']];
     }
   }
   /**
