@@ -545,8 +545,8 @@ SELECT
   WHERE id_revision IN ('.implode(',', $revision_ids).')
 ;';
   $result = pwg_query($query);
-  
-  while ($row = pwg_db_fetch_row($result)) {
+
+  while ($row = pwg_db_fetch_assoc($result)) {
     $downloads_of_revision[ $row['id_revision'] ] = $row['nb_downloads'];
   }
 
