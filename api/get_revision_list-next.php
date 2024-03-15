@@ -285,7 +285,6 @@ foreach ($revisions as $revision_index => $revision)
 } 
 
 // screenshot, thumbnail, versions and tags
-$conf['upload_dir'] = '../'.$conf['upload_dir'];
 $pem_url = get_absolute_root_url();
 
 $versions_of = get_versions_of_revision($revision_ids);
