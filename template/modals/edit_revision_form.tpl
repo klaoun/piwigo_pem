@@ -72,12 +72,22 @@
 {/if}
     
 {if in_array('git', $upload_methods)}
-                <div id="git_type"{if $FILE_TYPE ne 'git'} class="d-none"{/if}>
-                  <label class="form-check-label">{'URL'|translate}</label>
-                  <input class="form-control" type="text" name="git_url" {if isset($GIT_URL)}value="{$GIT_URL}" readonly="readonly" {/if} size="65">
-                  <label class="form-check-label">{'Branch'|translate}</label>
-                  <input class="form-control" type="text" name="git_branch" {if isset($GIT_BRANCH)}value="{$GIT_BRANCH}"{/if} size="10">
-                </div>
+                      
+  {if in_array('git', $upload_methods)}
+                  <div id="git_type" class="{if $FILE_TYPE ne 'git'} d-none{/if}">
+                    <div class="row">
+                      <div class="col-8">
+                        <label class="form-check-label">{'URL'|translate}</label>
+                        <input class="form-control" type="text" name="git_url" {if isset($GIT_URL)}value="{$GIT_URL}" readonly="readonly" {/if} size="65">
+                      </div>
+                      <div class="col-4">
+                        <label class="form-check-label">{'Branch'|translate}</label>
+                        <input class="form-control" type="text" name="git_branch" {if isset($GIT_BRANCH)}value="{$GIT_BRANCH}"{/if} size="10">
+                      </div>
+                    </div>
+                  </div>
+  {/if}
+      
 {/if}
     
 {if in_array('url', $upload_methods)}
