@@ -438,3 +438,8 @@ displayLanguagesModal.addEventListener('show.bs.modal', event => {
   });
 
 });
+
+$('input[name="author"]').on('change', function() { 
+  var getCheckedValue = $('input[name=author]:checked').val()
+  jQuery("#addRevisionModal #author_"+getCheckedValue).attr( 'checked', true )
+});
