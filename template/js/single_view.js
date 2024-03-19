@@ -151,8 +151,23 @@ function setOwner(userId, extensionId)
   });
 }
 
+
+//set ajax action on delete click in modal
+const deleteLinkModal = document.getElementById('deleteLinkModal');
+
+deleteLinkModal.addEventListener('show.bs.modal', event => {
+  const buttonDeleteRevision = event.relatedTarget
+  // Extract info from data-bs-* attributes
+  const ext_id = buttonDeleteRevision.getAttribute('data-bs-ext_id')
+  const link_id = buttonDeleteRevision.getAttribute('data-bs-link_id')
+  const pem_root_url = buttonDeleteRevision.getAttribute('data-bs-root_url')
+  jQuery('#deleteLinkModal #deleteLink').attr("onClick", 'deleteLink('+link_id+', '+ext_id+', "'+pem_root_url+'/index.php?eid='+ext_id+'")')
+
+});
+
+
 // Ajax request to delete an link associated to an extension, found in single_view.tpl
-function deleteLink(linkId, extensionId)
+function deleteLink(linkId, extensionId, link)
 {
   jQuery.ajax({
     type: 'GET',
@@ -161,7 +176,9 @@ function deleteLink(linkId, extensionId)
     url: 'ws.php?format=json&method=pem.extensions.deleteLink&extension_id=' + extensionId + '&link_id=' + linkId + '&pwg_token=' + pwg_token,
     data: { ajaxload: 'true' },
     success: function (data) {
-      window.location.reload(); 
+      if (data.stat == 'ok') {
+        window.location.replace(link)
+      } 
     }
   });
 }
@@ -197,8 +214,22 @@ function deleteExtension(extensionId, link)
   });
 }
 
+//set ajax action on delete click in modal
+const deleteRevisionModal = document.getElementById('deleteRevisionModal');
+
+deleteRevisionModal.addEventListener('show.bs.modal', event => {
+  const buttonDeleteRevision = event.relatedTarget
+  // Extract info from data-bs-* attributes
+  const ext_id = buttonDeleteRevision.getAttribute('data-bs-ext_id')
+  const rev_id = buttonDeleteRevision.getAttribute('data-bs-rev_id')
+  const pem_root_url = buttonDeleteRevision.getAttribute('data-bs-root_url')
+  jQuery('#deleteRevisionModal #deleteRevision').attr("onClick", 'deleteRevision('+rev_id+', '+ext_id+', "'+pem_root_url+'/index.php?eid='+ext_id+'")')
+
+});
+
+
 // Ajax request to delete a revision from an extension
-function deleteRevision(revisionId,extensionId )
+function deleteRevision(revisionId,extensionId, link )
 {
   jQuery.ajax({
     type: 'GET',
@@ -207,7 +238,9 @@ function deleteRevision(revisionId,extensionId )
     url: 'ws.php?format=json&method=pem.revisions.deleteRevision&extension_id=' + extensionId + '&revision_id=' + revisionId+ '&pwg_token=' + pwg_token,
     data: { ajaxload: 'true' },
     success: function (data) {
-      window.location.reload(); 
+      if (data.stat == 'ok') {
+        window.location.replace(link)
+      }
     }
   });
 }
@@ -439,6 +472,7 @@ displayLanguagesModal.addEventListener('show.bs.modal', event => {
 
 });
 
+// Used to make sure author in add revision modal is selected
 $('input[name="author"]').on('change', function() { 
   var getCheckedValue = $('input[name=author]:checked').val()
   jQuery("#addRevisionModal #author_"+getCheckedValue).attr( 'checked', true )

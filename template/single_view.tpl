@@ -230,9 +230,15 @@
                 <i class="icon-pencil"></i>Edit
               </span>
     {if $link.id_link !== "git" && $link.id_link !== "svn" }
-              <span class="circle-icon secondary_action" onclick="deleteLink({$link.id_link}, {$extension_id})">
-                <i class="icon-trash translate-middle"></i>{'Delete'|translate}
-              </span>
+              <span class="edit_mode circle-icon secondary_action " 
+                  data-bs-toggle="modal" 
+                  data-bs-target="#deleteLinkModal"
+                  data-bs-link_id="{$link.id_link}"
+                  data-bs-ext_id="{$extension_id}"
+                  data-bs-root_url="{$PEM_ROOT_URL}"
+                  >
+                  <i class="icon-trash translate-middle"></i>
+                </span>
     {/if}
   {/if}
             </td>
@@ -309,7 +315,13 @@
                 >
                   <i class="icon-pencil"></i>
                 </span>
-                <span class="edit_mode circle-icon secondary_action me-2" onclick="deleteRevision({$rev.id}, {$extension_id})">
+                <span class="edit_mode circle-icon secondary_action me-2" 
+                  data-bs-toggle="modal" 
+                  data-bs-target="#deleteRevisionModal"
+                  data-bs-rev_id="{$rev.id}"
+                  data-bs-ext_id="{$extension_id}"
+                  data-bs-root_url="{$PEM_ROOT_URL}"
+                  >
                   <i class="icon-trash translate-middle"></i>
                 </span>
     {/if}
@@ -396,6 +408,8 @@
   {$PEM_EDIT_SVN_GIT_FORM}
   {$PEM_ADD_REVISION_FORM}
   {$PEM_DELETE_EXTENSION}
+  {$PEM_DELETE_REVISION}
+  {$PEM_DELETE_LINK}
   {$PEM_DISPLAY_LANGUAGES}
 
 </div>

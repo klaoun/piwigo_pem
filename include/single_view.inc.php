@@ -918,6 +918,12 @@ SELECT
     // Assign template for deleting extension
     $template->set_filename('pem_delete_extension', realpath(PEM_PATH . 'template/modals/delete_ext.tpl'));
     $template->assign_var_from_handle('PEM_DELETE_EXTENSION', 'pem_delete_extension');
+    
+    $template->set_filename('pem_delete_revision', realpath(PEM_PATH . 'template/modals/delete_revision.tpl'));
+    $template->assign_var_from_handle('PEM_DELETE_REVISION', 'pem_delete_revision');
+
+    $template->set_filename('pem_delete_link', realpath(PEM_PATH . 'template/modals/delete_link.tpl'));
+    $template->assign_var_from_handle('PEM_DELETE_LINK', 'pem_delete_link');
 
     // Assign template for confirmation modal
     $template->set_filename('pem_display_languages', realpath(PEM_PATH . 'template/modals/display_languages.tpl'));
