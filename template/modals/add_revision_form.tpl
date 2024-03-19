@@ -133,7 +133,7 @@
                 <label class="col-12">{'Author'|translate}</label>
                 <div class="btn-group" role="group" aria-label="Basic radio toggle button group">
 {foreach from=$authors item=author}
-                  <input type="radio" name="author" value="{$author.uid}" id="author_{$author.uid}" class="btn-check" autocomplete="off" {if $current_user_id == $author.uid}checked{/if}>
+                  <input type="radio" name="author" value="{$author.uid}" id="author_{$author.uid}" class="btn-check" autocomplete="off">
                   <label class="btn btn-outline-primary" for="author_{$author.uid}">{$author.username}</label>
 {/foreach}  
 {if $add_current_user == true}
