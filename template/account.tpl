@@ -39,7 +39,7 @@
           <p class="d-inline">{'Member since %s'|translate:$USER.registration_date_formatted}<span class="badge blue-badge d-inline">{$USER.member_since}</span></p>
         </div>
         {if isset($USER.last_activity_formatted)}
-        <div class="p-1">
+        <div class="p-1 mt-2">
           <p class="d-inline">{'Last activity %s'|translate:$USER.last_activity_formatted}<span class="badge blue-badge d-inline">{$USER.last_activity_since}</span></p>
         </div>
         {/if}
