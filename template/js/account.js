@@ -108,7 +108,7 @@ function fillTable(extensions)
     {
       jQuery('#extension_' + extension_id + ' td.age').append('\
       <span class="ms-0 badge blue-badge pem-tooltip">\
-        <i class="icon-clock">'+this.age+'</i>\
+        <i class="icon-clock me-1"></i>'+this.age+'\
         <span class="pem-tooltiptext">'+this.publish_date+'</span>\
       </span>');
     }

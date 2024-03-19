@@ -15,10 +15,9 @@
 {if $can_modify == true}
   <section  class="mt-4 section-fluid">
     <div class="d-flex justify-content-end">
-      <div class="form-check form-switch ">
-        <input class="form-check-input" type="checkbox" role="switch" id="edit_mode" >
-        <label class="form-check-label" for="edit_mode"> {'Edit mode'|translate}</label>
-      </div>                                            
+      <span class="link-secondary link" data-bs-toggle="modal" data-bs-target="#userInfoModal">
+        <i class="icon-gears me-1"></i>{'Settings'|translate}
+      </span>
     </div>
   </section>
 {/if}
@@ -26,11 +25,6 @@
   <section class="section-fluid my-5">
     <div class="row">
       <div class="col-6 border-right position-relative">
-{if $can_modify == true}
-        <span class="circle-icon edit_mode position-absolute top-0 end-0 translate-middle" data-bs-toggle="modal" data-bs-target="#userInfoModal">
-          <i class="icon-pencil"></i>
-        </span>
- {/if}
         <h3 class="hide-text-overflow-300">{$USER.username}</h3>
        {if isset($USER.group)}<h5>{$USER.group}</h5>{/if }
       </div>
