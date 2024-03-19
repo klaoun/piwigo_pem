@@ -64,41 +64,61 @@
           <thead>
             <tr>
               <th></th>
-              <th>{'Name'|translate}</th>
-              <th>{'Age'|translate}</th>
-              <th>{'Last update'|translate}</th>
-              <th>{'Compatibility'|translate}</th>
-              <th class="text-center"><i class="icon-download"></i></th>
-              <th>{'Rating'|translate}</th>
+              <th onclick="sortExtensions('name')" class="name">
+               {'Name'|translate}
+                {* <i class="icon-sort"></i> *}
+              </th>
+              <th onclick="sortExtensions('publish_date_not_formatted')" class="publish_date_not_formatted">
+               {'Age '|translate}
+                {* <i class="icon-sort"></i> *}
+              </th>
+              <th onclick="sortExtensions('last_updated')" class="last_updated">
+                {'Last update'|translate}
+                {* <i class="icon-sort"></i> *}
+              </th>
+              <th onclick="sortExtensions('compatibilty_last')" class="compatibilty_last">
+               {'Compatibility'|translate}
+                {* <i class="icon-sort"></i> *}
+              </th>
+              <th class="text-center" onclick="sortExtensions('nb_downloads')" class="nb_downloads">
+                <i class="icon-download"></i> 
+                {* <i class="icon-sort"></i> *}
+              </th>
+              <th onclick="sortExtensions('rating_score_not_formatted')" class="rating_score_not_formatted">
+                {'Rating'|translate}
+                {* <i class="icon-sort"></i> *}
+              </th>
             </tr>
           <thead>
-          <tbody>
-  {foreach from=$extensions item=extension}
+          <tbody data-extensions='{$extensions_json}' >
+
+            <tr id="jango_fett">
+              <td class="text-center grey-font category"></td>
+              <td class="name"></td>
+              <td class="age"></td>
+              <td class="last_updated"></td>
+              <td class="compatibilty"></td>
+              <td class="text-end nb_downloads"></td>
+              <td class="rating"></td>
+            </tr>
+
+
+  {* {foreach from=$extensions item=extension}
             <tr>
-              <td class="text-center grey-font">
-                <i class="
-                {if $extension.category == "Plugin"}
-                  icon-puzzle-piece
-                {else if $extension.category == "Theme"}
-                  icon-palette
-                {else if $extension.category == "Tool"}
-                  icon-screwdriver-wrench
-                {else if $extension.category == "Language"}
-                  icon-language
-                {/if}
-                "></i>
-              </td>
-              <td><a class="link orange-link" href="{$PEM_ROOT_URL}index.php?eid={$extension.id}">{$extension.name}</a></td>
+              
+              <td class="name"><a class="link orange-link" href="{$PEM_ROOT_URL}index.php?eid={$extension.id}">{$extension.name}</a></td>
               <td>
-              {if !empty($extension.age)}
+    {if !empty($extension.age)}
                 <span class="ms-0 badge blue-badge pem-tooltip">
+                <i class="icon-clock"></i>
                   {$extension.age}
                   <span class="pem-tooltiptext">{$extension.publish_date}</span>
                 </span>
-              {/if}
+    {/if}
               </td>
               <td>{$extension.last_updated}</td>
               <td>
+    {if !empty($extension.compatibility_first)}
                 <span class="compatibility compatibility-first">
                   <i class="icon-code-branch"></i>{$extension.compatibility_first}
                 </span>
@@ -106,13 +126,16 @@
                 <span class="compatibility compatibility-last">
                   <i class="icon-code-branch"></i>{$extension.compatibility_last}
                 </span>
+    {/if}
               </td>
-              <td class="space-mono-regular text-end">
+              <td class="text-end">
                 {if $extension.nb_downloads > 0}{$extension.nb_downloads}{/if}
               </td>
-              <td>{if $extension.rating_score}{$extension.rating_score}({$extension.total_rates}){/if}</td>
+              <td>
+                {if isset($extension.rating_score)}{$extension.rating_score} ({$extension.total_rates}){/if}
+              </td>
             </tr>
-  {/foreach}
+  {/foreach} *}
           </tbody>
         </table>
       </div>
@@ -131,11 +154,13 @@
 {$PEM_USER_EDIT_INFO_FORM}
 {$PEM_ADD_EXT_FORM}
 
-<script src="{$PEM_ROOT_URL_PLUGINS}template/js/account.js" require="jquery"></script>
 {combine_script id='jquery.confirm' load='footer' require='jquery' path='vendor/js/jquery-confirm.min.js'}
 
 <script>
   //allows any filters set in list view to be cleared 
   sessionStorage.clear()
+  const PEM_ROOT_URL = `{$PEM_ROOT_URL}`
 </script>
+<script src="{$PEM_ROOT_URL_PLUGINS}template/js/account.js" require="jquery"></script>
+
 

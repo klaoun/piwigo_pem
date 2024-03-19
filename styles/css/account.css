@@ -3,6 +3,22 @@
   font-weight: 700;
 }
 
+#profile .icon-arrow-right{
+  font-size:12px;
+  color:var(--grey3);
+}
+
+#profile th:hover{
+  cursor:pointer;
+}
+
+/*******
+Icons
+*******/
+#profile .icon-sort{
+  opacity:.5;
+}
+
 #profile .compatibility{
   border-radius: 5px;
   padding: 0px 5px;
@@ -20,8 +36,10 @@
   color: var(--white);
 }
 
-#profile .icon-arrow-right{
-  font-size:12px;
-  color:var(--grey3);
-}
+/*******
+other
+*******/
 
+#jango_fett{
+  display:none;
+}

@@ -80,6 +80,7 @@ SELECT
       while ($row = pwg_db_fetch_array($result))
       {
         $publish_extension_date_of[ $row['idx_extension'] ] = format_date($row['date']);
+        $publish_extension_date_of_NF[ $row['idx_extension'] ] = $row['date'];
         $age[ $row['idx_extension'] ] = time_since($row['date'], 'month', null, false);
       }
 
@@ -127,16 +128,17 @@ SELECT
             'name' =>htmlspecialchars(strip_tags(stripslashes($extension_infos_of[$extension_id]['name']))),
             'category' => isset($category_of_extension[$extension_id]['default_name']) ? $category_of_extension[$extension_id]['default_name'] : '' ,
             'rating_score' => generate_static_stars($extension_infos_of[$extension_id]['rating_score'],0),
+            'rating_score_not_formatted' => $extension_infos_of[$extension_id]['rating_score'] ?? 0,
             'total_rates' =>  isset($total_rates_of_extension[$extension_id]) ? $total_rates_of_extension[$extension_id] : '',
             'nb_reviews' => isset($extension_infos_of[$extension_id]['nb_reviews']) ? $extension_infos_of[$extension_id]['nb_reviews'] : '',
             'nb_downloads' => isset($download_of_extension[$extension_id]) ? $download_of_extension[$extension_id] : '',
             'last_updated'=> isset($last_revision_date_of[$extension_id]) ? $last_revision_date_of[$extension_id] : '',
             'publish_date' => isset($publish_extension_date_of[$extension_id]) ? $publish_extension_date_of[$extension_id] : '',
+            'publish_date_not_formatted' =>  isset($publish_extension_date_of_NF[$extension_id]) ? $publish_extension_date_of_NF[$extension_id] : '',
             'age' => isset($age[$extension_id]) ? $age[$extension_id] : '',
             'compatibility_first' => !empty($compatible_version_of_extensions[$extension_id]) ? $compatible_version_of_extensions[$extension_id][0] : '',
             'compatibility_last' => !empty($compatible_version_of_extensions[$extension_id]) ? end($compatible_version_of_extensions[$extension_id]) : '',
-          );
-    
+          );    
           if (in_array($extension_id, $extension_ids))
           {
             $extensions[$extension_id] = $extension;
@@ -152,6 +154,7 @@ SELECT
       array_multisort($name, SORT_ASC, SORT_STRING, $extensions);
 
       $template->assign('extensions', $extensions);
+      $template->assign('extensions_json', json_encode($extensions));
     }
 
     $current_user_page_infos = get_user_infos_of(explode(' ', $current_user_page_id));
