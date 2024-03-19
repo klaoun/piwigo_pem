@@ -45,12 +45,14 @@
         </a>
       </div>
 
+      {if isset($U_REGISTER)}
       <div class="w-100 text-center border-top mt-4">
         <p class="mt-4">or</p>
         <a href="{$U_REGISTER}" title="{'Register'|translate}">
           <button class="btn btn-secondary mt-4 w-100">{'Register'|translate}</button>
         </a>
       </div>
+      {/if}
     
     </div>
   </section>
