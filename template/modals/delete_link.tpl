@@ -11,7 +11,7 @@
           <div class="modal-body text-center">
             <p>{'Are you sure you want to delete this link ?'|translate}</p>
             <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">{'Cancel'|translate}</button>
-            <button type="button" class="btn btn-danger" id="deleteLink">{'Yes delete'|translate}</button>
+            <button type="button" class="btn btn-danger" id="deleteLink">{'Yes, delete'|translate}</button>
           </div>
         </div>
       </div>
