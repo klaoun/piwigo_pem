@@ -123,12 +123,12 @@ function fillTable(extensions)
     if (this.compatibility_first && this.compatibility_last)
     {
       jQuery('#extension_' + extension_id + ' td.compatibilty').append(' \
-      <span class="compatibility compatibility-first my-1">\
-        <i class="icon-piwigo"></i>'+this.compatibility_first+'\
+      <span class="compatibility compatibility-first ">\
+        <i class="icon-piwigo ms-0"></i>'+this.compatibility_first+'\
       </span>\
       <i class="icon-arrow-right"></i>\
-      <span class="compatibility compatibility-last my-1">\
-        <i class="icon-piwigo"></i>'+this.compatibility_last+'\
+      <span class="compatibility compatibility-last ">\
+        <i class="icon-piwigo ms-0"></i>'+this.compatibility_last+'\
       </span>\
       ');
     }
