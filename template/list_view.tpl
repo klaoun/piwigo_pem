@@ -145,7 +145,7 @@
           <div class="d-flex my-2 piwigo-compatibility"></div>
         </div>
 
-        <div class="col {if {$CATEGORY.cid} == 8}col-8{else}col-4{/if} extension_description_container">
+        <div class="col {if {$CATEGORY.cid} == 8}col-8{else}col-4{/if} extension_description_container pe-0">
           <div class="d-flex flex-column  h-100">
             <p class="extension_description "></p>
             <div class="d-flex justify-content-end mt-auto">
