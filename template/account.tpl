@@ -16,7 +16,7 @@
   <section  class="mt-4 section-fluid">
     <div class="d-flex justify-content-end">
       <span class="link-secondary link" data-bs-toggle="modal" data-bs-target="#userInfoModal">
-        <i class="icon-gears me-1"></i>{'Settings'|translate}
+        <i class="icon-gears me-1"></i>{'User settings'|translate}
       </span>
     </div>
   </section>

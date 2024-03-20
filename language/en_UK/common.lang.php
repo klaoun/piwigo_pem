@@ -287,6 +287,7 @@ $lang['Not compatible with the latest version of Piwigo'] = 'Not compatible with
 $lang['Last activity %s'] = 'Last activity %s';
 $lang['filtered extensions'] = 'filtered extensions';
 $lang['coffee'] = 'coffee';
+$lang['User settings'] = 'User settings';
 
 // For footer
 $lang['Donate'] = 'Donate';

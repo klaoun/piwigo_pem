@@ -288,6 +288,7 @@ $lang['Last activity %s'] = 'Dernière activité %s';
 $lang['filtered extensions'] = 'extensions filtrés';
 
 $lang['coffee'] = 'café';
+$lang['User settings'] = 'Paramètres utilisateur';
 
 
 ?>

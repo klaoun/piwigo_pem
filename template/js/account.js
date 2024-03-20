@@ -85,16 +85,16 @@ function fillTable(extensions)
     // for extension category
     switch(this.category) {
       case "Plugin":
-        jQuery('#extension_' + extension_id + ' td.category').append('<i class="icon-puzzle-piece"></i>')
+        jQuery('#extension_' + extension_id + ' td.category').append('<span class="pem-tooltip"><i class="icon-puzzle-piece"></i><span class="pem-tooltiptext">'+this.category+'</span></span>')
         break;
       case "Theme":
-        jQuery('#extension_' + extension_id + ' td.category').append('<i class="icon-palette"></i>')
+        jQuery('#extension_' + extension_id + ' td.category').append('<span class="pem-tooltip"><i class="icon-palette"></i><span class="pem-tooltiptext">'+this.category+'</span></span>')
         break;
       case "Tool":
-        jQuery('#extension_' + extension_id + ' td.category').append('<i class="icon-screwdriver-wrench"></i>')
+        jQuery('#extension_' + extension_id + ' td.category').append('<span class="pem-tooltip"><i class="icon-screwdriver-wrench"></i><span class="pem-tooltiptext">'+this.category+'</span></span>')
       break;
       case "Language":
-        jQuery('#extension_' + extension_id + ' td.category').append('<i class="icon-language"></i>')
+        jQuery('#extension_' + extension_id + ' td.category').append('<span class="pem-tooltip"><i class="icon-language"></i><span class="pem-tooltiptext">'+this.category+'</span></span>')
         break;
     }
 
