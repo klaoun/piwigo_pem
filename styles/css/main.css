@@ -427,6 +427,11 @@ a.badge:hover{
   margin-left:10px;
 }
 
+.inner-badge{
+  border-radius:15px;
+  padding:0 5px;
+}
+
 .blue-badge{
   background-color: var(--light_blue_background);
   color:var(--light_blue_font)!important;
@@ -435,6 +440,11 @@ a.badge:hover{
 .purple-badge{
   background-color: var(--light_purple_background);
   color:var(--light_purple_font)!important;
+}
+
+.inner-badge.purple-badge{
+  color: var(--light_purple_background)!important;
+  background-color:var(--light_purple_font)!important;
 }
 
 .orange-badge{

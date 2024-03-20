@@ -355,7 +355,7 @@
                 <i class="icon-language me-1"></i>
         {if !empty($rev.languages_diff)}
           
-                {'%s Available languages, %s'|translate: ($rev.languages|@count):{$pwg->l10n_dec('%d new','%d new(s)',$rev.languages_diff|@count)}}
+                {'%s Available languages'|translate: ($rev.languages|@count)}<span class="ms-2 inner-badge purple-badge">+ {$rev.languages_diff|@count}</span>
         {else}
                   {* We assume there will always be more than one language *}
                   {'%s Available languages'|translate:{$rev.languages|@count}}
