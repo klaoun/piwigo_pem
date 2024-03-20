@@ -111,6 +111,11 @@ Revisions
   background-color:var(--fourth_orange)!important;
 }
 
+#single_view #changelog .changelogRevision.latest_rev .inner-badge {
+  background-color:var(--third_orange)!important;
+  color:var(--fourth_orange)!important;
+}
+
 #single_view .secondary_action:hover{
   color:white;
   border:1px solid var(--main_orange);
