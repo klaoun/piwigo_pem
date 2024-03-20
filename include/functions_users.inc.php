@@ -16,26 +16,30 @@ function get_author_name($ids)
   {
     $authors = $ids;
   }
-
+  
   $result = array();
-  foreach($authors as $author)
+  if(!is_null($authors))
   {
-    $user_infos_of = get_user_infos_of(array($author));
-
-    if (!empty($conf['user_url_template']))
+    foreach($authors as $author)
     {
-      $author_string = sprintf(
-        $conf['user_url_template'],
-        $user_infos_of[$author]['id'],
-        $user_infos_of[$author]['username']
-        );
+      $user_infos_of = get_user_infos_of(array($author));
+  
+      if (!empty($conf['user_url_template']))
+      {
+        $author_string = sprintf(
+          $conf['user_url_template'],
+          $user_infos_of[$author]['id'],
+          $user_infos_of[$author]['username']
+          );
+      }
+      else
+      {
+        $author_string = $user_infos_of[$author]['username'];
+      }
+      array_push($result, $author_string);
     }
-    else
-    {
-      $author_string = $user_infos_of[$author]['username'];
-    }
-    array_push($result, $author_string);
   }
+
   if (is_string($ids))
   {
     return $result[0];
