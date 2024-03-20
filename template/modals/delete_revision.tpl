@@ -10,7 +10,7 @@
           </div>
           <div class="modal-body text-center">
             <p>{'Are you sure you want to delete this revision ?'|translate}</p>
-            <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">{'Cancel'|translate}</button>
+            <button type="button" class="btn btn-outline-secondary me-3" data-bs-dismiss="modal">{'Cancel'|translate}</button>
             <button type="button" class="btn btn-danger" id="deleteRevision">{'Yes, delete'|translate}</button>
           </div>
         </div>

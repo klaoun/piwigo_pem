@@ -10,8 +10,8 @@
           </div>
           <div class="modal-body text-center">
             <p>{'Are you sure you want to delete this extension ?'|translate}</p>
-            <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">{'Cancel'|translate}</button>
-            <button type="button" class="btn btn-danger" onclick="deleteExtension({$extension_id},'{$PEM_ROOT_URL}/index.php?uid={$owner_id}' )">{'Yes delete'|translate}</button>
+            <button type="button" class="btn btn-outline-secondary me-3" data-bs-dismiss="modal">{'Cancel'|translate}</button>
+            <button type="button" class="btn btn-danger" onclick="deleteExtension({$extension_id},'{$PEM_ROOT_URL}/index.php?uid={$owner_id}' )">{'Yes, delete'|translate}</button>
           </div>
         </div>
       </div>
