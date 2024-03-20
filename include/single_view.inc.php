@@ -478,6 +478,7 @@ SELECT
             'rev_lang_ids' => isset($rev_languages_of_ids[$row['id_revision']]) ?
               $rev_languages_of_ids[$row['id_revision']] : array(),
             'date' => format_date($row['date'], array('day_name','day','month','year')),
+            'age' => time_since($row['date'], 'month', null, false),
             'author' => get_author_name($row['author']) ,
             'author_id' => $row['author'] ,
             'u_download' => PEM_PATH.'download.php?rid='.$row['id_revision'],

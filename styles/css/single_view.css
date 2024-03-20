@@ -81,7 +81,6 @@ Revisions
 }
 
 #single_view .changelogRevision.card h4{
-  /* font-size:20px; */
   font-weight:700;
   margin-bottom:0;
 }
@@ -95,7 +94,7 @@ Revisions
 }
 
 #single_view #changelog .changelogRevision.latest_rev .changelogRevisionHeaderExpanded {
-  border-bottom:2px solid var(--white);
+  border-bottom:2px solid var(--secondary_orange)!important;
 }
 
 #single_view #changelog .changelogRevision.latest_rev .btn-tertiary{

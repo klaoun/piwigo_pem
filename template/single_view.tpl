@@ -298,9 +298,11 @@
             <div class="revision_title_container d-flex justify-content-between">
               <h4 class="revisionTitle">{'Revision'|translate} {$rev.version}</h4>
               <div class="d-flex justify-content-end align-items-center">
-                <a href="{$rev.u_download}" title="{'Download revision'|translate} {$rev.version}" rel="nofollow" class="circle-icon main_action white-link me-2">
-                  <i class="icon-download"></i>
-                </a>
+              <div class="d-flex justify-content-start">
+                <p class="me-4"><i class="icon-rocket me-1"></i>{'Released on %s'|translate:$rev.date}</p>
+                <p class="me-4"><i class="icon-download me-1"></i>{$rev.downloads}</p>
+              </div>
+
     {if isset($can_modify) && $can_modify == true}
                 <span class="circle-icon edit_mode main_action me-2" 
                   data-bs-toggle="modal" data-bs-target="#revisionInfoModal"
@@ -335,24 +337,30 @@
         <div id="rev{$rev.id}_content" class="changelogRevisionContent pt-4" {if !$rev.expanded} style="display:none" {/if}>
           
           <div class="d-flex justify-content-start">
-            <p class="me-4"><i class="icon-rocket me-1"></i>{'Released on %s'|translate:$rev.date}</p>
-            <p class="me-4"><i class="icon-piwigo me-1"></i>{'Compatible with Piwigo %s'|translate:$rev.versions_compatible}</p>
-            <p class="me-4"><i class="icon-download me-1"></i>{$rev.downloads}</p>
+            <p class="me-3"><i class="icon-piwigo me-1"></i>{'Compatible with Piwigo %s'|translate:$rev.versions_compatible}</p>
+            <span class="badge blue-badge ms-0 me-3"><i class="icon-clock me-1"></i>{$rev.age}</span>
     {if !empty($rev.author)}
               <span>
-              <a href="{$PEM_ROOT_URL}index.php?uid={$rev.author_id}" class="badge green-badge me-4 ms-0 hide-text-overflow-150">
-                  <i class="icon-user"></i>{$rev.author}
+              <a href="{$PEM_ROOT_URL}index.php?uid={$rev.author_id}" class="badge green-badge me-3 ms-0 hide-text-overflow-150">
+                <i class="icon-user me-1"></i>{$rev.author}
               </a>
               </span>
     {/if}
     {if !empty($rev.languages)}
-              <span class="link badge purple-badge ms-0"  data-bs-toggle="modal" data-bs-target="#displayLanguagesModal"
+              <span class="link badge purple-badge ms-0" data-bs-toggle="modal" data-bs-target="#displayLanguagesModal"
                 {if isset($rev.languages)}data-bs-rev-languages='{json_encode($rev.languages)}'{/if}
                 {if isset($rev.languages_diff)}data-bs-new-languages='{json_encode($rev.languages_diff)}'{/if}
               >
-                <i class="icon-language"></i> 
-                {'%s Available languages'|translate:{$rev.languages|@count}}
-                {if !empty($rev.languages_diff)}, {'%s new'|translate:{$rev.languages_diff|@count}}{/if}
+      {strip}
+                <i class="icon-language me-1"></i>
+        {if !empty($rev.languages_diff)}
+          
+                {'%s Available languages, %s'|translate: ($rev.languages|@count):{$pwg->l10n_dec('%d new','%d new(s)',$rev.languages_diff|@count)}}
+        {else}
+                  {* We assume there will always be more than one language *}
+                  {'%s Available languages'|translate:{$rev.languages|@count}}
+        {/if}
+      {/strip}
               </span>
     {/if}
           </div>
