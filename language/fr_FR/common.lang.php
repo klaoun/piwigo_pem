@@ -160,7 +160,6 @@ $lang['An error occured during SVN/Git export.'] = 'Une erreur est survenue pend
 
 $lang['Available languages'] = 'Langues disponibles';
 $lang['%s Available languages'] = '%s langues disponibles';
-$lang['%s new'] = '%s nouvelles';
 $lang['New languages'] = 'Nouvelles langues';
 $lang['Default description'] = 'Description par défaut';
 $lang['Default description can not be empty'] = 'Vous devez renseigner la description par défaut';
@@ -246,7 +245,7 @@ $lang['Sort order'] = 'Ordre de tri';
 $lang['Newest to oldest'] = 'Plus récent au plus ancien';
 $lang['Oldest to Newest'] = 'Plus ancien au plus récent';
 $lang['A to Z'] = 'A à Z';
-$lang['Z to A'] = 'Z à A;';
+$lang['Z to A'] = 'Z à A';
 $lang['Compatible version of Piwigo'] = 'Version compatible de Piwigo';
 $lang['Loading...'] = 'Chargement...';
 $lang['Sorry, this extension doesn\'t exist.'] = 'Désolé, cette extension n\'existe pas.';
@@ -267,7 +266,7 @@ $lang['Action'] = 'Action';
 $lang['All languages'] = 'Toutes les langues';
 $lang['Revisions'] = 'Révisions';
 $lang['SVN & Git configuration'] = 'Configuration SVN et Git';
-$lang['Released on %s'] = 'Sorti le %s';
+$lang['Released on %s'] = 'Sortie le %s';
 $lang['Revisions'] = 'Révisions';
 $lang['Download this revision'] = 'Téléchargez cette révision';
 $lang['Forgotten password ?'] = 'Mot de passe oublié ?';
@@ -286,7 +285,6 @@ $lang['Compatible with the latest version of Piwigo'] = 'Compatible avec la dern
 $lang['Not compatible with the latest version of Piwigo'] = 'Non compatible avec la dernière version de Piwigo';
 $lang['Last activity %s'] = 'Dernière activité %s';
 $lang['filtered extensions'] = 'extensions filtrés';
-
 $lang['coffee'] = 'café';
 $lang['User settings'] = 'Paramètres utilisateur';
 
