@@ -243,6 +243,10 @@ Extension cards
   color:var(--grey6);
 }
 
+.extension_description{
+  max-height:200px;
+}
+
 /******
 Certification
 ******/
