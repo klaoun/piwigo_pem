@@ -796,3 +796,14 @@ Other
 .hover-pointer{
   cursor:pointer;
 }
+
+.btn-danger {
+  color: #fff;
+  background-color: #e74c3c;
+  border-color: #e74c3c;
+}
+
+.btn-danger:hover {
+  background-color: #c0392b;
+  border-color: #c0392b;
+}
