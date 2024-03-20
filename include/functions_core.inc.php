@@ -379,7 +379,7 @@ DELETE
 function get_extension_dir($extension_id)
 {
   global $conf;
-  return $conf['upload_dir'].'extension-'.$extension_id;
+  return PHPWG_ROOT_PATH.$conf['upload_dir'].'extension-'.$extension_id;
 }
 
 /**
