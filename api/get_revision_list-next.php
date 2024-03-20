@@ -224,7 +224,7 @@ while ($row = pwg_db_fetch_assoc($result)) {
     );
 
   $row['download_url'] = sprintf(
-    '%s/download.php?rid=%u',
+    '%s/'.PHPWG_PLUGINS_PATH.'piwigo_pem/download.php?rid=%u',
     $conf['website_url'],
     $row['revision_id']
     );
@@ -296,8 +296,8 @@ foreach ($revisions as $revision_index => $revision)
 
   if ($screenshot_infos)
   {
-    $revisions[$revision_index]['thumbnail_src'] = $pem_url.str_replace('../', '', $screenshot_infos['thumbnail_src']);
-    $revisions[$revision_index]['screenshot_url'] = $pem_url.str_replace('../', '', $screenshot_infos['screenshot_url']);
+    $revisions[$revision_index]['thumbnail_src'] = $pem_url.str_replace(PHPWG_ROOT_PATH, '', $screenshot_infos['thumbnail_src']);
+    $revisions[$revision_index]['screenshot_url'] = $pem_url.str_replace(PHPWG_ROOT_PATH, '', $screenshot_infos['screenshot_url']);
   }
 
   $revisions[$revision_index]['compatible_with_versions'] = $versions_of[ $revision['revision_id'] ];
