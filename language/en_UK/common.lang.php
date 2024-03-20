@@ -160,7 +160,8 @@ $lang['An error occured during SVN/Git export.'] = 'An error occured during SVN/
 
 $lang['Available languages'] = 'Available languages';
 $lang['%s Available languages'] = '%s Available languages';
-$lang['%s new'] = '%s new';
+$lang['%d new'] = '%d new';
+$lang['%d new(s)'] = '%d new';
 $lang['New languages'] = 'New languages';
 $lang['Default description'] = 'Default description';
 $lang['Default description can not be empty'] = 'Default description can not be empty';

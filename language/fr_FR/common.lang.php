@@ -159,8 +159,8 @@ $lang['Upload a file'] = 'Uploader un fichier';
 $lang['An error occured during SVN/Git export.'] = 'Une erreur est survenue pendant l\'export SVN/Git';
 
 $lang['Available languages'] = 'Langues disponibles';
-$lang['%s Available languages'] = '%s Langues disponibles';
-$lang['%s new'] = '%s nouveau';
+$lang['%s Available languages'] = '%s langues disponibles';
+$lang['%s new'] = '%s nouvelles';
 $lang['New languages'] = 'Nouvelles langues';
 $lang['Default description'] = 'Description par défaut';
 $lang['Default description can not be empty'] = 'Vous devez renseigner la description par défaut';
