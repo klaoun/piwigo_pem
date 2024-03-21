@@ -389,7 +389,7 @@ function get_revision_src($extension_id, $revision_id, $url)
 {
   global $conf;
 
-  return $conf['upload_dir'].get_extension_dir($extension_id)
+  return get_extension_dir($extension_id)
     .'/revision-'.$revision_id
     .'/'.$url
   ;
