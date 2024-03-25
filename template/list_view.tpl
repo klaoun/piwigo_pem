@@ -134,7 +134,7 @@
             </span>
           </div>
           <div class="my-2">
-            <span class='badge blue-badge revision_name ms-0 {if {$CATEGORY.cid} == 8}d-none{else}d-inline-block{/if}'></span>
+            <span class='badge blue-badge revision_name ms-0 me-2 my-1 {if {$CATEGORY.cid} == 8}d-none{else}d-inline-block{/if}'></span>
             <div class="extension_authors d-inline-block"></div>
           </div>
          
