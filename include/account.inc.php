@@ -2,7 +2,7 @@
 if (isset($_GET['uid']) && 1 == count($_GET))
 {
 
-  global $conf; 
+  global $conf, $user; 
 
   include_once(PEM_PATH . 'include/functions_language.inc.php');
 
@@ -138,10 +138,19 @@ SELECT
             'age' => isset($age[$extension_id]) ? $age[$extension_id] : '',
             'compatibility_first' => !empty($compatible_version_of_extensions[$extension_id]) ? $compatible_version_of_extensions[$extension_id][0] : '',
             'compatibility_last' => !empty($compatible_version_of_extensions[$extension_id]) ? end($compatible_version_of_extensions[$extension_id]) : '',
-          );    
-          if (in_array($extension_id, $extension_ids))
-          {
+          ); 
+
+          $can_see_all_ext = (is_Admin($user['id']) || $user['id'] == $current_user_page_id) ? true : false;
+
+          if( $can_see_all_ext && in_array($extension_id, $extension_ids)){
             $extensions[$extension_id] = $extension;
+          }
+          else if (!$can_see_all_ext && in_array($extension_id, $extension_ids))
+          {
+            if('' != $extension['publish_date'])
+            {
+              $extensions[$extension_id] = $extension;
+            }
           }
         }
         else
