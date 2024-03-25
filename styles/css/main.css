@@ -677,18 +677,19 @@ Tooltips
 
 .pem-tooltip .pem-tooltiptext {
   visibility: hidden;
-  min-width:150px;
+  max-width:300px;
   width: auto;
   background-color: var(--grey2);
   color: var(--grey6);
   text-align: center;
-  padding: 5px;;
+  padding: 5px;
   position: absolute;
   z-index: 99;
   top: 105%;
   left: 50%;
   transform:translateX(-50%);
   font-size:12px;
+  white-space: pre;
 }
 
 .pem-tooltip:hover .pem-tooltiptext {
