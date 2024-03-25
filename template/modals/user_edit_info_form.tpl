@@ -4,7 +4,7 @@
       <div class="modal-dialog modal-dialog-centered modal-lg">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title" id="userInfoModalLabel"><i class="icon-user"></i>{'My profil'|translate}</h5>
+            <h5 class="modal-title" id="userInfoModalLabel"><i class="icon-gears me-2"></i>{'User settings'|translate}</h5>
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
           <form method="post" enctype="multipart/form-data" autocomplete="off" id="userInfoForm">
