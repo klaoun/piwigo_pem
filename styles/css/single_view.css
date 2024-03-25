@@ -97,6 +97,13 @@ Revisions
   border-bottom:2px solid var(--secondary_orange)!important;
 }
 
+
+#single_view #changelog .changelogRevision .btn-tertiary:hover{
+  background-color: var(--main_orange) !important;
+  color: var(--white) !important;
+}
+
+
 #single_view #changelog .changelogRevision.latest_rev .btn-tertiary{
   border:1px solid var(--fourth_orange);
   color: var(--fourth_orange) !important;
