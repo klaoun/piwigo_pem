@@ -101,7 +101,7 @@
 {/if}
 
 {if isset($revisions)}
-        <p class="revision-version d-inline">{'Revision %s'|translate:$revisions[0]['version']}</p>
+        <p class="revision-version d-inline"><i class="icon-code-branch"></i>{'Revision %s'|translate:$revisions[0]['version']}</p>
 {/if}
 
 {if isset($last_date_formatted_since)}
@@ -221,6 +221,7 @@
             </td>
             <td>
   {if isset($can_modify) && $can_modify == true}
+    {if $link.id_link !== "git" && $link.id_link !== "svn" }
               <span class="circle-icon edit_mode me-2" data-bs-toggle="modal" data-bs-target="#editLinkModal" 
                 {if isset($link.id_link)}data-bs-link-id="{$link.id_link}"{/if}
                 {if isset($link.name)} data-bs-link-name="{$link.name}"{/if}
@@ -229,7 +230,7 @@
               >
                 <i class="icon-pencil"></i>Edit
               </span>
-    {if $link.id_link !== "git" && $link.id_link !== "svn" }
+
               <span class="edit_mode circle-icon secondary_action " 
                   data-bs-toggle="modal" 
                   data-bs-target="#deleteLinkModal"
