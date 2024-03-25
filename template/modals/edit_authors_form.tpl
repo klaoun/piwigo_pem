@@ -4,7 +4,7 @@
       <div class="modal-dialog modal-dialog-centered modal-lg">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title" id="authorsModalLabel"><i class="icon-user"></i>{'My profil'|translate}</h5>
+            <h5 class="modal-title" id="authorsModalLabel"><i class="icon-user-group me-2"></i>{'Edit authors'|translate}</h5>
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
           <form method="POST" enctype="multipart/form-data" autocomplete="off" id="editAuthorsForm">
