@@ -24,7 +24,7 @@
 {if !empty($languages)}
                     <label for="link_language" class="col-12">{'Language'|translate}</label>            
                     <select name="link_language" id="link_language" class="form-select w-100">
-                      <option value="null">{'All languages'|translate}</option>
+                      <option value="0">{'All languages'|translate}</option>
   {foreach from=$languages item=language}
                       <option value="{$language.id}">{$language.name}</option>
   {/foreach}
