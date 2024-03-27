@@ -20,9 +20,12 @@ jQuery('.extension_category_select').selectize();
 jQuery(document).ready(function () {
 
   const data_extensions = jQuery('#profile tbody').attr("data-extensions")
-  var extensions = jQuery.parseJSON(data_extensions)
-  console.log(extensions)
-  fillTable(extensions);
+  if(data_extensions != null)
+  {
+    var extensions = jQuery.parseJSON(data_extensions)
+    fillTable(extensions);
+  }
+
 });
 
 function sortExtensions(sortBy)
