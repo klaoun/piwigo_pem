@@ -146,6 +146,8 @@ if (isset($_GET['eid']) && 1 == count($_GET))
     }
     
     // Get download statistics
+    $extension_downloads = get_download_of_extension(array($current_extension_page_id));
+
     $query = '
     SELECT
         id_revision,
@@ -179,6 +181,7 @@ if (isset($_GET['eid']) && 1 == count($_GET))
           ),
         'latest_compatible_version' => end($versions_of_extension[$current_extension_page_id]),
         'extension_downloads' => $extension_downloads,
+        'extension_downloads' => $extension_downloads[$current_extension_page_id],
         'extension_categories' => $categories_of_extension[$current_extension_page_id],
         'extension_tags' => empty($tags_of_extension[$current_extension_page_id]) ? array() : $tags_of_extension[$current_extension_page_id],
         'extension_tag_ids' => empty($tag_ids_of_extension)? array() : $tag_ids_of_extension,
@@ -240,7 +243,7 @@ if (isset($_GET['eid']) && 1 == count($_GET))
           'id_link' => 'git',
           'name' => l10n('Github page'),
           'url' => $data['git_url'],
-          'language' => "All languages",
+          'language' => l10n("All languages"),
           'description' => l10n('source code, bug/request tracker'),
         )
       );
@@ -255,8 +258,8 @@ if (isset($_GET['eid']) && 1 == count($_GET))
           'id_link' => 'svn',
           'name' => l10n('Trac page'),
           'url' => str_replace('piwigo.org/svn/extensions', 'piwigo.org/dev/browser/extensions', $data['svn_url']),
-          'language' => "All languages",
-          'description' => l10n('source code'),  
+          'language' => l10n("All languages"),
+          'description' => l10n('source code'),
         )
       );
     }
@@ -286,7 +289,7 @@ if (isset($_GET['eid']) && 1 == count($_GET))
           'name' => $row['name'],
           'url' => $row['url'],
           'id_lang' => $row['id_lang'],
-          'language' => $row['lang'],
+          'language' => (0 == $row['id_lang']) ? l10n("All languages") :$row['lang'],
           'rank' => $row['rank'],
         )
       );
@@ -401,6 +404,7 @@ SELECT
       $versions_of = get_versions_of_revision($revision_ids);
       $languages_of = get_languages_of_revision($revision_ids);
       $all_languages = get_all_ext_languages();
+      $downloads_of_revision = get_download_of_revision($revision_ids);
 
       $diff_languages_of = get_diff_languages_of_extension($current_extension_page_id);
 
