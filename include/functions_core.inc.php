@@ -508,7 +508,7 @@ SELECT
   while ($row = pwg_db_fetch_assoc($result)) {
     if("fr_FR" == $user['language'])
     {
-      $downloads_of_extension[ $row['extension_id'] ] = number_format($row['sum_downloads'], 0, ',', ' ');;
+      $downloads_of_extension[ $row['extension_id'] ] = number_format($row['sum_downloads'], 0, ',', ' ');
     }
     else{
       $downloads_of_extension[ $row['extension_id'] ] = number_format($row['sum_downloads']);
@@ -518,15 +518,12 @@ SELECT
   return $downloads_of_extension;
 }
 
-function numsize($size,$round=2){
-  $unit=['', 'K', 'M', 'G', 'T'];
-  return round($size/pow(1000,($i=floor(log($size,1000)))),$round).$unit[$i];
-}
-
 /**
  * returns the number of downloads for a revision
  */
 function get_download_of_revision($revision_ids) {  
+  global $user;
+
   if (count($revision_ids) == 0) {
     return array();
   }
@@ -547,7 +544,13 @@ SELECT
   $result = pwg_query($query);
 
   while ($row = pwg_db_fetch_assoc($result)) {
-    $downloads_of_revision[ $row['id_revision'] ] = $row['nb_downloads'];
+    if("fr_FR" == $user['language'])
+    {
+      $downloads_of_revision[ $row['id_revision'] ] = number_format($row['nb_downloads'], 0, ',', ' ');
+    }
+    else{
+      $downloads_of_revision[ $row['id_revision'] ] = number_format($row['nb_downloads']);
+    }
   }
 
   return $downloads_of_revision;
@@ -1163,7 +1166,7 @@ function get_filtered_extension_ids($filter) {
     $filtered_extension_ids = array_intersect(
       $filtered_extension_ids,
       $set
-      );
+    );
   }
 
   return array_unique($filtered_extension_ids);
