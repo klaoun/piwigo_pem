@@ -83,6 +83,8 @@ SELECT DISTINCT
     uT.username
   FROM '.PEM_EXT_TABLE.' as eT
   JOIN '.USERS_TABLE.' as uT on id = eT.idx_user
+  JOIN '.PEM_EXT_CAT_TABLE.' as ecT on eT.id_extension = ecT.idx_extension
+  WHERE idx_category = '.$current_category_page_id.'
 ;';
 
     $owners = query2array($query, 'uid');
@@ -93,10 +95,11 @@ SELECT DISTINCT
     uT.username
   FROM '.PEM_AUTHORS_TABLE.' as aT
     JOIN '.USERS_TABLE.' as uT on id = aT.idx_user
+    JOIN '.PEM_EXT_CAT_TABLE.' as ecT on aT.idx_extension = ecT.idx_extension
+    WHERE idx_category = '.$current_category_page_id.'
 ;';
 
     $authors= query2array($query, 'uid');
-
     $all_authors = array_merge_recursive($owners, $authors);
 
     //Get List of versions for filter
