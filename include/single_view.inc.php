@@ -457,7 +457,7 @@ SELECT
           $template->assign(array(
             'last_date' => date('Y-m-d', $row['date']),
             'last_date_formatted_since' => time_since($row['date'], $stop='month'),
-            'download_last_url' => PEM_PATH.'download.php?rid='.$row['id_revision'],
+            'download_last_url' => PHPWG_ROOT_PATH.'download.php?rid='.$row['id_revision'],
             ));
           $last_date_set = true;
         }
@@ -485,10 +485,10 @@ SELECT
             'age' => time_since($row['date'], 'month', null, false),
             'author' => get_author_name($row['author']) ,
             'author_id' => $row['author'] ,
-            'u_download' => PEM_PATH.'download.php?rid='.$row['id_revision'],
             'default_description_lang_id' => $default_language_id,
             'default_description' => nl2br(
               htmlspecialchars($row['default_description'])
+            'u_download' => PHPWG_ROOT_PATH.'download.php?rid='.$row['id_revision'],
               ),
             'current_description_lang_id' => ($id_language != $default_language_id) ? $id_language : $default_language_id,
             'current_description' => isset($row['description']) ? nl2br(htmlspecialchars($row['description'])) : '',
