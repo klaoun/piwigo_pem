@@ -58,6 +58,19 @@ if (isset($_POST['pem_action']) and isset($_POST['submit']))
 {
   if ("add_link" == $_POST['pem_action'])
   {
+    if (!preg_match('/^https?:/', $_POST['link_url']))
+  {
+    $page['errors'][] = l10n('Incorrect URL');
+  }
+
+  if (empty($_POST['link_name']))
+  {
+    $page['errors'][] = l10n('Link name must not be empty');
+  }
+
+  if (empty($page['errors']))
+  {
+    // find next rank
     $query = '
 SELECT MAX(`rank`) AS current_rank
   FROM '.PEM_LINKS_TABLE.'
@@ -77,9 +90,12 @@ SELECT MAX(`rank`) AS current_rank
       'idx_extension'   => $_GET['eid'],
       );
 
-    if (!empty($_POST['link_language']))
+    if ($_POST['link_language'] != 'null')
     {
       $insert['idx_language'] = pwg_db_real_escape_string($_POST['link_language']);
+    }
+    else{
+      $insert['idx_language'] = '0';
     }
 
     mass_inserts(
@@ -87,13 +103,7 @@ SELECT MAX(`rank`) AS current_rank
       array_keys($insert),
       array($insert)
       );
-
-      $template->assign(
-        array(
-          'MESSAGE' => 'New link added succesfully added.',
-          'MESSAGE_TYPE' => 'success'
-        )
-      );
+  }
   }
   else if ("edit_link" == $_POST['pem_action'])
   {
