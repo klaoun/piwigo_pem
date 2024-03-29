@@ -42,6 +42,30 @@ class piwigo_pem_maintain extends PluginMaintain
     {
       include( PHPWG_ROOT_PATH.'plugins/piwigo_pem/include/convert_users.inc.php');
     }
+
+    //Add two files to Piwigo, due to download.php and extension_view.php no longer being in the same place, 
+    // this allows Piwigos to still communicate with PEM without changing the code
+
+    $c = <<<EOF
+    <?php
+    define('PHPWG_ROOT_PATH','./');
+    include(PHPWG_ROOT_PATH.'plugins/piwigo_pem/download.php');  
+    ?>
+    EOF;
+    if (!file_put_contents(PHPWG_ROOT_PATH.'download.php', $c)) {
+      error_reporting($_error_reporting);
+      throw new SmartyException("unable to write file {$PHPWG_ROOT_PATH}download.php");
+    }  
+
+    $c = <<<EOF
+    <?php
+    include('plugins/piwigo_pem/extension_view.php'); 
+    ?>
+    EOF;
+    if (!file_put_contents(PHPWG_ROOT_PATH.'extension_view.php', $c)) {
+      error_reporting($_error_reporting);
+      throw new SmartyException("unable to write file {$PHPWG_ROOT_PATH}extension_view.php");
+    }  
   }
 
   /**
@@ -104,6 +128,17 @@ class piwigo_pem_maintain extends PluginMaintain
       $query = 'DROP TABLE '.$prefixeTable.'pem_'.$table.';';
       pwg_query($query);
     }
+    
+    $this->table =  $prefixeTable.'user_infos';
+  
+    pwg_query('ALTER TABLE `' . $this->table . '` DROP `pem_remind_every`;');
+
+    pwg_query('ALTER TABLE `' . $this->table . '` DROP `pem_last_reminder`;');
+    
+
+    @unlink(PHPWG_ROOT_PATH.'download.php');
+    @unlink(PHPWG_ROOT_PATH.'extension_view.php');
+
   }
 
 }
