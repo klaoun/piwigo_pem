@@ -491,12 +491,12 @@ function compare_extension_name_desc($a, $b)
 
 function compare_extension_date_desc($a, $b)
 {
-  return strcmp($a['date'], $b['date']);
+  return strcmp($b['date'], $a['date']);
 }
 
 function compare_extension_date_asc($a, $b)
 {
-  return strcmp($b['date'], $a['date']);
+  return strcmp($a['date'], $b['date']);
 }
 
 /**
