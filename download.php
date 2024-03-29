@@ -14,9 +14,13 @@ function do_error($code, $str) {
 // +-----------------------------------------------------------------------+
 
 define('INTERNAL', true);
-define('PHPWG_ROOT_PATH','../../');
-require_once(PHPWG_ROOT_PATH.'include/common.inc.php');
 
+if (!defined("PHPWG_ROOT_PATH"))
+{
+  define('PHPWG_ROOT_PATH','../../');
+}
+
+require_once(PHPWG_ROOT_PATH.'include/common.inc.php');
 // +-----------------------------------------------------------------------+
 // |                             Input checks                              |
 // +-----------------------------------------------------------------------+
