@@ -15,15 +15,21 @@
 {/if}
   
 
-{if isset($can_modify) && $can_modify == true}
+
   <section  class="mt-4 section-fluid">
     <div class="d-flex justify-content-end">
+{if isset($can_modify)}
+  {if isset($u_translator) && $u_translator == true && $can_modify == false}
+        <div class="form-check form-switch ">
+          <input class="form-check-input" type="checkbox" role="switch" id="translation_mode">
+          <label class="form-check-label" for="translator_mode">translator mode</label>
+        </div>
+  {else if $can_modify == true}
       <div class="form-check form-switch ">
         <input class="form-check-input" type="checkbox" role="switch" id="edit_mode">
         <label class="form-check-label" for="edit_mode">Edit mode</label>
       </div>
-  {if isset($can_modify)}
-    {if isset($u_owner) || isset($admin)}
+    {if isset($u_owner) && $u_owner == true || isset($admin) && $admin == true}
       <div class="ms-4">
         <span class="link-secondary link" data-bs-toggle="modal" data-bs-target="#deleteExtensionModal">
           <i class="icon-trash"></i>{'Delete extension'|translate}
@@ -31,9 +37,10 @@
       </div>
     {/if}
   {/if}
+{/if}
     </div>
   </section>
-{/if}
+
 
 
   <section class="mt-4 section-fluid">
@@ -87,9 +94,7 @@
           {if isset($ext_languages)}data-bs-rev-languages='{json_encode($ext_languages)}'{/if}>
             <i class="icon-language"></i> {'%s Available languages'|translate:{$ext_languages|@count}}
           </span>
-        </div>
-
-        
+        </div>  
 {/if}
       </div>
 
@@ -165,21 +170,43 @@
 {*Description block *}
   <section class="mt-5 pt-3 section-fluid position-relative">
 
-{* Reactivate this span once the description is in a seperate modal *}
-{* {if $can_modify == true}
-    <span class="circle-icon edit_mode position-absolute top-0 end-0 translate-middle" data-bs-toggle="modal" data-bs-target="#DescriptionModal">
-      <i class="icon-pencil" ></i>
-    </span>
-{/if} *}
+{* only for to translators *}
+{if isset($u_translator) && $u_translator == true}
+  <span class="circle-icon translation_mode position-absolute top-0 end-0 translate-middle" 
+    data-bs-toggle="modal" 
+    data-bs-target="#DescriptionModal"
+    data-bs-modal_title ="{'Translate extension description'|translate}"
+    data-bs-pem_action ="edit_extension_translation"
+    data-bs-lang_ids = "{$translator_lang_ids}"
+    data-bs-descriptions = '{$json_descriptions}'
+  >
+    <i class="icon-language"></i>
+  </span>
+{/if}
 
-{if isset($description)}
+{* Display description depending on interface language, else display default language *}
+{if isset($descriptions)}
+  {foreach from=$descriptions item=description}
+    {if $CURRENT_LANG == $description.id_lang && !is_null($description.description)}
     <div>
-      <p class="extension_description">{$description}</p>
+      <p class="extension_description">{$description.description|stripslashes|nl2br}</p>
     </div>
+      {assign var="default" value=false}
+      {break}
+    {else}
+     {assign var="default" value=true}
+    {/if}
+  {/foreach}
+  {if true == $default}
+    <div>
+      <p class="extension_description">{$default_description|stripslashes|nl2br}</p>
+    </div>
+  {/if}
 {/if}
   </section>
 
 {* Links block edit mode *}
+{if isset($can_modify) && $can_modify == true}
   <section class="mt-5 pt-3 section-fluid position-relative edit_mode">
     <div class="edit_links">
       <h3 class="mb-3">{'Related links'|translate}</h3>
@@ -250,6 +277,7 @@
       </table>
     </div>
   </section>
+{/if}
 
 {* Links block non edit mode *}
   <section class="mt-5 pt-3 section-fluid related_links">
@@ -273,8 +301,8 @@
 
 {*Revision block *}
   <section class="mt-5 pt-3 section-fluid">
-<h3 class="mb-3">{'Revisions'|translate} {if isset($count_rev)}<span class="badge blue-badge d-inline align-middle">{$count_rev}</span>{/if}</h3>
-
+    <h3 class="mb-3">{'Revisions'|translate} {if isset($count_rev)}<span class="badge blue-badge d-inline align-middle">{$count_rev}</span>{/if}</h3>
+{if isset($can_modify) && $can_modify == true}
     <div class="edit_mode mt-3 mb-4">
       <button class="btn btn-tertiary" data-bs-toggle="modal" data-bs-target="#editSvnGitModal">
         <i class="icon-git-alt"></i> {'SVN & Git configuration'|translate}
@@ -283,6 +311,7 @@
         <i class="icon-circle-plus"></i> {'Add a revision'|translate}
       </button>
     </div>
+{/if}
 
 {if isset($revisions)}
     <div id="changelog" class="position-relative">
@@ -295,14 +324,27 @@
     {/if}
       <div class="card-body">
       
-        <div id="rev{$rev.id}_header" {if $rev.expanded} class="changelogRevisionHeaderExpanded pb-4" {else} class="changelogRevisionHeaderCollapsed pb-0"{/if} onclick="revToggleDisplay('rev{$rev.id}_header', 'rev{$rev.id}_content')">
+        <div id="rev{$rev.id}_header" {if $rev.expanded} class="changelogRevisionHeaderExpanded pb-4" {else} class="changelogRevisionHeaderCollapsed pb-0"{/if}>
             <div class="revision_title_container d-flex justify-content-between">
-              <h4 class="revisionTitle">{'Revision'|translate} {$rev.version}</h4>
+              <h4 class="revisionTitle cursor-pointer" onclick="revToggleDisplay('rev{$rev.id}_header', 'rev{$rev.id}_content')">{'Revision'|translate} {$rev.version}</h4>
               <div class="d-flex justify-content-end align-items-center">
-              <div class="d-flex justify-content-start">
-                <p class="me-4"><i class="icon-rocket me-1"></i>{'Released on %s'|translate:$rev.date}</p>
-                <p class="me-4"><i class="icon-download me-1"></i>{$rev.downloads}</p>
-              </div>
+                <div class="d-flex justify-content-start">
+                  <p class="me-4"><i class="icon-rocket me-1"></i>{'Released on %s'|translate:$rev.date}</p>
+                  <p class="me-4"><i class="icon-download me-1"></i>{$rev.downloads}</p>
+                </div>
+    {if isset($u_translator) && $u_translator == true}
+                <span class="circle-icon translation_mode main_action me-2" 
+                data-bs-toggle="modal" 
+                data-bs-target="#DescriptionModal"
+                data-bs-pem_action ="edit_revision_translation"
+                data-bs-modal_title="{'Translate revision description'|translate}"
+                data-bs-rev_id="{$rev.id}" 
+                data-bs-lang_ids = '{$translator_lang_ids}'
+                data-bs-descriptions= '{$rev.json_descriptions}'
+                >
+                  <i class="icon-language"></i>
+                </span>
+    {/if}
 
     {if isset($can_modify) && $can_modify == true}
                 <span class="circle-icon edit_mode main_action me-2" 
@@ -310,10 +352,10 @@
                   data-bs-rev_id="{$rev.id}" 
                   data-bs-rev_version_name="{$rev.version}" 
                   data-bs-rev_versions_compatible="{$rev.ids_versions_compatible}"
-                  data-bs-rev_default_description_lang="{$rev.default_description_lang_id}"
-                  data-bs-rev_default_description="{$rev.default_description}"
-                  data-bs-rev_description_lang="{$rev.current_description_lang_id}"
-                  data-bs-rev_description="{$rev.current_description}"
+                  {* data-bs-rev_default_description_lang="{$rev.default_description_lang_id}"
+                  data-bs-rev_default_description="{$rev.default_description}" *}
+                  {* data-bs-rev_description_lang="{$rev.current_description_lang_id}" *}
+                  {* data-bs-rev_description="{$rev.current_description}" *}
                   data-bs-rev_author="{$rev.author_id}"
                 >
                   <i class="icon-pencil"></i>
@@ -328,7 +370,7 @@
                   <i class="icon-trash translate-middle"></i>
                 </span>
     {/if}
-                <span><i {if $rev.expanded}class="icon-chevron-down"{else}class="icon-chevron-right"{/if}></i>
+                <span class="cursor-pointer" onclick="revToggleDisplay('rev{$rev.id}_header', 'rev{$rev.id}_content')"><i {if $rev.expanded}class="icon-chevron-down"{else}class="icon-chevron-right"{/if}></i>
               </div>
             </div>
 
@@ -374,14 +416,14 @@
       {if !array_key_exists($CURRENT_LANG, $revision)}{assign var="no_desc" value="true"}{/if}
         {foreach from=$revision item=lang_desc key=lang_id}           
           {if $lang_id == $CURRENT_LANG}
-              <p>{$lang_desc}</p>
+              <p>{$lang_desc|stripslashes|nl2br}</p>
           {/if}
         {/foreach}
       {/if}
     {/foreach}
       {* If no description exists in current interface language we display default *}
     {if isset($no_desc) && $no_desc == true}
-        <p>{$rev.default_description}</p>
+        <p>{$rev.default_description|stripslashes|nl2br}</p>
     {/if}
           </div>
 
@@ -405,21 +447,21 @@
 {/if}
     
   </section>
-  
-  {$PEM_EDIT_GENERAL_INFO_FORM}
-  {$PEM_EDIT_REVISION_FORM}
-  {$PEM_EDIT_IMAGE_FORM}
-  {* TODO seperate the description into a seperate modal *}
-  {* {$PEM_EDIT_DESCRIPTION_FORM} *}
-  {$PEM_EDIT_AUTHORS_FORM}
-  {$PEM_ADD_LINK_FORM}
-  {$PEM_EDIT_RELATED_LINK_FORM}
-  {$PEM_EDIT_SVN_GIT_FORM}
-  {$PEM_ADD_REVISION_FORM}
-  {$PEM_DELETE_EXTENSION}
-  {$PEM_DELETE_REVISION}
-  {$PEM_DELETE_LINK}
-  {$PEM_DISPLAY_LANGUAGES}
+
+{$PEM_EDIT_GENERAL_INFO_FORM}
+{$PEM_EDIT_REVISION_FORM}
+{$PEM_EDIT_IMAGE_FORM}
+{$PEM_EDIT_AUTHORS_FORM}
+{$PEM_ADD_LINK_FORM}
+{$PEM_EDIT_RELATED_LINK_FORM}
+{$PEM_EDIT_SVN_GIT_FORM}
+{$PEM_ADD_REVISION_FORM}
+{$PEM_DELETE_EXTENSION}
+{$PEM_DELETE_REVISION}
+{$PEM_DELETE_LINK}
+{$PEM_DISPLAY_LANGUAGES}
+{$PEM_EDIT_DESCRIPTION_FORM}
+
 
 </div>
 

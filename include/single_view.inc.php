@@ -97,14 +97,6 @@ if (isset($_GET['eid']) && 1 == count($_GET))
       )
     );
 
-    //Check if user can make changes to extension
-    $page['user_can_modify'] = false;
-
-    if (isset($user['id']) and (is_Admin() or isTranslator($user['id']) or in_array($user['id'], $authors)))
-    {
-      $page['user_can_modify'] = true;
-    }
-
     $template->assign(
       array(
         'current_user_id' => $user['id'],
@@ -148,30 +140,61 @@ if (isset($_GET['eid']) && 1 == count($_GET))
     // Get download statistics
     $extension_downloads = get_download_of_extension(array($current_extension_page_id));
 
+    // Get extension descriptions
+    $descriptions_of_extension = array();
+
     $query = '
     SELECT
-        id_revision,
-        nb_downloads
-      FROM '.PEM_REV_TABLE.'
+        idx_language as id_lang,
+        description
+      FROM '.PEM_EXT_TRANS_TABLE.'
       WHERE idx_extension = '.$current_extension_page_id.'
     ;';
-    $result = pwg_query($query);
 
-    $extension_downloads = 0;
-    $downloads_of_revision = array();
+    $ext_descriptions_translations = query2array($query);
 
-    while ($row = pwg_db_fetch_assoc($result)) {
-      $extension_downloads += $row['nb_downloads'];
-      $downloads_of_revision[ $row['id_revision'] ] = $row['nb_downloads'];
+    $query = '
+    SELECT
+        idx_language as id_lang,
+        description
+      FROM '.PEM_EXT_TABLE.'
+      WHERE id_extension = '.$current_extension_page_id.'
+    ;';
+    $default_ext_description = query2array($query);
+    $default_ext_description[0]['default'] = true;
+
+    $ext_descriptions = array_merge($ext_descriptions_translations, $default_ext_description);
+
+
+
+
+    foreach($ext_descriptions as $ext_description)
+    {
+      $ext_description['description'] = 
+      nl2br(
+        htmlspecialchars(
+          strip_tags(
+            $ext_description['description']
+          )
+        )
+      );
     }
+
+    $json_descriptions = json_encode($ext_descriptions, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT |JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_LINE_TERMINATORS );
 
     // Send extension data to template
     $template->assign(
       array(
         'extension_id' => $current_extension_page_id,
         'extension_name' => htmlspecialchars(strip_tags(stripslashes($data['name']))),
-        'description' => nl2br(htmlspecialchars($data['description'])),
-        'default_description' => nl2br(htmlspecialchars($data['default_description'])),
+        'descriptions' =>$ext_descriptions,
+        'json_descriptions' => $json_descriptions,
+        'default_description' =>
+        nl2br(
+          htmlspecialchars(
+            strip_tags($data['default_description'])
+          )
+        ),
         'authors' => $authors,
         'first_date' => l10n('no revision yet'),
         'last_date'  => l10n('no revision yet'),
@@ -180,7 +203,6 @@ if (isset($_GET['eid']) && 1 == count($_GET))
             $versions_of_extension[$current_extension_page_id]
           ),
         'latest_compatible_version' => end($versions_of_extension[$current_extension_page_id]),
-        'extension_downloads' => $extension_downloads,
         'extension_downloads' => $extension_downloads[$current_extension_page_id],
         'extension_categories' => $categories_of_extension[$current_extension_page_id],
         'extension_tags' => empty($tags_of_extension[$current_extension_page_id]) ? array() : $tags_of_extension[$current_extension_page_id],
@@ -188,24 +210,40 @@ if (isset($_GET['eid']) && 1 == count($_GET))
       )
     );
 
+    //Check if user can make changes to extension, only for authors, owners and admins
+    $page['user_can_modify'] = false;
+
+    if (isset($user['id']) and (is_Admin() or in_array($user['id'], $authors)))
+    {
+      $page['user_can_modify'] = true;
+    }
+
     // If user can modify send this info to template
     if (isset($user['id']))
     {
-      if ($page['user_can_modify'])
-      {
-        $template->assign(
-          array(
-            'can_modify' => $page['user_can_modify'],
-            'translator' => !in_array($user['id'], $authors) && get_user_status() !='admin' && isTranslator($user['id']),
-            'admin' => get_user_status() =='admin',
-          )
-        );
-      }
+      // See if user can modifiy page, check if user is admin
+      $template->assign(
+        array(
+          'can_modify' => $page['user_can_modify'],
+          'admin' => get_user_status() =='admin',
+        )
+      );
+      //Know if the user is the user owner
       if ($user['extension_owner'])
       {
         $template->assign(
           array(
             'u_owner' => true,
+          )
+        );
+      }
+      //Know if the user is a translator
+      if (isTranslator($user['id']))
+      {
+        $template->assign(
+          array(
+            'u_translator' => true,
+            'translator_lang_ids' => json_encode($conf['translator_users'][$user['id']]),
           )
         );
       }
@@ -429,18 +467,30 @@ SELECT
 
       $revisions = array();
 
+    //   $query = '
+    // SELECT id_revision,
+    //       version,
+    //       r.description as default_description,
+    //       date,
+    //       url,
+    //       author,
+    //       rt.description
+    //   FROM '.PEM_REV_TABLE.' AS r
+    //   LEFT JOIN '.PEM_REV_TRANS_TABLE.' AS rt
+    //     ON r.id_revision = rt.idx_revision
+    //     AND rt.idx_language = '.$id_language.'
+    //   WHERE id_revision IN ('.implode(',', $revision_ids).')
+    //   ORDER by date DESC
+    // ;';
+
       $query = '
     SELECT id_revision,
           version,
           r.description as default_description,
           date,
           url,
-          author,
-          rt.description
+          author
       FROM '.PEM_REV_TABLE.' AS r
-      LEFT JOIN '.PEM_REV_TRANS_TABLE.' AS rt
-        ON r.id_revision = rt.idx_revision
-        AND rt.idx_language = '.$id_language.'
       WHERE id_revision IN ('.implode(',', $revision_ids).')
       ORDER by date DESC
     ;';
@@ -448,7 +498,6 @@ SELECT
       $first_date = '';
 
       $is_first_revision = true;
-      
       $result = pwg_query($query);  
       while ($row = pwg_db_fetch_assoc($result))
       {
@@ -464,7 +513,40 @@ SELECT
 
         $is_first_revision = false;
         $ids_versions_compatible = get_version_ids_of_revision([$row['id_revision']]);
-        $default_language_id = $interface_languages[$conf['default_language']]['id'];
+
+        // Get revision descriptions
+        $descriptions_of_revision = array();
+
+        $query = '
+SELECT
+    idx_language as id_lang,
+    description
+  FROM '.PEM_REV_TRANS_TABLE.'
+  WHERE idx_revision = '.$row['id_revision'].'
+;';
+        $rev_descriptions_translations = query2array($query);
+
+        $query = '
+SELECT
+    idx_language as id_lang,
+    description
+  FROM '.PEM_REV_TABLE.'
+  WHERE id_revision = '.$row['id_revision'].'
+;';
+        $default_rev_description = query2array($query);
+        $default_rev_description[0]['default'] = true;
+
+        $rev_descriptions = array_merge($rev_descriptions_translations, $default_rev_description);
+
+        foreach($rev_descriptions as $rev_description)
+        {
+          $rev_description['description'] = nl2br(
+            htmlspecialchars(
+              stripslashes($rev_description['description'])
+            )
+          );
+        }
+// echo('<pre>');print_r($ext_descriptions);echo('</pre>');
 
         $tpl_revisions[] = array(
             'id' => $row['id_revision'],
@@ -485,13 +567,23 @@ SELECT
             'age' => time_since($row['date'], 'month', null, false),
             'author' => get_author_name($row['author']) ,
             'author_id' => $row['author'] ,
-            'default_description_lang_id' => $default_language_id,
-            'default_description' => nl2br(
-              htmlspecialchars($row['default_description'])
             'u_download' => PHPWG_ROOT_PATH.'download.php?rid='.$row['id_revision'],
+
+            // 'default_description_lang_id' => $default_language_id,
+            // 'default_description' => nl2br(
+            //   htmlspecialchars($row['default_description'])
+            //   ),
+            // 'current_description_lang_id' => ($id_language != $default_language_id) ? $id_language : $default_language_id,
+            // 'current_description' => isset($row['description']) ? nl2br(htmlspecialchars($row['description'])) : '',
+
+            'descriptions' => $rev_descriptions,
+            'json_descriptions' => json_encode($rev_descriptions, JSON_UNESCAPED_UNICODE),
+            'default_description' =>
+              nl2br(
+                stripslashes(
+                  strip_tags($data['default_description'])
+                )
               ),
-            'current_description_lang_id' => ($id_language != $default_language_id) ? $id_language : $default_language_id,
-            'current_description' => isset($row['description']) ? nl2br(htmlspecialchars($row['description'])) : '',
             'can_modify' => $page['user_can_modify'],
             'u_modify' => 'revision_mod.php?rid='.$row['id_revision'],
             'DELETE_REVISION' => 'revision_del.php?rid='.$row['id_revision'],
@@ -522,6 +614,7 @@ SELECT
       }
 
       $tpl_revisions[0]['expanded'] = true;
+      // echo('<pre>');print_r($tpl_revisions);echo('</pre>');
       $template->assign('revisions', $tpl_revisions);
     }
 
@@ -895,10 +988,9 @@ SELECT
     $template->set_filename('pem_edit_authors_form', realpath(PEM_PATH . 'template/modals/edit_authors_form.tpl'));
     $template->assign_var_from_handle('PEM_EDIT_AUTHORS_FORM', 'pem_edit_authors_form');
 
-    // Assign template for edit description modal
-    //TODO seperate description from extension_mod.inc.php
-    // $template->set_filename('pem_edit_description_form', realpath(PEM_PATH . 'template/modals/edit_description_form.tpl'));
-    // $template->assign_var_from_handle('PEM_EDIT_DESCRIPTION_FORM', 'pem_edit_description_form');
+    // Assign template for edit description modal for translators
+    $template->set_filename('pem_edit_description_form', realpath(PEM_PATH . 'template/modals/edit_description_form.tpl'));
+    $template->assign_var_from_handle('PEM_EDIT_DESCRIPTION_FORM', 'pem_edit_description_form');
 
     // Assign template for add link modal
     $template->set_filename('pem_add_link_form', realpath(PEM_PATH . 'template/modals/add_link_form.tpl'));

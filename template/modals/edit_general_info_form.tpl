@@ -41,33 +41,37 @@
                 </select>
               </div>
 
-              {* Extension description, it is only possible to edit the current selected user to avoid overriding translations,
-                TODO add language select forother languages, and move description to seperate modal *}
-
+{* Description block *}
               <div class="mb-3 form-group">
                 <div>
                   <label for="extension_lang_desc_select" class="col-12">{'Description language'|translate}</label>
                   <select name="extension_lang_desc_select" id="lang_desc_select" class="form-select w-100">
 {foreach from=$languages item=language}
-  {if $default_language == $language.code}
-                    <option value="{$language.id}" id="opt_{$language.id}" selected>{$language.name}</option>
-  {/if}
+                    <option value="{$language.id}" id="opt_{$language.id}" {if $default_language == $language.code}selected{/if}>{$language.name}</option>
 {/foreach}
                   </select>
                 </div>
                 <div class="pt-3">
 {foreach from=$languages item=language}
-  {if $default_language == $language.code}
+
                   <div id="desc_block_{$language.id}" class="desc" style="display: none;">
-                    <input type="radio"  name="default_description" value="{$language.id}" checked hidden>
-                    <textarea class="form-control" name="extension_descriptions[{$language.id}]" id="desc_{$language.id}" {if $language.code eq 'en_UK'} class="desc_{$language.code}"{/if} {if $default_language == 5}required{/if}>{$default_description}</textarea>
-                    <p><small>{'Default description'|translate} {$language.code}</small></p>
+                    <input type="radio"  name="default_description" value="{$language.id}" {if $default_language == $language.code}checked{/if} hidden>
+  {strip}                 
+                    <textarea class="form-control" name="extension_descriptions[{$language.id}]" id="desc_{$language.id}" {if $language.code eq 'en_UK'} class="desc_{$language.code}"{/if} {if $default_language == 5}required{/if}>
+    {foreach from=$descriptions item=description}
+      {if $language.id == $description.id_lang}
+                      {$description.description|stripslashes}
+      {/if}
+    {/foreach}
+                    </textarea>
+  {/strip}
+                    {if $default_language == $language.code}<p>{'Default description'|translate}</p>{/if}
                   </div>
-  {/if}
+
 {/foreach}
+
                 </div>
               </div>
-
             </div>
 
             <input type="hidden" name="pem_action" value="edit_general_info">

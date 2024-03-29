@@ -23,7 +23,80 @@ $authors = get_extension_authors($_GET['eid']);
 
 if (isset($_POST['pem_action']) and isset($_POST['submit']))
 {
-  if("add_revision" == $_POST['pem_action'] or "edit_revision" == $_POST['pem_action'])
+  // Form submitted for translator
+  if("edit_revision_translation" == $_POST['pem_action'])
+  {
+    $query = 'SELECT idx_language FROM '.PEM_REV_TABLE.' WHERE id_revision = '.$_POST['revision_id'].';';
+    $result = pwg_query($query);
+    list($def_language) = pwg_db_fetch_array($result);
+
+    $query = '
+DELETE
+  FROM '.PEM_REV_TRANS_TABLE.'
+  WHERE idx_revision = '.$_POST['revision_id'].'
+    AND idx_language IN ('.implode(',', $conf['translator_users'][$user['id']]).')
+;';
+    pwg_query($query);
+
+    $inserts = array();
+    $new_default_desc = null;
+    foreach ($_POST['descriptions'] as $lang_id => $desc)
+    {
+      if ($lang_id == $def_language and empty($desc))
+      {
+        $page['errors'][] = l10n('Default description can not be empty');
+        break;
+      }
+      if (!in_array($lang_id, $conf['translator_users'][$user['id']]) or empty($desc))
+      {
+        continue;
+      }
+      if ($lang_id == $def_language)
+      {
+        $new_default_lang = pwg_db_real_escape_string($desc);
+      }
+      else
+      {
+        array_push(
+          $inserts,
+          array(
+            'idx_revision'  => $_POST['revision_id'],
+            'idx_language'   => $lang_id,
+            'description'    => pwg_db_real_escape_string($desc),
+            )
+          );
+      }
+    }
+    
+    if (empty($page['errors']))
+    {
+      if (!empty($inserts))
+      {
+        mass_inserts(PEM_REV_TRANS_TABLE, array_keys($inserts[0]), $inserts);
+      }
+      if (!empty($new_default_desc))
+      {
+        $query = '
+UPDATE '.PEM_REV_TABLE.'
+  SET description = \''.$new_default_desc.'\'
+  WHERE id_revision = '.$_POST['revision_id'].'
+;';
+        pwg_query($query);
+      }
+    
+      $message = l10n('Translation sucessfully updated');
+  
+      $template->assign(
+        array(
+          'MESSAGE' => $message,
+          'MESSAGE_TYPE' => 'success'
+        )
+      );
+        
+      unset($_POST);
+    }
+  }
+  else if("add_revision" == $_POST['pem_action'] or "edit_revision" == $_POST['pem_action'])
   {
 
   // The file is mandatory only when we add a revision, not when we modify it

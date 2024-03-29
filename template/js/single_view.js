@@ -43,6 +43,10 @@ jQuery("#edit_mode").change(function() {
   jQuery('.related_links').toggle();
 });
 
+jQuery("#translation_mode").change(function() {
+  jQuery('.translation_mode').toggle();
+});
+
 jQuery(document).ready(function () {
   // Selectize modal inputs
   jQuery('.extension_author_select').selectize()
@@ -95,7 +99,6 @@ jQuery(document).ready(function () {
     jQuery('#addRevisionModal #desc_block_'+selected_desc_lang).show()
   });
 
-  // Hide all description blocks, display the one linked to the selected language
   // For Edit revision modal
   $("#revisionInfoModal .desc").hide();
   var selected_desc_lang = jQuery('#revisionInfoModal #lang_desc_select').val();
@@ -107,16 +110,26 @@ jQuery(document).ready(function () {
     jQuery('#revisionInfoModal #desc_block_'+selected_desc_lang).show()
   });
 
-  // Hide all description blocks, display the one linked to the selected language
   // For general edit info revision modal
-  $("#generalInfoForm .desc").hide();
-  var selected_desc_lang = jQuery('#generalInfoForm #lang_desc_select').val();
-  jQuery('#generalInfoForm #desc_block_'+selected_desc_lang).show()
+  $("#generalInfoModal .desc").hide();
+  var selected_desc_lang = jQuery('#generalInfoModal #lang_desc_select').val();
+  jQuery('#generalInfoModal #desc_block_'+selected_desc_lang).show()
 
-  jQuery('#generalInfoForm #lang_desc_select').on('change', function() {
+  jQuery('#generalInfoModal #lang_desc_select').on('change', function() {
     $("#generalInfoForm .desc").hide();
     var selected_desc_lang = jQuery('#generalInfoForm #lang_desc_select').val();
     jQuery('#generalInfoForm #desc_block_'+selected_desc_lang).show()
+  });
+
+  // For edit description modal
+  $("#DescriptionModal .desc").hide();
+  var selected_desc_lang = jQuery('#DescriptionModal #lang_desc_select').val();
+  jQuery('#DescriptionModal #desc_block_'+selected_desc_lang).show()
+
+  jQuery('#DescriptionModal #lang_desc_select').on('change', function() {
+    $("#descriptionForm .desc").hide();
+    var selected_desc_lang = jQuery('#descriptionForm #lang_desc_select').val();
+    jQuery('#descriptionForm #desc_block_'+selected_desc_lang).show()
   });
 
 });
@@ -371,7 +384,6 @@ editLinkModal.addEventListener('show.bs.modal', event => {
 // const editRevisionModal = document.getElementById('revisionInfoModal');
 const editRevisionModal = document.getElementById('revisionInfoModal');
 editRevisionModal.addEventListener('show.bs.modal', event => {
-
   const buttonEditRev = event.relatedTarget
 
   // Extract info from data-bs-* attributes
@@ -467,6 +479,51 @@ displayLanguagesModal.addEventListener('show.bs.modal', event => {
     }
     else{
       jQuery('#displayLanguagesModal .list-group').append('<li class="list-group-item col-4 text-start">'+lang.name+'</li>')
+    }
+  });
+});
+
+const descriptionModal = document.getElementById('DescriptionModal');
+
+descriptionModal.addEventListener('show.bs.modal', event => {
+  const buttonDescription = event.relatedTarget
+  // Extract info from data-bs-* attributes
+  const modalTitleContent = buttonDescription.getAttribute('data-bs-modal_title')
+  const modalPemActionContent = buttonDescription.getAttribute('data-bs-pem_action')
+  const modalUserLangIds = buttonDescription.getAttribute('data-bs-lang_ids')
+  const descriptions = jQuery.parseJSON(buttonDescription.getAttribute('data-bs-descriptions'))
+  const revId = buttonDescription.getAttribute('data-bs-rev_id')
+  console.log(descriptions)
+  // Get the modal's content
+  const modalTitle = descriptionModal.querySelector('#DescriptionModalLabel')
+  const modalPemAction = descriptionModal.querySelector('#DescriptionModal input[name="pem_action"]')
+  const modalTextareas = jQuery('.desc')
+
+  // Add description to textarea
+  jQuery(descriptions).each(function(i, desc){
+    jQuery('#desc_block_' + desc['id_lang'] +' textarea').val(desc['description']).change()
+  });
+
+  // Update the modal's content.
+  modalTitle.innerHTML = '<i class="icon-align-left me-2"></i>'+modalTitleContent
+  jQuery(modalPemAction).val(modalPemActionContent).change()
+  // If revId is empty then we are editing the exten description
+  if("" != revId)
+  {
+    jQuery(modalPemAction).append('<input type="hidden" name="revision_id" value="'+revId+'">');
+  }
+
+  //Diable text areas that the translator isn't allowed to translate
+  jQuery(modalTextareas).each(function(i, langOption){
+    const langOptionId = jQuery(langOption).attr('id');
+    const langOptionTextArea = jQuery(langOption).children('textarea');
+
+    let langOptionArray = langOptionId.split("_");
+    let langId = langOptionArray[2]
+
+    if(!modalUserLangIds.includes(langId))
+    {
+      langOptionTextArea.prop('disabled', true);
     }
   });
 

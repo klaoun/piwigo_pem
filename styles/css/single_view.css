@@ -94,33 +94,32 @@ Revisions
 }
 
 #single_view #changelog .changelogRevision.latest_rev .changelogRevisionHeaderExpanded {
-  border-bottom:2px solid var(--secondary_orange)!important;
+  border-bottom:2px solid var(--secondary_orange);
 }
-
 
 #single_view #changelog .changelogRevision .btn-tertiary:hover{
-  background-color: var(--main_orange) !important;
-  color: var(--white) !important;
+  background-color: var(--main_orange) ;
+  color: var(--white) ;
 }
-
 
 #single_view #changelog .changelogRevision.latest_rev .btn-tertiary{
   border:1px solid var(--fourth_orange);
-  color: var(--fourth_orange) !important;
+  color: var(--fourth_orange) ;
 }
 
 #single_view #changelog .changelogRevision.latest_rev .btn-tertiary:hover{
-  color: var(--third_orange) !important;
+  color: var(--third_orange) ;
+  background-color: var(--fourth_orange);
 }
 
 #single_view #changelog .changelogRevision.latest_rev .badge {
   color:var(--third_orange)!important;
-  background-color:var(--fourth_orange)!important;
+  background-color:var(--fourth_orange);
 }
 
 #single_view #changelog .changelogRevision.latest_rev .inner-badge {
   background-color:var(--third_orange)!important;
-  color:var(--fourth_orange)!important;
+  color:var(--fourth_orange);
 }
 
 #single_view .secondary_action:hover{
@@ -157,10 +156,6 @@ Revisions
 
 #single_view .form-select {
   line-height: normal;
-}
-
-#single_view .revision_title_container {
-  cursor:pointer;
 }
 
 /******

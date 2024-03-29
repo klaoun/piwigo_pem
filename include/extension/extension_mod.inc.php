@@ -15,7 +15,82 @@ else if (isset($_GET['uid']))
 // Form submitted
 if (empty($page['errors']) and isset($_POST['pem_action']) and isset($_POST['submit']))
 {
-  if("edit_general_info" == $_POST['pem_action'] || "add_ext" == $_POST['pem_action'])
+  // Form submitted for translator
+  if("edit_extension_translation" == $_POST['pem_action'])
+  {
+    $query = 'SELECT idx_language FROM '.PEM_EXT_TABLE.' WHERE id_extension = '.$current_extension_page_id.';';
+    $result = pwg_query($query);
+    list($def_language) = mysqli_fetch_array($result);
+
+    $query = '
+DELETE
+  FROM '.PEM_EXT_TRANS_TABLE.'
+  WHERE idx_extension = '.$current_extension_page_id.'
+    AND idx_language IN ('.implode(',', $conf['translator_users'][$user['id']]).')
+;';
+    pwg_query($query);
+
+    $inserts = array();
+    $new_default_desc = null;
+    foreach ($_POST['descriptions'] as $lang_id => $desc)
+    {
+      if ($lang_id == $def_language and empty($desc))
+      {
+        $page['errors'][] = l10n('Default description can not be empty');
+        break;
+      }
+      if (!in_array($lang_id, $conf['translator_users'][$user['id']]) or empty($desc))
+      {
+        continue;
+      }
+      if ($lang_id == $def_language)
+      {
+        $new_default_desc = pwg_db_real_escape_string($desc);
+      }
+      else
+      {
+        array_push(
+          $inserts,
+          array(
+            'idx_extension'  => $current_extension_page_id,
+            'idx_language'   => $lang_id,
+            'description'    => pwg_db_real_escape_string($desc),
+            )
+          );
+      }
+    }
+    
+    if (empty($page['errors']))
+    {
+      if (!empty($inserts))
+      {
+        mass_inserts(PEM_EXT_TRANS_TABLE, array_keys($inserts[0]), $inserts);
+      }
+      if (!empty($new_default_desc))
+      {
+        $query = '
+    UPDATE '.PEM_EXT_TABLE.'
+      SET description = \''.$new_default_desc.'\'
+      WHERE id_extension = '.$current_extension_page_id.'
+    ;';
+        pwg_query($query);
+      }
+      
+
+      $message = l10n('Translation sucessfully updated');
+  
+      $template->assign(
+        array(
+          'MESSAGE' => $message,
+          'MESSAGE_TYPE' => 'success'
+        )
+      );
+
+      unset($_POST);
+      
+    }
+  }
+  else if("edit_general_info" == $_POST['pem_action'] || "add_ext" == $_POST['pem_action'])
   {
 
     // Checks that all the fields have been well filled
@@ -54,14 +129,13 @@ UPDATE '.PEM_EXT_TABLE.'
 
       pwg_query($query);
 
-// This is commented to not remove all translations of descriptions when we edit an extension
-//       $query = '
-// DELETE
-//   FROM '.PEM_EXT_TRANS_TABLE.'
-//   WHERE idx_extension = '.$current_extension_page_id.'
-// ;';
+      $query = '
+DELETE
+  FROM '.PEM_EXT_TRANS_TABLE.'
+  WHERE idx_extension = '.$current_extension_page_id.'
+;';
 
-//       pwg_query($query);
+      pwg_query($query);
 
       $query = '
 DELETE
