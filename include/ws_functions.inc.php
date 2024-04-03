@@ -813,7 +813,8 @@ DELETE FROM '.PEM_AUTHORS_TABLE.'
   WHERE idx_user = '.$uid.'
   AND idx_extension = '.$eid.'
 ;';
-    pwg_query($query);
+  
+  pwg_query($query);
 }
 
 /**
@@ -835,6 +836,7 @@ DELETE FROM '.PEM_AUTHORS_TABLE.'
   $eid = $params['extension_id'];
   $uid = $params['user_id'];
   
+  $extension_infos = get_extension_infos_of($eid);
   // $author = intval($_GET['owner']);
 
   if ($uid > 0)
@@ -855,7 +857,7 @@ DELETE FROM '.PEM_AUTHORS_TABLE.'
 
     $query = '
 INSERT INTO '.PEM_AUTHORS_TABLE.' (idx_extension, idx_user)
-  VALUES ('.$eid.', '.$uid.')
+  VALUES ('.$eid.', '.$extension_infos['idx_user'].')
 ;';
     pwg_query($query);
 
