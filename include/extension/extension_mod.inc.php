@@ -77,7 +77,7 @@ DELETE
       }
       
 
-      $message = l10n('Translation sucessfully updated');
+      $message = l10n('Extension translation sucessfully updated');
   
       $template->assign(
         array(
@@ -232,7 +232,7 @@ DELETE
     $message = l10n('Extension successfully '.$post_type.'.');
     if ("add_ext" == $_POST['pem_action'])
     {
-      $message .= ' <a href ="'.get_root_url().'index.php?eid='.$current_extension_page_id.'">See it here</a>';
+      $message .= ' <a href ="'.get_root_url().'index.php?eid='.$current_extension_page_id.'">'.l10n('See it here').'</a>';
     }
 
     $template->assign(

@@ -252,10 +252,6 @@ $lang['Sorry, this extension doesn\'t exist.'] = 'Désolé, cette extension n\'e
 $lang['Sorry, this user doesn\'t exist.'] = 'Désolé, cet utilisateur n\'existe pas.';
 $lang['Create an account'] = 'Créer un compte';
 $lang['Already have an account ?'] = 'Vous avez déjà un compte ?';
-$lang['Back to plugins'] = 'Retour aux plugins';
-$lang['Back to categories'] = 'Retour aux catégories';
-$lang['Back to tools'] = 'Retour aux outils';
-$lang['Back to languages'] = 'Retour aux langues';
 $lang['General information'] = 'Informations générales';
 $lang['Description language'] = 'Langue de la description';
 $lang['Close'] = 'Fermer';
@@ -287,6 +283,13 @@ $lang['Last activity %s'] = 'Dernière activité %s';
 $lang['filtered extensions'] = 'extensions filtrés';
 $lang['coffee'] = 'café';
 $lang['User settings'] = 'Paramètres utilisateur';
-
+$lang['You don\'t have permission to edit this translation'] = 'Vous n\'êtes pas autorisé à modifier cette traduction';
+$lang['Translate extension description'] = 'Traduire la description de l\'extension';
+$lang['Translate revision description'] = 'Traduire la description de la revision';
+$lang['Translation sucessfully updated'] = 'Traduction mise à jour avec succès';
+$lang['Translator mode'] = 'Mode traducteur';
+$lang['Edit mode'] = 'Mode édition';
+$lang['Extension successfully added.'] = 'Extension ajoutée avec succès.';
+$lang['See it here'] = 'Voir ici';
 
 ?>

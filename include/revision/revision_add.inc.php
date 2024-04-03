@@ -84,7 +84,7 @@ UPDATE '.PEM_REV_TABLE.'
         pwg_query($query);
       }
     
-      $message = l10n('Translation sucessfully updated');
+      $message = l10n('Revision translation sucessfully updated');
   
       $template->assign(
         array(

@@ -12,7 +12,7 @@
             <div class="modal-body">
               {* Extension name *}
               <div class="mb-3 form-group">
-                <label for="extension_name" class="form-label w-100 ">Name</label>
+                <label for="extension_name" class="form-label w-100 ">{'Name'|translate}</label>
                 <input type="text" name="extension_name" size="35" maxlength="255" value="{if isset($extension_name)}{$extension_name}{/if}" class="w-100 form-control" required/>
               </div>
 
@@ -39,7 +39,7 @@
               <div class="spinner-border d-none" role="status">
                 <span class="visually-hidden">{'Loading...'|translate}</span>
               </div>
-              <input type="submit" class="btn btn-primary" value="Submit" name="submit" onclick="onSubmitDisplaySpinner('addExtForm');"/>
+              <input type="submit" class="btn btn-primary" value="{'Submit'|translate}" name="submit" onclick="onSubmitDisplaySpinner('addExtForm');"/>
             </div>
 
           </form>
