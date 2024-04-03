@@ -1,4 +1,7 @@
 <?php
+global $conf;
+
+include_once(PEM_PATH . 'include/functions_language.inc.php');
 
 $category_icons =  conf_get_param('categories_icon',array());
 
@@ -35,5 +38,16 @@ $template->assign(
   )
 );
 
+if (isTranslator($user['id']))
+{
+  $template->assign(
+    array(
+      'u_translator' => true,
+      'count_langs' => count($conf['translator_users'][$user['id']]),
+      'translator_lang_ids' => $conf['translator_users'][$user['id']],
+      'all_languages' => get_all_ext_languages(),
+    )
+  );
+}
 
 $template->set_filenames(array('navbar_pem' => realpath(PEM_PATH .'template/navbar.tpl')));
