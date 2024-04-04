@@ -656,6 +656,15 @@ Edit mode
   z-index:99;
 }
 
+.circle-icon.translation_mode{
+  padding:3px 6px;
+  font-size:15px;
+}
+
+.translation_mode i{
+  margin-left:-4px;
+}
+
 .secondary_action{
   color: var(--grey2);
   border: 1px solid var(--grey2);

@@ -381,7 +381,6 @@ editLinkModal.addEventListener('show.bs.modal', event => {
 // Script used for editing revision modal
 // The link data is saved in the data attributes of the edit button, 
 // This data is added to the modal on the modal show when thue button is clicked
-// const editRevisionModal = document.getElementById('revisionInfoModal');
 const editRevisionModal = document.getElementById('revisionInfoModal');
 editRevisionModal.addEventListener('show.bs.modal', event => {
   const buttonEditRev = event.relatedTarget
@@ -389,10 +388,9 @@ editRevisionModal.addEventListener('show.bs.modal', event => {
   // Extract info from data-bs-* attributes
   const revId = buttonEditRev.getAttribute('data-bs-rev_id')
   const revVersionName = buttonEditRev.getAttribute('data-bs-rev_version_name')
-  const revDescription = buttonEditRev.getAttribute('data-bs-rev_description')
-  const revDescriptionLang = buttonEditRev.getAttribute('data-bs-rev_description_lang')
-  const revDefaultDescription = buttonEditRev.getAttribute('data-bs-rev_default_description')
-  const revDefaultDescriptionLang = buttonEditRev.getAttribute('data-bs-rev_default_description_lang')
+
+  const descriptions = jQuery.parseJSON(buttonEditRev.getAttribute('data-bs-descriptions'))
+
   const revVersionsCompatible = buttonEditRev.getAttribute('data-bs-rev_versions_compatible')
   const revAuthor = buttonEditRev.getAttribute('data-bs-rev_author')
   const arrayRevVersionsCompatible = revVersionsCompatible.split(',')
@@ -401,34 +399,19 @@ editRevisionModal.addEventListener('show.bs.modal', event => {
   })
   const current_rev_edit = buttonEditRev.getAttribute('data-bs-rev_id')
 
-
   // Get the modal's input
   const modalRevId= editRevisionModal.querySelector('#rid')
   const modalRevVersion= editRevisionModal.querySelector('#revision_version')
-  const modalRevDescriptionLang= editRevisionModal.querySelector('#revision_lang_desc_select')
 
   // Fills inputs 
   modalRevId.value = revId
   modalRevVersion.value = revVersionName
   jQuery('#author_'+revAuthor).prop('checked', true);
 
-
-  if(revDescription != revDefaultDescriptionLang)
-  {
-    const modalRevDefaultDescription= editRevisionModal.querySelector('#desc_'+revDefaultDescriptionLang)
-    jQuery(modalRevDefaultDescription).val(revDefaultDescription).change()
-    jQuery(modalRevDescriptionLang).val(revDefaultDescriptionLang).change()
-
-    const modalRevDescription= editRevisionModal.querySelector('#desc_'+revDescriptionLang)
-    jQuery(modalRevDescription).val(revDescription).change()
-    jQuery(modalRevDescriptionLang).val(revDescriptionLang).change()
-  }
-  else
-  {
-    const modalRevDescription= editRevisionModal.querySelector('#desc_'+revDescriptionLang)
-    jQuery(modalRevDescription).val(revDescription).change()
-    jQuery(modalRevDescriptionLang).val(revDescriptionLang).change()
-  }
+  // Add description to textarea
+  jQuery(descriptions).each(function(i, desc){
+    jQuery('#desc_block_' + desc['id_lang'] +' textarea').val(desc['description']).change()
+  });
 
   jQuery('#revisionInfoModal .revison_languages').selectize({
     plugins: ["remove_button"],
@@ -487,13 +470,14 @@ const descriptionModal = document.getElementById('DescriptionModal');
 
 descriptionModal.addEventListener('show.bs.modal', event => {
   const buttonDescription = event.relatedTarget
+
   // Extract info from data-bs-* attributes
   const modalTitleContent = buttonDescription.getAttribute('data-bs-modal_title')
   const modalPemActionContent = buttonDescription.getAttribute('data-bs-pem_action')
   const modalUserLangIds = buttonDescription.getAttribute('data-bs-lang_ids')
   const descriptions = jQuery.parseJSON(buttonDescription.getAttribute('data-bs-descriptions'))
   const revId = buttonDescription.getAttribute('data-bs-rev_id')
-  console.log(descriptions)
+
   // Get the modal's content
   const modalTitle = descriptionModal.querySelector('#DescriptionModalLabel')
   const modalPemAction = descriptionModal.querySelector('#DescriptionModal input[name="pem_action"]')
@@ -532,5 +516,5 @@ descriptionModal.addEventListener('show.bs.modal', event => {
 // Used to make sure author in add revision modal is selected
 $('input[name="author"]').on('change', function() { 
   var getCheckedValue = $('input[name=author]:checked').val()
-  jQuery("#addRevisionModal #author_"+getCheckedValue).attr( 'checked', true )
+  jQuery(this).attr( 'checked', true )
 });

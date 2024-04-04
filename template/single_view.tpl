@@ -9,7 +9,7 @@
   </section>
 
 {if isset($MESSAGE)}
-  <div class="alert {if $MESSAGE_TYPE == "success"}alert-success{/if} mt-3" role="alert">
+  <div class="alert {if $MESSAGE_TYPE == "success"}alert-success{else if $MESSAGE_TYPE == "error"}alert-danger{/if} mt-3" role="alert">
     <span>{$MESSAGE}</span><br>
   </div>
 {/if}
@@ -19,15 +19,15 @@
   <section  class="mt-4 section-fluid">
     <div class="d-flex justify-content-end">
 {if isset($can_modify)}
-  {if isset($u_translator) && $u_translator == true && $can_modify == false}
+  {if $can_modify == false && isset($u_translator) && $u_translator == true }
         <div class="form-check form-switch ">
           <input class="form-check-input" type="checkbox" role="switch" id="translation_mode">
-          <label class="form-check-label" for="translator_mode">translator mode</label>
+          <label class="form-check-label" for="translator_mode">{'Translator mode'|translate}</label>
         </div>
   {else if $can_modify == true}
       <div class="form-check form-switch ">
         <input class="form-check-input" type="checkbox" role="switch" id="edit_mode">
-        <label class="form-check-label" for="edit_mode">Edit mode</label>
+        <label class="form-check-label" for="edit_mode">{'Edit mode'|translate}</label>
       </div>
     {if isset($u_owner) && $u_owner == true || isset($admin) && $admin == true}
       <div class="ms-4">
@@ -40,8 +40,6 @@
 {/if}
     </div>
   </section>
-
-
 
   <section class="mt-4 section-fluid">
   <div class="row">
@@ -177,10 +175,10 @@
     data-bs-target="#DescriptionModal"
     data-bs-modal_title ="{'Translate extension description'|translate}"
     data-bs-pem_action ="edit_extension_translation"
-    data-bs-lang_ids = "{$translator_lang_ids}"
+    data-bs-lang_ids = "{json_encode($translator_lang_ids)}"
     data-bs-descriptions = '{$json_descriptions}'
   >
-    <i class="icon-language"></i>
+    <i class="icon-edit-language"></i>
   </span>
 {/if}
 
@@ -339,10 +337,10 @@
                 data-bs-pem_action ="edit_revision_translation"
                 data-bs-modal_title="{'Translate revision description'|translate}"
                 data-bs-rev_id="{$rev.id}" 
-                data-bs-lang_ids = '{$translator_lang_ids}'
-                data-bs-descriptions= '{$rev.json_descriptions}'
+                data-bs-lang_ids = '{json_encode($translator_lang_ids)}'
+                data-bs-descriptions= '{$rev.rev_json_descriptions}'
                 >
-                  <i class="icon-language"></i>
+                  <i class="icon-edit-language"></i>
                 </span>
     {/if}
 
@@ -352,10 +350,7 @@
                   data-bs-rev_id="{$rev.id}" 
                   data-bs-rev_version_name="{$rev.version}" 
                   data-bs-rev_versions_compatible="{$rev.ids_versions_compatible}"
-                  {* data-bs-rev_default_description_lang="{$rev.default_description_lang_id}"
-                  data-bs-rev_default_description="{$rev.default_description}" *}
-                  {* data-bs-rev_description_lang="{$rev.current_description_lang_id}" *}
-                  {* data-bs-rev_description="{$rev.current_description}" *}
+                  data-bs-descriptions = '{$rev.rev_json_descriptions}'
                   data-bs-rev_author="{$rev.author_id}"
                 >
                   <i class="icon-pencil"></i>
@@ -411,19 +406,23 @@
           <div class="mt-4">
       {* We have an array of all revsions and all descriptions in all languages *}
 
-    {foreach from=$rev_descriptions item=revision key=rev_id}
-      {if $rev_id == $rev.id}
-      {if !array_key_exists($CURRENT_LANG, $revision)}{assign var="no_desc" value="true"}{/if}
-        {foreach from=$revision item=lang_desc key=lang_id}           
-          {if $lang_id == $CURRENT_LANG}
-              <p>{$lang_desc|stripslashes|nl2br}</p>
+    {if isset($rev.rev_descriptions)}
+      {foreach from=$rev.rev_descriptions item=rev_desc}
+        {if $CURRENT_LANG == $rev_desc.id_lang && !is_null($rev_desc.description)}
+          
+            <p class="revision_description">{$rev_desc.description|stripslashes|nl2br}</p>
+          
+            {assign var="default" value=false}
+            {break}
+          {else}
+           {assign var="default" value=true}
           {/if}
-        {/foreach}
+      {/foreach}
+      {if true == $default}
+          
+            <p class="revision_description">{$rev.rev_default_description|stripslashes|nl2br}</p>
+          
       {/if}
-    {/foreach}
-      {* If no description exists in current interface language we display default *}
-    {if isset($no_desc) && $no_desc == true}
-        <p>{$rev.default_description|stripslashes|nl2br}</p>
     {/if}
           </div>
 

@@ -7,7 +7,7 @@ if (isset($_GET['eid']) && 1 == count($_GET))
 // |                         Include functionnalites                       |
 // +-----------------------------------------------------------------------+
 
-  include_once(PEM_PATH . 'include/functions_language.inc.php');
+  // include_once(PEM_PATH . 'include/functions_language.inc.php');
 
   // For general information modal
   include_once(PEM_PATH . 'include/extension/extension_mod.inc.php');
@@ -140,7 +140,7 @@ if (isset($_GET['eid']) && 1 == count($_GET))
     // Get download statistics
     $extension_downloads = get_download_of_extension(array($current_extension_page_id));
 
-    // Get extension descriptions
+    // Get extension descriptions for all languages that exist
     $descriptions_of_extension = array();
 
     $query = '
@@ -164,20 +164,16 @@ if (isset($_GET['eid']) && 1 == count($_GET))
     $default_ext_description[0]['default'] = true;
 
     $ext_descriptions = array_merge($ext_descriptions_translations, $default_ext_description);
-
-
-
-
-    foreach($ext_descriptions as $ext_description)
+    foreach($ext_descriptions as $key => $ext_description)
     {
-      $ext_description['description'] = 
-      nl2br(
+      $ext_descriptions[$key]['description'] = 
         htmlspecialchars(
           strip_tags(
-            $ext_description['description']
+            stripslashes(
+              str_replace('"', "'", $ext_description['description'])
+            )
           )
-        )
-      );
+        );
     }
 
     $json_descriptions = json_encode($ext_descriptions, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT |JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_LINE_TERMINATORS );
@@ -190,9 +186,9 @@ if (isset($_GET['eid']) && 1 == count($_GET))
         'descriptions' =>$ext_descriptions,
         'json_descriptions' => $json_descriptions,
         'default_description' =>
-        nl2br(
-          htmlspecialchars(
-            strip_tags($data['default_description'])
+        htmlspecialchars(
+          stripslashes(
+            str_replace('"', "'", $data['default_description'])
           )
         ),
         'authors' => $authors,
@@ -213,10 +209,18 @@ if (isset($_GET['eid']) && 1 == count($_GET))
     //Check if user can make changes to extension, only for authors, owners and admins
     $page['user_can_modify'] = false;
 
-    if (isset($user['id']) and (is_Admin() or in_array($user['id'], $authors)))
+    $author_ids = array();
+    foreach($authors as $author)
+    {
+      array_push($author_ids, $author['uid']);
+    }
+
+    if (isset($user['id']) and (is_Admin() or $user['extension_owner'] or in_array($user['id'], $author_ids)))
     {
       $page['user_can_modify'] = true;
     }
+
+    $extension_infos_of = get_extension_infos_of($current_extension_page_id);
 
     // If user can modify send this info to template
     if (isset($user['id']))
@@ -237,17 +241,14 @@ if (isset($_GET['eid']) && 1 == count($_GET))
           )
         );
       }
-      //Know if the user is a translator
-      if (isTranslator($user['id']))
-      {
-        $template->assign(
-          array(
-            'u_translator' => true,
-            'translator_lang_ids' => json_encode($conf['translator_users'][$user['id']]),
-          )
-        );
-      }
 
+      $template->assign(
+        array(
+          'u_owner_id' => $extension_infos_of['idx_user'],
+        )
+      );
+
+      //Know if the user is a translator
       $allow_svn_file_creation = conf_get_param('allow_svn_file_creation',false);
 
       if ($allow_svn_file_creation and $user['extension_owner'])
@@ -391,7 +392,6 @@ SELECT
       $template->assign(
         array(
           'TYPE' => 'git',
-          // 'URL' => $git_url,
           'GIT_URL' => $git_url,
           'GIT_BRANCH' => 'master',
 
@@ -403,7 +403,6 @@ SELECT
       $template->assign(
         array(
           'TYPE' => 'svn',
-          // 'URL' => $svn_url,
           'SVN_URL' => $svn_url,
           'SVN_REVISION' => 'HEAD',
 
@@ -441,7 +440,6 @@ SELECT
     {
       $versions_of = get_versions_of_revision($revision_ids);
       $languages_of = get_languages_of_revision($revision_ids);
-      $all_languages = get_all_ext_languages();
       $downloads_of_revision = get_download_of_revision($revision_ids);
 
       $diff_languages_of = get_diff_languages_of_extension($current_extension_page_id);
@@ -459,29 +457,12 @@ SELECT
 
       $template->assign(
         array(
-          'all_languages' => get_all_ext_languages(),
           'all_rev_languages_of_ids' => json_encode($rev_languages_of_ids,JSON_NUMERIC_CHECK),
           'count_rev' => count($revision_ids),
         )
       );
 
       $revisions = array();
-
-    //   $query = '
-    // SELECT id_revision,
-    //       version,
-    //       r.description as default_description,
-    //       date,
-    //       url,
-    //       author,
-    //       rt.description
-    //   FROM '.PEM_REV_TABLE.' AS r
-    //   LEFT JOIN '.PEM_REV_TRANS_TABLE.' AS rt
-    //     ON r.id_revision = rt.idx_revision
-    //     AND rt.idx_language = '.$id_language.'
-    //   WHERE id_revision IN ('.implode(',', $revision_ids).')
-    //   ORDER by date DESC
-    // ;';
 
       $query = '
     SELECT id_revision,
@@ -540,14 +521,17 @@ SELECT
 
         foreach($rev_descriptions as $rev_description)
         {
-          $rev_description['description'] = nl2br(
-            htmlspecialchars(
-              stripslashes($rev_description['description'])
+          $rev_description['description'] = 
+          htmlspecialchars(
+            strip_tags(
+              stripslashes(
+                str_replace('"', "'",$rev_description['description'])
+              )
             )
           );
         }
-// echo('<pre>');print_r($ext_descriptions);echo('</pre>');
 
+        $json_rev_descriptions = json_encode($rev_descriptions, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT |JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_LINE_TERMINATORS );
         $tpl_revisions[] = array(
             'id' => $row['id_revision'],
             'version' => $row['version'],
@@ -568,21 +552,11 @@ SELECT
             'author' => get_author_name($row['author']) ,
             'author_id' => $row['author'] ,
             'u_download' => PHPWG_ROOT_PATH.'download.php?rid='.$row['id_revision'],
-
-            // 'default_description_lang_id' => $default_language_id,
-            // 'default_description' => nl2br(
-            //   htmlspecialchars($row['default_description'])
-            //   ),
-            // 'current_description_lang_id' => ($id_language != $default_language_id) ? $id_language : $default_language_id,
-            // 'current_description' => isset($row['description']) ? nl2br(htmlspecialchars($row['description'])) : '',
-
-            'descriptions' => $rev_descriptions,
-            'json_descriptions' => json_encode($rev_descriptions, JSON_UNESCAPED_UNICODE),
-            'default_description' =>
-              nl2br(
-                stripslashes(
-                  strip_tags($data['default_description'])
-                )
+            'rev_descriptions' => $rev_descriptions,
+            'rev_json_descriptions' => $json_rev_descriptions,
+            'rev_default_description' =>
+              htmlspecialchars(
+                stripslashes($row['default_description'])
               ),
             'can_modify' => $page['user_can_modify'],
             'u_modify' => 'revision_mod.php?rid='.$row['id_revision'],
@@ -593,7 +567,6 @@ SELECT
         );
 
         $first_date = $row['date'];
-      
       }
 
       $template->assign(
@@ -614,7 +587,6 @@ SELECT
       }
 
       $tpl_revisions[0]['expanded'] = true;
-      // echo('<pre>');print_r($tpl_revisions);echo('</pre>');
       $template->assign('revisions', $tpl_revisions);
     }
 
@@ -781,58 +753,6 @@ SELECT
     asort($scores);
     $template->assign('scores', $scores);
 
-    // +-----------------------------------------------------------------------+
-    // |                         Revision descriptions                         |
-    // +-----------------------------------------------------------------------+
-    
-    // Get list of revisons linked to current extension
-    $query = '
-SELECT 
-  id_revision 
-  FROM '.PEM_REV_TABLE.' 
-  WHERE idx_extension = '.$_GET['eid'].'
-;';
-
-    $revision_ids_curent_ext = query2array($query, null, 'id_revision');
-    $rev_descriptions = array();
-
-    foreach($revision_ids_curent_ext as $rev)
-    {
-
-      // For revision default description
-      $query = '
-SELECT idx_language,
-       description
-  FROM '.PEM_REV_TABLE.'
-  WHERE id_revision = '.$rev.'
-;';
-
-      $result = pwg_query($query);
-      if ($row = pwg_db_fetch_assoc($result))
-      {
-        $rev_descriptions[$rev][$row['idx_language']] = $row['description'];
-      }
-
-      // For revision default description
-      $query = '
-SELECT idx_language,
-        description
-  FROM '.PEM_REV_TRANS_TABLE.'
-  WHERE idx_revision = '.$rev.'
-;';
-
-      $result = pwg_query($query);
-      if ($row = pwg_db_fetch_assoc($result))
-      {
-        $rev_descriptions[$rev][$row['idx_language']] = $row['description'];
-      }
-    }
-
-    $template->assign(
-      array(
-        'rev_descriptions' => $rev_descriptions,
-      )
-    );
 
     // +-----------------------------------------------------------------------+
     // |                     Extension & revision languages                    |
@@ -855,13 +775,7 @@ SELECT MAX(id_revision) as id
     }
 
     // by default the contributor accepts the agreement
-    $accept_agreement_checked = 'checked="checked"';
-
-    
-    if (!in_array($selected_author, $authors))
-    {
-      array_push($authors, $selected_author);
-    }
+    // $accept_agreement_checked = 'checked="checked"';
 
     $template->assign(
       array(
@@ -911,7 +825,7 @@ SELECT
         array_push($extension_language_ids, $ext_lang['id_language']);
       }
     }
-
+    
     $template->assign(
       array(
         'ext_languages' => $ext_languages,

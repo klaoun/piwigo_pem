@@ -27,15 +27,9 @@
                     <div id="desc_block_{$language.id}" class="desc" style="display: none;">
                       <input type="radio"  name="default_description" value="{$language.id}" {if $default_language == $language.code}checked{/if} hidden>
   {strip}                 
-                      {if !in_array($language.id,json_decode($translator_lang_ids))}<p class="red-font">{'You don\'t have permission to edit this translation'|translate}</p>{/if}
+                      {if !in_array($language.id, $translator_lang_ids)}<p class="red-font">{'You don\'t have permission to edit this translation'|translate}</p>{/if}
 
-                      <textarea class="form-control" name="descriptions[{$language.id}]" id="desc_{$language.id}" {if $default_language == $language.id}required{/if}>
-    {foreach from=$descriptions item=description}
-      {if $language.id == $description.id_lang}
-                      {$description.description|stripslashes}
-      {/if}
-    {/foreach}
-                      </textarea>
+                      <textarea class="form-control" name="descriptions[{$language.id}]" id="desc_{$language.id}" {if $default_language == $language.id}required{/if}></textarea>
   {/strip}
                     {if $default_language == $language.code}<p>{'Default description'|translate}</p>{/if}
                     </div>
