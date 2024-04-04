@@ -351,8 +351,6 @@ while ($row = pwg_db_fetch_assoc($result)) {
   $languages_old[] = $row['code'];
 }
 
-// echo '<pre>'; print_r($languages_old); echo '</pre>';
-
 //
 // what is the list of languages in SVN
 //
@@ -414,7 +412,6 @@ foreach ($language_candidates as $lang) {
 // new languages
 //
 $languages_new = array_diff($languages_cur, $languages_old);
-// echo '<pre>'; print_r($languages_new); echo '</pre>';
 
 $desc_extra = '';
 if (count($languages_new) > 0) {
