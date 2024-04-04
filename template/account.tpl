@@ -32,14 +32,36 @@
         <div class="p-1">
           <p class="d-inline">{'Member since %s'|translate:$USER.registration_date_formatted}<span class="badge blue-badge d-inline">{$USER.member_since}</span></p>
         </div>
-        {if isset($USER.last_activity_formatted)}
+{if isset($USER.last_activity_formatted)}
         <div class="p-1 mt-2">
           <p class="d-inline">{'Last activity %s'|translate:$USER.last_activity_formatted}<span class="badge blue-badge d-inline">{$USER.last_activity_since}</span></p>
         </div>
-        {/if}
+{/if}
       </div>
     </div>
   </section>
+{if isset($u_translator) && $u_translator == true}
+    <section class="section-fluid my-5">
+    <div class="row">
+      <div class="col-12 d-flex justify-content-between">
+          <div>
+          <h4 class="d-inline-block m-0">{'Languages'|translate}</h4>
+          <span class="badge blue-badge d-inline">{$count_langs}</span>
+        </div>
+      </div>
+      <div class="mt-3">
+        <p>You can translate these languages :</p>
+  {foreach $all_languages as $lang}
+    {if in_array($lang.id_language, $translator_lang_ids) }
+        <p class="d-inline-block my-2 ms-0 me-3">{$lang.name}</p>
+    {/if}
+  {/foreach}
+          
+      </div>
+
+    </div>
+    </section>
+{/if}
 
   <section class="section-fluid my-5">
     <div class="row">
