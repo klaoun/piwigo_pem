@@ -115,6 +115,12 @@ if (isset($_POST['pem_action']) and isset($_POST['submit']) and "edit_screenshot
 {
   if (!isset($_FILES['picture']))
   {
+    $template->assign(
+      array(
+        'MESSAGE' => l10n('You did not upload anything!'),
+        'MESSAGE_TYPE' => 'error'
+      )
+    );
     $page['errors'][] = l10n('You did not upload anything!');
   }
   else
@@ -131,6 +137,12 @@ if (isset($_POST['pem_action']) and isset($_POST['submit']) and "edit_screenshot
     $temp_name = PEM_DIR.get_extension_dir($_GET['eid']).'/screenshot.tmp';
     if (!move_uploaded_file($_FILES['picture']['tmp_name'], $temp_name))
     {
+      $template->assign(
+        array(
+          'MESSAGE' => l10n('Problem during upload'),
+          'MESSAGE_TYPE' => 'error'
+        )
+      );
       $page['errors'][] = l10n('Problem during upload');
     }
     else
@@ -142,6 +154,12 @@ if (isset($_POST['pem_action']) and isset($_POST['submit']) and "edit_screenshot
       if (!in_array($type, array(2, 3)))
       {
         unlink($temp_name);
+        $template->assign(
+          array(
+            'MESSAGE' => l10n('You can only upload PNG and JPEG files as screenshot.'),
+            'MESSAGE_TYPE' => 'error'
+          )
+        );
         $page['errors'][] = l10n('You can only upload PNG and JPEG files as screenshot.');
       }
       else

@@ -59,12 +59,24 @@ if (isset($_POST['pem_action']) and isset($_POST['submit']))
   if ("add_link" == $_POST['pem_action'])
   {
     if (!preg_match('/^https?:/', $_POST['link_url']))
-  {
-    $page['errors'][] = l10n('Incorrect URL');
-  }
+    {
+      $template->assign(
+        array(
+          'MESSAGE' => l10n('Incorrect URL'),
+          'MESSAGE_TYPE' => 'error'
+        )
+      );
+      $page['errors'][] = l10n('Incorrect URL');
+    }
 
   if (empty($_POST['link_name']))
   {
+    $template->assign(
+      array(
+        'MESSAGE' => l10n('Link name must not be empty'),
+        'MESSAGE_TYPE' => 'error'
+      )
+    );
     $page['errors'][] = l10n('Link name must not be empty');
   }
 

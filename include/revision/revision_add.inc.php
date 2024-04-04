@@ -44,6 +44,12 @@ DELETE
     {
       if ($lang_id == $def_language and empty($desc))
       {
+        $template->assign(
+          array(
+            'MESSAGE' => l10n('Default description can not be empty'),
+            'MESSAGE_TYPE' => 'error'
+          )
+        );
         $page['errors'][] = l10n('Default description can not be empty');
         break;
       }
@@ -109,6 +115,12 @@ UPDATE '.PEM_REV_TABLE.'
     }
     else
     {
+      $template->assign(
+        array(
+          'MESSAGE' => l10n('Some fields are missing'),
+          'MESSAGE_TYPE' => 'error'
+        )
+      );
       $page['errors'][] = l10n('Some fields are missing');
     }
   }
@@ -125,12 +137,24 @@ UPDATE '.PEM_REV_TABLE.'
     $allowed_extensions = array('zip', 'jar');
     if (!in_array($file_ext, $allowed_extensions))
     {
+      $template->assign(
+        array(
+          'MESSAGE' => l10n('Only *.{'.implode(', ', $allowed_extensions).'} files are allowed'),
+          'MESSAGE_TYPE' => 'error'
+        )
+      );
       $page['errors'][] = l10n('Only *.{'.implode(', ', $allowed_extensions).'} files are allowed');
     }
   
     // Check file size
     else if ($_FILES['revision_file']['error'] == UPLOAD_ERR_INI_SIZE)
     {
+      $template->assign(
+        array(
+          'MESSAGE' => sprintf(l10n('File too big. Filesize must not exceed %s.'),ini_get('upload_max_filesize')),
+          'MESSAGE_TYPE' => 'error'
+        )
+      );
       $page['errors'][] = sprintf(
         l10n('File too big. Filesize must not exceed %s.'),
         ini_get('upload_max_filesize')
@@ -147,6 +171,12 @@ UPDATE '.PEM_REV_TABLE.'
     $svn_url = $_POST['svn_url'];
     if (empty($svn_url))
     {
+      $template->assign(
+        array(
+          'MESSAGE' => l10n('Some fields are missing'),
+          'MESSAGE_TYPE' => 'error'
+        )
+      );
       $page['errors'][] = l10n('Some fields are missing');
     }
     else
@@ -174,6 +204,12 @@ UPDATE '.PEM_REV_TABLE.'
 
       if (empty($svn_infos))
       {
+        $template->assign(
+          array(
+            'MESSAGE' => l10n('An error occured during SVN/Git export.'),
+            'MESSAGE_TYPE' => 'error'
+          )
+        );
         $page['errors'][] = l10n('An error occured during SVN/Git export.');
       }
       else
@@ -200,6 +236,12 @@ UPDATE '.PEM_REV_TABLE.'
     $git_url = $_POST['git_url'];
     if (empty($git_url))
     {
+      $template->assign(
+        array(
+          'MESSAGE' => l10n('Some fields are missing'),
+          'MESSAGE_TYPE' => 'error'
+        )
+      );
       $page['errors'][] = l10n('Some fields are missing');
     }
     else
@@ -232,6 +274,12 @@ UPDATE '.PEM_REV_TABLE.'
 
       if (!file_exists($temp_path.'/.git'))
       {
+        $template->assign(
+          array(
+            'MESSAGE' => l10n('An error occured during SVN/Git export.'),
+            'MESSAGE_TYPE' => 'error'
+          )
+        );
         $page['errors'][] = l10n('An error occured during SVN/Git export.');
       }
       else
@@ -285,6 +333,12 @@ UPDATE '.PEM_REV_TABLE.'
     $download_url = $_POST['download_url'];
     if (empty($download_url))
     {
+      $template->assign(
+        array(
+          'MESSAGE' => l10n('Some fields are missing'),
+          'MESSAGE_TYPE' => 'error'
+        )
+      );
       $page['errors'][] = l10n('Some fields are missing');
     }
     else
@@ -292,6 +346,12 @@ UPDATE '.PEM_REV_TABLE.'
       $sch = parse_url($download_url, PHP_URL_SCHEME);
       if (!in_array($sch, array('http', 'https')))
       {
+        $template->assign(
+          array(
+            'MESSAGE' => l10n('The download URL must start with "http"'),
+            'MESSAGE_TYPE' => 'error'
+          )
+        );
         $page['errors'][] = l10n('The download URL must start with "http"');
       }
       else
@@ -299,6 +359,12 @@ UPDATE '.PEM_REV_TABLE.'
         $headers = get_headers($download_url, 1);
         if ($headers["Content-Length"] > $conf['download_url_max_filesize']*1024*1024)
         {
+          $template->assign(
+            array(
+              'MESSAGE' => l10n('The archive on the download URL is bigger than '.$conf['download_url_max_filesize'].'MB'),
+              'MESSAGE_TYPE' => 'error'
+            )
+          );
           $page['errors'][] = l10n('The archive on the download URL is bigger than '.$conf['download_url_max_filesize'].'MB');
         }
         else
@@ -320,6 +386,12 @@ UPDATE '.PEM_REV_TABLE.'
     if (empty($_POST[$field]))
     {
       // rmdir($temp_path);
+      $template->assign(
+        array(
+          'MESSAGE' => l10n('Some fields are missing'),
+          'MESSAGE_TYPE' => 'error'
+        )
+      );
       $page['errors'][] = l10n('Some fields are missing');
       break;
     }
@@ -327,9 +399,15 @@ UPDATE '.PEM_REV_TABLE.'
   if (empty($_POST['revision_descriptions'][$_POST['default_description']]))
   {
     // rmdir($temp_path);
+    $template->assign(
+      array(
+        'MESSAGE' => l10n('Default description can not be empty'),
+        'MESSAGE_TYPE' => 'error'
+      )
+    );
     $page['errors'][] = l10n('Default description can not be empty');
   }
-  
+
   if (empty($page['errors']))
   {
 
@@ -444,7 +522,6 @@ UPDATE '.PEM_REV_TABLE.'
       }
     }
     /* End specific piwigo website */
-    
     if ("edit_revision" == $_POST['pem_action'])
     {
 
@@ -484,7 +561,7 @@ DELETE
         'author'         => isset($_POST['author']) ? pwg_db_real_escape_string($_POST['author']) : $user['id'],
         );
 
-      if ($conf['use_agreement'])
+        if ($conf['use_agreement'])
       {
         $insert['accept_agreement'] = isset($_POST['accept_agreement'])
           ? 'true'

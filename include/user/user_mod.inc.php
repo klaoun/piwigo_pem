@@ -16,6 +16,12 @@ SELECT '.$conf['user_fields']['id'].' AS id
 
   if (empty($author_id))
   {
+    $template->assign(
+      array(
+        'MESSAGE' => l10n('This user does not exist.'),
+        'MESSAGE_TYPE' => 'error'
+      )
+    );
     $page['errors'][] = l10n('This user does not exist in database.');
   }
   else

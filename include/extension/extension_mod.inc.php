@@ -36,6 +36,12 @@ DELETE
     {
       if ($lang_id == $def_language and empty($desc))
       {
+        $template->assign(
+          array(
+            'MESSAGE' => l10n('Default description can not be empty'),
+            'MESSAGE_TYPE' => 'error'
+          )
+        );
         $page['errors'][] = l10n('Default description can not be empty');
         break;
       }
@@ -104,6 +110,12 @@ DELETE
 
       if (empty($_POST[$field]))
       {
+        $template->assign(
+          array(
+            'MESSAGE' => l10n('Some fields are missing'),
+            'MESSAGE_TYPE' => 'error'
+          )
+        );
         $page['errors'][] = l10n('Some fields are missing');
         break;
       }
@@ -115,6 +127,12 @@ DELETE
 
       if (empty($_POST['extension_descriptions'][$_POST['default_description']]))
       {
+        $template->assign(
+          array(
+            'MESSAGE' => l10n('Default description can not be empty'),
+            'MESSAGE_TYPE' => 'error'
+          )
+        );
         $page['errors'][] = l10n('Default description can not be empty');
       }
 
