@@ -23,7 +23,7 @@
               <div class="mb-3 form-group">
                 <label for="extension_category_select" class="col-12">{'Category'|translate}</label>
         
-                <select class="form-select w-100" id="extension_category_select" name="extension_category[]">
+                <select class="form-select w-100" required id="extension_category_select" name="extension_category[]">
 {foreach from=$CATEGORIES_INFO item=category}
                   <option value="{$category.cid}">{$category.name}</option>
 {/foreach}

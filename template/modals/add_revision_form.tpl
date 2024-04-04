@@ -97,7 +97,7 @@
               <div class="mb-3 form-group">
                 <div class="form-group">
                   <label for="revision_compatible_versions" class=" pb-2">{'Compatibility'|translate}</label>
-                  <select class="revision_compatible_versions" data-selectize="authors"
+                  <select class="revision_compatible_versions" required data-selectize="authors"
                     data-create="true" name="compatible_versions[]" multiple="multiple" data-placeholder="{'Choose compatible versions...'|translate}">
 {foreach from=$VERSIONS_PWG item=version}
                     <option value="{$version.id_version}">{$version.version}</option>

@@ -25,7 +25,7 @@
               <div class="mb-3 form-group">
                 <div class="form-group">
                   <label for="revision_compatible_versions" class=" pb-2">{'Compatibility'|translate}</label>
-                  <select class="revision_compatible_versions" data-selectize="authors"
+                  <select class="revision_compatible_versions" required data-selectize="authors"
                     data-create="true" name="compatible_versions[]" multiple="multiple" data-placeholder="{'Choose compatible versions...'|translate}">
 {foreach from=$VERSIONS_PWG item=version}
                     <option value="{$version.id_version}">{$version.version}</option>
@@ -49,7 +49,7 @@
 {foreach from=$languages item=language}
                     <div id="desc_block_{$language.id}" class="desc" style="display: none;">
                       <input type="radio"  name="default_description" value="{$language.id}" {if $default_language == $language.code}checked{/if} hidden>
-                      <textarea class="form-control" name="revision_descriptions[{$language.id}]" id="desc_{$language.id}" {if $language.code eq 'en_UK'} class="desc_{$language.code}"{/if}></textarea>
+                      <textarea class="form-control" name="revision_descriptions[{$language.id}]" id="desc_{$language.id}" {if $language.code eq 'en_UK'} class="desc_{$language.code}" required{/if}></textarea>
                       {if $default_language == $language.code}<p>{'Default description'|translate}</p>{/if}
                     </div>
 {/foreach}
