@@ -144,7 +144,9 @@ function deleteAuthor(userId, extensionId)
     url: 'ws.php?format=json&method=pem.extensions.deleteAuthor&extension_id=' + extensionId + '&user_id=' + userId + '&pwg_token=' + pwg_token,
     data: { ajaxload: 'true' },
     success: function (data) {
-      window.location.reload(); 
+      if (data.stat == 'ok') {
+        window.location.assign(document.URL);
+      }  
     }
   });
 }
@@ -159,7 +161,9 @@ function setOwner(userId, extensionId)
     url: 'ws.php?format=php&method=pem.extensions.setOwner&extension_id=' + extensionId + '&user_id=' + userId + '&pwg_token=' + pwg_token ,
     data: { ajaxload: 'true' },
     success: function (data) {
-      window.location.reload(); 
+      if (data.stat == 'ok') {
+        window.location.assign(document.URL);
+      } 
     }
   });
 }
@@ -190,7 +194,7 @@ function deleteLink(linkId, extensionId, link)
     data: { ajaxload: 'true' },
     success: function (data) {
       if (data.stat == 'ok') {
-        window.location.replace(link)
+        window.location.assign(document.URL);
       } 
     }
   });
@@ -205,7 +209,7 @@ function deleteSVNGitConfig(extensionId){
     url: 'ws.php?format=json&method=pem.extensions.deleteSvnGitConfig&extension_id=' + extensionId + '&pwg_token=' + pwg_token,
     data: { ajaxload: 'true' },
     success: function (data) {
-      window.location.reload(); 
+      window.location.assign(document.URL);
     }
   });
 }
@@ -252,8 +256,8 @@ function deleteRevision(revisionId,extensionId, link )
     data: { ajaxload: 'true' },
     success: function (data) {
       if (data.stat == 'ok') {
-        window.location.replace(link)
-      }
+        window.location.assign(document.URL);
+      } 
     }
   });
 }
