@@ -65,8 +65,9 @@ Account dropdown
 #account-dropdown{
   display:none;
   position:absolute;
-  min-width:175px;
   padding:10px;
+  left:50%;
+  transform:translateX(-50%);
 }
 
 #account-link:hover #account-dropdown{
