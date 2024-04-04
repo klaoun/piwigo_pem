@@ -121,7 +121,7 @@
 {foreach from=$languages item=language}
                   <div id="desc_block_{$language.id}" class="desc" style="display: none;">
                     <input type="radio"  name="default_description" value="{$language.id}" {if $default_language == $language.code}checked{/if} hidden>
-                    <textarea class="form-control" name="revision_descriptions[{$language.id}]" id="desc_{$language.id}" {if $language.code eq 'en_UK'} class="desc_{$language.code}"{/if} {if $default_language == 5}required{/if}></textarea>
+                    <textarea class="form-control" name="revision_descriptions[{$language.id}]" id="desc_{$language.id}" {if $language.code eq 'en_UK'} class="desc_{$language.code}" required{/if}></textarea>
                     {if $default_language == $language.code}<p><small>{'Default description'|translate}</small></p>{/if}
                   </div>
 {/foreach}
@@ -133,12 +133,12 @@
                 <label class="col-12">{'Author'|translate}</label>
                 <div class="btn-group" role="group" aria-label="Basic radio toggle button group">
 {foreach from=$authors item=author}
-                  <input type="radio" name="author" value="{$author.uid}" id="author_{$author.uid}" class="btn-check" autocomplete="off">
-                  <label class="btn btn-outline-primary" for="author_{$author.uid}">{$author.username}</label>
+                  <input type="radio" name="author" value="{$author.uid}" id="addRev_author_{$author.uid}" class="btn-check" autocomplete="off" {if $author.uid == $current_user_id}checked{/if}>
+                  <label class="btn btn-outline-primary" for="addRev_author_{$author.uid}">{$author.username}</label>
 {/foreach}  
 {if $add_current_user == true}
-                  <input type="radio" name="author" value="{$current_user_id}" id="author_{$current_user_id}" class="btn-check" autocomplete="off" checked>
-                  <label class="btn btn-outline-primary" for="author_{$current_user_id}">{$current_user_name}</label>
+                  <input type="radio" name="author" value="{$current_user_id}" id="addRev_author_{$current_user_id}" class="btn-check" autocomplete="off" checked>
+                  <label class="btn btn-outline-primary" for="addRev_author_{$current_user_id}">{$current_user_name}</label>
 {/if}
                 </div>
               </div>   
