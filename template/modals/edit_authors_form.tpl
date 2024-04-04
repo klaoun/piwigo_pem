@@ -32,12 +32,12 @@
 {foreach from=$authors item=author}
                 <div class="d-block">
                   <strong>{$author.username}</strong>
-  {if $author.owner !== true}
-      <button class="link-primary" onclick="deleteAuthor({$author.uid}, {$extension_id})">{'Delete'|translate}</button>
+  {if isset($u_owner_id) && $u_owner_id == $author.uid}
+                    <p class="d-inline-block m-0">({'Owner'|translate})</p>   
+  {else if isset($can_modify) && true == $can_modify}
+      <button class="link-primary" type="button" onclick="deleteAuthor({$author.uid}, {$extension_id})">{'Delete'|translate}</button>
       <p class="d-inline-block m-0">|</p>
       <button class="link-primary" onclick="setOwner({$author.uid}, {$extension_id})">{'Set as owner'|translate}</button>
-  {else}
-      <p class="d-inline-block m-0">({'Owner'|translate})</p>
   {/if}
 {/foreach}
                 </div>
