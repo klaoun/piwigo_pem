@@ -66,7 +66,7 @@
         <div class="position-relative mb-1">
 {foreach from=$authors item=author}
           <a href="{$PEM_ROOT_URL}index.php?uid={$author.uid}" class="badge green-badge me-2 mb-3 hide-text-overflow-150 ms-0">
-            <i class="icon-user"></i>{$author.username}
+            <i class="{if count($authors) >1 && $u_owner_id == $author.uid}icon-crown{else}icon-user{/if}"></i>{$author.username}
           </a>
 {/foreach}
 {if isset($can_modify) && $can_modify == true}
