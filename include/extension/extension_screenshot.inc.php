@@ -125,7 +125,7 @@ if (isset($_POST['pem_action']) and isset($_POST['submit']) and "edit_screenshot
   }
   else
   {
-    $extension_dir = PEM_DIR.get_extension_dir($_GET['eid']);
+    $extension_dir = get_extension_dir($_GET['eid']);
 
     if (!is_dir($extension_dir)) {
       umask(0000);
@@ -134,7 +134,7 @@ if (isset($_POST['pem_action']) and isset($_POST['submit']) and "edit_screenshot
       }
     }
     
-    $temp_name = PEM_DIR.get_extension_dir($_GET['eid']).'/screenshot.tmp';
+    $temp_name = get_extension_dir($_GET['eid']).'/screenshot.tmp';
     if (!move_uploaded_file($_FILES['picture']['tmp_name'], $temp_name))
     {
       $template->assign(
