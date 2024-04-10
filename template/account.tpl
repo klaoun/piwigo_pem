@@ -176,6 +176,7 @@
   //allows any filters set in list view to be cleared 
   sessionStorage.clear()
   const PEM_ROOT_URL = `{$PEM_ROOT_URL}`
+  const first_published_on = `{'First revision published'|translate}`
 </script>
 <script src="{$PEM_ROOT_URL_PLUGINS}template/js/account.js" require="jquery"></script>
 

@@ -293,5 +293,6 @@ $lang['Extension successfully added.'] = 'Extension ajoutée avec succès.';
 $lang['Extension successfully updated.'] = 'Extension mis à jour avec succès.';
 $lang['See it here'] = 'Voir ici';
 $lang['Save Changes'] = 'Sauvegarder';
+$lang['First revision published'] = 'Première révision publiée';
 
 ?>
