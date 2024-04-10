@@ -711,7 +711,7 @@ Tooltips
 }
 
 .pem-tooltip .pem-tooltiptext::after {
-  content: " ";
+  content: "";
   position: absolute;
   bottom: 100%;
   left: 50%;
