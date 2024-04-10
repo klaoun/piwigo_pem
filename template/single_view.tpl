@@ -279,8 +279,8 @@
 
 {* Links block non edit mode *}
   <section class="mt-5 pt-3 section-fluid related_links">
-
     <h3 class="mb-3">{'Related links'|translate}</h3>
+{if !empty($links)}
     <div class="d-flex justify-content-start flex-wrap">
   {foreach from=$links item=link}
       <a class="orange-link py-3 pe-3" href="{$link.url}" target="_blank">
@@ -295,6 +295,9 @@
       </a>
   {/foreach}
     </div>
+{else}
+      <p>{'No links are available for this extension.'|translate}</p>
+{/if}
   </section>
 
 {*Revision block *}
