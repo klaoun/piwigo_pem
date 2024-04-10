@@ -91,7 +91,6 @@ $lang['news feed'] = 'haberler beslemesi';
 $lang['next'] = 'Sonraki';
 $lang['No account?'] = 'Hesap Yok?';
 $lang['No extension match your filter'] = 'Filtrenize uygun eklenti yok';
-$lang['No revision available for this extension.'] = 'Bu eklenti için değişiklik mevcut değil. Ya hiçbir değişiklik yok ya da filtrede uyguladığınız versiyon ile uyumlu bir değişiklik yok.';
 $lang['no revision yet'] = 'değişiklik yok';
 $lang['Notes'] = 'Notlar';
 $lang['Only *.zip files are allowed'] = 'Sadece *.zip dosyaları kabul edilir';

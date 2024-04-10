@@ -91,7 +91,6 @@ $lang['news feed'] = 'الاخبار';
 $lang['next'] = 'اللاحق';
 $lang['No account?'] = 'لا حساب؟';
 $lang['No extension match your filter'] = 'لا ملحق يتطابق مع مرشحك';
-$lang['No revision available for this extension.'] = 'لا ريفيشين متاح لهذا ا الملحق يمكن انه لا يوجد ريفشين على الاطلاق او الريفيشين لا يطابق اصادر المرشح';
 $lang['no revision yet'] = 'لا ريفيشن بعد';
 $lang['Notes'] = 'ملاحظات';
 $lang['Only *.zip files are allowed'] = 'ققظ *.zip ي الملفات المسموحة';

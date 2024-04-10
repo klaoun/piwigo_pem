@@ -90,7 +90,6 @@ $lang['news feed'] = 'RSS';
 $lang['next'] = 'Következő';
 $lang['No account?'] = 'Nem regisztrált?';
 $lang['No extension match your filter'] = 'Nincs találat! Próbálkozzon más szűrési feltételekkel.';
-$lang['No revision available for this extension.'] = 'Nincs elérhető javítás ehhez a bővítményhez. Vagy azért, mert nincs javítás, vagy azért, mert nem egyeztethető össze a javított verzió a beállított szűrővel.';
 $lang['no revision yet'] = 'még nincs felülvizsgálat';
 $lang['Notes'] = 'Megjegyzés';
 $lang['Only *.zip files are allowed'] = 'Csak a *. zip fájlok engedélyezettek';

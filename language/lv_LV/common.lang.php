@@ -90,7 +90,6 @@ $lang['news feed'] = 'ziņu piegāde';
 $lang['next'] = 'Nākošais';
 $lang['No account?'] = 'Nav konta?';
 $lang['No extension match your filter'] = 'Nav jūsu filtram atbilstoša paplašinājuma';
-$lang['No revision available for this extension.'] = 'Nav atbilstošas revīzijas jūsu paplašinājumam. Iespējams, ka izdevuma revīzijas nav vispār, vai arī nav ar jūsu filtrā iestatītās versijas numuru saderīgu revīziju.';
 $lang['no revision yet'] = 'revīziju vēl nav';
 $lang['Notes'] = 'Piezīmes';
 $lang['Only *.zip files are allowed'] = 'Atļauti tikai *.zip tipa faili';

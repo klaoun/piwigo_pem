@@ -90,7 +90,6 @@ $lang['news feed'] = 'поток новостей';
 $lang['next'] = 'Следующий';
 $lang['No account?'] = 'Нет аккаунта?';
 $lang['No extension match your filter'] = 'Нет дополнений, отвечающих вашему фильтру';
-$lang['No revision available for this extension.'] = 'Для этого дополнения не существует ревизий. Или нет ревизий вообще, или нет ревизий, подходящих к указанной вами версии.';
 $lang['no revision yet'] = 'пока нет ревизии';
 $lang['Notes'] = 'Заметки';
 $lang['Only *.zip files are allowed'] = 'Только *.zip файлы';

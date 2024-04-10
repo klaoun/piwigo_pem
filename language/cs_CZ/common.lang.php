@@ -91,7 +91,6 @@ $lang['news feed'] = 'novinky';
 $lang['next'] = 'Další';
 $lang['No account?'] = 'Nemáte úcet?';
 $lang['No extension match your filter'] = 'Žádné rozšírení neodpovídá vašemu filtrování';
-$lang['No revision available for this extension.'] = 'Žádná revize pro toto rozšírení není k dispozici. Možná proto že proste není nebo protože není odopovídající revize pro váš nastavený filtr.';
 $lang['no revision yet'] = 'zatím bez revize';
 $lang['Notes'] = 'Poznámky';
 $lang['Only *.zip files are allowed'] = 'Pouze zip soubory jsou povoleny';

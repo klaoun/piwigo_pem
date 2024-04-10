@@ -91,7 +91,6 @@ $lang['news feed'] = 'nyhets mating';
 $lang['next'] = 'Neste'; 
 $lang['No account?'] = 'Ingen konto?'; 
 $lang['No extension match your filter'] = 'Ingen utvidelser passer til filtreringen'; 
-$lang['No revision available for this extension.'] = 'Ingen revisjon tilgjengelig for denne utvidelsen. Enten fordi det ikke er noen revisjon i det hele tatt, eller fordi det ikke er noen revisjoner som er komptible med versjon filteret du har satt.';
 $lang['no revision yet'] = 'ingen revisjon enda'; 
 $lang['Notes'] = 'Notater'; 
 $lang['Only *.zip files are allowed'] = 'Kun *.zip filer er tillatt'; 

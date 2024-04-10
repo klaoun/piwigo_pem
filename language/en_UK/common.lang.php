@@ -92,7 +92,7 @@ $lang['news feed'] = 'news feed';
 $lang['next'] = 'Next';
 $lang['No account?'] = 'No account?';
 $lang['No extension match your filter'] = 'No extension match your filter';
-$lang['No revision available for this extension.'] = 'No revision available for this extension. Either because there is no revision at all or because there is no revision compatible with the verion filter you set.';
+$lang['No revisions are available for this extension.'] = 'No revisions are available for this extension.';
 $lang['no revision yet'] = 'no revision yet';
 $lang['Notes'] = 'Notes';
 $lang['Only *.zip files are allowed'] = 'Only *.zip files are allowed';
@@ -291,7 +291,9 @@ $lang['Revision translation sucessfully updated'] = 'Revision translation sucess
 $lang['Translator mode'] = 'Translator mode';
 $lang['Edit mode'] = 'Edit mode';
 $lang['Extension successfully added.'] = 'Extension successfully added.';
+$lang['Extension successfully updated.'] = 'Extension successfully updated.';
 $lang['See it here'] = 'See it here';
+$lang['Save Changes'] = 'Save Changes';
 
 // For footer
 $lang['Donate'] = 'Donate';

@@ -442,7 +442,7 @@
   {/foreach}
     </div> <!-- changelog -->
 {else}
-    <p>{'No revision available for this extension.'|translate}</p>
+    <p>{'No revisions are available for this extension.'|translate}</p>
 {/if}
     
   </section>

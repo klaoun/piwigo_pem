@@ -91,7 +91,6 @@ $lang['news feed'] = 'RSS';
 $lang['next'] = 'Siguiente';
 $lang['No account?'] = 'No dispone de ninguna cuenta?';
 $lang['No extension match your filter'] = 'Ninguna extensión corresponde a su filtro';
-$lang['No revision available for this extension.'] = 'Ninguna revisión está disponible para esta extensión. Posiblemente no existen revisiones para esta extensión, o ninguna revisión corresponde a su filtro.';
 $lang['no revision yet'] = 'Todavía no dispone de revisiones';
 $lang['Notes'] = 'Notas';
 $lang['Only *.zip files are allowed'] = 'Sólo se permiten archivos *.zip';

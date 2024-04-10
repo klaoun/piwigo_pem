@@ -90,7 +90,6 @@ $lang['news feed'] = 'nieuws-feed';
 $lang['next'] = 'Volgende';
 $lang['No account?'] = 'Nog geen account?';
 $lang['No extension match your filter'] = 'Geen enkele uitbreiding komt overeen met uw filter';
-$lang['No revision available for this extension.'] = 'Er is geen aanpssing beschikbaar voor deze uitbreiding. Of er is geen enkele aanpassing beschikbaar of er is geen aanpassing die voldoet aan de door u ingestelde filter.';
 $lang['no revision yet'] = 'nog geen aanpassingen';
 $lang['Notes'] = 'Aantekeningen';
 $lang['Only *.zip files are allowed'] = 'Alleen *.zip bestanden zijn toegestaan';

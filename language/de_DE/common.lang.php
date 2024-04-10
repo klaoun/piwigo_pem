@@ -90,7 +90,6 @@ $lang['news feed'] = 'News Feed';
 $lang['next'] = 'Nächste';
 $lang['No account?'] = 'Keinen Account?';
 $lang['No extension match your filter'] = 'Keine Erweiterung entspricht deinem Filter';
-$lang['No revision available for this extension.'] = 'Für diese Revision gibt es keine Erweiterung. Entweder weil es überhaupt keine Revision gibt oder weil es keine mit dem Versionsfilter kompatible Revision gibt,.';
 $lang['no revision yet'] = 'noch keine Revision';
 $lang['Notes'] = 'Bemerkungen';
 $lang['Only *.zip files are allowed'] = 'Nur *.zip Dateien sind erlaubt';

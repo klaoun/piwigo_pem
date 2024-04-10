@@ -91,7 +91,6 @@ $lang['news feed'] = 'nyhetsflöde';
 $lang['next'] = 'Nästa';
 $lang['No account?'] = 'Inget konto?';
 $lang['No extension match your filter'] = 'Inga tillägg matchar ditt filter';
-$lang['No revision available for this extension.'] = 'Ingen revision tillgänlig för detta tillägg. Antingen på grund av att det inte finns någon revision eller för att ingen revision kompatibel med ditt versionsfilter hittades.';
 $lang['no revision yet'] = 'ingen revsion ännu';
 $lang['Notes'] = 'Anteckningar';
 $lang['Only *.zip files are allowed'] = 'Bara *.zip filer är tillåtna';

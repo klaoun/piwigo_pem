@@ -92,7 +92,7 @@ $lang['news feed'] = 'Fil RSS';
 $lang['next'] = 'Suivante';
 $lang['No account?'] = 'Pas de compte?';
 $lang['No extension match your filter'] = 'Aucune extension ne correspond à votre filtre';
-$lang['No revision available for this extension.'] = 'Aucune révision n\'est disponible pour cette extension. Il n\'existe peut-être pas de révisions pour cette extension, ou aucune révision ne correspond à votre filtre.';
+$lang['No revisions are available for this extension.'] = 'Aucune révision n\'est disponible pour cette extension.';
 $lang['no revision yet'] = 'pas de révisions';
 $lang['Notes'] = 'Notes';
 $lang['Only *.zip files are allowed'] = 'Seuls les fichiers *.zip sont autorisés';
@@ -290,6 +290,8 @@ $lang['Translation sucessfully updated'] = 'Traduction mise à jour avec succès
 $lang['Translator mode'] = 'Mode traducteur';
 $lang['Edit mode'] = 'Mode édition';
 $lang['Extension successfully added.'] = 'Extension ajoutée avec succès.';
+$lang['Extension successfully updated.'] = 'Extension mis à jour avec succès.';
 $lang['See it here'] = 'Voir ici';
+$lang['Save Changes'] = 'Sauvegarder';
 
 ?>

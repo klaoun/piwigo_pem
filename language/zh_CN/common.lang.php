@@ -90,7 +90,6 @@ $lang['news feed'] = '订阅 ';
 $lang['next'] = '下一步';
 $lang['No account?'] = '没有账户?';
 $lang['No extension match your filter'] = '没有符合你所筛选的扩充组件';
-$lang['No revision available for this extension.'] = '此扩充组件没有修订版本。因为此组件没有发表修订版本或没有兼容于你所筛选的版本。';
 $lang['no revision yet'] = '没有修订版本';
 $lang['Notes'] = '批注';
 $lang['Only *.zip files are allowed'] = '只容许*.zip档案';
