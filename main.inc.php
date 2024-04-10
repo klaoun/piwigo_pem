@@ -80,10 +80,23 @@ function pem_user_init()
 {
   global $user, $page;
   $page['pem_domain_prefix'] = '';
+  $user['language'] = 'en_UK'  ;
 
-  // Try to get browser language if true.
-  // If false, use $conf['default_language']
-  $conf['get_browser_language'] = false;
+  $raw_url = $_SERVER['HTTP_HOST'].$_SERVER['SCRIPT_NAME'];
+
+  // what is the subdomain, if any?
+  if (preg_match('#([a-z]{2,3})\.piwigo\.com#', $raw_url, $matches))
+  {
+      $subdomain = $matches[1];
+
+      include(PCOM_PATH . '/data/languages.data.php');
+
+      if (isset($pcom_subdomains[$subdomain]))
+      {
+          $page['pcom_domain_prefix'] = $subdomain.'.';
+          $user['language'] = $pcom_subdomains[$subdomain];
+      }
+  }
 
 }
 
