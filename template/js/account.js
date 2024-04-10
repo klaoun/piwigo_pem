@@ -137,7 +137,7 @@ function fillTable(extensions)
     }
 
     // Last update date
-    if (this.nb_downloads > 0)
+    if (this.nb_downloads)
     {
       jQuery('#extension_' + extension_id + ' td.nb_downloads').append(this.nb_downloads);
     }
