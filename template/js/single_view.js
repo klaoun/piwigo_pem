@@ -48,6 +48,8 @@ jQuery("#translation_mode").change(function() {
 });
 
 jQuery(document).ready(function () {
+  jQuery('#edit_mode').attr('value', 'false');
+
   // Selectize modal inputs
   jQuery('.extension_author_select').selectize()
 
