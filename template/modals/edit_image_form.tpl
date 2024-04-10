@@ -12,7 +12,7 @@
             <form method="post" enctype="multipart/form-data" autocomplete="off" id="ImageModalForm">
               <div class="modal-body">
                 <label class="form-label w-100" for="picture">{'Add or replace screenshot'|translate}</label>
-                <input class="form-control" type="file" name="picture" maxlength="50" {if isset($f_picture_name)}value="{$f_picture_name}"{/if} required>
+                <input class="form-control" type="file" name="picture" maxlength="50" accept="image/png, image/jpg, image/jpeg" {if isset($f_picture_name)}value="{$f_picture_name}"{/if} required>
             
               </div>
 
