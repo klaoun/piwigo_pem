@@ -18,12 +18,12 @@
 
         <div class="w-100 form-group mx-auto">
           <label for="username">{'Username'|translate}</label>
-          <input type="text" class="form-control w-100" type="text" name="username" id="username" size="25" placeholder="Enter username">
+          <input type="text" class="form-control w-100" type="text" name="username" id="username" size="25" placeholder="Enter username" autofocus required>
         </div>
 
         <div class="w-100 form-group mx-auto pt-3">
           <label for="password">{'Password'|translate}</label>
-          <input type="password" class="form-control w-100" type="password" name="password" id="password" size="25" placeholder="Password">
+          <input type="password" class="form-control w-100" type="password" name="password" id="password" size="25" placeholder="Password" required>
         </div>
 
 {if $authorize_remembering }

@@ -17,23 +17,23 @@
 {include file='infos_errors.tpl'}
 
         <div class="form-group mx-auto">
-          <label for="mail_address">* {'Email address'|translate}</label>
-          <input type="email" class="form-control w-100" name="mail_address" id="mail_address" placeholder="Email" value="{$F_EMAIL}">
+          <label for="mail_address">{'Email address'|translate}</label>
+          <input type="email" class="form-control w-100" name="mail_address" id="mail_address" placeholder="Email" value="{$F_EMAIL}" autofocus required>
         </div>
 
         <div class="form-group mx-auto pt-3">
-          <label for="login">* {'Username'|translate}</label>
-          <input type="text" class="form-control w-100"name="login" id="login" value="{$F_LOGIN}"  placeholder="Username">
+          <label for="login">{'Username'|translate}</label>
+          <input type="text" class="form-control w-100"name="login" id="login" value="{$F_LOGIN}"  placeholder="Username" required>
         </div>
 
         <div class="form-group mx-auto pt-3">
-          <label for="password">* {'Password'|translate}</label>
-          <input type="password" class="form-control w-100" name="password" id="password" >
+          <label for="password">{'Password'|translate}</label>
+          <input type="password" class="form-control w-100" name="password" id="password" required>
         </div>
 
         <div class="form-group mx-auto pt-3">
-          <label for="password_conf">* {'Confirm Password'|translate}</label>
-          <input type="password" class="form-control w-100" name="password_conf" id="password_conf" >
+          <label for="password_conf">{'Confirm Password'|translate}</label>
+          <input type="password" class="form-control w-100" name="password_conf" id="password_conf" required>
         </div>
 
         <div class="form-group mx-auto pt-3">
