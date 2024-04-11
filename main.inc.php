@@ -79,22 +79,21 @@ add_event_handler('user_init', 'pem_user_init');
 function pem_user_init()
 {
   global $user, $page;
-  $page['pem_domain_prefix'] = '';
+  $page['porg_domain_prefix'] = '';
   $user['language'] = 'en_UK'  ;
 
   $raw_url = $_SERVER['HTTP_HOST'].$_SERVER['SCRIPT_NAME'];
 
   // what is the subdomain, if any?
-  if (preg_match('#([a-z]{2,3})\.piwigo\.com#', $raw_url, $matches))
+  if (preg_match('#([a-z]{2,3})\.piwigo\.org#', $raw_url, $matches))
   {
       $subdomain = $matches[1];
+      include(PEM_PATH . '/data/languages.data.php');
 
-      include(PCOM_PATH . '/data/languages.data.php');
-
-      if (isset($pcom_subdomains[$subdomain]))
+      if (isset($pem_subdomains[$subdomain]))
       {
-          $page['pcom_domain_prefix'] = $subdomain.'.';
-          $user['language'] = $pcom_subdomains[$subdomain];
+          $page['porg_domain_prefix'] = $subdomain.'.';
+          $user['language'] = $pem_subdomains[$subdomain];
       }
   }
 
@@ -136,7 +135,7 @@ function pem_load_header()
       'PEM_ROOT_URL' => $pem_root_url,
       'PEM_ROOT_URL_PLUGINS' => $pem_root_url_pem,
       'URL' => pem_get_page_urls(),
-      'PEM_DOMAIN_PREFIX' => $page['pem_domain_prefix'],
+      'PEM_DOMAIN_PREFIX' => $page['porg_domain_prefix'],
     )
   );
 }
