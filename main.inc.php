@@ -90,10 +90,10 @@ function pem_user_init()
       $subdomain = $matches[1];
       include(PEM_PATH . '/data/languages.data.php');
 
-      if (isset($pem_subdomains[$subdomain]))
+      if (isset($porg_subdomains[$subdomain]))
       {
           $page['porg_domain_prefix'] = $subdomain.'.';
-          $user['language'] = $pem_subdomains[$subdomain];
+          $user['language'] = $porg_subdomains[$subdomain];
       }
   }
 
