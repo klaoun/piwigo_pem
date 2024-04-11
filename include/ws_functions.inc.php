@@ -453,7 +453,7 @@ function ws_pem_extensions_get_list($params, &$service)
           : null,
         'downloads' => isset($download_of_extension[$extension_id]) ?
                         $download_of_extension[$extension_id] : 0,
-        'categories' => $categories_of_extension[$extension_id],
+        'categories' => isset($categories_of_extension[$extension_id])? $categories_of_extension[$extension_id]: null,
         'tags' => empty($tags_of_extension[$extension_id]) ? array() : $tags_of_extension[$extension_id],
         'revision_name' => $revision_infos_of[$revision_id]['version'],
         'compatible_latest_pwg_version' => $compatible_latest_pwg_version, 
