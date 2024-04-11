@@ -1151,21 +1151,42 @@ function get_filtered_extension_ids($filter) {
   }
 
   if (isset($filter['id_user'])) {
-    $filtered_sets['id_user'] = get_extension_ids_for_user($filter['id_user']);
+    $filtered_user_sets['id_user'] = get_extension_ids_for_user($filter['id_user']);
   }
 
   if (isset($filter['user_ids'])) {
     foreach($filter['user_ids'] as $user_id)
     {
-      $filtered_sets['user_ids_'.$user_id] = get_extension_ids_for_user($user_id);
+      $filtered_user_sets['user_ids_'.$user_id] = get_extension_ids_for_user($user_id);
     } 
   }
 
   $filtered_extension_ids = array_shift($filtered_sets);
-  foreach ($filtered_sets as $set) {
+
+  foreach ($filtered_sets as $set) 
+  {
     $filtered_extension_ids = array_intersect(
       $filtered_extension_ids,
       $set
+    );
+  }
+
+  // User filter is seperated to be able to combine the extensions from different users
+  // We get extensions from one or the other user, not extensions by both
+  if (isset($filtered_user_sets))
+  {
+    $filtered_user_extension_ids = array();
+    foreach ($filtered_user_sets as $set) 
+    {
+      foreach($set as $id){
+        array_push($filtered_user_extension_ids,$id);
+
+      }
+    }
+
+    $filtered_extension_ids = array_intersect(
+      $filtered_extension_ids,
+      $filtered_user_extension_ids
     );
   }
 
