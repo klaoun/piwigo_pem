@@ -25,15 +25,6 @@
                <input type="email" name="user_email" {if isset($USER.username)}value="{$USER.email}"{/if} class="w-100 form-control"/>
               </div>
 
-              {* User LANGUAGE *}
-
-              <div class="mb-3 form-group">
-                <label class="user_language" class="form-label w-100">{'Language'|translate}</label>
-                <select name="user_language" class="form-select w-100">
-                  {html_options options=$language_options selected=$language_selected}
-                </select>
-              </div>
-
             </div>
 
             <input type="hidden" name="pem_action" value="edit_user_info">
