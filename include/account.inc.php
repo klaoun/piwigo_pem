@@ -158,12 +158,16 @@ SELECT
           continue;
         }
       }
-      $name  = array_column($extensions, 'name');
+      if (!empty($extensions))
+      {
+        $name  = array_column($extensions, 'name');
 
-      array_multisort($name, SORT_ASC, SORT_STRING, $extensions);
-
-      $template->assign('extensions', $extensions);
-      $template->assign('extensions_json', json_encode($extensions));
+        array_multisort($name, SORT_ASC, SORT_STRING, $extensions);
+  
+        $template->assign('extensions', $extensions);
+        $template->assign('extensions_json', json_encode($extensions));
+  
+      }
     }
 
     $current_user_page_infos = get_user_infos_of(explode(' ', $current_user_page_id));
