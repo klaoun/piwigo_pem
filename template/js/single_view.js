@@ -146,9 +146,10 @@ function deleteAuthor(userId, extensionId)
     url: 'ws.php?format=json&method=pem.extensions.deleteAuthor&extension_id=' + extensionId + '&user_id=' + userId + '&pwg_token=' + pwg_token,
     data: { ajaxload: 'true' },
     success: function (data) {
-      if (data.stat == 'ok') {
-        window.location.assign(document.URL);
-      }  
+      if ( window.history.replaceState ) {
+        window.history.replaceState( null, null, window.location.href );
+      }
+      window.location = window.location.href;
     }
   });
 }
@@ -160,12 +161,13 @@ function setOwner(userId, extensionId)
     type: 'GET',
     dataType: 'json',
     async: false,
-    url: 'ws.php?format=php&method=pem.extensions.setOwner&extension_id=' + extensionId + '&user_id=' + userId + '&pwg_token=' + pwg_token ,
+    url: 'ws.php?format=json&method=pem.extensions.setOwner&extension_id=' + extensionId + '&user_id=' + userId + '&pwg_token=' + pwg_token ,
     data: { ajaxload: 'true' },
     success: function (data) {
-      if (data.stat == 'ok') {
-        window.location.assign(document.URL);
-      } 
+      if ( window.history.replaceState ) {
+        window.history.replaceState( null, null, window.location.href );
+      }
+      window.location = window.location.href;
     }
   });
 }
@@ -195,9 +197,10 @@ function deleteLink(linkId, extensionId, link)
     url: 'ws.php?format=json&method=pem.extensions.deleteLink&extension_id=' + extensionId + '&link_id=' + linkId + '&pwg_token=' + pwg_token,
     data: { ajaxload: 'true' },
     success: function (data) {
-      if (data.stat == 'ok') {
-        window.location.assign(document.URL);
-      } 
+      if ( window.history.replaceState ) {
+        window.history.replaceState( null, null, window.location.href );
+      }
+      window.location = window.location.href;
     }
   });
 }
@@ -211,7 +214,10 @@ function deleteSVNGitConfig(extensionId){
     url: 'ws.php?format=json&method=pem.extensions.deleteSvnGitConfig&extension_id=' + extensionId + '&pwg_token=' + pwg_token,
     data: { ajaxload: 'true' },
     success: function (data) {
-      window.location.assign(document.URL);
+      if ( window.history.replaceState ) {
+        window.history.replaceState( null, null, window.location.href );
+      }
+      window.location = window.location.href;
     }
   });
 }
@@ -257,9 +263,10 @@ function deleteRevision(revisionId,extensionId, link )
     url: 'ws.php?format=json&method=pem.revisions.deleteRevision&extension_id=' + extensionId + '&revision_id=' + revisionId+ '&pwg_token=' + pwg_token,
     data: { ajaxload: 'true' },
     success: function (data) {
-      if (data.stat == 'ok') {
-        window.location.assign(document.URL);
-      } 
+      if ( window.history.replaceState ) {
+        window.history.replaceState( null, null, window.location.href );
+      }
+      window.location = window.location.href;
     }
   });
 }
