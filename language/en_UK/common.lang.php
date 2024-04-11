@@ -295,6 +295,7 @@ $lang['Extension successfully updated.'] = 'Extension successfully updated.';
 $lang['See it here'] = 'See it here';
 $lang['Save Changes'] = 'Save Changes';
 $lang['First revision published '] = 'First revision published';
+$lang['Back to %s'] = 'Back to %s';
 
 // For footer
 $lang['Donate'] = 'Donate';
