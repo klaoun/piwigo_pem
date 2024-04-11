@@ -66,6 +66,10 @@ class piwigo_pem_maintain extends PluginMaintain
       error_reporting($_error_reporting);
       throw new SmartyException("unable to write file {$PHPWG_ROOT_PATH}extension_view.php");
     }  
+
+    if (!is_dir(PHPWG_ROOT_PATH.'api')) {
+      mkdir(PHPWG_ROOT_PATH.'api', 0777, true);
+    }
   }
 
   /**
