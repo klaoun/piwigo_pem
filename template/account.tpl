@@ -107,7 +107,6 @@
             </tr>
           <thead>
           <tbody data-extensions='{$extensions_json}' >
-
             <tr id="jango_fett">
               <td class="text-center grey-font category"></td>
               <td class="name"></td>
@@ -117,46 +116,11 @@
               <td class="text-end nb_downloads"></td>
               <td class="rating"></td>
             </tr>
-
-
-  {* {foreach from=$extensions item=extension}
-            <tr>
-              
-              <td class="name"><a class="link orange-link" href="{$PEM_ROOT_URL}index.php?eid={$extension.id}">{$extension.name}</a></td>
-              <td>
-    {if !empty($extension.age)}
-                <span class="ms-0 badge blue-badge pem-tooltip">
-                <i class="icon-clock"></i>
-                  {$extension.age}
-                  <span class="pem-tooltiptext">{$extension.publish_date}</span>
-                </span>
-    {/if}
-              </td>
-              <td>{$extension.last_updated}</td>
-              <td>
-    {if !empty($extension.compatibility_first)}
-                <span class="compatibility compatibility-first">
-                  <i class="icon-code-branch"></i>{$extension.compatibility_first}
-                </span>
-                <i class="icon-arrow-right"></i>
-                <span class="compatibility compatibility-last">
-                  <i class="icon-code-branch"></i>{$extension.compatibility_last}
-                </span>
-    {/if}
-              </td>
-              <td class="text-end">
-                {if $extension.nb_downloads > 0}{$extension.nb_downloads}{/if}
-              </td>
-              <td>
-                {if isset($extension.rating_score)}{$extension.rating_score} ({$extension.total_rates}){/if}
-              </td>
-            </tr>
-  {/foreach} *}
           </tbody>
         </table>
       </div>
 {else}
-  <div class="row">
+  <div class="row pt-3">
       <div class="col-12">
         <p>{'This user has not yet contributed any plugins'|translate}</p>
       </div>
