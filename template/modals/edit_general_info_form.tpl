@@ -22,7 +22,7 @@
         
                 <select class="form-select w-100" id="extension_category_select" name="extension_category[]">
 {foreach from=$CATEGORIES_INFO item=category}
-                  <option value="{$category.cid}" {if $category.cid == $extension_categories.id_category}selected{/if}>{$category.name}</option>
+                  <option value="{$category.cid}" {if $category.cid == $extension_categories.id_category}selected{/if}>{$category.name|translate}</option>
 {/foreach}
                 </select>
               </div>

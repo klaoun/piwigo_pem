@@ -25,7 +25,7 @@
         
                 <select class="form-select w-100" required id="extension_category_select" name="extension_category[]">
 {foreach from=$CATEGORIES_INFO item=category}
-                  <option value="{$category.cid}">{$category.name}</option>
+                  <option value="{$category.cid}">{$category.name|translate}</option>
 {/foreach}
                 </select>
               </div>

@@ -123,6 +123,8 @@ if (isset($_GET['eid']) && 1 == count($_GET))
       array($current_extension_page_id)
     );
 
+    $categories_of_extension[$current_extension_page_id]['plural_name'] = $categories_of_extension[$current_extension_page_id]['name'] .'s';
+
     // Get extension tag
     $tags_of_extension = get_tags_of_extension(
       array($current_extension_page_id)

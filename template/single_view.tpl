@@ -4,7 +4,7 @@
 <div id="single_view" class="container">
   <section class="section-fluid">
     <a href="{$PEM_ROOT_URL}index.php?cid={$extension_categories.id_category}&page=1" class="orange-link">
-      <i class="icon-chevron-left"></i>{'Back to %ss'|translate:$extension_categories.name}
+      <i class="icon-chevron-left"></i>{'Back to %s'|translate:$extension_categories.plural_name}
     </a>
   </section>
 

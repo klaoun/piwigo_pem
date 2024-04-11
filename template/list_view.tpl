@@ -30,7 +30,7 @@
 {/if}
 
   <div class="d-flex content_header">
-    <h4>{"%ss"|translate:$CATEGORY.name}<span class='badge blue-badge'>{$CATEGORY.extension_count}</span>
+    <h4>{$CATEGORY.plural_name|translate}<span class='badge blue-badge'>{$CATEGORY.extension_count}</span>
     </h4>
     <div class="d-flex filter_section">
       <span id="filtered_extensions_number"></span>

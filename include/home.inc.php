@@ -85,6 +85,7 @@ foreach ($categories as $i => $category) {
   {
     continue;
   }
+  $categories[$i]['plural_name'] = $category['name'] .'s';
 
   //Set count of extensions per category
   $categories[$i]['nb_extensions'] = pem_extensions_get_count($category['cid']);

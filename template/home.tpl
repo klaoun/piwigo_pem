@@ -22,7 +22,7 @@
   {if $category.cid != 8}
     <div class="row py-5" id="category-{$category.cid}">
       <div class="mt-2 row">
-        <h2 class="col-10">{'%ss'|translate:$category.name}<span class="blue-badge badge extension-count">{$category.nb_extensions}</span></h2>
+        <h2 class="col-10">{$category.plural_name|translate}<span class="blue-badge badge extension-count">{$category.nb_extensions}</span></h2>
         <div class="col-2 text-end">
           <a href="{$PEM_ROOT_URL}index.php?cid={$category.cid}&page=1"><button class="btn btn-primary">{'See all'|translate} <i class="icon-chevron-right"></i></button></a>
         </div>

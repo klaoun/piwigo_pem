@@ -44,6 +44,7 @@ SELECT
         
     $current_category_page_info = query2array($query);
     $current_category_page_info = $current_category_page_info[0];
+    $current_category_page_info['plural_name'] = $current_category_page_info['name'] .'s';
 
     // Set number of extensions for this category
     $current_category_page_info['extension_count'] = pem_extensions_get_count($current_category_page_id);
