@@ -136,5 +136,86 @@ foreach($result as $user)
     array('user_id' => $temp_user['user_id'])
   );
 
+  // Filter users to remove those that haven't got any recent activity
+  $ids_to_not_delete = array();
+
+  // List of admins
+  $ids_to_not_delete = array_merge($ids_to_not_delete, $conf['admin_users']);
+
+  // webmaster & Guest user ids
+  array_push($ids_to_not_delete, $conf['guest_id'], $conf['webmaster_id']);
+  
+  // List of translators
+  $ids_to_not_delete = array_merge($ids_to_not_delete, array_keys($conf['translator_users']));
+
+  //List of owners
+  $query = '
+SELECT 
+  DISTINCT(idx_user) 
+  FROM '.PEM_EXT_TABLE.'
+;';
+
+  $result = query2array($query,null, 'idx_user');
+  $ids_to_not_delete = array_merge($result,$ids_to_not_delete);
+
+
+  // List of authors
+  $query = '
+SELECT 
+  DISTINCT(idx_user) 
+  FROM '.PEM_EXT_TABLE.'
+;';
+
+  $result = query2array($query,null, 'idx_user');
+
+  $ids_to_not_delete = array_merge($result,$ids_to_not_delete);
+
+  // List of users that left a review
+  $query = '
+SELECT 
+  DISTINCT(idx_user) 
+  FROM '.PEM_REVIEW_TABLE.'
+;';
+  
+  $result = query2array($query,null, 'idx_user');
+  
+  $ids_to_not_delete = array_merge($result,$ids_to_not_delete);
+
+  // List of users that left a rating
+  $query = '
+SELECT 
+  DISTINCT(idx_user) 
+  FROM '.PEM_RATE_TABLE.'
+;';
+  
+  $result = query2array($query,null, 'idx_user');
+
+  $ids_to_not_delete = array_merge($result,$ids_to_not_delete);
+ 
+  // Filter list of ids to get unique list
+  sort($ids_to_not_delete);
+  $ids_to_not_delete = array_unique($ids_to_not_delete);
+
+  $query = '
+SELECT id FROM '.USERS_TABLE.'
+WHERE id NOT in ('.implode(',',$ids_to_not_delete).')
+  ;';
+
+  // Delete all user_infos where id not retrieved
+  $query = '
+DELETE FROM '.USER_INFOS_TABLE.'
+  WHERE user_id NOT IN ('.$ids_to_not_delete .')
+;';
+
+  pwg_query($query);
+
+  // Delete all user where id not retrieved
+  $query = '
+DELETE FROM '.USER_TABLE.'
+  WHERE id NOT IN ('.$ids_to_not_delete .')
+;';
+
+  pwg_query($query);
+
 }
 
