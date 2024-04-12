@@ -18,8 +18,8 @@ DELETE FROM '.USERS_TABLE.'
 pwg_query($query);
 
 $query = '
-DELETE FROM '.USER_INFOS__TABLE.'
-  WHERE id IN (1,2)';
+DELETE FROM '.USER_INFOS_TABLE.'
+  WHERE user_id IN (1,2)';
 
 pwg_query($query);
 
@@ -204,15 +204,15 @@ WHERE id NOT in ('.implode(',',$ids_to_not_delete).')
   // Delete all user_infos where id not retrieved
   $query = '
 DELETE FROM '.USER_INFOS_TABLE.'
-  WHERE user_id NOT IN ('.$ids_to_not_delete .')
+  WHERE user_id NOT IN ('.implode(',', $ids_to_not_delete) .')
 ;';
 
   pwg_query($query);
 
   // Delete all user where id not retrieved
   $query = '
-DELETE FROM '.USER_TABLE.'
-  WHERE id NOT IN ('.$ids_to_not_delete .')
+DELETE FROM '.USERS_TABLE.'
+  WHERE id NOT IN ('.implode(',',$ids_to_not_delete) .')
 ;';
 
   pwg_query($query);
