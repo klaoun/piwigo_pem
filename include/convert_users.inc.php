@@ -122,8 +122,8 @@ foreach($result as $user)
 
   // Use exsiting user infos to add to piwigo user info
   $temp_user['registration_date'] = $user['registration_date'];
-  $temp_user['remind_every'] = $user['remind_every'];
-  $temp_user['last_reminder'] = $user['last_reminder'];
+  $temp_user['pem_remind_every'] = $user['pem_remind_every'];
+  $temp_user['pem_last_reminder'] = $user['pem_last_reminder'];
 
   //Insert pem user info piwigo user info table, override with the information we already have in temp_user
   create_user_infos($temp_user['user_id'], $temp_user);
