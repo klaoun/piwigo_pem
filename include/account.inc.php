@@ -42,7 +42,7 @@ if (isset($_GET['uid']) && 1 == count($_GET))
         $page['user_can_modify'] = true;
       }
       
-      if (!isset($user['remind_every']))
+      if (!isset($user['pem_remind_every']))
       {
         $user = array_merge(
           $user,
@@ -57,7 +57,7 @@ if (isset($_GET['uid']) && 1 == count($_GET))
 
     $template->set_filename('pem_page', realpath(PEM_PATH . 'template/account.tpl'));
 
-    $template->assign('remind_every', $user['remind_every']);
+    $template->assign('remind_every', $user['pem_remind_every']);
 
     // Get owned extensions & other extensions
 

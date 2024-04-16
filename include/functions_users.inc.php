@@ -65,8 +65,8 @@ SELECT
     ui.user_id,
     ui.language,
     ui.registration_date,
-    ui.remind_every,
-    ui.last_reminder,
+    ui.pem_remind_every,
+    ui.pem_last_reminder,
     u.username as username
   FROM '.USER_INFOS_TABLE.' as ui
   JOIN '.USERS_TABLE.' AS u ON u.id = ui.user_id
