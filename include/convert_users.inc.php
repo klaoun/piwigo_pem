@@ -4,9 +4,20 @@
  * We get all their information and insert it into the users & users_info table
  * We update the guest and webmaster id to avoid conflicts and remove those created with piwigo installation
  */
-define('PEM_ID', basename(dirname(__FILE__)));
-define('PEM_PATH' , PHPWG_PLUGINS_PATH . PEM_ID . '/');
-include_once(PHPWG_ROOT_PATH.'plugins/piwigo_pem/include/constants.inc.php');
+if (!defined("PHPWG_ROOT_PATH"))
+{
+  define('PEM_ID', basename(dirname(__FILE__)));
+}
+
+if (!defined("PHPWG_ROOT_PATH"))
+{
+  define('PEM_PATH' , PHPWG_PLUGINS_PATH . PEM_ID . '/');
+}
+
+if (!in_array(PEM_PATH.'include/constants.inc.php', get_included_files()))
+{
+  include_once(PEM_PATH.'include/constants.inc.php');
+}
 
 global $conf;
 
