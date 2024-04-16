@@ -206,6 +206,8 @@ SELECT t.*
   GROUP BY t.extension_id';
 }
 
+$pem_url = get_absolute_root_url();
+
 $extension_ids = array();
 $revision_ids = array();
 $revisions = array();
@@ -213,21 +215,18 @@ $result = pwg_query($query);
 while ($row = pwg_db_fetch_assoc($result)) {
   $row['revision_date'] = date('Y-m-d H:i:s', $row['revision_date']);
   
-  $row['file_url'] = sprintf(
-    '%s/%s',
-    $conf['website_url'],
+  $row['file_url'] = $pem_url;
+  $row['file_url'] .= str_replace(
+    PHPWG_ROOT_PATH,
+    '',
     get_revision_src(
       $row['extension_id'],
       $row['revision_id'],
       $row['filename']
-      )
-    );
+    )
+  );
 
-  $row['download_url'] = sprintf(
-    '%s/'.PHPWG_PLUGINS_PATH.'piwigo_pem/download.php?rid=%u',
-    $conf['website_url'],
-    $row['revision_id']
-    );
+  $row['download_url'] = $pem_url. 'download.php?rid='.$row['revision_id'];
 
   if (empty($row['extension_description']))
   {
@@ -285,7 +284,6 @@ foreach ($revisions as $revision_index => $revision)
 } 
 
 // screenshot, thumbnail, versions and tags
-$pem_url = get_absolute_root_url();
 
 $versions_of = get_versions_of_revision($revision_ids);
 $tags_of_extension = get_raw_tags_of_extension($extension_ids);
