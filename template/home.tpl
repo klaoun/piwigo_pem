@@ -3,7 +3,8 @@
 {*Start of home tpl*}
 <div class="container" id="home">
 
-  <section>
+  <section id="homeHeader">
+    <img class="dotted_line" src="{$PEM_ROOT_URL_PLUGINS}images/dotted_line.svg">
     <div class="row py-5">
       <div class="col-6 position-relative">
         <div class="vertical-align ">
@@ -12,10 +13,10 @@
         </div>
       </div>
       <div class="col-6 ">
-        <img src="{$PEM_ROOT_URL_PLUGINS}images/personnalisation.svg">
+        <img class="w-100" src="{$PEM_ROOT_URL_PLUGINS}images/image.png">
       </div>
     </div>
-  <section>
+  </section>
 
   <div id="homeSections">
 {foreach from=$CATEGORIES item=category}
