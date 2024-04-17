@@ -112,7 +112,7 @@ if (count($all_revision_ids) > 0) {
       $revisions,
       array(
         'name' => $extension_infos_of[$eid]['name'],
-        'url' => $conf['website_url'].'/extension_view.php?eid='.$eid,
+        'url' => get_absolute_root_url().'/extension_view.php?eid='.$eid,
         'revision' => $revision_infos_of[$revision_id]['version'],
         )
       );

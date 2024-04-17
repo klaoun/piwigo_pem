@@ -1339,7 +1339,7 @@ function insert_user_review(&$comm)
   if (!empty($conf['askimet_key']))
   {
     include_once(PEM_PATH . 'include/akismet.class.php');
-    $akismet = new Akismet($conf['website_url'], $conf['askimet_key'], $comm);
+    $akismet = new Akismet(get_absolute_root_url(), $conf['askimet_key'], $comm);
     
     if ( !$akismet->errorsExist() and $akismet->isSpam() )
     {
