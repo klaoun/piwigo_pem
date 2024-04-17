@@ -108,7 +108,7 @@ if (isset($_GET['eid']) && 1 == count($_GET))
 
     //Check if user is extension owner
     $user['extension_owner'] = false;
-    if (isset($user['id']) and (is_Admin($user['id']) or $user['id'] == $data['idx_user']))
+    if (isset($user['id']) and (is_Admin($user['id']) or in_array($user['id'], $conf['admin_users']) or $user['id'] == $data['idx_user']))
     {
       $user['extension_owner'] = true;
     }
@@ -217,7 +217,7 @@ if (isset($_GET['eid']) && 1 == count($_GET))
       array_push($author_ids, $author['uid']);
     }
 
-    if (isset($user['id']) and (is_Admin() or $user['extension_owner'] or in_array($user['id'], $author_ids)))
+    if (isset($user['id']) and (is_Admin() or in_array($user['id'], $conf['admin_users']) or $user['extension_owner'] or in_array($user['id'], $author_ids)))
     {
       $page['user_can_modify'] = true;
     }

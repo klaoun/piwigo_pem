@@ -1377,7 +1377,7 @@ function insert_user_review(&$comm)
   $anonymous_id = implode('.', $ip_components);
   
   // comment validation and anti-spam
-  if ( !$conf['comments_validation'] or is_Admin(@$user['id']) )
+  if ( !$conf['comments_validation'] or is_Admin($user['id']) or in_array($user['id'], $conf['admin_users']))
   {
     $comm['action'] = 'validate';
   }
