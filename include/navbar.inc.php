@@ -33,7 +33,7 @@ $template->assign(
   array(
     'CATEGORIES_INFO' => $categories,
     'ACCOUNT_URL' => $account_url,
-    'USER_STATUS' => in_array($user['id'],$conf['admin_users'] ) ? 'admin' : $user['status'],
+    'USER_STATUS' => $user['status'],
     'USER_USERNAME' => $user['username'],
   )
 );
