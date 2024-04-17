@@ -4,11 +4,6 @@
  * We get all their information and insert it into the users & users_info table
  * We update the guest and webmaster id to avoid conflicts and remove those created with piwigo installation
  */
-if (!defined("PEM_ID"))
-{
-  define('PEM_ID', basename(dirname(__FILE__)));
-}
-
 if (!defined("PEM_DIR"))
 {
   define('PEM_DIR', PHPWG_ROOT_PATH . 'plugins/piwigo_pem/');
@@ -74,8 +69,10 @@ foreach($result as $user)
   array_push($user_ids, $temp_user['id']);
 }
 
+$options['ignore'] = true;
+
 //Insert all pem users into piwigo users table
-mass_inserts(USERS_TABLE, array_keys($inserts[2]),$inserts);
+mass_inserts(USERS_TABLE, array_keys($inserts[2]),$inserts, $options);
 
 /**
  * Select existing users info from PEM
@@ -206,11 +203,6 @@ SELECT
   // Filter list of ids to get unique list
   sort($ids_to_not_delete);
   $ids_to_not_delete = array_unique($ids_to_not_delete);
-
-  $query = '
-SELECT id FROM '.USERS_TABLE.'
-WHERE id NOT in ('.implode(',',$ids_to_not_delete).')
-  ;';
 
   // Delete all user_infos where id not retrieved
   $query = '
