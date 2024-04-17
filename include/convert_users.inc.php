@@ -9,14 +9,14 @@ if (!defined("PEM_ID"))
   define('PEM_ID', basename(dirname(__FILE__)));
 }
 
-if (!defined("PEM_PATH"))
+if (!defined("PEM_DIR"))
 {
-  define('PEM_PATH' , PHPWG_PLUGINS_PATH . PEM_ID . '/');
+  define('PEM_DIR', PHPWG_ROOT_PATH . 'plugins/piwigo_pem/');
 }
 
-if (!in_array(PEM_PATH.'include/constants.inc.php', get_included_files()))
+if (!in_array(PEM_DIR.'include/constants.inc.php', get_included_files()))
 {
-  include_once(PEM_PATH.'include/constants.inc.php');
+  include_once(PEM_DIR.'include/constants.inc.php');
 }
 
 global $conf;
