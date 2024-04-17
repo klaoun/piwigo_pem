@@ -26,9 +26,20 @@ if (basename(dirname(__FILE__)) != 'piwigo_pem')
 // | Define plugin constants                                               |
 // +-----------------------------------------------------------------------+
 
-define('PEM_ID', basename(dirname(__FILE__)));
-define('PEM_PATH' , PHPWG_PLUGINS_PATH . PEM_ID . '/');
-define('PEM_DIR', PHPWG_ROOT_PATH . 'plugins/piwigo_pem/');
+if (!defined("PEM_ID"))
+{
+  define('PEM_ID', basename(dirname(__FILE__)));
+}
+
+if (!defined("PEM_PATH"))
+{
+  define('PEM_PATH' , PHPWG_PLUGINS_PATH . PEM_ID . '/');
+}
+
+if (!defined("PEM_DIR"))
+{
+  define('PEM_DIR', PHPWG_ROOT_PATH . 'plugins/piwigo_pem/');
+}
 
 include_once(PEM_PATH . 'include/constants.inc.php');
 // +-----------------------------------------------------------------------+
@@ -96,7 +107,6 @@ function pem_user_init()
           $user['language'] = $porg_subdomains[$subdomain];
       }
   }
-
 }
 
 //Init pem functions
