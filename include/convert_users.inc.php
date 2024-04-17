@@ -174,7 +174,7 @@ SELECT
   $query = '
 SELECT 
   DISTINCT(idx_user) 
-  FROM '.PEM_EXT_TABLE.'
+  FROM '.PEM_AUTHORS_TABLE.'
 ;';
 
   $result = query2array($query,null, 'idx_user');
