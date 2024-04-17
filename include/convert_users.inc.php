@@ -4,7 +4,7 @@
  * We get all their information and insert it into the users & users_info table
  * We update the guest and webmaster id to avoid conflicts and remove those created with piwigo installation
  */
-if (!defined("PHPWG_ROOT_PATH"))
+if (!defined("PEM_ID"))
 {
   define('PEM_ID', basename(dirname(__FILE__)));
 }
