@@ -9,7 +9,7 @@ if (!defined("PHPWG_ROOT_PATH"))
   define('PEM_ID', basename(dirname(__FILE__)));
 }
 
-if (!defined("PHPWG_ROOT_PATH"))
+if (!defined("PEM_PATH"))
 {
   define('PEM_PATH' , PHPWG_PLUGINS_PATH . PEM_ID . '/');
 }
