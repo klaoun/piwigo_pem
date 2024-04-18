@@ -140,6 +140,7 @@ foreach($result as $user)
     USER_INFOS_TABLE,
     array(
       'registration_date' => $temp_user['registration_date'],
+      'status' => $temp_user['status'],
       ),
     array('user_id' => $temp_user['user_id'])
   );
