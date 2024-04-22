@@ -5,7 +5,7 @@
   
   <div class="container">
     <div class="navbar-brand brand">
-      <a class="d-inline-block" href="https://www.piwigo.org" target="_blank">
+      <a class="d-inline-block" href="https://piwigo.org" target="_blank">
         <img src="{$PEM_ROOT_URL_PLUGINS}images/porg.svg" alt="piwigo logo in orange and grey">
       </a>
     </div>
