@@ -128,7 +128,8 @@ WHERE id_extension = '.$pem_spotlight_extensions[$category['cid']].'
   /**
    * Get highested rated extension details
    */
-  $query = '
+  if (isset($pem_highest_rated_extensions[$category['cid'] ])) {
+    $query = '
 SELECT
     id_extension AS eid,
     name,
@@ -141,12 +142,12 @@ SELECT
       WHERE id_extension = '.$pem_highest_rated_extensions[$category['cid']].'
 ;';
 
-  $result = query2array($query);
-  $pem_highest_rated_extensions[$category['cid']] = $result[0];
+    $result = query2array($query);
+    $pem_highest_rated_extensions[$category['cid']] = $result[0];
 
-  //Set highest rated extension
-  $categories[$i]['highest_rated_extension'] = null;
-  if (isset($pem_highest_rated_extensions[$category['cid'] ])) {
+    //Set highest rated extension
+    $categories[$i]['highest_rated_extension'] = null;
+
     $categories[$i]['highest_rated_extension'] = $pem_highest_rated_extensions[ $category['cid'] ];
     $categories[$i]['highest_rated_extension']['description'] = stripslashes($categories[$i]['highest_rated_extension']['description']);
 
@@ -165,7 +166,8 @@ SELECT
   /**
    * Get most downloaded extension details
    */
-  $query = '
+  if (isset($pem_most_downloaded_extensions[$category['cid']])) {
+    $query = '
 SELECT
     e.id_extension as eid,
     name,
@@ -179,12 +181,11 @@ FROM '.PEM_REV_TABLE.' AS r
     WHERE e.id_extension = '.$pem_most_downloaded_extensions[$category['cid']].'
       GROUP BY r.idx_extension
 ;';
-  $result = query2array($query);
-  $pem_most_downloaded_extensions[$category['cid']] = $result[0];
+    $result = query2array($query);
+    $pem_most_downloaded_extensions[$category['cid']] = $result[0];
 
   //Set most downloaded
-  $categories[$i]['most_downloaded_extension'] = null;
-  if (isset($pem_most_downloaded_extensions[$category['cid']])) {
+    $categories[$i]['most_downloaded_extension'] = null;
     $categories[$i]['most_downloaded_extension'] = $pem_most_downloaded_extensions[$category['cid']];
     $categories[$i]['most_downloaded_extension']['description'] = stripslashes($categories[$i]['most_downloaded_extension']['description']);
 
