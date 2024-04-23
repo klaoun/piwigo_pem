@@ -31,6 +31,7 @@
 
       <div class="row card-group d-flex align-items-stretch">
 
+      {* Spotlighted *}
         <div class="col-md-6 col-sm-12 align-self-stretch spotlight extension_{$category.spotlight_extension.eid}">
           <h4 class="mt-4">{'Spotlight'|translate}</h4>
           <div class="col-12 pb-5 h-100">
@@ -61,6 +62,7 @@
           </div>
         </div>
         
+        {* Highest rated *}
         <div class="col-md-6 col-sm-12 align-self-stretch highest-rated">
             <h4 class="mt-4">{'Highest rated'|translate}</h4>
             <div class="col-12 pb-5 h-100">
@@ -93,7 +95,9 @@
               </div>
             </div>
         </div>
-
+        
+{if $category.cid == 12}
+        {* Most downloaded *}
         <div class="col-md-6 col-sm-12 align-self-stretch most-downloaded">
             <h4 class="mt-4">{'Most downloaded'|translate}</h4>
             <div class="col-12 pb-5 h-100">
@@ -101,11 +105,11 @@
                 <div class="row h-100">
                   <div class="col-4 image-column position-relative">
                     <div class="image-background w-100 h-100 position-relative">
-{if isset($category.most_downloaded_extension.screenshot_src)}
+  {if isset($category.most_downloaded_extension.screenshot_src)}
                       <img class="img-fluid extension_image w-100" src="{$category.most_downloaded_extension.screenshot_src}">
-{else}
+  {else}
                       <i class="icon-image vertical-align vertical-horizontal-align"></i>               
-{/if}
+  {/if}
                     </div>
                   </div>
                   <div class="col-8 d-flex info-column align-content-between flex-wrap">
@@ -125,6 +129,7 @@
             </div>
         </div>
 
+        {* Most recent *}
         <div class="col-md-6 col-sm-12 align-self-stretch most-recent">
             <h4 class="mt-4">{'Most recent'|translate}</h4>
             <div class="col-12 pb-5 h-100">
@@ -132,11 +137,11 @@
                 <div class="row h-100">
                   <div class="col-4 image-column position-relative">
                     <div class="image-background w-100 h-100 position-relative">
-{if isset($category.most_recent_extension.screenshot_src)}
+  {if isset($category.most_recent_extension.screenshot_src)}
                       <img class="img-fluid extension_image w-100" src="{$category.most_recent_extension.screenshot_src}">
-{else}
+  {else}
                       <i class="icon-image position-absolute vertical-horizontal-align"></i>
-{/if}
+  {/if}
                     </div>
                   </div>
                   <div class="col-8 d-flex info-column align-content-between flex-wrap">
@@ -156,6 +161,7 @@
               </div>
             </div>
         </div>
+{/if}
 
       </div>
     </div>
