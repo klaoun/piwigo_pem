@@ -32,11 +32,6 @@ SELECT '.$conf['user_fields']['id'].' AS id
       'id'               => pwg_db_real_escape_string($_POST['user_id']),
     );
 
-    $language = array(
-      'user_id'          => pwg_db_real_escape_string($_POST['user_id']),
-      'language'         => pwg_db_real_escape_string($_POST['user_language']),
-    );
-
     if(is_numeric($data['id']))
     {   
       single_update(
@@ -44,15 +39,6 @@ SELECT '.$conf['user_fields']['id'].' AS id
         $data,
         array('id' => $data['id'])
       );
-
-      single_update(
-        USER_INFOS_TABLE,
-        $language,
-        array('user_id' => $language['user_id'])
-      );
-
-
-      $template->assign('language_selected', $language['language']);
       
       $template->assign(
         array(
