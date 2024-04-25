@@ -11,11 +11,10 @@
         <i class="icon-lock"></i>{'Forgotten password ?'|translate}
       </h1>
 
-
+{include file='infos_errors.tpl'}
 
 {if $action != 'none'}
       <form class="properties pt-5" id="lostPassword" name="lostPassword" action="{$form_action}?action={$action}{if isset($key)}&amp;key={$key}{/if}" method="post">
-  {include file='infos_errors.tpl'}
         <input type="hidden" name="pwg_token" value="{$PWG_TOKEN}">
 
   {if $action == 'lost'}
