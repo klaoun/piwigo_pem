@@ -17,8 +17,9 @@
               {* Revision version*}
               <div class="mb-3 form-group">
                 <label for="revision_version" class="form-label w-100 ">{'Version'|translate}</label>
-                <input class="form-control" type="text" id="revision_version" name="revision_version" size="10" maxlength="10" required disabled/>
-              </div>
+                  <input class="form-control revision_version" type="text" value="" required disabled>
+                  <input type="hidden" class="revision_version" name="revision_version" value="">
+                </div>
 
 
               {* Compatibility *}

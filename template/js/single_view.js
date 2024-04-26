@@ -407,18 +407,25 @@ editRevisionModal.addEventListener('show.bs.modal', event => {
   const revVersionsCompatible = buttonEditRev.getAttribute('data-bs-rev_versions_compatible')
   const revAuthor = buttonEditRev.getAttribute('data-bs-rev_author')
   const arrayRevVersionsCompatible = revVersionsCompatible.split(',')
+
   jQuery(arrayRevVersionsCompatible).each(function(i) {
     arrayRevVersionsCompatible[i] = parseInt(arrayRevVersionsCompatible[i])
   })
+
   const current_rev_edit = buttonEditRev.getAttribute('data-bs-rev_id')
 
   // Get the modal's input
   const modalRevId= editRevisionModal.querySelector('#rid')
-  const modalRevVersion= editRevisionModal.querySelector('#revision_version')
+  const modalRevVersion= editRevisionModal.querySelectorAll('.revision_version')
 
   // Fills inputs 
   modalRevId.value = revId
-  modalRevVersion.value = revVersionName
+  console.log(modalRevVersion)
+  jQuery(modalRevVersion).each(function(i, revName){
+    revName.setAttribute('value', revVersionName);
+  });
+
+
   jQuery('#author_'+revAuthor).prop('checked', true);
 
   // Add description to textarea
