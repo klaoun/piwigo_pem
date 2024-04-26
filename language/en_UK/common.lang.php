@@ -296,6 +296,11 @@ $lang['See it here'] = 'See it here';
 $lang['Save Changes'] = 'Save Changes';
 $lang['First revision published '] = 'First revision published';
 $lang['Back to %s'] = 'Back to %s';
+$lang['This plugin has been updated recently'] = 'This plugin has been updated recently';
+$lang['This plugin was updated less than 6 months ago'] = 'This plugin was updated less than 6 months ago';
+$lang['This plugin has no recent updates'] = 'This plugin has no recent updates';
+$lang['This plugin has not been updated in 3 years !'] = 'This plugin has not been updated in 3 years !';
+$lang['Revision successfully modified.'] = 'Revision successfully modified.';
 
 // For footer
 $lang['Donate'] = 'Donate';

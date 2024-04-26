@@ -295,5 +295,11 @@ $lang['See it here'] = 'Voir ici';
 $lang['Save Changes'] = 'Sauvegarder';
 $lang['First revision published'] = 'Première révision publiée';
 $lang['Back to %s'] = 'Retour aux %s';
+$lang['Discover'] = 'Découvrir';
+$lang['This plugin has been updated recently'] = 'Ce plugin a été mis à jour récemment';
+$lang['This plugin was updated less than 6 months ago'] = 'Ce plugin a été mis à jour il y a moins de 6 mois';
+$lang['This plugin has no recent updates'] = 'Ce plugin n\'a pas de mises à jour récentes';
+$lang['This plugin has not been updated in 3 years !'] = 'Ce plugin n\'a pas été mis à jour depuis 3 ans !';
+$lang['Revision successfully modified.'] = 'Révision modifiée avec succès.';
 
 ?>

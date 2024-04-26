@@ -118,19 +118,19 @@
             </a>
             <span class="certification certification-blue d-none pem-tooltip ms-2">
               <img src="{$PEM_PATH}/images/CertificationBlue.svg">
-              <span class="pem-tooltiptext">{'This plugin has been updated recently'|@translate}</span>
+              <span class="pem-tooltiptext">{'This plugin has been updated recently'|translate}</span>
             </span>
             <span class="certification certification-orange d-none pem-tooltip ms-2" >
               <img src="{$PEM_PATH}/images/CertificationOrange.svg">
-              <span class="pem-tooltiptext">{'This plugin was updated less than 6 months ago'|@translate}</span>
+              <span class="pem-tooltiptext">{'This plugin was updated less than 6 months ago'|translate}</span>
             </span>
             <span class="certification certification-grey d-none pem-tooltip ms-2" >
               <img src="{$PEM_PATH}/images/Certification.svg">
-              <span class="pem-tooltiptext">{'This plugin has no recent updates'|@translate}</span>
+              <span class="pem-tooltiptext">{'This plugin has no recent updates'|translate}</span>
             </span>
             <span class="certification certification-ghost d-none pem-tooltip ms-2" >
               <img src="{$PEM_PATH}/images/CertificationGhost.svg">
-              <span class="pem-tooltiptext">{'This plugin has not been updated in 3 years !'|@translate}</span>
+              <span class="pem-tooltiptext">{'This plugin has not been updated in 3 years !'|translate}</span>
             </span>
           </div>
           <div class="my-2">
@@ -180,6 +180,9 @@ var PEM_ROOT_URL_PLUGINS = '{$PEM_ROOT_URL_PLUGINS}';
 
 // Variables for translation
 const FILTERED_EXTENSIONS = `{"filtered extensions"|translate|escape:javascript}`;
+const COMPATIBLE_WITH_PIWIGO = `{"Compatible with the latest version of Piwigo"|translate|escape:javascript}`;
+const NOT_COMPATIBLE_WITH_PIWIGO = `{"Not compatible with the latest version of Piwigo"|translate|escape:javascript}`;
+
 
 </script>
 

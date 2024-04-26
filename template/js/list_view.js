@@ -333,11 +333,11 @@ function getExtensionList(cid) {
             //Display if extension compatible with latest version of Piwigo
             if (this.compatible_latest_pwg_version == true)
             {
-              jQuery('#extension_'+extension_id+' .piwigo-compatibility').append('<i class="icon-check green-font"></i><p class="card-text">Compatible with the latest version of Piwigo</p>')
+              jQuery('#extension_'+extension_id+' .piwigo-compatibility').append('<i class="icon-check green-font"></i><p class="card-text">'+COMPATIBLE_WITH_PIWIGO+'</p>')
             }
             else
             {
-              jQuery('#extension_'+extension_id+' .piwigo-compatibility').append('<i class="icon-cross red-font"></i><p class="card-text">Not compatible with the latest version of Piwigo</p>')
+              jQuery('#extension_'+extension_id+' .piwigo-compatibility').append('<i class="icon-cross red-font"></i><p class="card-text">'+NOT_COMPATIBLE_WITH_PIWIGO+'</p>')
             }
           });
 
