@@ -42,7 +42,7 @@ SELECT '.$conf['user_fields']['id'].' AS id
       
       $template->assign(
         array(
-          'MESSAGE' => 'This user has been succesfully updated.',
+          'MESSAGE' => l10n('This user has been succesfully updated.'),
           'MESSAGE_TYPE' => 'success'
         )
       );

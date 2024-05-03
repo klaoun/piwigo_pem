@@ -301,6 +301,7 @@ $lang['This plugin was updated less than 6 months ago'] = 'This plugin was updat
 $lang['This plugin has no recent updates'] = 'This plugin has no recent updates';
 $lang['This plugin has not been updated in 3 years !'] = 'This plugin has not been updated in 3 years !';
 $lang['Revision successfully modified.'] = 'Revision successfully modified.';
+$lang['This user has been successfully.'] = 'This user has been successfully.';
 
 // For footer
 $lang['Donate'] = 'Donate';

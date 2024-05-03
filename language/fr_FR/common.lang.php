@@ -301,5 +301,6 @@ $lang['This plugin was updated less than 6 months ago'] = 'Ce plugin a été mis
 $lang['This plugin has no recent updates'] = 'Ce plugin n\'a pas de mises à jour récentes';
 $lang['This plugin has not been updated in 3 years !'] = 'Ce plugin n\'a pas été mis à jour depuis 3 ans !';
 $lang['Revision successfully modified.'] = 'Révision modifiée avec succès.';
+$lang['This user has been successfully.'] = 'Cet utilisateur a été mis à jour avec succès.';
 
 ?>
