@@ -177,11 +177,8 @@ function pem_ws_add_methods($arr)
         'type'=>WS_TYPE_INT|WS_TYPE_POSITIVE,
         'flags'=>WS_PARAM_OPTIONAL,
       ),
-      'svn_url' => array(
-        'flags'=>WS_PARAM_OPTIONAL,
-      ),
     ),
-    'Get latest language info for a revision'
+    'Used by the "Detect Languages" button when creating/editing a revision. Provide either revision_id OR extension_id'
   );
 
   $service->addMethod(
@@ -987,11 +984,10 @@ DELETE
 
 function ws_pem_revisions_get_language_info($params, &$service)
 {
-  //
-  // when we edit a revision, we have to find the SVN revision inside the
-  // archive
-  //
-  if (isset($params['revision_id'])) {
+  global $conf, $logger;
+
+  if (isset($params['revision_id']) and !isset($params['extension_id']))
+  {
     $query = '
   SELECT
       *
@@ -999,73 +995,94 @@ function ws_pem_revisions_get_language_info($params, &$service)
     WHERE id_revision = '.$params['revision_id'].'
   ;';
     $result = pwg_query($query);
-    while ($row = pwg_db_fetch_assoc($result)) {
+    while ($row = pwg_db_fetch_assoc($result))
+    {
       $revision = $row;
     }
 
-    $extract_dir = $conf['local_data_dir'].'/detect_lang/revision-'.$params['revision_id'];
-    exec('mkdir -p '.$extract_dir);
+    $archive_path = get_revision_src($revision['idx_extension'], $params['revision_id'], $revision['url']);
 
-    $archive_path = $root_path.get_revision_src($revision['idx_extension'], $params['revision_id'], $revision['url']);
-    exec('unzip '.$archive_path.' -d '.$extract_dir);
-    exec('find '.$extract_dir.' -name pem_metadata.txt | xargs cat | grep ^Revision', $exec_output);
-    exec('rm -rf '.$extract_dir);
-    
-    if (count($exec_output) > 0) {
-      if (preg_match('/^Revision:\s*(\d+)/', $exec_output[0], $matches)) {
-        $page['svn'] = $matches[1];
+    $cmd = 'unzip -t '.$archive_path.' | grep -E "/language/[a-z]{2,3}_[A-Z]{2,3}/ "';
+    $logger->info($cmd);
+    exec($cmd, $exec_output);
+
+    $languages_in_archive = array();
+
+    if (count($exec_output) > 0)
+    {
+      foreach ($exec_output as $exec_output_line)
+      {
+        if (preg_match('#/language/([a-z]{2,3}_[A-Z]{2,3})/\s*OK#', $exec_output_line, $matches))
+        {
+          $languages_in_archive[ $matches[1] ] = 1;
+        }
       }
     }
 
-    if (!isset($page['svn'])) {
-      $output = array(
-        'stat' => 'ko',
-        'error_message' => 'revision not generated from SVN',
-        );
-
-        echo json_encode($output);
-        exit;
-    }
+    $languages_cur = array_keys($languages_in_archive);
 
     $params['extension_id'] = $revision['idx_extension'];
   }
+  elseif (isset($params['extension_id']) and !isset($params['revision_id']))
+  {
+    //
+    // what is the list of languages in SVN/Git
+    //
+    $svn_url = null;
+    $git_url = null;
+    $language_candidates = array();
 
-  //
-  // make sure we have the required page parameters (whatever the input was
-  // eid+svn or just rid)
-  //
-  $required_params = array('extension_id', 'svn_url');
-  foreach ($required_params as $required_param) {
-    if (!isset($params[$required_param])) {
-      die('"'.$required_param.'" is a required parameter');
+    $query = '
+SELECT
+    svn_url,
+    git_url
+  FROM '.PEM_EXT_TABLE.'
+  WHERE id_extension = '.$params['extension_id'].'
+;';
+    $result = pwg_query($query);
+    while ($row = pwg_db_fetch_assoc($result))
+    {
+      if (!empty($row['svn_url']))
+      {
+        $svn_url = $row['svn_url'];
+      }
+
+      if (!empty($row['git_url']) and preg_match('/github/', $row['git_url']))
+      {
+        $git_url = $row['git_url'];
+      }
+    }
+
+    if (!empty($svn_url))
+    {
+      $svn_command = 'svn list '.$svn_url.'/language';
+      exec($svn_command, $language_candidates);
+    }
+
+    if (!empty($git_url))
+    {
+      // from https://github.com/plegall/Piwigo-check_files_integrity
+      // to   https://api.github.com/repos/plegall/Piwigo-check_files_integrity/contents/language
+      $github_api_url = str_replace('//github.com', '//api.github.com/repos', $git_url).'/contents/language';
+
+      include_once(PHPWG_ROOT_PATH.'admin/include/functions.php');
+      fetchRemote($github_api_url, $result);
+      $language_candidates = array_column(json_decode($result, true), 'name');
+    }
+
+    $languages_cur = array();
+
+    foreach ($language_candidates as $lang)
+    {
+      if (preg_match('#^([a-z]{2,3}_[A-Z]{2,3})#', $lang, $matches))
+      {
+        $languages_cur[] = $matches[1];
+      }
     }
   }
-
-  //
-  // find the reference revision_id based on the extension id: the most recent
-  // revision
-  //
-  $ref_revision_id = null;
-
-  $query = '
-  SELECT
-      id_revision
-    FROM '.PEM_REV_TABLE.'
-    WHERE idx_extension = '.$params['extension_id'];
-
-  if (isset($revision)) {
-    $query.= '
-      AND date < '.$revision['date'].'
-  ';
-  }
-
-  $query .= '
-    ORDER BY date DESC
-    LIMIT 1
-  ;';
-  $result = pwg_query($query);
-  while ($row = pwg_db_fetch_assoc($result)) {
-    $ref_revision_id = $row['id_revision'];
+  else
+  {
+    return new PwgError(WS_ERR_INVALID_PARAM, 'Provide either revision_id or extension_id');
   }
 
   //
@@ -1081,12 +1098,56 @@ function ws_pem_revisions_get_language_info($params, &$service)
     FROM '.PEM_LANG_TABLE.'
   ;';
   $result = pwg_query($query);
-  while ($row = pwg_db_fetch_assoc($result)) {
-    if (isset($conf['language_english_names'][$row['code']])) {
+  while ($row = pwg_db_fetch_assoc($result))
+  {
+    if (isset($conf['language_english_names'][$row['code']]))
+    {
       $row['english_name'] = $conf['language_english_names'][$row['code']];
     }
-    
+
     $info_of_language[ $row['code'] ] = $row;
+  }
+
+  //
+  // language_ids is the list of languages in the "current" revision (or upcoming)
+  //
+  $language_ids = array();
+
+  foreach ($languages_cur as $lang_code)
+  {
+    if (isset($info_of_language[$lang_code]))
+    {
+      $language_ids[] = $info_of_language[$lang_code]['id_language'];
+    }
+  }
+
+  //
+  // find the reference revision_id based on the extension id: the most recent
+  // revision
+  //
+  $ref_revision_id = null;
+
+  $query = '
+  SELECT
+      id_revision
+    FROM '.PEM_REV_TABLE.'
+    WHERE idx_extension = '.$params['extension_id'];
+
+  if (isset($revision))
+  {
+    $query.= '
+      AND date < '.$revision['date'].'
+  ';
+  }
+
+  $query .= '
+    ORDER BY date DESC
+    LIMIT 1
+  ;';
+  $result = pwg_query($query);
+  while ($row = pwg_db_fetch_assoc($result))
+  {
+    $ref_revision_id = $row['id_revision'];
   }
 
   // what is the list of languages in reference revision (the previous
@@ -1101,48 +1162,9 @@ function ws_pem_revisions_get_language_info($params, &$service)
     WHERE idx_revision = '.$ref_revision_id.'
   ;';
   $result = pwg_query($query);
-  while ($row = pwg_db_fetch_assoc($result)) {
+  while ($row = pwg_db_fetch_assoc($result))
+  {
     $languages_old[] = $row['code'];
-  }
-
-  //
-  // what is the list of languages in SVN
-  //
-  // 1) get the SVN URL
-  $svn_url = null;
-
-  $query = '
-  SELECT
-      svn_url,
-      git_url
-    FROM '.PEM_EXT_TABLE.'
-      JOIN '.PEM_REV_TABLE.' ON id_extension = idx_extension
-    WHERE id_revision = '.$ref_revision_id.'
-  ;';
-  $result = pwg_query($query);
-  while ($row = pwg_db_fetch_assoc($result)) {
-    $svn_url = $row['svn_url'];
-
-    if (isset($row['git_url']) and preg_match('/github/', $row['git_url'])) {
-      $svn_url = $row['git_url'].'/trunk';
-    }
-  }
-
-  $svn_command = 'svn list -r'.$page['svn'].' '.$svn_url.'/language';
-  $svn_output = null;
-  exec($svn_command, $svn_output);
-
-  $languages_cur = array();
-  $language_ids = array();
-
-  foreach ($svn_output as $lang) {
-    if (preg_match('#^([a-z]{2,3}_[A-Z]{2,3})#', $lang, $matches)) {
-      $languages_cur[] = $matches[1];
-
-      if (isset($info_of_language[ $matches[1] ])) {
-        $language_ids[] = $info_of_language[ $matches[1] ]['id_language'];
-      }
-    }
   }
 
   //
@@ -1165,35 +1187,12 @@ function ws_pem_revisions_get_language_info($params, &$service)
         $desc_extra.= $info_of_language[$lang]['name'];
       }
     }
-    
-    $svn_command = 'svn log '.$svn_url.'/language/'.$lang.' | grep ", thanks to :"';
-    $svn_output = null;
-    exec($svn_command, $svn_output);
-
-    $translators = array();
-
-    foreach ($svn_output as $svn_output_line) {
-      if (preg_match('/, thanks to : (.+)$/', $svn_output_line, $matches)) {
-        $translators = array_merge($translators, explode(' & ', $matches[1]));
-      }
-    }
-
-    if (count($translators) > 0) {
-      $desc_extra.= ', thanks to '.implode(', ', array_unique($translators));
-    }
   }
 
   $rev_lang_info = array(
     'language_ids' => $language_ids,
     'desc_extra' => $desc_extra,
   );
-
-  if (!isset($_REQUEST['format']))
-  {
-    //Echo to be compatible with previous version of Piwigo
-    echo serialize($rev_lang_info);
-    exit;
-  }
 
   return $rev_lang_info;  
 }
