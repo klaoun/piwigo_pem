@@ -1,4 +1,5 @@
 <?php
+global $logger;
 
 $query = '
 SELECT
@@ -214,9 +215,6 @@ UPDATE '.PEM_REV_TABLE.'
       }
       else
       {
-        $root_dir = ltrim(strrchr(rtrim($svn_url, '/\\'), '/'), '/\\');
-        $archive_name = $root_dir . '_%.zip';
-
         $archive_name = str_replace('%', $_POST['revision_version'], $archive_name);
         $svn_revision = preg_replace('/exported revision (\d+)\./i', '$1', end($svn_infos));
 
@@ -284,9 +282,6 @@ UPDATE '.PEM_REV_TABLE.'
       }
       else
       {
-        $root_dir = ltrim(strrchr(rtrim($git_url, '/\\'), '/'), '/\\');
-        $archive_name = $root_dir . '_%.zip';
-
         $archive_name = str_replace('%', $_POST['revision_version'], $archive_name);
 
         unset($git_infos);
@@ -607,12 +602,23 @@ DELETE
       elseif (in_array($file_to_upload, array('svn', 'git')))
       {
         // Create zip archive
-        define('PCLZIP_TEMPORARY_DIR', $conf['local_data_dir'].'/svn_import/');
+        //
+        // We need to create a temporary directory _data/zip_create/1234 and inside it create a
+        // symbolic link with the name of the archive root directory, as configured by the user
+        // in the SVN/Git setting. This will let us create a zip archive with the root directory
+        // as we like.
+        $zip_create_uniqdir = $conf['local_data_dir'].'/zip_create/'.uniqid();
+        $cmd = 'mkdir -p '.$zip_create_uniqdir.' && ln -s '.realpath($temp_path).' '.$zip_create_uniqdir.'/'.$archive_root_dir;
+        $logger->info($cmd);
+        exec($cmd);
+
+        $zip_path = getcwd().'/'.$revision_dir.'/'.$archive_name;
+        $cmd = 'cd '.$zip_create_uniqdir.' && zip -r '.$zip_path.' '.$archive_root_dir;
+        $logger->info($cmd);
+        exec($cmd);
+
         include_once(PHPWG_ROOT_PATH.'admin/include/pclzip.lib.php');
         $zip = new PclZip($revision_dir.'/'.$archive_name);
-        $zip->create($temp_path,
-          PCLZIP_OPT_REMOVE_PATH, $temp_path,
-          PCLZIP_OPT_ADD_PATH, $archive_root_dir);        
 
         /* Begin specific piwigo website */
         // Get obsolete list
@@ -685,18 +691,17 @@ SELECT id_revision,
           }
           if (!empty($obsolete))
           {
-
             $filename = $temp_path.'/obsolete.list';
             $obsolete = array_unique($obsolete);
             file_put_contents($filename, implode("\n", $obsolete));
-            $zip->add($filename,
-              PCLZIP_OPT_REMOVE_PATH, $temp_path,
-              PCLZIP_OPT_ADD_PATH, $archive_root_dir);
+            $cmd = 'cd '.$zip_create_uniqdir.' && zip '.$zip_path.' '.$archive_root_dir.'/obsolete.list';
+            exec($cmd);
           }
         }
         /* End specific piwigo website */
 
         @rmdir($temp_path);
+        @rmdir($zip_create_uniqdir);
       }
       elseif ('url' == $file_to_upload)
       {
