@@ -148,7 +148,12 @@
               <div class="mb-3 form-group">
                 <label for="revison_languages" class="col-12">{'Available language'|translate}</label>
                 <div>
-                  <span class="detectLang link link-primary" onclick="detectLang()"><i class="icon-language"></i> {'Detect languages'|translate}</span> 
+                  <span class="detectLang link link-primary" onclick="detectLang('eid',{$extension_id})">
+                    <i class="icon-language"></i> {'Detect languages'|translate}
+                  </span> 
+                  <div class="d-none spinner my-2">
+                    <div class="spinner-border" role="status"></div>
+                  </div>
                 </div>
                 <div>
                   <select class="revison_languages" data-selectize="authors"

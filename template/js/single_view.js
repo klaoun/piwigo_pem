@@ -60,7 +60,7 @@ jQuery(document).ready(function () {
   jQuery('.extension_lang_desc_select').selectize({
     plugins: ["remove_button"],
   })
-
+ 
   jQuery('#addRevisionModal .revison_languages').selectize({
     plugins: ["remove_button"],
     items : extensions_languages_ids,
@@ -305,62 +305,63 @@ function showHideDetectLang() {
   }
 }
 
-function detectLang()
+function detectLang(type, id)
 {
-  var file_type = jQuery("input[name=file_type]:checked").val();
-  var url = "'ws.php?format=json&method=";
-
-  url+= "eid={$extension_id}&svn=";
-
-  var file_type = jQuery("input[name=file_type]:checked").val();
-
-  if (file_type == "svn") {
-    url+= jQuery("input[name=svn_revision]").val();
+  if ('eid' == type)
+  {
+    var modalId = '#addRevisionModal';
   }
-  else {
-    url+= 'HEAD';
+  else if ('rid' ==  type)
+  {
+    var modalId = '#revisionInfoModal';
+  }
+  
+  jQuery(modalId+' .detectLang').toggleClass('d-none');
+  jQuery(modalId+' .spinner').toggleClass('d-none');
+
+  var params;
+  if ('eid' == type)
+  {
+    params = 'extension_id='
+  }
+  else if ('rid' == type)
+  {
+    params = 'revision_id='
   }
 
   jQuery.ajax({
-    url: url,
-    type:"GET",
-    beforeSend: function() {
-      jQuery("#detectLangLoad").show();
-    },
-    success:function(data) {
-      jQuery("#detectLangLoad").hide();
+    type: 'GET',
+    dataType: 'json',
+    async: false,
+    url: 'ws.php?format=json&method=pem.revisions.getLanguageInfo&'+params+id,
+    data: { ajaxload: 'true' },
+    success: function (data) {
+      if (data.stat == 'ok')
+      {
+        var dataLangs = data['result']['language_ids']
 
-      var data = jQuery.parseJSON(data);
-      if (data.stat == 'ok') {
-        var new_desc = jQuery(".desc_en_UK").val();
-        if (new_desc != "") {
-          new_desc+= "\n\n";
+        jQuery(modalId+' .detectLang').toggleClass('d-none');
+        jQuery(modalId+' .spinner').toggleClass('d-none');
+
+        var $select = $(modalId +' .revison_languages').selectize();
+        var control = $select[0].selectize;
+        control.clear();
+
+        jQuery('#addRevisionModal .revison_languages').selectize({
+          plugins: ["remove_button"],
+          items : dataLangs,
+          valueField: 'id_language',
+          labelField: 'name',
+          searchField: 'name',
+          maxItems: null,
+          options:ALL_LANGUAGES,
+        })
+
+        if ('eid' == type)
+        {
+          jQuery(modalId + ' #desc_block_5 textarea#desc_5').append(data['desc_extra'])
         }
-        new_desc+= data.desc_extra;
-
-        jQuery(".desc_en_UK").val(new_desc);
-
-        /* reset the list of checked languages */
-        jQuery('#extensions_languages option').removeAttr('selected').trigger("list:updated");
-
-        jQuery.each(data.language_ids, function(i, language_id) {
-          jQuery('#extensions_languages option[value="'+language_id+'"]')
-            .attr('selected', 'selected')
-            .trigger("list:updated")
-          ;
-        });
       }
-      else {
-        var error_message = "error#1, a problem has occured";
-        if (typeof data.error_message != "undefined") {
-          error_message = data.error_message;
-        }
-        alert(error_message);
-      }
-    },
-    error:function(XMLHttpRequest, textStatus, errorThrows) {
-      jQuery("#detectLangLoad").hide();
-      alert("error#2, a problem has occured");
     }
   });
 }
@@ -420,7 +421,6 @@ editRevisionModal.addEventListener('show.bs.modal', event => {
 
   // Fills inputs 
   modalRevId.value = revId
-  console.log(modalRevVersion)
   jQuery(modalRevVersion).each(function(i, revName){
     revName.setAttribute('value', revVersionName);
   });
@@ -430,7 +430,7 @@ editRevisionModal.addEventListener('show.bs.modal', event => {
 
   // Add description to textarea
   jQuery(descriptions).each(function(i, desc){
-    jQuery('#desc_block_' + desc['id_lang'] +' textarea').val(desc['description']).change()
+    jQuery('#revisionInfoModal #desc_block_' + desc['id_lang'] +' textarea').val(desc['description']).change()
   });
 
   jQuery('#revisionInfoModal .revison_languages').selectize({
@@ -453,9 +453,13 @@ editRevisionModal.addEventListener('show.bs.modal', event => {
     options:VERSIONS_PWG,
   })
 
+  jQuery('#detectLangRid').click(function(){
+    detectLang('rid', revId)
+  });
+
 });
 
-// Script used for display languages modal
+// Script used to display languages modal
 // The link data is saved in the data attributes of the edit button, 
 // This data is added to the modal on the modal show when thue button is clicked
 const displayLanguagesModal = document.getElementById('displayLanguagesModal');
