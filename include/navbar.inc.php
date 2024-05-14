@@ -35,6 +35,7 @@ $template->assign(
     'ACCOUNT_URL' => $account_url,
     'USER_STATUS' => $user['status'],
     'USER_USERNAME' => $user['username'],
+    'all_languages' => get_all_ext_languages(),
   )
 );
 
@@ -45,7 +46,6 @@ if (isTranslator($user['id']))
       'u_translator' => true,
       'count_langs' => count($conf['translator_users'][$user['id']]),
       'translator_lang_ids' => $conf['translator_users'][$user['id']],
-      'all_languages' => get_all_ext_languages(),
     )
   );
 }
