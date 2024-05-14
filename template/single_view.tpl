@@ -472,8 +472,7 @@
   var all_revision_languages = {if isset($all_rev_languages_of_ids)}{$all_rev_languages_of_ids}{else}null{/if};
   const VERSIONS_PWG =  {if isset($VERSIONS_PWG)}{json_encode($VERSIONS_PWG)}{else}null{/if};
   const ALL_LANGUAGES = {if isset($all_languages)}{json_encode($all_languages)}{else}null{/if};
-  var extensions_languages_ids = {if isset($extensions_languages_ids)}{json_encode($extensions_languages_ids)}{else}null{/if}
-    
+  const extensions_languages_ids = {if isset($extensions_languages_ids)}{json_encode($extensions_languages_ids)}{else}null{/if};
 </script>
 
 <script src="{$PEM_ROOT_URL_PLUGINS}template/js/single_view.js" require="jquery"></script>
