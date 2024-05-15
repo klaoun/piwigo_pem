@@ -1154,17 +1154,20 @@ SELECT
   // revision, most of the time)
   $languages_old = array();
 
-  $query = '
-  SELECT
-      code
-    FROM '.PEM_REV_LANG_TABLE.'
-      JOIN '.PEM_LANG_TABLE.' ON idx_language = id_language
-    WHERE idx_revision = '.$ref_revision_id.'
-  ;';
-  $result = pwg_query($query);
-  while ($row = pwg_db_fetch_assoc($result))
+  if(!empty($ref_revision_id)) 
   {
-    $languages_old[] = $row['code'];
+    $query = '
+SELECT
+    code
+  FROM '.PEM_REV_LANG_TABLE.'
+    JOIN '.PEM_LANG_TABLE.' ON idx_language = id_language
+  WHERE idx_revision = '.$ref_revision_id.'
+;';
+    $result = pwg_query($query);
+    while ($row = pwg_db_fetch_assoc($result))
+    {
+      $languages_old[] = $row['code'];
+    }
   }
 
   //
