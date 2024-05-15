@@ -453,8 +453,10 @@ editRevisionModal.addEventListener('show.bs.modal', event => {
     options:VERSIONS_PWG,
   })
 
-  jQuery('#detectLangRid').click(function(){
-    detectLang('rid', revId)
+  jQuery('#detectLangRid').attr('id', jQuery('#revisionInfoModal #rid').val());
+  
+  jQuery('.detectLang#'+jQuery('#revisionInfoModal #rid').val()).click(function(){
+    detectLang('rid', jQuery('#revisionInfoModal #rid').val())
   });
 
 });
