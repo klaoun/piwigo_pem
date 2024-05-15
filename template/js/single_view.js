@@ -357,10 +357,7 @@ function detectLang(type, id)
           options:ALL_LANGUAGES,
         })
 
-        if ('eid' == type)
-        {
-          jQuery(modalId + ' #desc_block_5 textarea#desc_5').append(data['desc_extra'])
-        }
+        jQuery(modalId + ' #desc_block_5 textarea#desc_5').append(data['desc_extra'])
       }
     }
   });
@@ -454,7 +451,7 @@ editRevisionModal.addEventListener('show.bs.modal', event => {
   })
 
   jQuery('#detectLangRid').attr('id', jQuery('#revisionInfoModal #rid').val());
-  
+
   jQuery('.detectLang#'+jQuery('#revisionInfoModal #rid').val()).click(function(){
     detectLang('rid', jQuery('#revisionInfoModal #rid').val())
   });
