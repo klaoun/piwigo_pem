@@ -59,12 +59,17 @@
   {/if}
       
   {if in_array('svn', $upload_methods)}
-                  <div id="svn_type"{if $FILE_TYPE ne 'svn'} class="d-none"{/if}>
-                    <label class="form-check-label">{'URL'|translate}</label>
-                    <input class="form-control" type="text" name="svn_url" {if isset($SVN_URL)}value="{$SVN_URL}" readonly="readonly" {/if} size="65" >
-                    
-                    <label class="form-check-label">{'Revision'|translate}</label>
-                  <input class="form-control" type="text" name="svn_revision" {if isset($SVN_REVISION)}value="{$SVN_REVISION}"{/if} size="5">
+                  <div id="svn_type" class="{if $FILE_TYPE ne 'svn'} d-none{/if}">
+                    <div class="row">
+                      <div class="col-7">
+                        <label class="form-check-label">{'URL'|translate}</label>
+                        <input class="form-control" type="text" name="svn_url" {if isset($SVN_URL)}value="{$SVN_URL}" readonly="readonly" {/if} size="65" >
+                      </div>
+                      <div class="col-5">
+                        <label class="form-check-label">{'Revision'|translate}</label>
+                        <input class="form-control" type="text" name="svn_revision" {if isset($SVN_REVISION)}value="{$SVN_REVISION}"{/if} size="5">
+                      </div>
+                    </div>
                   </div>
   {/if}
       
