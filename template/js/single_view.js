@@ -357,7 +357,7 @@ function detectLang(type, id)
           options:ALL_LANGUAGES,
         })
 
-        jQuery(modalId + ' #desc_block_5 textarea#desc_5').append(data['desc_extra'])
+        jQuery(modalId + ' #desc_block_5 textarea#desc_5').append(data['result']['desc_extra'])
       }
     }
   });
