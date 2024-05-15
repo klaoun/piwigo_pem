@@ -347,7 +347,7 @@ function detectLang(type, id)
         var control = $select[0].selectize;
         control.clear();
 
-        jQuery('#addRevisionModal .revison_languages').selectize({
+        jQuery(modalId + ' .revison_languages').selectize({
           plugins: ["remove_button"],
           items : dataLangs,
           valueField: 'id_language',
