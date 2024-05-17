@@ -128,6 +128,8 @@ UPDATE '.PEM_REV_TABLE.'
   else
   {
     // we are on revision_mod.inc.php
+    
+    $revision_infos_of = get_revision_infos_of(array($_POST['rid']));
     $file_to_upload = 'none';
   }
 
