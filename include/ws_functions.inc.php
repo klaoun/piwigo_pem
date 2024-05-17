@@ -1063,7 +1063,7 @@ SELECT
     {
       // from https://github.com/plegall/Piwigo-check_files_integrity
       // to   https://api.github.com/repos/plegall/Piwigo-check_files_integrity/contents/language
-      $github_api_url = str_replace('//github.com', '//api.github.com/repos', $git_url).'/contents/language';
+      $github_api_url = str_replace('//github.com', '//api.github.com/repos', str_replace('.git','', $git_url)).'/contents/language';
 
       include_once(PHPWG_ROOT_PATH.'admin/include/functions.php');
       fetchRemote($github_api_url, $result);
