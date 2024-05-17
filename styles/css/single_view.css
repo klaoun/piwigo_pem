@@ -174,3 +174,10 @@ Lists
 #single_view .list-group-flush>.list-group-item{
   border: 0;
 }
+
+/*******
+Edit mode
+*******/
+#single_view  .sticky-top{
+  background-color: rgba(255,255,255,0.5);
+}

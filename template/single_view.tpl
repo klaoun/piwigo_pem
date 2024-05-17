@@ -15,8 +15,8 @@
 {/if}
   
 
-
-  <section  class="mt-4 section-fluid">
+<nav class="navbar sticky-top mt-3 py-3">
+  <section  class=" section-fluid w-100">
     <div class="d-flex justify-content-end">
 {if isset($can_modify)}
   {if $can_modify == false && isset($u_translator) && $u_translator == true }
@@ -40,6 +40,7 @@
 {/if}
     </div>
   </section>
+</nav>
 
   <section class="mt-4 section-fluid">
   <div class="row">
