@@ -29,6 +29,7 @@ list($svn_url, $git_url, $root_dir, $archive_name) = pwg_db_fetch_array($result)
     if (empty($svn_url) and empty($git_url))
     { 
       $root_dir = ltrim(strrchr(rtrim($url, '/\\'), '/'), '/\\');
+      $root_dir = str_replace(".git","", $root_dir);
       $archive_name = $root_dir . '_%.zip';
     }
     else
