@@ -346,7 +346,7 @@ function detectLang(type, id)
         var $select = $(modalId +' .revison_languages');
         var control = $select[0].selectize;
         control.clear();
-        
+
         jQuery(dataLangs).each(function(i) {
           control.addItem(i);
         })
@@ -381,6 +381,15 @@ editLinkModal.addEventListener('show.bs.modal', event => {
   modalLinkName.value = linkName
   modalLinkUrl.value = linkURL
   modalLinkLang.value = linkLang
+});
+
+//Script used for add revision modal
+const addRevisionModal = document.getElementById('addRevisionModal');
+addRevisionModal.addEventListener('show.bs.modal', event => {
+  const descriptions = jQuery('#addRevisionModal .desc')
+  jQuery(descriptions).each(function(){
+    jQuery('#addRevisionModal textarea').val('').change()
+  });
 });
 
 // Script used for editing revision modal
