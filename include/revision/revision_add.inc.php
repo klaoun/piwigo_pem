@@ -812,7 +812,7 @@ $version = isset($_POST['revision_version']) ? $_POST['revision_version'] : '';
 $descriptions = isset($_POST['revision_descriptions']) ? $_POST['revision_descriptions'] : array();
 $selected_versions = isset($_POST['compatible_versions']) ? $_POST['compatible_versions'] : array();
 $selected_author = isset($_POST['author']) ? $_POST['author'] : $user['id'];
-$selected_languages = isset($_POST['extensions_languages']) ? $_POST['extensions_languages'] : array();
+$selected_languages = isset($_POST['revision_languages']) ? $_POST['revision_languages'] : array();
 
 
 ?>
