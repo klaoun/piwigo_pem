@@ -163,7 +163,7 @@
                 <div>
                   <select class="revison_languages" data-selectize="authors"
                   placeholder="{'Choose available languages'|translate}"
-                  data-create="true" name="extensions_languages[]" multiple style="width:calc(100% + 2px);">
+                  data-create="true" name="revision_languages[]" multiple style="width:calc(100% + 2px);">
   {foreach from=$languages item=lang}
                     <option value="{$lang.id}" {if in_array($lang.id,$extensions_languages_ids)}selected{/if}>{$lang.name}</option>
   {/foreach}
