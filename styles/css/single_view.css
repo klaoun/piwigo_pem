@@ -180,4 +180,5 @@ Edit mode
 *******/
 #single_view  .sticky-top{
   background-color: rgba(255,255,255,0.5);
+  border-bottom:1px solid #ccc;
 }
