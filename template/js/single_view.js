@@ -386,10 +386,16 @@ editLinkModal.addEventListener('show.bs.modal', event => {
 //Script used for add revision modal
 const addRevisionModal = document.getElementById('addRevisionModal');
 addRevisionModal.addEventListener('show.bs.modal', event => {
+  jQuery('#addRevisionModal input[name=revision_version]').val('').change()
+
   const descriptions = jQuery('#addRevisionModal .desc')
   jQuery(descriptions).each(function(){
     jQuery('#addRevisionModal textarea').val('').change()
   });
+
+  var $select = $('#addRevisionModal .revision_compatible_versions');
+  var control = $select[0].selectize;
+  control.clear();
 });
 
 // Script used for editing revision modal
