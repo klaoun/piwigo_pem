@@ -343,21 +343,15 @@ function detectLang(type, id)
         jQuery(modalId+' .detectLang').toggleClass('d-none');
         jQuery(modalId+' .spinner').toggleClass('d-none');
 
-        var $select = $(modalId +' .revison_languages').selectize();
+        var $select = $(modalId +' .revison_languages');
         var control = $select[0].selectize;
         control.clear();
-
-        jQuery(modalId + ' .revison_languages').selectize({
-          plugins: ["remove_button"],
-          items : dataLangs,
-          valueField: 'id_language',
-          labelField: 'name',
-          searchField: 'name',
-          maxItems: null,
-          options:ALL_LANGUAGES,
+        
+        jQuery(dataLangs).each(function(i) {
+          control.addItem(i);
         })
 
-        jQuery(modalId + ' #desc_block_5 textarea#desc_5').append(data['result']['desc_extra'])
+        jQuery(modalId + ' #desc_block_5 textarea#desc_5').append("\n" +data['result']['desc_extra'])
       }
     }
   });
