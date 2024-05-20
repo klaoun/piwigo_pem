@@ -347,8 +347,9 @@ function detectLang(type, id)
         var control = $select[0].selectize;
         control.clear();
 
-        jQuery(dataLangs).each(function(i) {
-          control.addItem(i);
+        jQuery(dataLangs).each(function(i, item) {
+          console.log(item)
+          control.addItem(item);
         })
 
         if("" != data['result']['desc_extra'])
