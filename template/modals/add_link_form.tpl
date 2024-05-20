@@ -13,7 +13,7 @@
                 
                 <div class="mb-3 form-group">
                   <label for="link_name" class="col-12">{'Name'|translate}</label>
-                  <input type="text" name="link_name" maxlength="50" class="w-100 form-control" required>
+                  <input type="text" name="link_name" maxlength="50" class="w-100 form-control" required autofocus>
                   <p><small>{'Here are some link suggestions: "Github page", "Forum topic", "Issues", "Buy me a coffee" ...'|translate}</small></p>
                 </div>
 

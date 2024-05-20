@@ -13,7 +13,7 @@
               {* Extension name *}
               <div class="mb-3 form-group">
                 <label for="extension_name" class="form-label w-100 ">{'Name'|translate}</label>
-                <input type="text" name="extension_name" size="35" maxlength="255" value="{if isset($extension_name)}{$extension_name}{/if}" class="w-100 form-control" required/>
+                <input type="text" name="extension_name" size="35" maxlength="255" value="{if isset($extension_name)}{$extension_name}{/if}" class="w-100 form-control" required autofocus/>
               </div>
 
               {* Extension Author *}

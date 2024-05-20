@@ -14,7 +14,7 @@
               {* Revision version*}
               <div class="mb-3 form-group">
                 <label for="revision_version" class="form-label w-100 ">{'Version'|translate}</label>
-                <input class="form-control" type="text" name="revision_version" size="10" maxlength="10" required/>
+                <input class="form-control" type="text" name="revision_version" size="10" maxlength="10" required autofocus/>
               </div>
 
 {if isset($file_needed)}
