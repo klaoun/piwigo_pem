@@ -238,6 +238,12 @@ Extension cards
   height:250px;
 }
 
+.extension_name_link{
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
 .extension_name_link:hover{
   text-decoration:underline;
   color:var(--grey6);

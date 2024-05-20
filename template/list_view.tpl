@@ -113,7 +113,7 @@
 
         <div class="col {if {$CATEGORY.cid} == 8}col-4 {else}col-4{/if}">
           <div class="d-flex">
-            <a class="extension_name_link d-inline" href="{$PEM_ROOT_URL}index.php?eid=" >
+            <a class="extension_name_link d-inline w-100" href="{$PEM_ROOT_URL}index.php?eid=" >
               <h5 class="card-title extension_name mb-2"></h5>
             </a>
             <span class="certification certification-blue d-none pem-tooltip ms-2">
