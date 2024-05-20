@@ -22,6 +22,12 @@ Titles
   transition: all 1s;
 }
 
+#single_view h2{
+  white-space: nowrap;
+  overflow:hidden;
+  text-overflow: ellipsis;
+}
+
 /******
 Body text
 ******/
