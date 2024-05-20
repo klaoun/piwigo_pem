@@ -351,7 +351,9 @@ function detectLang(type, id)
           control.addItem(i);
         })
 
-        jQuery(modalId + ' #desc_block_5 textarea#desc_5').append("\n" +data['result']['desc_extra'])
+        var textArea = jQuery(modalId + ' #desc_block_5 #desc_5').val()
+        jQuery(modalId + ' #desc_block_5 textarea#desc_5').val(textArea + "\n\n"+ data['result']['desc_extra'])
+
       }
     }
   });
