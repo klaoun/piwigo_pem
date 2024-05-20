@@ -1067,7 +1067,10 @@ SELECT
 
       include_once(PHPWG_ROOT_PATH.'admin/include/functions.php');
       fetchRemote($github_api_url, $result);
-      $language_candidates = array_column(json_decode($result, true), 'name');
+      if(null != $result)
+      {
+        $language_candidates = array_column(json_decode($result, true), 'name');
+      }
     }
 
     $languages_cur = array();
