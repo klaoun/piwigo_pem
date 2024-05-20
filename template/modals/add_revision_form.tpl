@@ -33,13 +33,17 @@
   {/if}
   {if in_array('svn', $upload_methods)}
                   <div class="form-check d-inline-block ms-3">
-                    <input class="form-check-input" type="radio" name="file_type" id="file_type_svn" value="svn" {if $FILE_TYPE=='svn'}checked{/if}/>
+                    <input class="form-check-input" type="radio" name="file_type" id="file_type_svn" value="svn" 
+                  {if $FILE_TYPE=='svn'}checked{/if} 
+                  {if !isset($SVN_URL)}disabled{/if}/>
                     <label class="form-check-label" for="file_type_svn">{'SVN'|translate}</label>
                   </div>
   {/if}
   {if in_array('git', $upload_methods)}
                 <div class="form-check d-inline-block ms-3">
-                  <input class="form-check-input" type="radio" name="file_type" id="file_type_git" value="git" {if $FILE_TYPE=='git'}checked{/if}/>
+                  <input class="form-check-input" type="radio" name="file_type" id="file_type_git" value="git" 
+                  {if $FILE_TYPE=='git'}checked{/if} 
+                  {if !isset($GIT_URL)}disabled{/if}/>
                   <label class="form-check-label" for="file_type_git">{'Git'|translate}</label>
                 </div>
   {/if}
