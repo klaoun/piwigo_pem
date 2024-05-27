@@ -232,8 +232,9 @@ function pem_load_footer(){
   $template->parse('header_pem');
   $template->parse('navbar_pem');
   $template->parse('pem_page');
-  $template->parse('footer_pem');
   $template->p();
+
+  include_once(PEM_PATH . 'include/footer.inc.php');
   exit();
 
 }
