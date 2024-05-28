@@ -155,7 +155,7 @@ function pem_load_header()
  */
 add_event_handler('init', 'pem_load_content');
 function pem_load_content(){
-  global $template, $lang, $user, $page, $lang_info;
+  global $template, $lang, $user, $page, $lang_info, $conf;
 
   $meta_title = null;
   $meta_description = null;
@@ -212,7 +212,7 @@ function pem_load_content(){
   if (isset($_GET['refresh_cache']) && $_GET['refresh_cache'] == conf_get_param('pem_refresh_cache_key', 'please'))
   {
     include_once(PHPWG_ROOT_PATH.'admin/include/functions.php');
-    deltree($conf['data_location'].PORG_ID);
+    deltree($conf['data_location'].PEM_ID);
   }
 
   $template->assign(

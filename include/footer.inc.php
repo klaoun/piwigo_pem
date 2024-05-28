@@ -1,7 +1,9 @@
 <?php
 global $conf;
 /* Include file for FetchRemote */
-include(PHPWG_ROOT_PATH . 'admin/include/functions.php');
+if (!isset($_GET['refresh_cache'])){
+  include(PHPWG_ROOT_PATH . 'admin/include/functions.php');
+}
 
 $raw_url = $_SERVER['HTTP_HOST'].$_SERVER['SCRIPT_NAME'];
 
