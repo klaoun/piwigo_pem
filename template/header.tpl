@@ -13,7 +13,7 @@
     <script src="{$PEM_ROOT_URL_PLUGINS}vendor/jquery/jquery-3.6.0.min.js"></script>
 
     {* Bootstrap javascript *}
-    <script src="{$PEM_ROOT_URL_PLUGINS}vendor/bootstrap/js/bootstrap.min.js"></script>
+    <script src="{$PEM_ROOT_URL_PLUGINS}vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 
     {*Fontello css*}
     <link rel="stylesheet" type="text/css" href="{$PEM_ROOT_URL_PLUGINS}vendor/fontello/css/fontello.css">
