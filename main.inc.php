@@ -205,6 +205,16 @@ function pem_load_content(){
     }
   }
 
+  /**
+   * force refresh of all pem cache
+   */
+
+  if (isset($_GET['refresh_cache']) && $_GET['refresh_cache'] == conf_get_param('pem_refresh_cache_key', 'please'))
+  {
+    include_once(PHPWG_ROOT_PATH.'admin/include/functions.php');
+    deltree($conf['data_location'].PORG_ID);
+  }
+
   $template->assign(
     array(
         'meta_title' => $meta_title,
@@ -226,8 +236,6 @@ function pem_load_footer(){
   $template->assign(array(
     'CURRENT_YEAR' => date('Y'),
   ));
-
-  $template->set_filenames(array('footer_pem' => realpath(PEM_PATH .'template/pem_footer.tpl')));
 
   $template->parse('header_pem');
   $template->parse('navbar_pem');

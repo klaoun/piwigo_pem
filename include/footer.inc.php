@@ -16,7 +16,7 @@ if (preg_match('#([a-z]{2,3})\.piwigo\.org#', $raw_url, $matches))
 
   if (!is_file($cache_path) or filemtime($cache_path) < strtotime('1 hour ago'))
   {
-    fetchRemote("http://".(isset($subdomain)?$subdomain:'')."piwigo.org/ws.php?format=php&method=porg.footer.getTemplate", $result);
+    fetchRemote("https://".(isset($subdomain)?$subdomain:'')."piwigo.org/ws.php?format=php&method=porg.footer.getTemplate", $result);
 
     if (mkgetdir(dirname($cache_path)))
     {
