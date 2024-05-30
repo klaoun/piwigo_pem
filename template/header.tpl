@@ -25,6 +25,9 @@
     {* Main CSS & JS file, common to all tpls *}
     <link rel="stylesheet" type="text/css" href="{$PEM_ROOT_URL_PLUGINS}styles/css/main.css">
     <script src="{$PEM_ROOT_URL_PLUGINS}template/js/main.js" require="jquery"></script>
+
+    {* Footer CSS *}
+    <link rel="stylesheet" type="text/css" href="{$PEM_ROOT_URL_PLUGINS}styles/css/footer.css">
     
   </head>
   <body>
