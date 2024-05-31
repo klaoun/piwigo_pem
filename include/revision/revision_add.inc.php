@@ -440,11 +440,11 @@ UPDATE '.PEM_REV_TABLE.'
         }
         
         if (preg_match("|Plugin URI:(.*)|", $main, $val)
-            and trim($val[1]) != 'http://piwigo.org/ext/index.php?eid='.$_GET['eid'])
+            and trim($val[1]) != 'https://piwigo.org/ext/extension_view.php?eid='.$_GET['eid'])
         {
           $main = preg_replace(
             "|Plugin URI: .*|",
-            "Plugin URI: http://piwigo.org/ext/index.php?eid=".$_GET['eid'],
+            "Plugin URI: https://piwigo.org/ext/extension_view.php?eid=".$_GET['eid'],
             $main
             );
           
@@ -470,11 +470,11 @@ UPDATE '.PEM_REV_TABLE.'
           $modified = true;
         }
         if (preg_match("|Theme URI:(.*)|", $themeconf, $val)
-            and trim($val[1]) != 'http://piwigo.org/ext/index.php?eid='.$_GET['eid'])
+            and trim($val[1]) != 'https://piwigo.org/ext/extension_view.php?eid='.$_GET['eid'])
         {
           $themeconf = preg_replace(
             "|Theme URI: .*|",
-            "Theme URI: http://piwigo.org/ext/index.php?eid=".$_GET['eid'],
+            "Theme URI: https://piwigo.org/ext/extension_view.php?eid=".$_GET['eid'],
             $themeconf
             );
           
@@ -501,11 +501,11 @@ UPDATE '.PEM_REV_TABLE.'
         }
         
         if (preg_match("|Language URI:(.*)|", $common, $val)
-            and trim($val[1]) != 'http://piwigo.org/ext/index.php?eid='.$_GET['eid'])
+            and trim($val[1]) != 'https://piwigo.org/ext/extension_view.php?eid='.$_GET['eid'])
         {
           $common = preg_replace(
             "|Language URI: .*|",
-            "Language URI: http://piwigo.org/ext/index.php?eid=".$_GET['eid'],
+            "Language URI: https://piwigo.org/ext/extension_view.php?eid=".$_GET['eid'],
             $common
             );
           
