@@ -299,6 +299,15 @@ function getExtensionList(cid) {
             {
               jQuery('#extension_'+extension_id+' .extension_score').html(this.rating_score_stars + "<span class='ms-2 align-middle'>"+this.rating_score + '</span>'); 
             }
+            else{
+              var null_rating_score = ''
+              for(var i = 0; i < 5; i++) {
+                null_rating_score += '<i class="icon-star-empty grey-font"></i>'
+              }
+
+              jQuery('#extension_'+extension_id+' .extension_score').html('<span>'+null_rating_score+'</span>'); 
+
+            }
             jQuery('#extension_'+extension_id+' .extension_number_downloads').text(this.downloads);
 
             // If description is to long, shorten it 

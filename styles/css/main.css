@@ -58,7 +58,20 @@ Purle pink gradient block
 
 .purple-gradient p,
 .purple-gradient a{
-  color:var(--white)!important;
+  color:var(--white);
+}
+
+.purple-gradient .btn-tertiary,
+.spotlight .btn-tertiary{
+  border:1px solid white;
+  color: #1E0134;
+}
+
+.purple-gradient .btn-tertiary:hover,
+.spotlight .btn-tertiary:hover{
+  border:1px solid #FF005C;
+  background-color: #FF005C!important;
+  color:white;
 }
 
 /******
@@ -190,15 +203,13 @@ Buttons
 .btn-tertiary{
   border:1px solid var(--third_orange);
   color: var(--third_orange);
-  background:transparent;
-  border-radius:0;
+  background: var(--white);
+  border-radius: 5px;
   width: auto;
   font-size: 14px;
   font-weight: 700;
-  letter-spacing: 1px;
-  padding: 15px 25px;
+  padding: 5px 10px 5px 15px;
   transition: all 0.2s;
-  text-transform: uppercase;
 }
 
 .btn-tertiary:hover{
@@ -468,6 +479,14 @@ a.badge:hover{
 .green-badge{
   background-color: var(--light_green_background);
   color:var(--light_green_font)!important;
+}
+
+.spotlighted-badge{
+  margin-right: -16px;
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+  font-size:15px;
+  padding:10px 20px
 }
 
 /******

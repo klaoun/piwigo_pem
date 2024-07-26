@@ -21,8 +21,9 @@
           <h3>{$CATEGORY.spotlight_extension.name}</h3>
           <p class="description">{$CATEGORY.spotlight_extension.description}</p>
         </div>
-        <div class="col-md-2 col-md-2 d-flex justify-content-end align-items-end">
-          <a href="{$PEM_ROOT_URL}index.php?eid={$CATEGORY.spotlight_extension.eid}">{'See'|translate} <i class="icon-chevron-right"></i></a>
+        <div class="col-md-2 col-md-2 d-flex justify-content-between flex-column align-items-end">
+          <span class="badge spotlighted-badge blue-badge">Spotlighted</span>
+          <a class="btn btn-tertiary" href="{$PEM_ROOT_URL}index.php?eid={$CATEGORY.spotlight_extension.eid}">{'Discover'|translate} <i class="icon-chevron-right"></i></a>
         </div>
       </div>
     </div>
