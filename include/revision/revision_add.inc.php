@@ -790,7 +790,7 @@ DELETE
     {
       $template->assign(
         array(
-          'MESSAGE' => l10n('Revision successfuly added.'),
+          'MESSAGE' => l10n('Revision successfully added.'),
           'MESSAGE_TYPE' => 'success'
         )
       );
