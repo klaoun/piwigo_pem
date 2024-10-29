@@ -147,7 +147,7 @@ Buttons
 .btn-primary{
   background-color: var(--main_orange);
   color: var(--white);
-  border:1px solid var(--main_orange);
+  border:none;
   border-radius:0;
   width: auto;
   max-width: 300px;
@@ -157,13 +157,12 @@ Buttons
   padding: 15px 25px;
   transition: all 0.2s;
   text-transform: uppercase;
+  border-radius:5px;
 }
 
 .btn-primary:hover{
-  box-shadow: 3px 3px 6px #bbb;
-  background-color: var(--main_orange);
-  color: var(--white);
-  border:1px solid var(--main_orange);
+  background-color: var(--fourth_orange);
+  color: var(--main_orange);
 }
 
 .btn-primary:focus,
@@ -171,7 +170,6 @@ Buttons
   box-shadow: 3px 3px 6px #bbb;
   background-color: var(--main_orange);
   color: var(--white);
-  border:1px solid var(--main_orange);
 }
 
 .btn-primary:active:focus{
@@ -208,7 +206,7 @@ Buttons
   width: auto;
   font-size: 14px;
   font-weight: 700;
-  padding: 5px 10px 5px 15px;
+  padding: 5px 10px;
   transition: all 0.2s;
 }
 

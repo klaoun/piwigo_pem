@@ -151,7 +151,7 @@
             <p class="extension_description "></p>
             <div class="d-flex justify-content-end mt-auto">
               <a class="more_info_link" href="{$PEM_ROOT_URL}index.php?eid=" >
-                <button class="btn btn-primary">{'Discover'|translate}</button>
+                <button class="btn btn-tertiary">{'Discover'|translate}</button>
               </a>
             </div>
           </div>
