@@ -417,6 +417,17 @@ function ws_pem_extensions_get_list($params, &$service)
     }
     // Between 6 month and 3 years : certification = 1
 
+    // Get number of ratings for extension
+    $query = '
+    SELECT 
+        COUNT(*) 
+      FROM '.PEM_RATE_TABLE.'
+          WHERE idx_extension = "'.$extension_id.'"
+        ;';
+    
+    list($nb_ratings) = pwg_db_fetch_row(pwg_query($query));
+    
+
     array_push(
       $revisions,
       array(
@@ -424,6 +435,7 @@ function ws_pem_extensions_get_list($params, &$service)
         'extension_name' => $extension_infos_of[$extension_id]['name'],
         'rating_score' => $extension_infos_of[$extension_id]['rating_score'],
         'rating_score_stars' => generate_static_stars($extension_infos_of[$extension_id]['rating_score']),
+        'nb_ratings' =>$nb_ratings,
         'nb_reviews' => !empty($extension_infos_of[$extension_id]['nb_reviews']) ? sprintf(l10n('%d reviews'), $extension_infos_of[$extension_id]['nb_reviews']) : null,
         'about' => nl2br(
           htmlspecialchars(

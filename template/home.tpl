@@ -92,9 +92,7 @@
                       </a>
                       <p class='description' >{$category.highest_rated_extension.description}</p>
                       <div class='rating_score'>
-  {for $foo=1 to $category.highest_rated_extension.rating_score}
-                        <i class='icon-star'></i>
-  {/for}
+                        {$category.highest_rated_extension.stars} <span>({$category.highest_rated_extension.nb_ratings})</span>
                       </div>
                     </div>
                     <div class="col-12 d-flex justify-content-end">

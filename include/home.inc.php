@@ -150,6 +150,9 @@ SELECT
 
     $categories[$i]['highest_rated_extension'] = $pem_highest_rated_extensions[ $category['cid'] ];
     $categories[$i]['highest_rated_extension']['description'] = stripslashes($categories[$i]['highest_rated_extension']['description']);
+    $categories[$i]['highest_rated_extension']['stars'] = generate_static_stars(
+      $pem_highest_rated_extensions[$category['cid']]['rating_score'],false
+    );
 
     //Get screenshot info
     $screenshot_infos = get_extension_screenshot_infos(
@@ -160,6 +163,17 @@ SELECT
     {
       $categories[$i]['highest_rated_extension']['screenshot_src'] = $screenshot_infos['screenshot_url'];
     }
+
+    $query = '
+SELECT 
+    COUNT(*) 
+  FROM '.PEM_RATE_TABLE.'
+      WHERE idx_extension = "'.$pem_highest_rated_extensions[$category['cid']]['eid'].'"
+    ;';
+
+    list($nb_ratings) = pwg_db_fetch_row(pwg_query($query));
+    $categories[$i]['highest_rated_extension']['nb_ratings'] = $nb_ratings;
+
 
   }
 
