@@ -141,3 +141,32 @@ function get_nb_pages($nb_items, $nb_items_per_page)
 {
   return intval(($nb_items - 1) / $nb_items_per_page) + 1;
 }
+
+/***
+ * Notify mattermost
+ */
+function notify_mattermost($message)
+{
+  global $conf;
+
+  if (!isset($conf['mattermost_webhook_url']))
+  {
+    return 'ko';
+  }
+
+  $mattermost_data = array(
+    'text' => $message,
+    'channel' => $conf['mattermost_channel'],
+  );
+
+  $payload = 'payload='.json_encode($mattermost_data);
+
+  $ch = curl_init($conf['mattermost_webhook_url']);
+  curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
+  curl_setopt($ch, CURLOPT_POSTFIELDS, $payload);
+  curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+
+  $result = curl_exec($ch);
+
+  return $result;
+}
