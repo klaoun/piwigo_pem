@@ -1,5 +1,5 @@
 <?php
-global $logger;
+global $logger, $user;
 
 $query = '
 SELECT
@@ -786,6 +786,9 @@ DELETE
         );
     }
 
+    $country_code = geoip_country_code_by_name($_SERVER['REMOTE_ADDR']);
+    $country_name = geoip_country_name_by_name($_SERVER['REMOTE_ADDR']);
+
     if ("add_revision" == $_POST['pem_action'])
     {
       $template->assign(
@@ -794,6 +797,8 @@ DELETE
           'MESSAGE_TYPE' => 'success'
         )
       );
+      notify_mattermost('[pem] user #'.$user['id'].' ('.$user['username'].') added a new revision #'.$_POST['rid'].'('.$_POST['revision_version'].') for extension #'.$_GET['eid'].'('.$page['extension_name'].') , IP='.$_SERVER['REMOTE_ADDR'].' country='.$country_code.'/'.$country_name);
+
     }
     else if ("edit_revision" == $_POST['pem_action'])
     {
@@ -803,6 +808,8 @@ DELETE
           'MESSAGE_TYPE' => 'success'
         )
       );
+      notify_mattermost('[pem] user #'.$user['id'].' ('.$user['username'].') updated a revision #'.$_POST['rid'].' ('.$_POST['revision_version'].') for extension #'.$_GET['eid'].' ('.$page['extension_name'].') , IP='.$_SERVER['REMOTE_ADDR'].' country='.$country_code.'/'.$country_name);
+
     }
 
     unset($_POST);

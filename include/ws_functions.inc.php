@@ -911,6 +911,15 @@ WHERE id_extension = '.$params['extension_id'].'
  */
 function ws_pem_extensions_delete_extension($params, &$service)
 {
+  global $user;
+
+  $query = '
+SELECT
+    name
+  FROM '.PEM_EXT_TABLE.'
+    WHERE id_extension = '.$params['extension_id'].'
+;';
+list($extension_name) = pwg_db_fetch_row(pwg_query($query));
 
 // Delete all the revisions for the given extension
   $query = '
@@ -961,14 +970,27 @@ DELETE
 ;';
   pwg_query($query);
 
+  notify_mattermost('[pem] user #'.$user['id'].' ('.$user['username'].') deleted extension #'.$params['extension_id'].'('.$extension_name.') , IP='.$_SERVER['REMOTE_ADDR'].' country='.$country_code.'/'.$country_name);
+
 }
 
 /**
  * Delete a revision linked to an extension
  */
 function ws_pem_revisions_delete_revision($params, &$service)
-{
+{ 
+  global $user;
 
+  $query = '
+SELECT
+    id_extension,
+    name
+  FROM '.PEM_EXT_TABLE.'
+    WHERE id_extension = '.$params['extension_id'].'
+;';
+
+  list($eid, $extension_name) = pwg_db_fetch_row(pwg_query($query));
+  
   $revision_infos_of = get_revision_infos_of(array($params['revision_id']));
 
   @unlink(
@@ -992,6 +1014,10 @@ DELETE
   WHERE id_revision = '.$params['revision_id'].'
 ;';
   pwg_query($query);
+
+  notify_mattermost('[pem] user #'.$user['id'].' ('.$user['username'].') deleted revision #'.$revision_id.' from extension #'.$eid.' ('.$extension_name.') , IP='.$_SERVER['REMOTE_ADDR'].' country='.$country_code.'/'.$country_name);
+  
+
 }
 
 function ws_pem_revisions_get_language_info($params, &$service)
