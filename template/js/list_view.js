@@ -297,7 +297,7 @@ function getExtensionList(cid) {
             //If extensions has rating score then display it
             if(this.rating_score != null)
             {
-              jQuery('#extension_'+extension_id+' .extension_score').html(this.rating_score_stars + " <span class='ms-2 align-middle'>"+this.rating_score + ' ('+this.nb_ratings+')</span>'); 
+              jQuery('#extension_'+extension_id+' .extension_score').html(this.rating_score_stars + " <span>("+this.nb_ratings+')</span>'); 
             }
             else{
               var null_rating_score = ''

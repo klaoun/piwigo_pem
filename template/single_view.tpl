@@ -143,7 +143,7 @@
 {/if}
 {if isset($rate_summary.rating_score)}
       <div class="px-3 py-1 border-left d-inline-block">
-        {$rate_summary.rating_score}
+        {$rate_summary.rating_score} <span>({$rate_summary.count})</span>
       </div>
 {/if}
       <div class="px-3 py-1 border-left d-inline-block">
