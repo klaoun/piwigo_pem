@@ -252,11 +252,13 @@ DELETE
     {
       $message .= ' <a href ="'.get_root_url().'index.php?eid='.$current_extension_page_id.'">'.l10n('See it here').'</a>';
 
-      $country_code = geoip_country_code_by_name($_SERVER['REMOTE_ADDR']);
-      $country_name = geoip_country_name_by_name($_SERVER['REMOTE_ADDR']);
+      // $country_code = geoip_country_code_by_name($_SERVER['REMOTE_ADDR']);
+      // $country_name = geoip_country_name_by_name($_SERVER['REMOTE_ADDR']);
 
+      $country_code = 'unkown';
+      $country_name = 'unkown';
+  
       notify_mattermost('[pem] user #'.$user['id'].' ('.$user['username'].') added a new extension #'.$current_extension_page_id.' ('.$_POST['extension_name'].') , IP='.$_SERVER['REMOTE_ADDR'].' country='.$country_code.'/'.$country_name);
-
     }
 
     $template->assign(

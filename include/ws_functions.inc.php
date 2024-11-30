@@ -971,7 +971,13 @@ DELETE
   pwg_query($query);
 
   notify_mattermost('[pem] user #'.$user['id'].' ('.$user['username'].') deleted extension #'.$params['extension_id'].'('.$extension_name.') , IP='.$_SERVER['REMOTE_ADDR'].' country='.$country_code.'/'.$country_name);
+  // $country_code = geoip_country_code_by_name($_SERVER['REMOTE_ADDR']);
+  // $country_name = geoip_country_name_by_name($_SERVER['REMOTE_ADDR']);
 
+  $country_code = 'unkown';
+  $country_name = 'unkown';
+  
+  notify_mattermost('[pem] user #'.$user['id'].' ('.$user['username'].') deleted extension #'.$params['extension_id'].'('.$extension_name.') , IP='.$_SERVER['REMOTE_ADDR'].' country='.$country_code.'/'.$country_name);
 }
 
 /**
@@ -1015,9 +1021,13 @@ DELETE
 ;';
   pwg_query($query);
 
-  notify_mattermost('[pem] user #'.$user['id'].' ('.$user['username'].') deleted revision #'.$revision_id.' from extension #'.$eid.' ('.$extension_name.') , IP='.$_SERVER['REMOTE_ADDR'].' country='.$country_code.'/'.$country_name);
-  
+  // $country_code = geoip_country_code_by_name($_SERVER['REMOTE_ADDR']);
+  // $country_name = geoip_country_name_by_name($_SERVER['REMOTE_ADDR']);
 
+  $country_code = 'unkown';
+  $country_name = 'unkown';
+  
+  notify_mattermost('[pem] user #'.$user['id'].' ('.$user['username'].') deleted revision #'.$params['revision_id'].' from extension #'.$eid.' ('.$extension_name.') , IP='.$_SERVER['REMOTE_ADDR'].' country='.$country_code.'/'.$country_name);
 }
 
 function ws_pem_revisions_get_language_info($params, &$service)
