@@ -250,7 +250,6 @@ if (isset($_GET['eid']) && 1 == count($_GET))
         )
       );
 
-      //Know if the user is a translator
       $allow_svn_file_creation = conf_get_param('allow_svn_file_creation',false);
 
       if ($allow_svn_file_creation and $user['extension_owner'])

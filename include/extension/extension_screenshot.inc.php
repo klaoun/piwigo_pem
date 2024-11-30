@@ -1,5 +1,11 @@
 <?php
 
+// +-----------------------------------------------------------------------+
+// |                           Initialization                              |
+// +-----------------------------------------------------------------------+
+
+global $user;
+
 $current_extension_page_id = $_GET['eid'];
 
 // +-----------------------------------------------------------------------+
@@ -107,6 +113,7 @@ function resize_picture(
 //   );
 // exit();
 
+
 // +-----------------------------------------------------------------------+
 // |                           Form submission                             |
 // +-----------------------------------------------------------------------+
@@ -114,120 +121,133 @@ function resize_picture(
 if (isset($_POST['pem_action']) and isset($_POST['submit']) and "edit_screenshot" == $_POST['pem_action'])
 {
   if (is_a_guest()) return;
-  
-  if (!isset($_FILES['picture']))
-  {
-    $template->assign(
-      array(
-        'MESSAGE' => l10n('You did not upload anything!'),
-        'MESSAGE_TYPE' => 'error'
-      )
-    );
-    $page['errors'][] = l10n('You did not upload anything!');
-  }
-  else
-  {
-    $extension_dir = get_extension_dir($_GET['eid']);
 
-    if (!is_dir($extension_dir)) {
-      umask(0000);
-      if (!mkdir($extension_dir, 0777)) {
-        die("problem during ".$extension_dir." creation");
-      }
-    }
-    
-    $temp_name = get_extension_dir($_GET['eid']).'/screenshot.tmp';
-    if (!move_uploaded_file($_FILES['picture']['tmp_name'], $temp_name))
+  if (isset($user['id']) and (is_Admin() or in_array($user['id'], $authors)))
+  {
+    if (!isset($_FILES['picture']))
     {
       $template->assign(
         array(
-          'MESSAGE' => l10n('Problem during upload'),
+          'MESSAGE' => l10n('You did not upload anything!'),
           'MESSAGE_TYPE' => 'error'
         )
       );
-      $page['errors'][] = l10n('Problem during upload');
+      $page['errors'][] = l10n('You did not upload anything!');
     }
     else
     {
-      list($width, $height, $type) = getimagesize($temp_name);
+      $extension_dir = get_extension_dir($_GET['eid']);
+
+      if (!is_dir($extension_dir)) {
+        umask(0000);
+        if (!mkdir($extension_dir, 0777)) {
+          die("problem during ".$extension_dir." creation");
+        }
+      }
       
-      // $type == 2 means JPG
-      // $type == 3 means PNG
-      if (!in_array($type, array(2, 3)))
+      $temp_name = get_extension_dir($_GET['eid']).'/screenshot.tmp';
+      if (!move_uploaded_file($_FILES['picture']['tmp_name'], $temp_name))
       {
-        unlink($temp_name);
         $template->assign(
           array(
-            'MESSAGE' => l10n('You can only upload PNG and JPEG files as screenshot.'),
+            'MESSAGE' => l10n('Problem during upload'),
             'MESSAGE_TYPE' => 'error'
           )
         );
-        $page['errors'][] = l10n('You can only upload PNG and JPEG files as screenshot.');
+        $page['errors'][] = l10n('Problem during upload');
       }
       else
       {
-        $screenshot_filename = get_extension_screenshot_src($_GET['eid']);
-
-        // does the upload screenshot needs a resize?
-        $new_dimensions = get_picture_size(
-          $width,
-          $height,
-          $conf['screenshot_maxwidth'],
-          $conf['screenshot_maxheight']
-          );
+        list($width, $height, $type) = getimagesize($temp_name);
         
-        if ($width != $new_dimensions['width']
-            or $height > $new_dimensions['height'])
+        // $type == 2 means JPG
+        // $type == 3 means PNG
+        if (!in_array($type, array(2, 3)))
         {
-          resize_picture(
-            $temp_name,
-            $screenshot_filename,
-            $new_dimensions
-            );
-          
-          $width  = $new_dimensions['width'];
-          $height = $new_dimensions['height'];
-  
           unlink($temp_name);
+          $template->assign(
+            array(
+              'MESSAGE' => l10n('You can only upload PNG and JPEG files as screenshot.'),
+              'MESSAGE_TYPE' => 'error'
+            )
+          );
+          $page['errors'][] = l10n('You can only upload PNG and JPEG files as screenshot.');
         }
         else
         {
-          @unlink($screenshot_filename);
-          rename($temp_name, $screenshot_filename);
-        }
+          $screenshot_filename = get_extension_screenshot_src($_GET['eid']);
 
-        // create the thumbnail
-        $thumbnail_filename = get_extension_thumbnail_src($_GET['eid']);
-
-        resize_picture(
-          $screenshot_filename,
-          $thumbnail_filename,
-          get_picture_size(
+          // does the upload screenshot needs a resize?
+          $new_dimensions = get_picture_size(
             $width,
             $height,
-            $conf['thumbnail_maxwidth'],
-            $conf['thumbnail_maxheight']
-            )
-          );
+            $conf['screenshot_maxwidth'],
+            $conf['screenshot_maxheight']
+            );
+          
+          if ($width != $new_dimensions['width']
+              or $height > $new_dimensions['height'])
+          {
+            resize_picture(
+              $temp_name,
+              $screenshot_filename,
+              $new_dimensions
+              );
+            
+            $width  = $new_dimensions['width'];
+            $height = $new_dimensions['height'];
+    
+            unlink($temp_name);
+          }
+          else
+          {
+            @unlink($screenshot_filename);
+            rename($temp_name, $screenshot_filename);
+          }
+
+          // create the thumbnail
+          $thumbnail_filename = get_extension_thumbnail_src($_GET['eid']);
+
+          resize_picture(
+            $screenshot_filename,
+            $thumbnail_filename,
+            get_picture_size(
+              $width,
+              $height,
+              $conf['thumbnail_maxwidth'],
+              $conf['thumbnail_maxheight']
+              )
+            );
+        }
       }
     }
+    $template->assign(
+      array(
+        'MESSAGE' => 'Screenshot successfully updated.',
+        'MESSAGE_TYPE' => 'success'
+      )
+    );
   }
-  $template->assign(
-    array(
-      'MESSAGE' => 'Screenshot successfully updated.',
-      'MESSAGE_TYPE' => 'success'
-    )
-  );
 }
 
 if (isset($_POST['submit_delete']))
 {
-  $screenshot_infos = get_extension_screenshot_infos($_GET['eid']);
-  
-  if ($screenshot_infos)
+  if (is_a_guest()) return;
+
+  if (isset($user['id']) and (is_Admin() or in_array($user['id'], $authors)))
   {
-    unlink($screenshot_infos['thumbnail_src']);
-    unlink($screenshot_infos['screenshot_url']);
+
+    $screenshot_infos = get_extension_screenshot_infos($_GET['eid']);
+    
+    if ($screenshot_infos)
+    {
+      unlink($screenshot_infos['thumbnail_src']);
+      unlink($screenshot_infos['screenshot_url']);
+    }
+  }
+  else
+  {
+    return;
   }
 }
 
