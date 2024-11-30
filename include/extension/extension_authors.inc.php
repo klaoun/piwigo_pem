@@ -51,7 +51,7 @@ INSERT INTO '.PEM_AUTHORS_TABLE.' (idx_extension, idx_user)
       $country_code = 'unkown';
       $country_name = 'unkown';
       
-      notify_mattermost('[pem] user #'.$user['id'].' ('.$user['username'].') updated authors for extension #'.$params['extension_id'].' , IP='.$_SERVER['REMOTE_ADDR'].' country='.$country_code.'/'.$country_name);
+      notify_mattermost('[pem] user #'.$user['id'].' ('.$user['username'].') updated authors for extension #'.$_GET['eid'].' , IP='.$_SERVER['REMOTE_ADDR'].' country='.$country_code.'/'.$country_name);
 
 
       $template->assign(
