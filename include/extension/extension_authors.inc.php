@@ -45,6 +45,15 @@ INSERT INTO '.PEM_AUTHORS_TABLE.' (idx_extension, idx_user)
         pwg_query($query);
       }
 
+      // $country_code = geoip_country_code_by_name($_SERVER['REMOTE_ADDR']);
+      // $country_name = geoip_country_name_by_name($_SERVER['REMOTE_ADDR']);
+
+      $country_code = 'unkown';
+      $country_name = 'unkown';
+      
+      notify_mattermost('[pem] user #'.$user['id'].' ('.$user['username'].') updated authors for extension #'.$params['extension_id'].' , IP='.$_SERVER['REMOTE_ADDR'].' country='.$country_code.'/'.$country_name);
+
+
       $template->assign(
         array(
           'MESSAGE' => 'Extension authors succefully updated.',
