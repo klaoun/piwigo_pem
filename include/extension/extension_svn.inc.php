@@ -7,6 +7,8 @@
 if (isset($_POST['pem_action']) and isset($_POST['submit']))
 {
 
+  if (is_a_guest()) return;
+
   $query = '
 SELECT svn_url, git_url, archive_root_dir, archive_name
   FROM '.PEM_EXT_TABLE.'

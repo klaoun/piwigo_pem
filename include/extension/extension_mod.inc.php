@@ -15,6 +15,8 @@ else if (isset($_GET['uid']))
 // Form submitted
 if (empty($page['errors']) and isset($_POST['pem_action']) and isset($_POST['submit']))
 {
+  if (is_a_guest()) return;
+  
   // Form submitted for translator
   if("edit_extension_translation" == $_POST['pem_action'])
   {

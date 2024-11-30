@@ -6,6 +6,9 @@
 
 if (isset($_POST['pem_action']) and isset($_POST['submit']) and "edit_user_info" == $_POST['pem_action'])
 {
+
+  if (is_a_guest()) return;
+  
   $query = '
 SELECT '.$conf['user_fields']['id'].' AS id
   FROM '.USERS_TABLE.'

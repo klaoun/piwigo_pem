@@ -113,6 +113,8 @@ function resize_picture(
 
 if (isset($_POST['pem_action']) and isset($_POST['submit']) and "edit_screenshot" == $_POST['pem_action'])
 {
+  if (is_a_guest()) return;
+  
   if (!isset($_FILES['picture']))
   {
     $template->assign(

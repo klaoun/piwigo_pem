@@ -10,6 +10,8 @@ global $template;
 // +-----------------------------------------------------------------------+
 if (isset($_POST['pem_action']) and isset($_POST['submit']) and "edit_authors" == $_POST['pem_action'])
 {
+  if (is_a_guest()) return; 
+
   // $authors = implode(',',$_POST['authors']);
   $query = '
 SELECT '.$conf['user_fields']['id'].' AS id

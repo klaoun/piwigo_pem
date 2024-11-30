@@ -24,6 +24,8 @@ $authors = get_extension_authors($_GET['eid']);
 
 if (isset($_POST['pem_action']) and isset($_POST['submit']))
 {
+  if (is_a_guest()) return;
+  
   // Form submitted for translator
   if("edit_revision_translation" == $_POST['pem_action'])
   {

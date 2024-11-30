@@ -56,6 +56,8 @@ global $template;
 
 if (isset($_POST['pem_action']) and isset($_POST['submit']))
 {
+  if (is_a_guest()) return;
+
   if ("add_link" == $_POST['pem_action'])
   {
     if (!preg_match('/^https?:/', $_POST['link_url']))
