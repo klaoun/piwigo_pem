@@ -804,6 +804,11 @@ SELECT
 
 function ws_pem_extensions_delete_author($params, &$service)
 {
+  if (get_pwg_token() != $params['pwg_token'])
+  {
+    return new PwgError(403, 'Invalid security token');
+  }
+
   if (!isset($params['extension_id']))
   {
     die('missing extension id');
@@ -832,6 +837,11 @@ DELETE FROM '.PEM_AUTHORS_TABLE.'
 
  function ws_pem_extensions_set_owner($params, &$service)
  {
+  if (get_pwg_token() != $params['pwg_token'])
+  {
+    return new PwgError(403, 'Invalid security token');
+  }
+
   if (!isset($params['extension_id']))
   {
     die('missing extension id');
@@ -879,6 +889,11 @@ INSERT INTO '.PEM_AUTHORS_TABLE.' (idx_extension, idx_user)
 function ws_pem_extensions_delete_link($params, &$service)
 {
 
+  if (get_pwg_token() != $params['pwg_token'])
+  {
+    return new PwgError(403, 'Invalid security token');
+  }
+
   $query = '
 DELETE
   FROM '.PEM_LINKS_TABLE.'
@@ -893,6 +908,10 @@ DELETE
  */
 function ws_pem_extensions_delete_svn_git_config($params, &$service)
 {
+  if (get_pwg_token() != $params['pwg_token'])
+  {
+    return new PwgError(403, 'Invalid security token');
+  }
 
   $query = '
 UPDATE '.PEM_EXT_TABLE.'
@@ -911,6 +930,11 @@ WHERE id_extension = '.$params['extension_id'].'
  */
 function ws_pem_extensions_delete_extension($params, &$service)
 {
+  if (get_pwg_token() != $params['pwg_token'])
+  {
+    return new PwgError(403, 'Invalid security token');
+  }
+
   global $user;
 
   $query = '
@@ -970,7 +994,6 @@ DELETE
 ;';
   pwg_query($query);
 
-  notify_mattermost('[pem] user #'.$user['id'].' ('.$user['username'].') deleted extension #'.$params['extension_id'].'('.$extension_name.') , IP='.$_SERVER['REMOTE_ADDR'].' country='.$country_code.'/'.$country_name);
   // $country_code = geoip_country_code_by_name($_SERVER['REMOTE_ADDR']);
   // $country_name = geoip_country_name_by_name($_SERVER['REMOTE_ADDR']);
 
@@ -985,6 +1008,11 @@ DELETE
  */
 function ws_pem_revisions_delete_revision($params, &$service)
 { 
+  if (get_pwg_token() != $params['pwg_token'])
+  {
+    return new PwgError(403, 'Invalid security token');
+  }
+
   global $user;
 
   $query = '
