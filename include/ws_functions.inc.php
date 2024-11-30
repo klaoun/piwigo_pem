@@ -804,6 +804,7 @@ SELECT
 
 function ws_pem_extensions_delete_author($params, &$service)
 {
+
   if (get_pwg_token() != $params['pwg_token'])
   {
     return new PwgError(403, 'Invalid security token');
@@ -819,6 +820,8 @@ function ws_pem_extensions_delete_author($params, &$service)
     die('missing user id');
   }
 
+  global $user;
+
   $eid = $params['extension_id'];
   $uid = $params['user_id'];
 
@@ -829,6 +832,15 @@ DELETE FROM '.PEM_AUTHORS_TABLE.'
 ;';
   
   pwg_query($query);
+
+  // $country_code = geoip_country_code_by_name($_SERVER['REMOTE_ADDR']);
+  // $country_name = geoip_country_name_by_name($_SERVER['REMOTE_ADDR']);
+
+  $country_code = 'unkown';
+  $country_name = 'unkown';
+  
+  notify_mattermost('[pem] user #'.$user['id'].' ('.$user['username'].') deleted author from extension #'.$eid.' , IP='.$_SERVER['REMOTE_ADDR'].' country='.$country_code.'/'.$country_name);
+
 }
 
 /**
