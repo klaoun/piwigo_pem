@@ -18,17 +18,26 @@
 // | USA.                                                                  |
 // +-----------------------------------------------------------------------+
 
+// php publish_embedded_extensions.php --version_id=86 --release_name=14.4.0
+
 if (php_sapi_name() != 'cli')
 {
   die('this script must be run from cli');
 }
 
-define( 'INTERNAL', true );
-$root_path = dirname(dirname(__FILE__)).'/';
-$_SERVER['REQUEST_URI'] = '';
-require_once($root_path.'include/common.inc.php');
+$_SERVER['REMOTE_ADDR'] = '127.0.0.1';
+define ('PHPWG_ROOT_PATH', '../../../');
+include(PHPWG_ROOT_PATH.'include/common.inc.php');
+include(PHPWG_ROOT_PATH.'admin/include/functions.php');
 
-$opt = getopt('', array('ext_id:', 'version_id:', 'release_name:'));
+$query = 'SELECT id_language, code from piwigo_pem_languages;';
+$pem_ext_languages = query2array($query, 'code', 'id_language');
+
+$conf['publish_url'] = 'https://piwigo.org/ext';
+$conf['publish_username'] = 'Piwigo Team';
+$conf['publish_password'] = 'qPuUeh0zT';
+
+$opt = getopt('', array('version_id:', 'release_name:'));
 
 $mandatory_fields = array('version_id', 'release_name');
 foreach ($mandatory_fields as $field)
@@ -39,99 +48,154 @@ foreach ($mandatory_fields as $field)
   }
 }
 
-$conf['publish_url'] = 'https://piwigo.org/ext';
-$conf['publish_username'] = 'Piwigo Team';
-$conf['publish_password'] = 'qPuUeh0zT';
+// check release_name
+if (!preg_match('/^\d+\.\d+\.\d+$/', $opt['release_name']))
+{
+  die('invalid release_name parameter');
+}
+
+$unzip_dir = bin2hex(random_bytes(16));
+mkdir($unzip_dir);
+$tools_dir = getcwd();
+chdir($unzip_dir);
+
+$archive_base_url = $conf['publish_url'].'/plugins/piwigo_pem/tools/'.$unzip_dir.'/piwigo/';
+
+$url = 'https://piwigo.org/download/dlcounter.php?code='.$opt['release_name'];
+$file_name = 'piwigo-'.$opt['release_name'].'.zip';
+    
+if (file_put_contents($file_name, file_get_contents($url)))
+{
+  echo 'Piwigo '.$opt['release_name']." downloaded successfully\n";
+}
+else
+{
+  die('Piwigo '.$opt['release_name'].' download failed');
+}
+
+exec('unzip '.$file_name);
+
+$cwd = getcwd();
 
 $cookie_jar = tempnam("/tmp", "COOKIE");
 pem_login($cookie_jar);
+// pem_session_status($cookie_jar);
 
-// publish languages listed in PEM (and which should be in Piwigo release)
-$query = '
-SELECT
-    id_extension,
-    svn_url,
-    name
-  FROM '.EXT_TABLE.'
-  WHERE svn_url LIKE \'https://github.com/Piwigo/Piwigo/trunk/language/%\'
-';
+$exts = array(
+  'themes' => array(
+    'elegant' => 685,
+    'smartpocket' => 599,
+    'modus' => 728,
+  ),  
+  'plugins' => array(
+    'AdminTools' => 720,
+    'language_switch' => 123,
+    'LocalFilesEditor' => 144,
+    'TakeATour' => 776,
+  ),  
+);
+$exts = array(); // TODO comment if you want to publish themes/plugins
 
-if (isset($opt['ext_id']))
+foreach ($exts as $ext_type => $ext_list)
 {
-  $query.= '
-    AND id_extension = '.$opt['ext_id'].'
-';
-}
-
-$query.= '
-  ORDER BY RAND()
-  LIMIT 100
-;';
-$languages = query2array($query);
-
-foreach ($languages as $language)
-{
-  $language['svn_url'] = str_replace('trunk', 'tags/'.$opt['release_name'], $language['svn_url']);
-  echo 'language #'.$language['id_extension'].' being published...';
-  publish_revision($cookie_jar, $language['id_extension'], 'svn', $language['svn_url'], $opt['release_name']);
-  echo " done!\n";
-}
-
-// publish plugins/themes embedded in Piwigo
-$eids = array(
-  685,  // elegant
-  599,  // smartpocket
-  728,  // modus
-  720,  // AdminTools
-  123,  // LanguageSwitch
-  144,  // LocalFilesEditor
-  776,  // TakeATour
-  );
-
-$query = '
-SELECT
-    id_extension,
-    git_url
-  FROM '.EXT_TABLE.'
-  WHERE id_extension IN ('.implode(',', $eids).')
-;';
-$git_url_of = query2array($query, 'id_extension', 'git_url');
-
-foreach ($eids as $eid)
-{
-  echo 'plugin #'.$eid.' search new languages...';
-  $new_languages = get_new_languages($eid);
-  echo " done!\n";
-
-  if (!empty($new_languages['desc_extra']))
+  chdir('piwigo/'.$ext_type);
+  foreach ($ext_list as $ext_dir => $eid)
   {
-    $new_languages['desc_extra'] = "\n\n".$new_languages['desc_extra'];
-    print $new_languages['desc_extra']."\n\n";
+    $language_ids = array();
+
+    $directories = array_filter(glob($ext_dir.'/language/*'), 'is_dir');
+    foreach ($directories as $dirpath)
+    {
+      $dirname = basename($dirpath);
+      if (preg_match('/^[a-z]{2,3}_[A-Z]{2}$/', $dirname))
+      {
+        if (isset($pem_ext_languages[$dirname]))
+        {
+          $language_ids[] = $pem_ext_languages[$dirname];
+        }
+        else
+        {
+          echo $dirpath.' is an unknown language in PEM'."\n";
+        }
+      }
+    }
+    // print_r($language_ids);exit();
+
+    $zip_name = $ext_dir.'_'.$opt['release_name'].'.zip';
+    exec('zip -r '.$zip_name.' '.$ext_dir);
+    echo $zip_name.' created'."\n";
+
+    $archive_url = $archive_base_url.$ext_type.'/'.$zip_name;
+    echo '$archive_url = '.$archive_url."\n";
+
+    echo $ext_type.' #'.$eid.' ('.$ext_dir.') being published...';
+    publish_revision(
+      $cookie_jar,
+      $eid,
+      $archive_url,
+      $opt['release_name'],
+      null,
+      $language_ids
+    );
+    echo " done!\n";
   }
-  
-  echo 'plugin #'.$eid.' being published...';
+  chdir($cwd);
+}
+
+// time to deal with languages
+chdir('piwigo/language');
+
+$query = '
+SELECT
+    archive_root_dir,
+    id_extension
+  FROM piwigo_pem_extensions
+    JOIN piwigo_pem_extensions_categories ON idx_extension=id_extension
+  WHERE idx_category=8
+    AND archive_root_dir IS NOT NULL
+    AND archive_root_dir REGEXP \'^[a-z]{2,3}_[a-z]{2}$\'
+;';
+$piwigo_languages_published = query2array($query, 'id_extension', 'archive_root_dir');
+$piwigo_languages_published = array(); // TODO to comment if you want to publish languages
+
+$ext_type = 'language';
+
+foreach ($piwigo_languages_published as $eid => $language_code)
+{
+  if (!is_dir($language_code))
+  { 
+    echo $language_code.' is not in the filesystem'."\n";
+    continue;
+  }
+
+  $zip_name = $language_code.'_'.$opt['release_name'].'.zip';
+  exec('zip -r '.$zip_name.' '.$language_code);
+  echo $zip_name.' created'."\n";
+
+  $archive_url = $archive_base_url.$ext_type.'/'.$zip_name;
+  echo '$archive_url = '.$archive_url."\n";
+
+  echo $ext_type.' #'.$eid.' ('.$language_code.') being published...';
   publish_revision(
     $cookie_jar,
     $eid,
-    'git',
-    $git_url_of[$eid],
-    $opt['release_name'],
-    $new_languages['desc_extra'],
-    $new_languages['language_ids']
-    );
+    $archive_url,
+    $opt['release_name']
+  );
   echo " done!\n";
 }
 
+chdir($tools_dir);
+deltree($unzip_dir);
 unlink($cookie_jar);
 
 function pem_login($cookie_jar)
 {
   global $conf;
   
-  $url = $conf['publish_url'].'/identification.php';
+  $url = $conf['publish_url'].'/ws.php?method=pwg.session.login&format=json';
 
-  $postdata = 'submit=1';
-  $postdata.= '&username='.$conf['publish_username'];
+  $postdata = '&username='.$conf['publish_username'];
   $postdata.= '&password='.$conf['publish_password'];
 
   $ch = curl_init();
@@ -145,28 +209,48 @@ function pem_login($cookie_jar)
   
   //close connection
   curl_close($ch);
+
 }
 
-function publish_revision($cookie_jar, $eid, $file_type, $scm_url, $release_name, $desc_extra=null, $language_ids=null)
+function pem_session_status($cookie_jar)
+{
+  global $conf;
+
+  $url = $conf['publish_url'].'/ws.php?method=pwg.session.getStatus&format=json';
+
+  $ch = curl_init();
+  curl_setopt($ch, CURLOPT_URL, $url);
+  curl_setopt($ch, CURLOPT_COOKIEJAR, $cookie_jar);
+  curl_setopt($ch, CURLOPT_COOKIEFILE,  $cookie_jar);
+  curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+
+  $resultLogin = curl_exec($ch);
+  print_r(json_decode($resultLogin, true)); exit();
+  
+  //close connection
+  curl_close($ch);
+}
+
+function publish_revision($cookie_jar, $eid, $file_url, $release_name, $desc_extra=null, $language_ids=null)
 {
   global $conf, $opt;
 
-  $url = $conf['publish_url'].'/revision_add.php?eid='.$eid;
+  $url = $conf['publish_url'].'/index.php?eid='.$eid;
 
   $postfields = array(
+    'pem_action' => 'add_revision',
     'revision_version' => $release_name,
-    'file_type' => $file_type,
-    'svn_url' => $scm_url,
-    'git_url' => $scm_url,
+    'file_type' => 'url',
+    'download_url' => $file_url,
     'compatible_versions' => array($opt['version_id']),
-    'revision_descriptions' => array(5 => 'same as Piwigo '.$release_name),
+    'revision_descriptions' => array(5 => 'Same as embed in Piwigo '.$release_name),
     'default_description' => 5,
     'submit' => 'Submit',
     );
 
   if (!empty($language_ids))
   {
-    $postfields['extensions_languages'] = $language_ids;
+    $postfields['revision_languages'] = $language_ids;
   }
 
   if (!empty($desc_extra))
