@@ -15,7 +15,7 @@ if (isset($_POST['pem_action']) and isset($_POST['submit']))
 
   if (is_a_guest()) return;
 
-  if (isset($user['id']) and (is_Admin() or in_array($user['id'], $authors)))
+  if (is_admin() or in_array($user['id'], $authors))
   {
     $query = '
 SELECT svn_url, git_url, archive_root_dir, archive_name
@@ -125,6 +125,13 @@ WHERE id_extension = '.$_GET['eid'].'
   }
   else
   {
+    $template->assign(
+      array(
+        'MESSAGE' => l10n('You must be the extension author to modify it.'),
+        'MESSAGE_TYPE' => 'error'
+      )
+    );
+
     return;
   }
 }

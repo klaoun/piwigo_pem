@@ -15,10 +15,9 @@ if (isset($_POST['pem_action']) and isset($_POST['submit']) and "edit_authors" =
 
   //Get list of extension authors
   $authors = get_extension_authors($current_extension_page_id);
-  
-  if (isset($user['id']) and (is_Admin() or in_array($user['id'], $authors)))
-  {
 
+  if (is_admin() or in_array($user['id'], $authors))
+  {
     // $authors = implode(',',$_POST['authors']);
     $query = '
 SELECT '.$conf['user_fields']['id'].' AS id
@@ -64,6 +63,13 @@ INSERT INTO '.PEM_AUTHORS_TABLE.' (idx_extension, idx_user)
   }
   else
   {
+    $template->assign(
+      array(
+        'MESSAGE' => l10n('You must be the extension author to modify it.'),
+        'MESSAGE_TYPE' => 'error'
+      )
+    );
+
     return;
   }
 }

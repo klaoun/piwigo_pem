@@ -26,17 +26,9 @@ if (empty($page['errors']) and isset($_POST['pem_action']) and isset($_POST['sub
 {
   if (is_a_guest()) return;
 
-  //Get list of extension authors
-
-  if (isset($user['id']))
-  {
     // Form submitted for translator
-    if ("edit_extension_translation" == $_POST['pem_action'])
+    if ('edit_extension_translation' == $_POST['pem_action'] and isTranslator($user['id']))
     {
-      if (!array_key_exists($user['id'], $conf['translator_users']))
-      {
-        return;
-      }
 
       $query = 'SELECT idx_language FROM '.PEM_EXT_TABLE.' WHERE id_extension = '.$current_extension_page_id.';';
       $result = pwg_query($query);
@@ -124,7 +116,7 @@ UPDATE '.PEM_EXT_TABLE.'
         
       }
     }
-    else if("edit_general_info" == $_POST['pem_action'] || "add_ext" == $_POST['pem_action'])
+    else if(in_array($_POST['pem_action'], array('add_ext','edit_general_info')))
     {
 
       // Checks that all the fields have been well filled
@@ -149,14 +141,11 @@ UPDATE '.PEM_EXT_TABLE.'
         }
       }
 
-      // this action comes from single_view, we have an eid that is set
-      if ("edit_general_info" == $_POST['pem_action'])
+    // this action comes from single_view, we have an eid that is set
+    if ("edit_general_info" == $_POST['pem_action'])
+    {
+      if (is_admin() or in_array($user['id'], $authors))
       {
-        if (!is_Admin() or !in_array($user['id'], $authors))
-        {
-          return;
-        }
-
         if (empty($_POST['extension_descriptions'][$_POST['default_description']]))
         {
           $template->assign(
@@ -214,6 +203,17 @@ DELETE
         notify_mattermost('[pem] user #'.$user['id'].' ('.$user['username'].') updated extension #'.$current_extension_page_id.' ('.$_POST['extension_name'].') , IP='.$_SERVER['REMOTE_ADDR'].' country='.$country_code.'/'.$country_name);
       
       }
+        $template->assign(
+          array(
+            'MESSAGE' => 'You must be the extension author or translator to modify it.',
+            'MESSAGE_TYPE' => 'error'
+          )
+        );
+    
+        return;
+      }
+      }
+
       // This actions comes from account, we have a uid that is set and not an eid
       else if (isset($_POST['pem_action']) and isset($_POST['submit']) and "add_ext" == $_POST['pem_action'])
       {
@@ -312,9 +312,6 @@ DELETE
     }
   }
   else
-  {
-    return;
-  }
 }
 
 // Gets the available tags

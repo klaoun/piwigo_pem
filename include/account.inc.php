@@ -140,7 +140,7 @@ SELECT
             'compatibility_last' => !empty($compatible_version_of_extensions[$extension_id]) ? end($compatible_version_of_extensions[$extension_id]) : '',
           ); 
 
-          $can_see_all_ext = (is_Admin($user['id']) || $user['id'] == $current_user_page_id) ? true : false;
+          $can_see_all_ext = (is_admin($user['id']) || $user['id'] == $current_user_page_id) ? true : false;
 
           if( $can_see_all_ext && in_array($extension_id, $extension_ids)){
             $extensions[$extension_id] = $extension;

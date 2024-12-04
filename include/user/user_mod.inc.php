@@ -71,6 +71,12 @@ SELECT '.$conf['user_fields']['id'].' AS id
   }
   else
   {
+    $template->assign(
+      array(
+        'MESSAGE' => l10n('You must the current user to modify the information.'),
+        'MESSAGE_TYPE' => 'error'
+      )
+    );
     return;
   }
 }

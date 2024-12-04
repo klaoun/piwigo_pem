@@ -122,10 +122,8 @@ UPDATE '.PEM_REV_TABLE.'
     }
     else if("add_revision" == $_POST['pem_action'] or "edit_revision" == $_POST['pem_action'])
     {
-      if (!is_Admin() or !in_array($user['id'], $authors))
+      if (is_admin() or in_array($user['id'], $authors))
       {
-        return;
-      }
 
       // The file is mandatory only when we add a revision, not when we modify it
       $file_to_upload = null;
@@ -840,6 +838,18 @@ DELETE
 
         unset($_POST);
       }
+    }
+    else
+    {
+      $template->assign(
+        array(
+          'MESSAGE' => l10n('You must be the extension author to modify it.'),
+          'MESSAGE_TYPE' => 'error'
+        )
+      );
+
+      return;
+    }
     }
   }
   else

@@ -61,7 +61,7 @@ if (isset($_POST['pem_action']) and isset($_POST['submit']))
   //Get list of extension authors
   $authors = get_extension_authors($current_extension_page_id);
 
-  if (isset($user['id']) and (is_Admin() or in_array($user['id'], $authors)))
+  if (is_admin() or in_array($user['id'], $authors))
   {
     if ("add_link" == $_POST['pem_action'])
     {
@@ -205,6 +205,13 @@ WHERE id_extension = '.$_GET['eid'].'
   }
   else
   {
+    $template->assign(
+      array(
+        'MESSAGE' => l10n('You must be the extension author to modify it.'),
+        'MESSAGE_TYPE' => 'error'
+      )
+    );
+
     return;
   }
 }
