@@ -231,13 +231,16 @@ if (isset($_POST['pem_action']) and isset($_POST['submit']) and "edit_screenshot
     $country_name = 'unkown';
     
     notify_mattermost('[pem] user #'.$user['id'].' ('.$user['username'].') updated authors for extension #'.$_GET['eid'].' , IP='.$_SERVER['REMOTE_ADDR'].' country='.$country_code.'/'.$country_name);
+    pwg_activity('pem_screenshot', $_GET['eid'], 'add', array('extension' => $_GET['eid']));
+
     $template->assign(
       array(
-        'MESSAGE' => 'Screenshot successfully updated.',
+        'MESSAGE' => l10n('Screenshot successfully updated.'),
         'MESSAGE_TYPE' => 'success'
       )
     );
 
+    unset($_POST);
   }
   else
   {

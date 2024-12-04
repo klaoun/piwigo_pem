@@ -99,9 +99,6 @@ UPDATE '.PEM_REV_TABLE.'
 ;';
           pwg_query($query);
         }
-      
-        $message = l10n('Revision translation sucessfully updated');
-    
 
         // $country_code = geoip_country_code_by_name($_SERVER['REMOTE_ADDR']);
         // $country_name = geoip_country_name_by_name($_SERVER['REMOTE_ADDR']);
@@ -110,9 +107,11 @@ UPDATE '.PEM_REV_TABLE.'
         $country_name = 'unkown';
         
         notify_mattermost('[pem] user #'.$user['id'].' as a translator ('.$user['username'].') updated description for extension #'.$current_extension_page_id.' , IP='.$_SERVER['REMOTE_ADDR'].' country='.$country_code.'/'.$country_name);
+        pwg_activity('pem_revision', $_POST['revision_id'], 'edit', array('language_id' => $lang_id));
+  
         $template->assign(
           array(
-            'MESSAGE' => $message,
+            'MESSAGE' => l10n('Revision translation sucessfully updated'),
             'MESSAGE_TYPE' => 'success'
           )
         );

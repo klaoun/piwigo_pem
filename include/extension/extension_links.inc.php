@@ -122,7 +122,15 @@ SELECT MAX(`rank`) AS current_rank
         array_keys($insert),
         array($insert)
         );
-    }
+      }
+
+      // findlink id
+      $query = '
+SELECT id_link
+  FROM '.PEM_LINKS_TABLE.'
+  WHERE name = "'.$_POST['link_name'].'"
+;';
+      list($link_id) = pwg_db_fetch_array(pwg_query($query));
 
       // $country_code = geoip_country_code_by_name($_SERVER['REMOTE_ADDR']);
       // $country_name = geoip_country_name_by_name($_SERVER['REMOTE_ADDR']);
@@ -131,6 +139,16 @@ SELECT MAX(`rank`) AS current_rank
       $country_name = 'unkown';
 
       notify_mattermost('[pem] user #'.$user['id'].' ('.$user['username'].') added a link for extension #'.$_GET['eid'].' , IP='.$_SERVER['REMOTE_ADDR'].' country='.$country_code.'/'.$country_name);
+      pwg_activity('pem_link', $link_id, 'add', array('extension' => $_GET['eid']));
+
+      $template->assign(
+        array(
+          'MESSAGE' => l10n('Link successfully added.'),
+          'MESSAGE_TYPE' => 'success'
+        )
+      );
+
+      unset($_POST);
     }
     else if ("edit_link" == $_POST['pem_action'])
     {
@@ -162,12 +180,16 @@ SELECT MAX(`rank`) AS current_rank
         $country_name = 'unkown';
 
         notify_mattermost('[pem] user #'.$user['id'].' ('.$user['username'].') modified a link for extension #'.$_GET['eid'].' , IP='.$_SERVER['REMOTE_ADDR'].' country='.$country_code.'/'.$country_name);
+        pwg_activity('pem_link', $_POST['link_id'], 'edit', array('extension'=>$_GET['eid']));
+
         $template->assign(
           array(
-            'MESSAGE' => 'This link has been succesfully updated.',
+            'MESSAGE' => l10n('Link successfully udated.'),
             'MESSAGE_TYPE' => 'success'
           )
         );
+
+        unset($_POST);
       }
       else if(!is_numeric($data['id_link']) && 'git' == $data['id_link'] || 'svn' == $data['id_link'])
       {
@@ -185,14 +207,8 @@ UPDATE '.PEM_EXT_TABLE.'
 SET '.$_POST['link_id'].'_url = "'.$data['url'].'"
 WHERE id_extension = '.$_GET['eid'].'
 ;';
-      pwg_query($query);
-      
-      $template->assign(
-        array(
-          'MESSAGE' => 'This link has been succesfully updated.',
-          'MESSAGE_TYPE' => 'success'
-        )
-      );
+        pwg_query($query);
+        
         // $country_code = geoip_country_code_by_name($_SERVER['REMOTE_ADDR']);
         // $country_name = geoip_country_name_by_name($_SERVER['REMOTE_ADDR']);
 
@@ -200,6 +216,16 @@ WHERE id_extension = '.$_GET['eid'].'
         $country_name = 'unkown';
 
         notify_mattermost('[pem] user #'.$user['id'].' ('.$user['username'].') modified svn/git link #'.$_GET['eid'].' , IP='.$_SERVER['REMOTE_ADDR'].' country='.$country_code.'/'.$country_name);
+        pwg_activity('pem_link', $_POST['link_id'], 'edit', array('extension'=>$_GET['eid']));
+
+        $template->assign(
+          array(
+            'MESSAGE' => l10n('Link successfully udated.'),
+            'MESSAGE_TYPE' => 'success'
+          )
+        );
+
+        unset($_POST);
       }
     }
   }

@@ -113,6 +113,7 @@ WHERE id_extension = '.$_GET['eid'].'
         $country_name = 'unkown';
     
         notify_mattermost('[pem] user #'.$user['id'].' ('.$user['username'].') updated svn/git for extension #'.$current_extension_page_id.' , IP='.$_SERVER['REMOTE_ADDR'].' country='.$country_code.'/'.$country_name);
+        pwg_activity('pem_svn_git', $_GET['eid'], 'edit', array('extension' => $_GET['eid']));
 
         $template->assign(
           array(
@@ -120,6 +121,8 @@ WHERE id_extension = '.$_GET['eid'].'
             'MESSAGE_TYPE' => 'success'
           )
         );
+
+        unset($_POST);
       }
     }
   }

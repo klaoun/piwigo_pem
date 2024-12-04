@@ -51,14 +51,16 @@ INSERT INTO '.PEM_AUTHORS_TABLE.' (idx_extension, idx_user)
       $country_name = 'unkown';
       
       notify_mattermost('[pem] user #'.$user['id'].' ('.$user['username'].') updated authors for extension #'.$_GET['eid'].' , IP='.$_SERVER['REMOTE_ADDR'].' country='.$country_code.'/'.$country_name);
-
+      pwg_activity('pem_author', $author_id, 'add', array('extension' => $_GET['eid']));
 
       $template->assign(
         array(
-          'MESSAGE' => 'Extension authors succefully updated.',
+          'MESSAGE' => l10n('Extension authors successfully updated.'),
           'MESSAGE_TYPE' => 'success'
         )
       );
+
+      unset($_POST);
     }
   }
   else

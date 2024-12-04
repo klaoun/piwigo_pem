@@ -60,9 +60,11 @@ SELECT '.$conf['user_fields']['id'].' AS id
         $country_name = 'unkown';
 
         notify_mattermost('[pem] user #'.$user['id'].' ('.$user['username'].') updated their information , IP='.$_SERVER['REMOTE_ADDR'].' country='.$country_code.'/'.$country_name);
+        pwg_activity('pem_user', $_POST['rid'], 'edit', array());
+
         $template->assign(
           array(
-            'MESSAGE' => l10n('This user has been succesfully updated.'),
+            'MESSAGE' => l10n('User succesfully updated.'),
             'MESSAGE_TYPE' => 'success'
           )
         );
