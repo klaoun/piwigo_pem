@@ -227,28 +227,45 @@ if (isset($_POST['pem_action']) and isset($_POST['submit']) and "edit_screenshot
         'MESSAGE_TYPE' => 'success'
       )
     );
-  }
-}
 
-if (isset($_POST['submit_delete']))
-{
-  if (is_a_guest()) return;
-
-  if (isset($user['id']) and (is_Admin() or in_array($user['id'], $authors)))
-  {
-
-    $screenshot_infos = get_extension_screenshot_infos($_GET['eid']);
-    
-    if ($screenshot_infos)
-    {
-      unlink($screenshot_infos['thumbnail_src']);
-      unlink($screenshot_infos['screenshot_url']);
-    }
   }
   else
   {
     return;
   }
 }
+
+//We can't delete screenshot with new interface, to used bed later when we add the option
+
+// if (isset($_POST['submit_delete']))
+// {
+//   if (is_a_guest()) return;
+
+//   //Get list of extension authors
+//   $authors = get_extension_authors($current_extension_page_id);
+
+//   if (is_admin() or in_array($user['id'], $authors))
+//   {
+
+//     $screenshot_infos = get_extension_screenshot_infos($_GET['eid']);
+    
+//     if ($screenshot_infos)
+//     {
+//       unlink($screenshot_infos['thumbnail_src']);
+//       unlink($screenshot_infos['screenshot_url']);
+//     }
+//   }
+//   else
+//   {
+//     $template->assign(
+//       array(
+//         'MESSAGE' => 'You must be the extension author to modify it.',
+//         'MESSAGE_TYPE' => 'error'
+//       )
+//     );
+
+//     return;
+//   }
+// }
 
 ?>
