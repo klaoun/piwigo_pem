@@ -52,7 +52,14 @@ SELECT '.$conf['user_fields']['id'].' AS id
           $data,
           array('id' => $data['id'])
         );
-        
+
+        // $country_code = geoip_country_code_by_name($_SERVER['REMOTE_ADDR']);
+        // $country_name = geoip_country_name_by_name($_SERVER['REMOTE_ADDR']);
+
+        $country_code = 'unkown';
+        $country_name = 'unkown';
+
+        notify_mattermost('[pem] user #'.$user['id'].' ('.$user['username'].') updated their information , IP='.$_SERVER['REMOTE_ADDR'].' country='.$country_code.'/'.$country_name);
         $template->assign(
           array(
             'MESSAGE' => l10n('This user has been succesfully updated.'),

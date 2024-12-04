@@ -102,6 +102,9 @@ UPDATE '.PEM_EXT_TABLE.'
           pwg_query($query);
         }
         
+        // $country_code = geoip_country_code_by_name($_SERVER['REMOTE_ADDR']);
+        // $country_name = geoip_country_name_by_name($_SERVER['REMOTE_ADDR']);
+
         $country_code = 'unkown';
         $country_name = 'unkown';
         

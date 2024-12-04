@@ -102,6 +102,14 @@ UPDATE '.PEM_REV_TABLE.'
       
         $message = l10n('Revision translation sucessfully updated');
     
+
+        // $country_code = geoip_country_code_by_name($_SERVER['REMOTE_ADDR']);
+        // $country_name = geoip_country_name_by_name($_SERVER['REMOTE_ADDR']);
+
+        $country_code = 'unkown';
+        $country_name = 'unkown';
+        
+        notify_mattermost('[pem] user #'.$user['id'].' as a translator ('.$user['username'].') updated description for extension #'.$current_extension_page_id.' , IP='.$_SERVER['REMOTE_ADDR'].' country='.$country_code.'/'.$country_name);
         $template->assign(
           array(
             'MESSAGE' => $message,
@@ -807,23 +815,27 @@ DELETE
 
         if ("add_revision" == $_POST['pem_action'])
         {
+          notify_mattermost('[pem] user #'.$user['id'].' ('.$user['username'].') added a new revision #'.$_POST['rid'].'('.$_POST['revision_version'].') for extension #'.$_GET['eid'].'('.$page['extension_name'].') , IP='.$_SERVER['REMOTE_ADDR'].' country='.$country_code.'/'.$country_name);
+          pwg_activity('pem_revision', $_POST['rid'], 'add', array('extension' => $_GET['eid']));
+
           $template->assign(
             array(
               'MESSAGE' => l10n('Revision successfully added.'),
               'MESSAGE_TYPE' => 'success'
             )
           );
-          notify_mattermost('[pem] user #'.$user['id'].' ('.$user['username'].') added a new revision #'.$_POST['rid'].'('.$_POST['revision_version'].') for extension #'.$_GET['eid'].'('.$page['extension_name'].') , IP='.$_SERVER['REMOTE_ADDR'].' country='.$country_code.'/'.$country_name);
         }
         else if ("edit_revision" == $_POST['pem_action'])
         {
+          notify_mattermost('[pem] user #'.$user['id'].' ('.$user['username'].') updated revision #'.$_POST['rid'].' ('.$_POST['revision_version'].') for extension #'.$_GET['eid'].' ('.$page['extension_name'].') , IP='.$_SERVER['REMOTE_ADDR'].' country='.$country_code.'/'.$country_name);
+          pwg_activity('pem_revision', $_POST['rid'], 'edit', array('extension' => $_GET['eid']));
+
           $template->assign(
             array(
               'MESSAGE' => l10n('Revision successfully modified.'),
               'MESSAGE_TYPE' => 'success'
             )
           );
-          notify_mattermost('[pem] user #'.$user['id'].' ('.$user['username'].') updated a revision #'.$_POST['rid'].' ('.$_POST['revision_version'].') for extension #'.$_GET['eid'].' ('.$page['extension_name'].') , IP='.$_SERVER['REMOTE_ADDR'].' country='.$country_code.'/'.$country_name);
         }
 
         unset($_POST);

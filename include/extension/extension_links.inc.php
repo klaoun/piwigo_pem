@@ -123,6 +123,14 @@ SELECT MAX(`rank`) AS current_rank
         array($insert)
         );
     }
+
+      // $country_code = geoip_country_code_by_name($_SERVER['REMOTE_ADDR']);
+      // $country_name = geoip_country_name_by_name($_SERVER['REMOTE_ADDR']);
+
+      $country_code = 'unkown';
+      $country_name = 'unkown';
+
+      notify_mattermost('[pem] user #'.$user['id'].' ('.$user['username'].') added a link for extension #'.$_GET['eid'].' , IP='.$_SERVER['REMOTE_ADDR'].' country='.$country_code.'/'.$country_name);
     }
     else if ("edit_link" == $_POST['pem_action'])
     {
@@ -146,6 +154,14 @@ SELECT MAX(`rank`) AS current_rank
           array('id_link' => $data['id_link'])
         );
         
+
+        // $country_code = geoip_country_code_by_name($_SERVER['REMOTE_ADDR']);
+        // $country_name = geoip_country_name_by_name($_SERVER['REMOTE_ADDR']);
+
+        $country_code = 'unkown';
+        $country_name = 'unkown';
+
+        notify_mattermost('[pem] user #'.$user['id'].' ('.$user['username'].') modified a link for extension #'.$_GET['eid'].' , IP='.$_SERVER['REMOTE_ADDR'].' country='.$country_code.'/'.$country_name);
         $template->assign(
           array(
             'MESSAGE' => 'This link has been succesfully updated.',
@@ -177,6 +193,13 @@ WHERE id_extension = '.$_GET['eid'].'
           'MESSAGE_TYPE' => 'success'
         )
       );
+        // $country_code = geoip_country_code_by_name($_SERVER['REMOTE_ADDR']);
+        // $country_name = geoip_country_name_by_name($_SERVER['REMOTE_ADDR']);
+
+        $country_code = 'unkown';
+        $country_name = 'unkown';
+
+        notify_mattermost('[pem] user #'.$user['id'].' ('.$user['username'].') modified svn/git link #'.$_GET['eid'].' , IP='.$_SERVER['REMOTE_ADDR'].' country='.$country_code.'/'.$country_name);
       }
     }
   }

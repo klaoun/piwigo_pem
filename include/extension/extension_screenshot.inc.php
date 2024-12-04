@@ -221,6 +221,13 @@ if (isset($_POST['pem_action']) and isset($_POST['submit']) and "edit_screenshot
         }
       }
     }
+    // $country_code = geoip_country_code_by_name($_SERVER['REMOTE_ADDR']);
+    // $country_name = geoip_country_name_by_name($_SERVER['REMOTE_ADDR']);
+
+    $country_code = 'unkown';
+    $country_name = 'unkown';
+    
+    notify_mattermost('[pem] user #'.$user['id'].' ('.$user['username'].') updated authors for extension #'.$_GET['eid'].' , IP='.$_SERVER['REMOTE_ADDR'].' country='.$country_code.'/'.$country_name);
     $template->assign(
       array(
         'MESSAGE' => 'Screenshot successfully updated.',

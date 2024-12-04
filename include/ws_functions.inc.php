@@ -863,6 +863,8 @@ DELETE FROM '.PEM_AUTHORS_TABLE.'
   {
     die('missing user id');
   }
+
+  global $user;
   
   $eid = $params['extension_id'];
   $uid = $params['user_id'];
@@ -893,6 +895,14 @@ INSERT INTO '.PEM_AUTHORS_TABLE.' (idx_extension, idx_user)
     pwg_query($query);
 
   }
+
+  // $country_code = geoip_country_code_by_name($_SERVER['REMOTE_ADDR']);
+  // $country_name = geoip_country_name_by_name($_SERVER['REMOTE_ADDR']);
+
+  $country_code = 'unkown';
+  $country_name = 'unkown';
+
+  notify_mattermost('[pem] user #'.$user['id'].' ('.$user['username'].') set owner for extension #'.$eid.' , IP='.$_SERVER['REMOTE_ADDR'].' country='.$country_code.'/'.$country_name);
 }
 
 /**
@@ -906,6 +916,8 @@ function ws_pem_extensions_delete_link($params, &$service)
     return new PwgError(403, 'Invalid security token');
   }
 
+  global $user;
+
   $query = '
 DELETE
   FROM '.PEM_LINKS_TABLE.'
@@ -913,6 +925,14 @@ DELETE
     AND idx_extension = '.$params['extension_id'].'
 ;';
   pwg_query($query);
+
+  // $country_code = geoip_country_code_by_name($_SERVER['REMOTE_ADDR']);
+  // $country_name = geoip_country_name_by_name($_SERVER['REMOTE_ADDR']);
+
+  $country_code = 'unkown';
+  $country_name = 'unkown';
+
+  notify_mattermost('[pem] user #'.$user['id'].' ('.$user['username'].') deleted link for extension #'.$params['extension_id'].' , IP='.$_SERVER['REMOTE_ADDR'].' country='.$country_code.'/'.$country_name);
 }
 
 /**
@@ -925,6 +945,8 @@ function ws_pem_extensions_delete_svn_git_config($params, &$service)
     return new PwgError(403, 'Invalid security token');
   }
 
+  global $user;
+
   $query = '
 UPDATE '.PEM_EXT_TABLE.'
 SET svn_url = NULL,
@@ -935,6 +957,14 @@ WHERE id_extension = '.$params['extension_id'].'
 ;';
 
   pwg_query($query);
+
+  // $country_code = geoip_country_code_by_name($_SERVER['REMOTE_ADDR']);
+  // $country_name = geoip_country_name_by_name($_SERVER['REMOTE_ADDR']);
+
+  $country_code = 'unkown';
+  $country_name = 'unkown';
+
+  notify_mattermost('[pem] user #'.$user['id'].' ('.$user['username'].') deleted SVN/git config for extension #'.$params['extension_id'].' , IP='.$_SERVER['REMOTE_ADDR'].' country='.$country_code.'/'.$country_name);
 }
 
 /**
