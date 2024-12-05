@@ -141,9 +141,9 @@ UPDATE '.PEM_EXT_TABLE.'
       }
 
     // this action comes from single_view, we have an eid that is set
-    if ("edit_general_info" == $_POST['pem_action'])
+    if (is_admin() or in_array($user['id'], $authors))
     {
-      if (is_admin() or in_array($user['id'], $authors))
+      if ("edit_general_info" == $_POST['pem_action'])
       {
         if (empty($_POST['extension_descriptions'][$_POST['default_description']]))
         {
@@ -201,24 +201,12 @@ DELETE
     
         notify_mattermost('['.$conf['mattermost_notif_type'].'] user #'.$user['id'].' ('.$user['username'].') updated extension #'.$current_extension_page_id.' ('.$_POST['extension_name'].') , IP='.$_SERVER['REMOTE_ADDR'].' country='.$country_code.'/'.$country_name);
         pwg_activity('pem_extension', $current_extension_page_id, 'edit', array());
+      
       }
-      else
-      {
-        $template->assign(
-          array(
-            'MESSAGE' => 'You must be the extension author or translator to modify it.',
-            'MESSAGE_TYPE' => 'error'
-          )
-        );
-    
-        return;
-      }
-      }
-
       // This actions comes from account, we have a uid that is set and not an eid
-      else if (isset($_POST['pem_action']) and isset($_POST['submit']) and "add_ext" == $_POST['pem_action'])
+      else if ("add_ext" == $_POST['pem_action'])
       {
-        // Inserts the extension (need to be done before the other includes, to
+      // Inserts the extension (need to be done before the other includes, to
         // retrieve the insert id
         $insert = array(
           'idx_user'   => $user['id'],
@@ -231,6 +219,19 @@ DELETE
 
         $post_type ='added';
       }
+    }
+    else
+    {
+      $template->assign(
+        array(
+          'MESSAGE' => 'You must be the extension author or translator to modify it.',
+          'MESSAGE_TYPE' => 'error'
+        )
+      );
+
+  
+      return;
+    }
 
       // Insert translations
       $inserts = array();
