@@ -251,6 +251,8 @@ if (isset($_POST['pem_action']) and isset($_POST['submit']) and "edit_screenshot
       )
     );
 
+    set_status_header(489, 'Unauthorized attempt at modification');
+
     return;
   }
 }

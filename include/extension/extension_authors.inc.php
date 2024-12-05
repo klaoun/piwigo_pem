@@ -72,6 +72,8 @@ INSERT INTO '.PEM_AUTHORS_TABLE.' (idx_extension, idx_user)
       )
     );
 
+    set_status_header(489, 'Unauthorized attempt at modification');
+
     return;
   }
 }

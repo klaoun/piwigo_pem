@@ -844,6 +844,8 @@ DELETE
           'MESSAGE_TYPE' => 'error'
         )
       );
+      
+      set_status_header(489, 'Unauthorized attempt at modification');
 
       return;
     }
