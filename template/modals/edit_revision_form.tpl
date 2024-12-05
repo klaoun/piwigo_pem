@@ -99,11 +99,11 @@
             <input type="hidden" name="pem_action" value="edit_revision">
 
             <div class="modal-footer">
-              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+              <button type="button" class="btn btn-tertiary small-btn" data-bs-dismiss="modal">Close</button>
               <div class="spinner-border d-none" role="status">
                 <span class="visually-hidden">{'Loading...'|translate}</span>
               </div>
-              <input type="submit" class="btn btn-primary" value="{'Save Changes'|translate}" name="submit" onclick="onSubmitDisplaySpinner('revisionInfoForm');"/>
+              <input type="submit" class="btn btn-primary small-btn" value="{'Save Changes'|translate}" name="submit" onclick="onSubmitDisplaySpinner('revisionInfoForm');"/>
             </div>
           </form>
         </div>

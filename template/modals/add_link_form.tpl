@@ -37,11 +37,11 @@
             <input type="hidden" name="pem_action" value="add_link">
 
             <div class="modal-footer">
-              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{'Close'|translate}</button>
+              <button type="button" class="btn btn-tertiary small-btn" data-bs-dismiss="modal">{'Close'|translate}</button>
               <div class="spinner-border d-none" role="status">
                 <span class="visually-hidden">{'Loading...'|translate}</span>
               </div>
-              <input type="submit" class="btn btn-primary" value="Submit" name="submit" onclick="onSubmitDisplaySpinner('addLinkForm');"/>
+              <input type="submit" class="btn btn-primary small-btn" value="Submit" name="submit" onclick="onSubmitDisplaySpinner('addLinkForm');"/>
             </div>
           </form>
         </div>
