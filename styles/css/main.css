@@ -178,7 +178,7 @@ Buttons
   border:1px solid var(--main_orange);
   color: var(--main_orange);
   background:none;
-  border-radius:0;
+  border-radius:5px;
   width: auto;
   max-width: 300px;
   font-size: 14px;
@@ -263,6 +263,17 @@ Buttons
 
 .small-btn{
   padding: 5px 10px;
+}
+
+.btn-danger {
+  color: #fff;
+  background-color: #e74c3c;
+  border-color: #e74c3c;
+}
+
+.btn-danger:hover {
+  background-color: #c0392b;
+  border-color: #c0392b;
 }
 
 /******
@@ -370,8 +381,8 @@ input[type="search"]:focus::-webkit-search-cancel-button{
   background-color: var(--white) !important;
 }
 
-.selectize-input .item,
-.selectize-input .item.active,
+.selectize-control.multi .selectize-input .item,
+.selectize-control.multi .selectize-input .item.active,
 .selectize-control.multi .selectize-input [data-value]{
   background-image:none !important;
   border-color: transparent !important;
@@ -409,13 +420,11 @@ input[type="search"]:focus::-webkit-search-cancel-button{
   padding-right:0px;
 }
 
-.selectize-control.single .selectize-input,
-.selectize-input .item, 
-.selectize-input .item.active, 
-.selectize-input [data-value]{
+.selectize-control.single .selectize-input{
   border: none;
-  background: transparent!important;
+  background-color: transparent!important;
   box-shadow:none!important;
+  color:black;
 }
 
 .version_filter_container .selectize-control.single .selectize-input:after{
@@ -851,13 +860,3 @@ Other
   cursor:pointer;
 }
 
-.btn-danger {
-  color: #fff;
-  background-color: #e74c3c;
-  border-color: #e74c3c;
-}
-
-.btn-danger:hover {
-  background-color: #c0392b;
-  border-color: #c0392b;
-}

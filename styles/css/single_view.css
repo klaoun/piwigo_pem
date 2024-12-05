@@ -133,10 +133,6 @@ Revisions
   border:1px solid var(--main_orange);
 }
 
-#single_view .edit_links .circle-icon{
-  padding: 5px 10px;
-}
-
 #single_view #changelog .changelogRevision.latest_rev .circle-icon.main_action{
   color: var(--white);
   border: 1px solid var(--secondary_orange);
