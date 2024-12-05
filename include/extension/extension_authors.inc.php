@@ -11,7 +11,10 @@ global $template, $user;
 // +-----------------------------------------------------------------------+
 if (isset($_POST['pem_action']) and isset($_POST['submit']) and "edit_authors" == $_POST['pem_action'])
 {
-  if (is_a_guest()) return; 
+  if (is_a_guest()){
+    set_status_header(489);
+    return;
+  } 
 
   //Get list of extension authors
   $authors = get_extension_authors($current_extension_page_id);
@@ -72,8 +75,7 @@ INSERT INTO '.PEM_AUTHORS_TABLE.' (idx_extension, idx_user)
       )
     );
 
-    set_status_header(489, 'Unauthorized attempt at modification');
-
+    set_status_header(489);
     return;
   }
 }

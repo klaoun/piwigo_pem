@@ -24,121 +24,126 @@ else if (isset($_GET['uid']))
 
 if (empty($page['errors']) and isset($_POST['pem_action']) and isset($_POST['submit']))
 {
-  if (is_a_guest()) return;
+  if (is_a_guest())
+  {
+    set_status_header(489);
 
-    // Form submitted for translator
-    if ('edit_extension_translation' == $_POST['pem_action'] and isTranslator($user['id']))
-    {
+    return;
+  }
 
-      $query = 'SELECT idx_language FROM '.PEM_EXT_TABLE.' WHERE id_extension = '.$current_extension_page_id.';';
-      $result = pwg_query($query);
-      list($def_language) = mysqli_fetch_array($result);
+  // Form submitted for translator
+  if ('edit_extension_translation' == $_POST['pem_action'] and isTranslator($user['id']))
+  {
 
-      $query = '
+    $query = 'SELECT idx_language FROM '.PEM_EXT_TABLE.' WHERE id_extension = '.$current_extension_page_id.';';
+    $result = pwg_query($query);
+    list($def_language) = mysqli_fetch_array($result);
+
+    $query = '
 DELETE
   FROM '.PEM_EXT_TRANS_TABLE.'
   WHERE idx_extension = '.$current_extension_page_id.'
     AND idx_language IN ('.implode(',', $conf['translator_users'][$user['id']]).')
 ;';
-      pwg_query($query);
+    pwg_query($query);
 
-      $inserts = array();
-      $new_default_desc = null;
-      foreach ($_POST['descriptions'] as $lang_id => $desc)
+    $inserts = array();
+    $new_default_desc = null;
+    foreach ($_POST['descriptions'] as $lang_id => $desc)
+    {
+      if ($lang_id == $def_language and empty($desc))
       {
-        if ($lang_id == $def_language and empty($desc))
-        {
-          $template->assign(
-            array(
-              'MESSAGE' => l10n('Default description can not be empty'),
-              'MESSAGE_TYPE' => 'error'
+        $template->assign(
+          array(
+            'MESSAGE' => l10n('Default description can not be empty'),
+            'MESSAGE_TYPE' => 'error'
+          )
+        );
+        $page['errors'][] = l10n('Default description can not be empty');
+        break;
+      }
+      if (!in_array($lang_id, $conf['translator_users'][$user['id']]) or empty($desc))
+      {
+        continue;
+      }
+      if ($lang_id == $def_language)
+      {
+        $new_default_desc = pwg_db_real_escape_string($desc);
+      }
+      else
+      {
+        array_push(
+          $inserts,
+          array(
+            'idx_extension'  => $current_extension_page_id,
+            'idx_language'   => $lang_id,
+            'description'    => pwg_db_real_escape_string($desc),
             )
           );
-          $page['errors'][] = l10n('Default description can not be empty');
-          break;
-        }
-        if (!in_array($lang_id, $conf['translator_users'][$user['id']]) or empty($desc))
-        {
-          continue;
-        }
-        if ($lang_id == $def_language)
-        {
-          $new_default_desc = pwg_db_real_escape_string($desc);
-        }
-        else
-        {
-          array_push(
-            $inserts,
-            array(
-              'idx_extension'  => $current_extension_page_id,
-              'idx_language'   => $lang_id,
-              'description'    => pwg_db_real_escape_string($desc),
-              )
-            );
-        }
       }
-      
-      if (empty($page['errors']))
+    }
+    
+    if (empty($page['errors']))
+    {
+      if (!empty($inserts))
       {
-        if (!empty($inserts))
-        {
-          mass_inserts(PEM_EXT_TRANS_TABLE, array_keys($inserts[0]), $inserts);
-        }
-        if (!empty($new_default_desc))
-        {
-          $query = '
+        mass_inserts(PEM_EXT_TRANS_TABLE, array_keys($inserts[0]), $inserts);
+      }
+      if (!empty($new_default_desc))
+      {
+        $query = '
 UPDATE '.PEM_EXT_TABLE.'
   SET description = \''.$new_default_desc.'\'
   WHERE id_extension = '.$current_extension_page_id.'
 ;';
-          pwg_query($query);
-        }
-        
-        // $country_code = geoip_country_code_by_name($_SERVER['REMOTE_ADDR']);
-        // $country_name = geoip_country_name_by_name($_SERVER['REMOTE_ADDR']);
-
-        $country_code = 'unkown';
-        $country_name = 'unkown';
-        
-        notify_mattermost('['.$conf['mattermost_notif_type'].'] user #'.$user['id'].' as a translator ('.$user['username'].') updated description for extension #'.$current_extension_page_id.' , IP='.$_SERVER['REMOTE_ADDR'].' country='.$country_code.'/'.$country_name);
-        pwg_activity('pem_extension', $current_extension_page_id, 'edit', array('language_id' => $lang_id));
-
-        $message = l10n('Extension translation sucessfully updated');
-    
-        $template->assign(
-          array(
-            'MESSAGE' => $message,
-            'MESSAGE_TYPE' => 'success'
-          )
-        );
-
-        unset($_POST);
+        pwg_query($query);
       }
-    }
-    else if(in_array($_POST['pem_action'], array('add_ext','edit_general_info')))
-    {
+      
+      // $country_code = geoip_country_code_by_name($_SERVER['REMOTE_ADDR']);
+      // $country_name = geoip_country_name_by_name($_SERVER['REMOTE_ADDR']);
 
-      // Checks that all the fields have been well filled
-      $required_fields = array(
-        'extension_name',
-        'extension_category'
+      $country_code = 'unkown';
+      $country_name = 'unkown';
+      
+      notify_mattermost('['.$conf['mattermost_notif_type'].'] user #'.$user['id'].' as a translator ('.$user['username'].') updated description for extension #'.$current_extension_page_id.' , IP='.$_SERVER['REMOTE_ADDR'].' country='.$country_code.'/'.$country_name);
+      pwg_activity('pem_extension', $current_extension_page_id, 'edit', array('language_id' => $lang_id));
+
+      $message = l10n('Extension translation sucessfully updated');
+  
+      $template->assign(
+        array(
+          'MESSAGE' => $message,
+          'MESSAGE_TYPE' => 'success'
+        )
       );
 
-      foreach ($required_fields as $field)
-      {
+      unset($_POST);
+    }
+  }
+  else if(in_array($_POST['pem_action'], array('add_ext','edit_general_info')))
+  {
 
-        if (empty($_POST[$field]))
-        {
-          $template->assign(
-            array(
-              'MESSAGE' => l10n('Some fields are missing'),
-              'MESSAGE_TYPE' => 'error'
-            )
-          );
-          $page['errors'][] = l10n('Some fields are missing');
-          break;
-        }
+    // Checks that all the fields have been well filled
+    $required_fields = array(
+      'extension_name',
+      'extension_category'
+    );
+
+    foreach ($required_fields as $field)
+    {
+
+      if (empty($_POST[$field]))
+      {
+        $template->assign(
+          array(
+            'MESSAGE' => l10n('Some fields are missing'),
+            'MESSAGE_TYPE' => 'error'
+          )
+        );
+        $page['errors'][] = l10n('Some fields are missing');
+        break;
       }
+    }
 
     // this action comes from single_view, we have an eid that is set
     if (is_admin() or in_array($user['id'], $authors))
@@ -159,34 +164,34 @@ UPDATE '.PEM_EXT_TABLE.'
         // Update the extension
         $query = '
 UPDATE '.PEM_EXT_TABLE.'
-  SET name = \''. pwg_db_real_escape_string($_POST['extension_name']) .'\',
-      description = \''. pwg_db_real_escape_string($_POST['extension_descriptions'][$_POST['default_description']]) .'\',
-      idx_language = '. pwg_db_real_escape_string($_POST['default_description']) .'
-  WHERE id_extension = '.$current_extension_page_id.'
+SET name = \''. pwg_db_real_escape_string($_POST['extension_name']) .'\',
+    description = \''. pwg_db_real_escape_string($_POST['extension_descriptions'][$_POST['default_description']]) .'\',
+    idx_language = '. pwg_db_real_escape_string($_POST['default_description']) .'
+WHERE id_extension = '.$current_extension_page_id.'
 ;';
 
         pwg_query($query);
 
         $query = '
 DELETE
-  FROM '.PEM_EXT_TRANS_TABLE.'
-  WHERE idx_extension = '.$current_extension_page_id.'
+FROM '.PEM_EXT_TRANS_TABLE.'
+WHERE idx_extension = '.$current_extension_page_id.'
 ;';
 
         pwg_query($query);
 
         $query = '
 DELETE
-  FROM '.PEM_EXT_CAT_TABLE.'
-  WHERE idx_extension = '.$current_extension_page_id.'
+FROM '.PEM_EXT_CAT_TABLE.'
+WHERE idx_extension = '.$current_extension_page_id.'
 ;';
 
         pwg_query($query);
 
         $query = '
 DELETE
-  FROM '.PEM_EXT_TAG_TABLE.'
-  WHERE idx_extension = '.$current_extension_page_id.'
+FROM '.PEM_EXT_TAG_TABLE.'
+WHERE idx_extension = '.$current_extension_page_id.'
 ;';
 
         pwg_query($query);
@@ -219,20 +224,6 @@ DELETE
 
         $post_type ='added';
       }
-    }
-    else
-    {
-      $template->assign(
-        array(
-          'MESSAGE' => 'You must be the extension author or translator to modify it.',
-          'MESSAGE_TYPE' => 'error'
-        )
-      );
-
-      set_status_header(489, 'Unauthorized attempt at modification');
-  
-      return;
-    }
 
       // Insert translations
       $inserts = array();
@@ -315,7 +306,22 @@ DELETE
       );
 
       unset($_POST);
+    
     }
+    else
+    {
+      $template->assign(
+        array(
+          'MESSAGE' => 'You must be the extension author or translator to modify it.',
+          'MESSAGE_TYPE' => 'error'
+        )
+      );
+
+      set_status_header(489);
+
+      return;
+    }
+  }
 }
 
 // Gets the available tags

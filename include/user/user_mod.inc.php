@@ -14,7 +14,10 @@ $current_user_page_id = $_GET['uid'];
 if (isset($_POST['pem_action']) and isset($_POST['submit']) and "edit_user_info" == $_POST['pem_action'])
 {
 
-  if (is_a_guest()) return;
+  if (is_a_guest())
+  {
+    
+  }
   
   if (isset($user['id']) and $user['id'] == $current_user_page_id)
   {
@@ -80,8 +83,7 @@ SELECT '.$conf['user_fields']['id'].' AS id
       )
     );
 
-    set_status_header(489, 'Unauthorized attempt at modification');
-
+    set_status_header(489);
     return;
   }
 }

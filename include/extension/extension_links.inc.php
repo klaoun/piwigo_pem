@@ -56,7 +56,11 @@ global $template, $user;
 
 if (isset($_POST['pem_action']) and isset($_POST['submit']))
 {
-  if (is_a_guest()) return;
+  if (is_a_guest())
+  {
+    set_status_header(489);
+    return;
+  }
 
   //Get list of extension authors
   $authors = get_extension_authors($current_extension_page_id);
@@ -238,8 +242,7 @@ WHERE id_extension = '.$_GET['eid'].'
       )
     );
 
-    set_status_header(489, 'Unauthorized attempt at modification');
-
+    set_status_header(489);
     return;
   }
 }

@@ -13,7 +13,11 @@ global $user;
 if (isset($_POST['pem_action']) and isset($_POST['submit']))
 {
 
-  if (is_a_guest()) return;
+  if (is_a_guest())
+  {
+    set_status_header(489);
+    return;
+  }
 
   if (is_admin() or in_array($user['id'], $authors))
   {
@@ -135,8 +139,7 @@ WHERE id_extension = '.$_GET['eid'].'
       )
     );
 
-    set_status_header(489, 'Unauthorized attempt at modification');
-
+    set_status_header(489);
     return;
   }
 }
