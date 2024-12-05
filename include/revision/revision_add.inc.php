@@ -26,8 +26,6 @@ if (isset($_POST['pem_action']) and isset($_POST['submit']))
 {
   if (is_a_guest()) return;
   
-  if (isset($user['id']))
-  {
     // Form submitted for translator
     if("edit_revision_translation" == $_POST['pem_action'])
     {
@@ -106,7 +104,7 @@ UPDATE '.PEM_REV_TABLE.'
         $country_code = 'unkown';
         $country_name = 'unkown';
         
-        notify_mattermost('[pem] user #'.$user['id'].' as a translator ('.$user['username'].') updated description for extension #'.$current_extension_page_id.' , IP='.$_SERVER['REMOTE_ADDR'].' country='.$country_code.'/'.$country_name);
+        notify_mattermost('['.$conf['mattermost_notif_type'].'] user #'.$user['id'].' as a translator ('.$user['username'].') updated description for extension #'.$current_extension_page_id.' , IP='.$_SERVER['REMOTE_ADDR'].' country='.$country_code.'/'.$country_name);
         pwg_activity('pem_revision', $_POST['revision_id'], 'edit', array('language_id' => $lang_id));
   
         $template->assign(
@@ -812,7 +810,7 @@ DELETE
 
         if ("add_revision" == $_POST['pem_action'])
         {
-          notify_mattermost('[pem] user #'.$user['id'].' ('.$user['username'].') added a new revision #'.$_POST['rid'].'('.$_POST['revision_version'].') for extension #'.$_GET['eid'].'('.$page['extension_name'].') , IP='.$_SERVER['REMOTE_ADDR'].' country='.$country_code.'/'.$country_name);
+          notify_mattermost('['.$conf['mattermost_notif_type'].'] user #'.$user['id'].' ('.$user['username'].') added a new revision #'.$_POST['rid'].'('.$_POST['revision_version'].') for extension #'.$_GET['eid'].'('.$page['extension_name'].') , IP='.$_SERVER['REMOTE_ADDR'].' country='.$country_code.'/'.$country_name);
           pwg_activity('pem_revision', $_POST['rid'], 'add', array('extension' => $_GET['eid']));
 
           $template->assign(
@@ -824,7 +822,7 @@ DELETE
         }
         else if ("edit_revision" == $_POST['pem_action'])
         {
-          notify_mattermost('[pem] user #'.$user['id'].' ('.$user['username'].') updated revision #'.$_POST['rid'].' ('.$_POST['revision_version'].') for extension #'.$_GET['eid'].' ('.$page['extension_name'].') , IP='.$_SERVER['REMOTE_ADDR'].' country='.$country_code.'/'.$country_name);
+          notify_mattermost('['.$conf['mattermost_notif_type'].'] user #'.$user['id'].' ('.$user['username'].') updated revision #'.$_POST['rid'].' ('.$_POST['revision_version'].') for extension #'.$_GET['eid'].' ('.$page['extension_name'].') , IP='.$_SERVER['REMOTE_ADDR'].' country='.$country_code.'/'.$country_name);
           pwg_activity('pem_revision', $_POST['rid'], 'edit', array('extension' => $_GET['eid']));
 
           $template->assign(
@@ -849,11 +847,6 @@ DELETE
 
       return;
     }
-    }
-  }
-  else
-  {
-    return;
   }
 }
 

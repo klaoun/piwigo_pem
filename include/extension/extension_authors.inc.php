@@ -50,7 +50,7 @@ INSERT INTO '.PEM_AUTHORS_TABLE.' (idx_extension, idx_user)
       $country_code = 'unkown';
       $country_name = 'unkown';
       
-      notify_mattermost('[pem] user #'.$user['id'].' ('.$user['username'].') updated authors for extension #'.$_GET['eid'].' , IP='.$_SERVER['REMOTE_ADDR'].' country='.$country_code.'/'.$country_name);
+      notify_mattermost('['.$conf['mattermost_notif_type'].'] user #'.$user['id'].' ('.$user['username'].') updated authors for extension #'.$_GET['eid'].' , IP='.$_SERVER['REMOTE_ADDR'].' country='.$country_code.'/'.$country_name);
       pwg_activity('pem_author', $author_id, 'add', array('extension' => $_GET['eid']));
 
       $template->assign(

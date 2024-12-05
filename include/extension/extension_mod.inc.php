@@ -100,7 +100,7 @@ UPDATE '.PEM_EXT_TABLE.'
         $country_code = 'unkown';
         $country_name = 'unkown';
         
-        notify_mattermost('[pem] user #'.$user['id'].' as a translator ('.$user['username'].') updated description for extension #'.$current_extension_page_id.' , IP='.$_SERVER['REMOTE_ADDR'].' country='.$country_code.'/'.$country_name);
+        notify_mattermost('['.$conf['mattermost_notif_type'].'] user #'.$user['id'].' as a translator ('.$user['username'].') updated description for extension #'.$current_extension_page_id.' , IP='.$_SERVER['REMOTE_ADDR'].' country='.$country_code.'/'.$country_name);
         pwg_activity('pem_extension', $current_extension_page_id, 'edit', array('language_id' => $lang_id));
 
         $message = l10n('Extension translation sucessfully updated');
@@ -199,7 +199,7 @@ DELETE
         $country_code = 'unkown';
         $country_name = 'unkown';
     
-        notify_mattermost('[pem] user #'.$user['id'].' ('.$user['username'].') updated extension #'.$current_extension_page_id.' ('.$_POST['extension_name'].') , IP='.$_SERVER['REMOTE_ADDR'].' country='.$country_code.'/'.$country_name);
+        notify_mattermost('['.$conf['mattermost_notif_type'].'] user #'.$user['id'].' ('.$user['username'].') updated extension #'.$current_extension_page_id.' ('.$_POST['extension_name'].') , IP='.$_SERVER['REMOTE_ADDR'].' country='.$country_code.'/'.$country_name);
         pwg_activity('pem_extension', $current_extension_page_id, 'edit', array());
       }
       else
@@ -300,7 +300,7 @@ DELETE
         $country_code = 'unkown';
         $country_name = 'unkown';
     
-        notify_mattermost('[pem] user #'.$user['id'].' ('.$user['username'].') added a new extension #'.$current_extension_page_id.' ('.$_POST['extension_name'].') , IP='.$_SERVER['REMOTE_ADDR'].' country='.$country_code.'/'.$country_name);     
+        notify_mattermost('['.$conf['mattermost_notif_type'].'] user #'.$user['id'].' ('.$user['username'].') added a new extension #'.$current_extension_page_id.' ('.$_POST['extension_name'].') , IP='.$_SERVER['REMOTE_ADDR'].' country='.$country_code.'/'.$country_name);     
         pwg_activity('pem_extension', $current_extension_page_id, 'add', array());
 
       }

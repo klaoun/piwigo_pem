@@ -839,7 +839,7 @@ DELETE FROM '.PEM_AUTHORS_TABLE.'
   $country_code = 'unkown';
   $country_name = 'unkown';
   
-  notify_mattermost('[pem] user #'.$user['id'].' ('.$user['username'].') deleted author from extension #'.$eid.' , IP='.$_SERVER['REMOTE_ADDR'].' country='.$country_code.'/'.$country_name);
+  notify_mattermost('['.$conf['mattermost_notif_type'].'] user #'.$user['id'].' ('.$user['username'].') deleted author from extension #'.$eid.' , IP='.$_SERVER['REMOTE_ADDR'].' country='.$country_code.'/'.$country_name);
   pwg_activity('pem_author', $uid, 'delete', array('extension' => $eid));
 
 }
@@ -903,7 +903,7 @@ INSERT INTO '.PEM_AUTHORS_TABLE.' (idx_extension, idx_user)
   $country_code = 'unkown';
   $country_name = 'unkown';
 
-  notify_mattermost('[pem] user #'.$user['id'].' ('.$user['username'].') set owner for extension #'.$eid.' , IP='.$_SERVER['REMOTE_ADDR'].' country='.$country_code.'/'.$country_name);
+  notify_mattermost('['.$conf['mattermost_notif_type'].'] user #'.$user['id'].' ('.$user['username'].') set owner for extension #'.$eid.' , IP='.$_SERVER['REMOTE_ADDR'].' country='.$country_code.'/'.$country_name);
 
   pwg_activity('(PEM) Extension owner', $eid, 'add', array('pem action'=>'extension owner set'));
 }
@@ -934,7 +934,7 @@ DELETE
   $country_code = 'unkown';
   $country_name = 'unkown';
 
-  notify_mattermost('[pem] user #'.$user['id'].' ('.$user['username'].') deleted link for extension #'.$params['extension_id'].' , IP='.$_SERVER['REMOTE_ADDR'].' country='.$country_code.'/'.$country_name);
+  notify_mattermost('['.$conf['mattermost_notif_type'].'] user #'.$user['id'].' ('.$user['username'].') deleted link for extension #'.$params['extension_id'].' , IP='.$_SERVER['REMOTE_ADDR'].' country='.$country_code.'/'.$country_name);
   pwg_activity('pem_link', $params['link_id'], 'delete', array('extension' => $params['extension_id']));
 }
 
@@ -967,7 +967,7 @@ WHERE id_extension = '.$params['extension_id'].'
   $country_code = 'unkown';
   $country_name = 'unkown';
 
-  notify_mattermost('[pem] user #'.$user['id'].' ('.$user['username'].') deleted SVN/git config for extension #'.$params['extension_id'].' , IP='.$_SERVER['REMOTE_ADDR'].' country='.$country_code.'/'.$country_name);
+  notify_mattermost('['.$conf['mattermost_notif_type'].'] user #'.$user['id'].' ('.$user['username'].') deleted SVN/git config for extension #'.$params['extension_id'].' , IP='.$_SERVER['REMOTE_ADDR'].' country='.$country_code.'/'.$country_name);
 
   pwg_activity('(PEM) Extension SVN/git', $params['extension_id'], 'delete', array('pem action'=>'SVN/git configuration deleted'));
 }
@@ -1047,7 +1047,7 @@ DELETE
   $country_code = 'unkown';
   $country_name = 'unkown';
   
-  notify_mattermost('[pem] user #'.$user['id'].' ('.$user['username'].') deleted extension #'.$params['extension_id'].'('.$extension_name.') , IP='.$_SERVER['REMOTE_ADDR'].' country='.$country_code.'/'.$country_name);
+  notify_mattermost('['.$conf['mattermost_notif_type'].'] user #'.$user['id'].' ('.$user['username'].') deleted extension #'.$params['extension_id'].'('.$extension_name.') , IP='.$_SERVER['REMOTE_ADDR'].' country='.$country_code.'/'.$country_name);
 
   pwg_activity('(PEM) Extension', $params['extension_id'], 'delete', array('pem action'=>'Extension deleted'));
 }
@@ -1104,7 +1104,7 @@ DELETE
   $country_code = 'unkown';
   $country_name = 'unkown';
   
-  notify_mattermost('[pem] user #'.$user['id'].' ('.$user['username'].') deleted revision #'.$params['revision_id'].' from extension #'.$eid.' ('.$extension_name.') , IP='.$_SERVER['REMOTE_ADDR'].' country='.$country_code.'/'.$country_name);
+  notify_mattermost('['.$conf['mattermost_notif_type'].'] user #'.$user['id'].' ('.$user['username'].') deleted revision #'.$params['revision_id'].' from extension #'.$eid.' ('.$extension_name.') , IP='.$_SERVER['REMOTE_ADDR'].' country='.$country_code.'/'.$country_name);
 
   pwg_activity('(PEM) Revision', $params['revision_id'], 'delete', array('pem action'=>'Revision deleted'));
 }

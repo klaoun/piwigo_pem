@@ -138,7 +138,7 @@ SELECT id_link
       $country_code = 'unkown';
       $country_name = 'unkown';
 
-      notify_mattermost('[pem] user #'.$user['id'].' ('.$user['username'].') added a link for extension #'.$_GET['eid'].' , IP='.$_SERVER['REMOTE_ADDR'].' country='.$country_code.'/'.$country_name);
+      notify_mattermost('['.$conf['mattermost_notif_type'].'] user #'.$user['id'].' ('.$user['username'].') added a link for extension #'.$_GET['eid'].' , IP='.$_SERVER['REMOTE_ADDR'].' country='.$country_code.'/'.$country_name);
       pwg_activity('pem_link', $link_id, 'add', array('extension' => $_GET['eid']));
 
       $template->assign(
@@ -179,7 +179,7 @@ SELECT id_link
         $country_code = 'unkown';
         $country_name = 'unkown';
 
-        notify_mattermost('[pem] user #'.$user['id'].' ('.$user['username'].') modified a link for extension #'.$_GET['eid'].' , IP='.$_SERVER['REMOTE_ADDR'].' country='.$country_code.'/'.$country_name);
+        notify_mattermost('['.$conf['mattermost_notif_type'].'] user #'.$user['id'].' ('.$user['username'].') modified a link for extension #'.$_GET['eid'].' , IP='.$_SERVER['REMOTE_ADDR'].' country='.$country_code.'/'.$country_name);
         pwg_activity('pem_link', $_POST['link_id'], 'edit', array('extension'=>$_GET['eid']));
 
         $template->assign(

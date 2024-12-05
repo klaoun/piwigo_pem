@@ -230,7 +230,7 @@ if (isset($_POST['pem_action']) and isset($_POST['submit']) and "edit_screenshot
     $country_code = 'unkown';
     $country_name = 'unkown';
     
-    notify_mattermost('[pem] user #'.$user['id'].' ('.$user['username'].') updated authors for extension #'.$_GET['eid'].' , IP='.$_SERVER['REMOTE_ADDR'].' country='.$country_code.'/'.$country_name);
+    notify_mattermost('['.$conf['mattermost_notif_type'].'] user #'.$user['id'].' ('.$user['username'].') updated authors for extension #'.$_GET['eid'].' , IP='.$_SERVER['REMOTE_ADDR'].' country='.$country_code.'/'.$country_name);
     pwg_activity('pem_screenshot', $_GET['eid'], 'add', array('extension' => $_GET['eid']));
 
     $template->assign(
