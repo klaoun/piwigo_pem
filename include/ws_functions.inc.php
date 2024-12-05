@@ -4,7 +4,6 @@ defined('PEM_PATH') or die('Hacking attempt!');
 include_once(PEM_PATH . 'include/functions_core.inc.php');
 include_once(PEM_PATH . 'include/functions_users.inc.php');
 
-
 function pem_ws_add_methods($arr)
 {
   $service = &$arr[0];
@@ -820,7 +819,7 @@ function ws_pem_extensions_delete_author($params, &$service)
     die('missing user id');
   }
 
-  global $user;
+  global $user, $conf;
 
   $eid = $params['extension_id'];
   $uid = $params['user_id'];
@@ -865,7 +864,7 @@ DELETE FROM '.PEM_AUTHORS_TABLE.'
     die('missing user id');
   }
 
-  global $user;
+  global $user, $conf;
   
   $eid = $params['extension_id'];
   $uid = $params['user_id'];
@@ -918,7 +917,7 @@ function ws_pem_extensions_delete_link($params, &$service)
     return new PwgError(403, 'Invalid security token');
   }
 
-  global $user;
+  global $user, $conf;
 
   $query = '
 DELETE
@@ -948,7 +947,7 @@ function ws_pem_extensions_delete_svn_git_config($params, &$service)
     return new PwgError(403, 'Invalid security token');
   }
 
-  global $user;
+  global $user, $conf;
 
   $query = '
 UPDATE '.PEM_EXT_TABLE.'
@@ -982,7 +981,7 @@ function ws_pem_extensions_delete_extension($params, &$service)
     return new PwgError(403, 'Invalid security token');
   }
 
-  global $user;
+  global $user, $conf;
 
   $query = '
 SELECT
@@ -1062,7 +1061,7 @@ function ws_pem_revisions_delete_revision($params, &$service)
     return new PwgError(403, 'Invalid security token');
   }
 
-  global $user;
+  global $user, $conf;
 
   $query = '
 SELECT
