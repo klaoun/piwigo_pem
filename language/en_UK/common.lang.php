@@ -310,7 +310,7 @@ $lang['Screenshot successfully updated'] = 'Screenshot successfully updated';
 $lang['SVN/Git information succesfully updated.'] = 'SVN/Git information succesfully updated.';
 $lang['Extension translation sucessfully updated'] = 'Extension translation sucessfully updated';
 $lang['User succesfully updated.'] = 'User succesfully updated.';
-$lang['You must the current user to modify the information.'] = 'You must the current user to modify the information.';
+$lang['You must the current user to modify the information.'] = 'You must be the current user to modify the information.';
 
 // For footer
 $lang['Donate'] = 'Donate';
