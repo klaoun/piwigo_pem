@@ -317,3 +317,4 @@ $lang['What is Piwigo?'] = 'Cos\'è Piwigo?';
 $lang['What\'s new?'] = 'Novità?';
 $lang['Yes, delete'] = 'Sì, cancella';
 $lang['You don\'t have permission to edit this translation'] = 'Non hai i permessi per modificare questa traduzione';
+$lang['You must the current user to modify the information.'] = 'Devi essere l\'utente corrente per modificare le informazioni.';
