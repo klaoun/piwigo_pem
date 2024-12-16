@@ -322,3 +322,4 @@ $lang['Action'] = 'Handling';
 $lang['Add authors'] = 'Tilføj forfattere';
 $lang['Add extension'] = 'Tilføj udvidelse';
 $lang['Age'] = 'Alder';
+$lang['You must the current user to modify the information.'] = 'Du skal være den aktuelle bruger for at ændre oplysningerne.';
