@@ -145,21 +145,21 @@ UPDATE '.PEM_EXT_TABLE.'
       }
     }
 
-    // this action comes from single_view, we have an eid that is set
-    if (is_admin() or in_array($user['id'], $authors))
-    {
+      //This action comes from the extension page, we need eid
       if ("edit_general_info" == $_POST['pem_action'])
       {
-        if (empty($_POST['extension_descriptions'][$_POST['default_description']]))
+        if (is_admin() or in_array($user['id'], $authors))
         {
-          $template->assign(
-            array(
-              'MESSAGE' => l10n('Default description can not be empty'),
-              'MESSAGE_TYPE' => 'error'
-            )
-          );
-          $page['errors'][] = l10n('Default description can not be empty');
-        }
+          if (empty($_POST['extension_descriptions'][$_POST['default_description']]))
+          {
+            $template->assign(
+              array(
+                'MESSAGE' => l10n('Default description can not be empty'),
+                'MESSAGE_TYPE' => 'error'
+              )
+            );
+            $page['errors'][] = l10n('Default description can not be empty');
+          }
 
         // Update the extension
         $query = '
@@ -207,6 +207,16 @@ WHERE idx_extension = '.$current_extension_page_id.'
         notify_mattermost('['.$conf['mattermost_notif_type'].'] user #'.$user['id'].' ('.$user['username'].') updated extension #'.$current_extension_page_id.' ('.$_POST['extension_name'].') , IP='.$_SERVER['REMOTE_ADDR'].' country='.$country_code.'/'.$country_name);
         pwg_activity('pem_extension', $current_extension_page_id, 'edit', array());
       
+        }
+        else
+        {
+          $template->assign(
+            array(
+              'MESSAGE' => 'You must be the extension author or translator to modify it.',
+              'MESSAGE_TYPE' => 'error'
+            )
+          );
+        }
       }
       // This actions comes from account, we have a uid that is set and not an eid
       else if ("add_ext" == $_POST['pem_action'])
@@ -307,20 +317,9 @@ WHERE idx_extension = '.$current_extension_page_id.'
 
       unset($_POST);
     
-    }
-    else
-    {
-      $template->assign(
-        array(
-          'MESSAGE' => 'You must be the extension author or translator to modify it.',
-          'MESSAGE_TYPE' => 'error'
-        )
-      );
-
       set_status_header(489);
 
       return;
-    }
   }
 }
 
