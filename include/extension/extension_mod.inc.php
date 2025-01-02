@@ -145,21 +145,21 @@ UPDATE '.PEM_EXT_TABLE.'
       }
     }
 
-      //This action comes from the extension page, we need eid
-      if ("edit_general_info" == $_POST['pem_action'])
+    //This action comes from the extension page, we need eid
+    if ("edit_general_info" == $_POST['pem_action'])
+    {
+      if (is_admin() or in_array($user['id'], $authors))
       {
-        if (is_admin() or in_array($user['id'], $authors))
+        if (empty($_POST['extension_descriptions'][$_POST['default_description']]))
         {
-          if (empty($_POST['extension_descriptions'][$_POST['default_description']]))
-          {
-            $template->assign(
-              array(
-                'MESSAGE' => l10n('Default description can not be empty'),
-                'MESSAGE_TYPE' => 'error'
-              )
-            );
-            $page['errors'][] = l10n('Default description can not be empty');
-          }
+          $template->assign(
+            array(
+              'MESSAGE' => l10n('Default description can not be empty'),
+              'MESSAGE_TYPE' => 'error'
+            )
+          );
+          $page['errors'][] = l10n('Default description can not be empty');
+        }
 
         // Update the extension
         $query = '
@@ -170,7 +170,7 @@ SET name = \''. pwg_db_real_escape_string($_POST['extension_name']) .'\',
 WHERE id_extension = '.$current_extension_page_id.'
 ;';
 
-        pwg_query($query);
+      pwg_query($query);
 
         $query = '
 DELETE
@@ -178,148 +178,148 @@ FROM '.PEM_EXT_TRANS_TABLE.'
 WHERE idx_extension = '.$current_extension_page_id.'
 ;';
 
-        pwg_query($query);
+      pwg_query($query);
 
-        $query = '
+      $query = '
 DELETE
 FROM '.PEM_EXT_CAT_TABLE.'
 WHERE idx_extension = '.$current_extension_page_id.'
 ;';
 
-        pwg_query($query);
+      pwg_query($query);
 
-        $query = '
+      $query = '
 DELETE
 FROM '.PEM_EXT_TAG_TABLE.'
 WHERE idx_extension = '.$current_extension_page_id.'
 ;';
 
-        pwg_query($query);
+      pwg_query($query);
 
-        $post_type ='updated';
+      $post_type ='updated';
 
-        // $country_code = geoip_country_code_by_name($_SERVER['REMOTE_ADDR']);
-        // $country_name = geoip_country_name_by_name($_SERVER['REMOTE_ADDR']);
+      // $country_code = geoip_country_code_by_name($_SERVER['REMOTE_ADDR']);
+      // $country_name = geoip_country_name_by_name($_SERVER['REMOTE_ADDR']);
 
-        $country_code = 'unkown';
-        $country_name = 'unkown';
+      $country_code = 'unkown';
+      $country_name = 'unkown';
+  
+      notify_mattermost('['.$conf['mattermost_notif_type'].'] user #'.$user['id'].' ('.$user['username'].') updated extension #'.$current_extension_page_id.' ('.$_POST['extension_name'].') , IP='.$_SERVER['REMOTE_ADDR'].' country='.$country_code.'/'.$country_name);
+      pwg_activity('pem_extension', $current_extension_page_id, 'edit', array());
     
-        notify_mattermost('['.$conf['mattermost_notif_type'].'] user #'.$user['id'].' ('.$user['username'].') updated extension #'.$current_extension_page_id.' ('.$_POST['extension_name'].') , IP='.$_SERVER['REMOTE_ADDR'].' country='.$country_code.'/'.$country_name);
-        pwg_activity('pem_extension', $current_extension_page_id, 'edit', array());
-      
-        }
-        else
+      }
+      else
+      {
+        $template->assign(
+          array(
+            'MESSAGE' => 'You must be the extension author or translator to modify it.',
+            'MESSAGE_TYPE' => 'error'
+          )
+        );
+      }
+    }
+    // This actions comes from account, we have a uid that is set and not an eid
+    else if ("add_ext" == $_POST['pem_action'])
+    {
+    // Inserts the extension (need to be done before the other includes, to
+      // retrieve the insert id
+      $insert = array(
+        'idx_user'   => $user['id'],
+        'name'         => pwg_db_real_escape_string($_POST['extension_name']),
+        'description'  => 'Default description',
+        'idx_language' => '5',
+        );
+      mass_inserts(PEM_EXT_TABLE, array_keys($insert), array($insert));
+      $current_extension_page_id = pwg_db_insert_id();
+
+      $post_type ='added';
+    }
+
+    // Insert translations
+    $inserts = array();
+    if (isset($_POST['extension_descriptions']))
+    {
+      foreach ($_POST['extension_descriptions'] as $lang_id => $desc)
+      {
+        if ($lang_id == $_POST['default_description'] or empty($desc))
         {
-          $template->assign(
-            array(
-              'MESSAGE' => 'You must be the extension author or translator to modify it.',
-              'MESSAGE_TYPE' => 'error'
+          continue;
+        }
+        array_push(
+          $inserts,
+          array(
+            'idx_extension'  => $current_extension_page_id,
+            'idx_language'   => $lang_id,
+            'description'    => pwg_db_real_escape_string($desc),
             )
           );
-        }
       }
-      // This actions comes from account, we have a uid that is set and not an eid
-      else if ("add_ext" == $_POST['pem_action'])
-      {
-      // Inserts the extension (need to be done before the other includes, to
-        // retrieve the insert id
-        $insert = array(
-          'idx_user'   => $user['id'],
-          'name'         => pwg_db_real_escape_string($_POST['extension_name']),
-          'description'  => 'Default description',
-          'idx_language' => '5',
-          );
-        mass_inserts(PEM_EXT_TABLE, array_keys($insert), array($insert));
-        $current_extension_page_id = pwg_db_insert_id();
+    }
 
-        $post_type ='added';
-      }
+    if (!empty($inserts))
+    {
+      mass_inserts(PEM_EXT_TRANS_TABLE, array_keys($inserts[0]), $inserts);
+    }
 
-      // Insert translations
+    // Inserts the extensions <-> categories link
+    $inserts = array();
+    foreach ($_POST['extension_category'] as $category)
+    {
+      array_push(
+        $inserts,
+        array(
+          'idx_category'   => pwg_db_real_escape_string($category),
+          'idx_extension'  => $current_extension_page_id,
+          )
+        );
+    }
+    mass_inserts(PEM_EXT_CAT_TABLE, array_keys($inserts[0]), $inserts);
+
+    // Inserts the extensions <-> tags link
+    if (!empty($_POST['tags']))
+    {
       $inserts = array();
-      if (isset($_POST['extension_descriptions']))
-      {
-        foreach ($_POST['extension_descriptions'] as $lang_id => $desc)
-        {
-          if ($lang_id == $_POST['default_description'] or empty($desc))
-          {
-            continue;
-          }
-          array_push(
-            $inserts,
-            array(
-              'idx_extension'  => $current_extension_page_id,
-              'idx_language'   => $lang_id,
-              'description'    => pwg_db_real_escape_string($desc),
-              )
-            );
-        }
-      }
-
-      if (!empty($inserts))
-      {
-        mass_inserts(PEM_EXT_TRANS_TABLE, array_keys($inserts[0]), $inserts);
-      }
-
-      // Inserts the extensions <-> categories link
-      $inserts = array();
-      foreach ($_POST['extension_category'] as $category)
+      foreach ($_POST['tags'] as $tag)
       {
         array_push(
           $inserts,
           array(
-            'idx_category'   => pwg_db_real_escape_string($category),
+            'idx_tag'   => $tag,
             'idx_extension'  => $current_extension_page_id,
             )
           );
       }
-      mass_inserts(PEM_EXT_CAT_TABLE, array_keys($inserts[0]), $inserts);
-
-      // Inserts the extensions <-> tags link
-      if (!empty($_POST['tags']))
-      {
-        $inserts = array();
-        foreach ($_POST['tags'] as $tag)
-        {
-          array_push(
-            $inserts,
-            array(
-              'idx_tag'   => $tag,
-              'idx_extension'  => $current_extension_page_id,
-              )
-            );
-        }
-        mass_inserts(PEM_EXT_TAG_TABLE, array_keys($inserts[0]), $inserts);
-      }
+      mass_inserts(PEM_EXT_TAG_TABLE, array_keys($inserts[0]), $inserts);
+    }
       
-      $message = l10n('Extension successfully '.$post_type.'.');
-      if ("add_ext" == $_POST['pem_action'])
-      {
-        $message .= ' <a href ="'.get_root_url().'index.php?eid='.$current_extension_page_id.'">'.l10n('See it here').'</a>';
+    $message = l10n('Extension successfully '.$post_type.'.');
+    if ("add_ext" == $_POST['pem_action'])
+    {
+      $message .= ' <a href ="'.get_root_url().'index.php?eid='.$current_extension_page_id.'">'.l10n('See it here').'</a>';
 
-        // $country_code = geoip_country_code_by_name($_SERVER['REMOTE_ADDR']);
-        // $country_name = geoip_country_name_by_name($_SERVER['REMOTE_ADDR']);
+      // $country_code = geoip_country_code_by_name($_SERVER['REMOTE_ADDR']);
+      // $country_name = geoip_country_name_by_name($_SERVER['REMOTE_ADDR']);
 
-        $country_code = 'unkown';
-        $country_name = 'unkown';
-    
-        notify_mattermost('['.$conf['mattermost_notif_type'].'] user #'.$user['id'].' ('.$user['username'].') added a new extension #'.$current_extension_page_id.' ('.$_POST['extension_name'].') , IP='.$_SERVER['REMOTE_ADDR'].' country='.$country_code.'/'.$country_name);     
-        pwg_activity('pem_extension', $current_extension_page_id, 'add', array());
+      $country_code = 'unkown';
+      $country_name = 'unkown';
+  
+      notify_mattermost('['.$conf['mattermost_notif_type'].'] user #'.$user['id'].' ('.$user['username'].') added a new extension #'.$current_extension_page_id.' ('.$_POST['extension_name'].') , IP='.$_SERVER['REMOTE_ADDR'].' country='.$country_code.'/'.$country_name);     
+      pwg_activity('pem_extension', $current_extension_page_id, 'add', array());
 
-      }
+    }
 
-      $template->assign(
-        array(
-          'MESSAGE' => $message,
-          'MESSAGE_TYPE' => 'success'
-        )
-      );
+    $template->assign(
+      array(
+        'MESSAGE' => $message,
+        'MESSAGE_TYPE' => 'success'
+      )
+    );
 
-      unset($_POST);
-    
-      set_status_header(489);
+    unset($_POST);
+  
+    set_status_header(489);
 
-      return;
+    return;
   }
 }
 
