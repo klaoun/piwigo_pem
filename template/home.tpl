@@ -158,7 +158,7 @@
                   </div>
                   <div class="col-7 d-flex info-column align-content-between flex-wrap">
                     <div class="col-12">
-                      <a href="{$PEM_ROOT_URL}index.php?eid={$category.most_downloaded_extension.eid}">
+                      <a href="{$PEM_ROOT_URL}index.php?eid={$category.most_recent_extension.eid}">
                         <h5 class='extension-name'>{$category.most_recent_extension.name}</h5>
                       </a>
                       <p class='description' >{$category.most_recent_extension.description}</p>
