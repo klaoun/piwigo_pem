@@ -204,8 +204,9 @@
 {/if}
   </section>
 
+{if 8 != $extension_categories.id_category}
 {* Links block edit mode *}
-{if isset($can_modify) && $can_modify == true}
+  {if isset($can_modify) && $can_modify == true}
   <section class="mt-5 pt-3 section-fluid position-relative edit_mode">
     <div class="edit_links">
       <h3 class="mb-3">{'Related links'|translate}</h3>
@@ -226,7 +227,7 @@
         </thead>
         <tbody>
 
-{foreach from=$links item=link}
+    {foreach from=$links item=link}
           <tr>
             <td>
               <a class="link-primary orange-link my-3" href="{$link.url}" target="blank">
@@ -241,13 +242,13 @@
               </a>
             </td>
             <td>
-  {if isset($link.language)}
+      {if isset($link.language)}
                   <span class="ms-0 badge purple-badge d-inline">{$link.language}</span>
-  {/if}
+      {/if}
             </td>
             <td>
-  {if isset($can_modify) && $can_modify == true}
-    {if $link.id_link !== "git" && $link.id_link !== "svn" }
+      {if isset($can_modify) && $can_modify == true}
+        {if $link.id_link !== "git" && $link.id_link !== "svn" }
               <span class="circle-icon edit_mode me-2" data-bs-toggle="modal" data-bs-target="#editLinkModal" 
                 {if isset($link.id_link)}data-bs-link-id="{$link.id_link}"{/if}
                 {if isset($link.name)} data-bs-link-name="{$link.name}"{/if}
@@ -266,24 +267,24 @@
                   >
                   <i class="icon-trash translate-middle"></i>
                 </span>
-    {/if}
-  {/if}
+        {/if}
+      {/if}
             </td>
           </tr>
-{/foreach}
+    {/foreach}
 
         </tbody>
       </table>
     </div>
   </section>
-{/if}
+  {/if}
 
 {* Links block non edit mode *}
   <section class="mt-5 pt-3 section-fluid related_links">
     <h3 class="mb-3">{'Related links'|translate}</h3>
-{if !empty($links)}
+  {if !empty($links)}
     <div class="d-flex justify-content-start flex-wrap">
-  {foreach from=$links item=link}
+    {foreach from=$links item=link}
       <a class="orange-link py-3 pe-3" href="{$link.url}" target="_blank">
         {if $link.name|stristr:"git"}<i class="icon-github"></i>
         {else if $link.name|stristr:l10n("issues") || $link.name|stristr:"bug" }<i class="icon-bug"></i>
@@ -294,22 +295,25 @@
         {/if}
         {$link.name}
       </a>
-  {/foreach}
+    {/foreach}
     </div>
-{else}
+  {else}
       <p>{'No links are available for this extension.'|translate}</p>
-{/if}
+  {/if}
   </section>
+{/if}
 
 {*Revision block *}
   <section class="mt-5 pt-3 section-fluid">
     <h3 class="mb-3">{'Revisions'|translate} {if isset($count_rev)}<span class="badge blue-badge d-inline align-middle">{$count_rev}</span>{/if}</h3>
 {if isset($can_modify) && $can_modify == true}
     <div class="edit_mode mt-3 mb-4">
+  {if 8 != $extension_categories.id_category}
       <button class="btn btn-tertiary" data-bs-toggle="modal" data-bs-target="#editSvnGitModal">
         <i class="icon-git-alt"></i> {'SVN & Git configuration'|translate}
       </button>
-      <button class="btn btn-tertiary ms-3" data-bs-toggle="modal" data-bs-target="#addRevisionModal">
+  {/if}
+      <button class="btn btn-tertiary {if 8 != $extension_categories.id_category}ms-3{/if}" data-bs-toggle="modal" data-bs-target="#addRevisionModal">
         <i class="icon-circle-plus"></i> {'Add a revision'|translate}
       </button>
     </div>

@@ -19,50 +19,51 @@
 
 {if isset($file_needed)}
               {* File *}
-              <div class="mb-3 form-group">
+              <div class="mb-3 form-group {if 8 == $extension_categories.id_category}d-none{/if}">
                 <label class="form-label w-100 ">{'File'|translate}</label>
                 <div>
 
   {if in_array('upload', $upload_methods)}
 
                   <div class="form-check d-inline-block">
-                      <input class="form-check-input" type="radio" name="file_type" id="file_type_upload" value="upload" {if $FILE_TYPE=='upload'}checked{/if}/>
+                      <input class="form-check-input" type="radio" name="file_type" id="file_type_upload" value="upload" {if $FILE_TYPE=='upload' or 8 == $extension_categories.id_category}checked{/if}/>
                       <label class="form-check-label" for="file_type_upload">
                       {'Upload a file'|translate}</label>
                   </div>
   {/if}
-  {if in_array('svn', $upload_methods)}
+  {if 8 != $extension_categories.id_category}
+    {if in_array('svn', $upload_methods)}
                   <div class="form-check d-inline-block ms-3">
                     <input class="form-check-input" type="radio" name="file_type" id="file_type_svn" value="svn" 
                   {if $FILE_TYPE=='svn'}checked{/if} 
                   {if !isset($SVN_URL)}disabled{/if}/>
                     <label class="form-check-label" for="file_type_svn">{'SVN'|translate}</label>
                   </div>
-  {/if}
-  {if in_array('git', $upload_methods)}
+    {/if}
+    {if in_array('git', $upload_methods)}
                 <div class="form-check d-inline-block ms-3">
                   <input class="form-check-input" type="radio" name="file_type" id="file_type_git" value="git" 
                   {if $FILE_TYPE=='git'}checked{/if} 
                   {if !isset($GIT_URL)}disabled{/if}/>
                   <label class="form-check-label" for="file_type_git">{'Git'|translate}</label>
                 </div>
-  {/if}
-  {if in_array('url', $upload_methods)}
+    {/if}
+    {if in_array('url', $upload_methods)}
                 <div class="form-check d-inline-block ms-3">
                     <input class="form-check-input" type="radio" name="file_type" id="file_type_url" value="url" {if $FILE_TYPE=='url'}checked{/if}/>
                     <label class="form-check-label" for="file_type_url">{'Download from URL'|translate}</label>
                 </div>
-  {/if}
+    {/if}
                 </div>
 
                 <div id="upload_types" class="col-12 mt-2">
-  {if in_array('upload', $upload_methods)}
+    {if in_array('upload', $upload_methods)}
                   <div id="upload_type"{if $FILE_TYPE ne 'upload'} class="d-none"{/if}>
                     <input class="form-control" type="file" name="revision_file" size="35">
                   </div>
-  {/if}
+    {/if}
       
-  {if in_array('svn', $upload_methods)}
+    {if in_array('svn', $upload_methods)}
                   <div id="svn_type" class="{if $FILE_TYPE ne 'svn'} d-none{/if}">
                     <div class="row">
                       <div class="col-7">
@@ -75,9 +76,9 @@
                       </div>
                     </div>
                   </div>
-  {/if}
+    {/if}
       
-  {if in_array('git', $upload_methods)}
+    {if in_array('git', $upload_methods)}
                   <div id="git_type" class="{if $FILE_TYPE ne 'git'} d-none{/if}">
                     <div class="row">
                       <div class="col-8">
@@ -90,12 +91,13 @@
                       </div>
                     </div>
                   </div>
-  {/if}
+    {/if}
       
-  {if in_array('url', $upload_methods)}
+    {if in_array('url', $upload_methods)}
                   <div id="url_type"{if $FILE_TYPE ne 'url'} class="d-none"{/if}>
                   {'URL'|translate} <input class="form-control" type="text" name="download_url" {if isset($DOWNLOAD_URL)}value="{$DOWNLOAD_URL}"{/if} size="65">
                   </div>
+    {/if}
   {/if}
                 </div>
   
