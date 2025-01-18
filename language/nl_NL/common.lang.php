@@ -163,4 +163,13 @@ $lang['no extension'] = 'geen uitbreiding';
 
 $lang['Download last revision'] = 'Download de laatste aanpassing';
 $lang['Download'] = 'Download';
-?>
+$lang['Close'] = 'Sluiten';
+$lang['Contact'] = 'kontakt';
+$lang['About us'] = 'Over ons';
+$lang['Age'] = 'Leeftijd';
+$lang['Already have an account ?'] = 'Heb je al een ';
+$lang['All'] = 'Alles';
+$lang['All languages'] = 'Alle talen';
+$lang['Add authors'] = 'Voeg auteur toe';
+$lang['Add extension'] = 'Voeg een extensie toe';
+$lang['Action'] = 'Aktie';
