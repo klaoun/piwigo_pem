@@ -21,6 +21,17 @@ else if (isset($_GET['uid']))
 // +-----------------------------------------------------------------------+
 // |                           Form submission                             |
 // +-----------------------------------------------------------------------+
+if ($_SERVER['REQUEST_METHOD'] === 'POST' and !isset($_POST['submit']))
+{
+  set_status_header(488);
+  exit();
+}
+
+if (isset($_POST['submit']) and !isset($_POST['pem_action']))
+{
+  set_status_header(487);
+  exit();
+}
 
 if (empty($page['errors']) and isset($_POST['pem_action']) and isset($_POST['submit']))
 {
