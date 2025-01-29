@@ -15,6 +15,7 @@
               <div class="mb-3 form-group">
                 <label for="revision_version" class="form-label w-100 ">{'Version'|translate}</label>
                 <input class="form-control" type="text" name="revision_version" size="10" maxlength="10" required autofocus/>
+                {if $is_in_embedded_ext_array}<p class="red-font"><small>{'Be careful when naming this revision, it is one of the extensions embedded in Piwigo'|translate}</small><p>{/if}
               </div>
 
 {if isset($file_needed)}

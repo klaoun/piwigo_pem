@@ -132,7 +132,6 @@ $lang['You must be the extension author to modify it.'] = 'Vous devez être l\'a
 $lang['help'] = 'Aide';
 $lang['You must be connected to read help user'] = 'Vous devez être connecté pour lire l\'aide utilisateur.';
 $lang['You mustn\'t be connected to read help guest'] = 'Vous ne devez pas être connecté pour lire l\'aide des invités.';
-
 $lang['Language'] = 'Langue';
 $lang['Authors'] = 'Auteurs';
 $lang['Manage authors'] = 'Gérer les auteurs';
@@ -143,7 +142,6 @@ $lang['You must select at least one author.'] = 'Vous devez sélectionner au moi
 $lang['This user does not exist in database.'] = 'L\'utilisateur n\'existe pas dans la base de données.';
 $lang['Added by']  = 'Ajouté par';
 $lang['Other extensions'] = 'Autres extensions';
-
 $lang['SVN/Git configuration'] = 'Configuration SVN/Git';
 $lang['Repository URL'] = 'URL du dépôt';
 $lang['Archive root directory'] = 'Répertoire racine de l\'archive';
@@ -157,7 +155,6 @@ $lang['Characters not allowed in archive root directory.'] = 'Caractères non au
 $lang['Characters not allowed in archive name.'] = 'Caractères non autorisés dans le nom de l\'archive';
 $lang['Upload a file'] = 'Uploader un fichier';
 $lang['An error occured during SVN/Git export.'] = 'Une erreur est survenue pendant l\'export SVN/Git';
-
 $lang['Available languages'] = 'Langues disponibles';
 $lang['%s Available languages'] = '%s langues disponibles';
 $lang['New languages'] = 'Nouvelles langues';
@@ -165,13 +162,10 @@ $lang['Default description'] = 'Description par défaut';
 $lang['Default description can not be empty'] = 'Vous devez renseigner la description par défaut';
 $lang['extension'] = 'extension';
 $lang['no extension'] = 'Aucune extension';
-
 $lang['Download last revision'] = 'Télécharger la dernière revision';
 $lang['Download'] = 'Télécharger';
 $lang['releases'] = 'versions';
-
 $lang['Choose compatibility versions...'] = 'Choisissez les versions compatibles...';
-
 $lang['Tags'] = 'Tags';
 $lang['No results'] = 'Aucun résultat';
 $lang['Searching...'] = 'recherche en cours...';
@@ -184,7 +178,6 @@ $lang['Update your rating'] = 'Changez votre note';
 $lang['Rate it!'] = 'Notez le !';
 $lang['Your rating'] = 'Votre note';
 $lang['All'] = 'Toutes';
-
 $lang['Thank you!'] = 'Merci !';
 $lang['Thank you! Your review is awaiting moderation.'] = 'Merci ! Votre message est en attente de validation.';
 $lang['Please enter your name'] = 'Veuillez renseigner votre nom';
@@ -198,7 +191,6 @@ $lang['Review summary'] = 'Résumé';
 $lang['Your review'] = 'Votre avis';
 $lang['Send'] = 'Envoyer';
 $lang['Please do not use this form to request assistance or report a bug. Use the forums instead.'] = 'Merci de ne pas utiliser ce formulaire pour les demandes d\'aide ou les rapports de bugs. Utilisez plutôt les forums.';
-
 $lang['Other'] = 'Autre';
 $lang['%d reviews'] = '%d avis';
 $lang['Show %d more reviews'] = 'Afficher %d avis de plus';
@@ -210,14 +202,12 @@ $lang['Branch'] = 'Branche';
 $lang['Detect languages'] = 'Détecter les langues';
 $lang['Github page'] = 'page Github';
 $lang['source code, bug/request tracker'] = 'code source, suivi des bugs et demandes de fonctionnalités';
-
 $lang['Extensions for Piwigo'] = 'Extensions pour Piwigo';
 $lang['Change appearance with themes. Add features with plugins. Extensions require just a few clicks to get installed. 350 extensions available, and growing!'] ='Changer l\'apparence avec les thèmes. Ajoutez des fonctionnalités avec des plugins. Les extensions ne nécessitent que quelques clics pour être installées. 350 extensions disponibles, et en constante évolution !';
 $lang['Plugins'] = 'Plugins';
 $lang['Themes'] = 'Thèmes';
 $lang['Languages'] = 'Langues';
 $lang['Tools'] = 'Outils';
-
 $lang['Spotlight'] = 'Mis en avant';
 $lang['Spotlighted'] = 'Mis en avant';
 $lang['Highest rated'] = 'Les mieux notés';
@@ -300,7 +290,6 @@ $lang['This plugin has no recent updates'] = 'Ce plugin n\'a pas de mises à jou
 $lang['This plugin has not been updated in 3 years !'] = 'Ce plugin n\'a pas été mis à jour depuis 3 ans !';
 $lang['Revision successfully modified.'] = 'Révision modifiée avec succès.';
 $lang['This user has been successfully.'] = 'Cet utilisateur a été mis à jour avec succès.';
-
 $lang['What is Piwigo?'] = 'Qu\'est-ce que Piwigo ?';
 $lang['What\'s new?'] = 'Quoi de neuf ?';
 $lang['Type in a search term'] = 'Saisir un terme de recherche';
@@ -329,3 +318,6 @@ $lang['SVN/Git information succesfully updated.'] = 'Les informations SVN/Git on
 $lang['Screenshot successfully updated'] = 'Capture d\'écran mise à jour avec succès';
 $lang['User succesfully updated.'] = 'L\'utilisateur a été mis à jour avec succès.';
 $lang['You must the current user to modify the information.'] = 'Vous devez être l\'utilisateur actuel pour modifier les informations.';
+$lang['Be careful when naming this revision, it is one of the extensions embedded in Piwigo'] = 'Attention en nommant cette révision, il s\'agit d\'une des extensions embarquées dans Piwigo';
+
+//

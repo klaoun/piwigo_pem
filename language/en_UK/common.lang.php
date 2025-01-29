@@ -132,7 +132,6 @@ $lang['You must be the extension author to modify it.'] = 'You must be the exten
 $lang['help'] = 'Help';
 $lang['You must be connected to read help user'] = 'You must be connected to read help user';
 $lang['You mustn\'t be connected to read help guest'] = 'You mustn\'t be connected to read help guest';
-
 $lang['Language'] = 'Language';
 $lang['Authors'] = 'Authors';
 $lang['Manage authors'] = 'Manage authors';
@@ -143,7 +142,6 @@ $lang['You must select at least one author.'] = 'You must select at least one au
 $lang['This user does not exist in database.'] = 'This user does not exist in database.';
 $lang['Added by']  = 'Added by';
 $lang['Other extensions'] = 'Other extensions';
-
 $lang['SVN/Git configuration'] = 'SVN/Git configuration';
 $lang['Repository URL'] = 'Repository URL';
 $lang['Archive root directory'] = 'Archive root directory';
@@ -157,7 +155,6 @@ $lang['Characters not allowed in archive root directory.'] = 'Characters not all
 $lang['Characters not allowed in archive name.'] = 'Characters not allowed in archive name.';
 $lang['Upload a file'] = 'Upload a file';
 $lang['An error occured during SVN/Git export.'] = 'An error occured during SVN/Git export.';
-
 $lang['Available languages'] = 'Available languages';
 $lang['%s Available languages'] = '%s available languages';
 $lang['New languages'] = 'New languages';
@@ -165,13 +162,10 @@ $lang['Default description'] = 'Default description';
 $lang['Default description can not be empty'] = 'Default description can not be empty';
 $lang['extension'] = 'extension';
 $lang['no extension'] = 'no extension';
-
 $lang['Download last revision'] = 'Download last revision';
 $lang['Download'] = 'Download';
 $lang['releases'] = 'releases';
-
 $lang['Choose compatibility versions...'] = 'Choose compatibility versions...';
-
 $lang['Tags'] = 'Tags';
 $lang['Type in a search term'] = 'Type in a search term';
 $lang['No results'] = 'No results';
@@ -185,7 +179,6 @@ $lang['Update your rating'] = 'Update your rating';
 $lang['Rate it!'] = 'Rate it!';
 $lang['Your rating'] = 'Your rating';
 $lang['All'] = 'All';
-
 $lang['Thank you!'] = 'Thank you!';
 $lang['Thank you! Your review is awaiting moderation.'] = 'Thank you! Your review is awaiting moderation.';
 $lang['Please enter your name'] = 'Please enter your name';
@@ -199,7 +192,6 @@ $lang['Review summary'] = 'Review summary';
 $lang['Your review'] = 'Your review';
 $lang['Send'] = 'Send';
 $lang['Please do not use this form to request assistance or report a bug. Use the forums instead.'] = 'Please do not use this form to request assistance or report a bug. Use the forums instead.';
-
 $lang['Other'] = 'Other';
 $lang['%d reviews'] = '%d review(s)';
 $lang['Show %d more reviews'] = 'Show %d more review(s)';
@@ -211,7 +203,6 @@ $lang['Branch'] = 'Branch';
 $lang['Detect languages'] = 'Detect languages';
 $lang['Github page'] = 'Github page';
 $lang['source code, bug/request tracker'] = 'source code, bug/request tracker';
-
 $lang['Extensions for Piwigo'] = 'Extensions for Piwigo';
 $lang['Change appearance with themes. Add features with plugins. Extensions require just a few clicks to get installed. 350 extensions available, and growing!'] = 'Change appearance with themes. Add features with plugins. Extensions require just a few clicks to get installed. 350 extensions available, and growing!';
 $lang['Plugins'] = 'Plugins';
@@ -302,7 +293,6 @@ $lang['This plugin has no recent updates'] = 'This plugin has no recent updates'
 $lang['This plugin has not been updated in 3 years !'] = 'This plugin has not been updated in 3 years!';
 $lang['Revision successfully modified.'] = 'Revision successfully modified.';
 $lang['This user has been successfully.'] = 'This user has been successfully updated.';
-
 $lang['Link successfully added.'] = 'Link successfully added.';
 $lang['Link successfully updated.'] = 'Link successfully updated.';
 $lang['Extension authors successfully updated.'] = 'Extension authors successfully updated.';
@@ -311,8 +301,6 @@ $lang['SVN/Git information succesfully updated.'] = 'SVN/Git information succesf
 $lang['Extension translation sucessfully updated'] = 'Extension translation sucessfully updated';
 $lang['User succesfully updated.'] = 'User succesfully updated.';
 $lang['You must the current user to modify the information.'] = 'You must be the current user to modify the information.';
-
-// For footer
 $lang['Donate'] = 'Donate';
 $lang['Newsletters'] = 'Newsletters';
 $lang['Discover'] = 'Discover';
@@ -333,3 +321,6 @@ $lang['Get Involved'] = 'Get Involved';
 $lang['What\'s new?'] = 'What\'s new?';
 $lang['Newsletters'] = 'Newsletters';
 $lang['Contact'] = 'Contact';
+$lang['Be careful when naming this revision, it is one of the extensions embedded in Piwigo'] = 'Be careful when naming this revision, it is one of the extensions embedded in Piwigo';
+
+//

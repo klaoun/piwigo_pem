@@ -180,6 +180,14 @@ if (isset($_GET['eid']) && 1 == count($_GET))
 
     $json_descriptions = json_encode($ext_descriptions, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT |JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_LINE_TERMINATORS );
 
+    //Check if extension is one of those embedded in Piwigo
+    $is_in_embedded_ext_array = false;
+
+    if (isset($conf['embedded_extensions']) and in_array($current_extension_page_id, $conf['embedded_extensions']))
+    {
+      $is_in_embedded_ext_array = true;
+    }
+
     // Send extension data to template
     $template->assign(
       array(
@@ -205,6 +213,7 @@ if (isset($_GET['eid']) && 1 == count($_GET))
         'extension_categories' => $categories_of_extension[$current_extension_page_id],
         'extension_tags' => empty($tags_of_extension[$current_extension_page_id]) ? array() : $tags_of_extension[$current_extension_page_id],
         'extension_tag_ids' => empty($tag_ids_of_extension)? array() : $tag_ids_of_extension,
+        'is_in_embedded_ext_array' => $is_in_embedded_ext_array,
       )
     );
 
