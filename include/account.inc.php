@@ -162,7 +162,7 @@ SELECT
       {
         $name  = array_column($extensions, 'name');
 
-        array_multisort($name, SORT_ASC, SORT_STRING, $extensions);
+        array_multisort($name, SORT_ASC, SORT_NATURAL|SORT_FLAG_CASE, $extensions);
   
         $template->assign('extensions', $extensions);
         $template->assign('extensions_json', json_encode($extensions));
