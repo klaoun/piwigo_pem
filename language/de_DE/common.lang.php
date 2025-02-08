@@ -314,3 +314,4 @@ $lang['Screenshot successfully updated'] = 'Screenshot erfolgreich aktualisiert'
 $lang['Extension authors successfully updated.'] = 'Die Autoren der Erweiterung wurden erfolgreich aktualisiert.';
 $lang['Link successfully added.'] = 'Link erfolgreich hinzugefügt.';
 $lang['Link successfully updated.'] = 'Link erfolgreich aktualisiert.';
+$lang['Be careful when naming this revision, it is one of the extensions embedded in Piwigo'] = 'Seien Sie vorsichtig bei der Benennung dieser Revision, sie ist eine der in Piwigo eingebetteten Erweiterungen';
