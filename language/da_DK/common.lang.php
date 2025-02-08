@@ -323,3 +323,4 @@ $lang['Add authors'] = 'Tilføj forfattere';
 $lang['Add extension'] = 'Tilføj udvidelse';
 $lang['Age'] = 'Alder';
 $lang['You must the current user to modify the information.'] = 'Du skal være den aktuelle bruger for at ændre oplysningerne.';
+$lang['Be careful when naming this revision, it is one of the extensions embedded in Piwigo'] = 'Vær forsigtig ved navngivning af denne revision, da det er en af udvidelserne, som er indlejret i Piwigo';
