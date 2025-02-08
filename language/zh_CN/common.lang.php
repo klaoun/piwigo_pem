@@ -318,3 +318,4 @@ $lang['Screenshot successfully updated'] = '截图已成功更新。';
 $lang['User succesfully updated.'] = '用户已成功更新。';
 $lang['Link successfully added.'] = '链接成功添加。';
 $lang['You must the current user to modify the information.'] = '您必须是当前用户才能修改信息。';
+$lang['Be careful when naming this revision, it is one of the extensions embedded in Piwigo'] = '在命名此修订版本时要小心，它是嵌入在 Piwigo 中的扩展之一。';
