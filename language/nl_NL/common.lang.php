@@ -318,3 +318,4 @@ $lang['new'] = 'nieuw';
 $lang['not rated yet'] = 'nog niet beoordeeld';
 $lang['releases'] = 'versies';
 $lang['source code, bug/request tracker'] = 'bron code, fout/verzoek volger';
+$lang['Be careful when naming this revision, it is one of the extensions embedded in Piwigo'] = 'Wees voorzichtig wanneer je deze versie een naam geeft. Het is een van de ingebouwde Piwigo uitbreidingen.';
