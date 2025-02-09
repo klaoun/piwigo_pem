@@ -165,4 +165,7 @@ $lang['no extension'] = 'eklenti yok';
 $lang['Download last revision'] = 'Son değişiklikleri indir';
 $lang['Download'] = 'İndir';
 $lang['releases'] = 'sürümler';
-?>
+$lang['About us'] = 'Hakkımızda';
+$lang['Age'] = 'Yaş';
+$lang['All'] = 'Tümü';
+$lang['All languages'] = 'Tüm diller';
