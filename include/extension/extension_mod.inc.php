@@ -328,8 +328,6 @@ WHERE idx_extension = '.$current_extension_page_id.'
 
     unset($_POST);
   
-    set_status_header(489);
-
     return;
   }
 }
