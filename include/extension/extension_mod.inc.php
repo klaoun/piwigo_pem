@@ -23,13 +23,13 @@ else if (isset($_GET['uid']))
 // +-----------------------------------------------------------------------+
 if ($_SERVER['REQUEST_METHOD'] === 'POST' and !isset($_POST['submit']))
 {
-  set_status_header(488);
+  do_error(489, 'ext_mod, no submit');
   exit();
 }
 
 if (isset($_POST['submit']) and !isset($_POST['pem_action']))
 {
-  set_status_header(487);
+  do_error(489, 'ext_mod, no pem_action');
   exit();
 }
 
@@ -37,7 +37,7 @@ if (empty($page['errors']) and isset($_POST['pem_action']) and isset($_POST['sub
 {
   if (is_a_guest())
   {
-    set_status_header(489);
+    do_error(489, 'ext_mod is_guest');
 
     return;
   }
@@ -227,6 +227,9 @@ WHERE idx_extension = '.$current_extension_page_id.'
             'MESSAGE_TYPE' => 'error'
           )
         );
+
+        do_error(489, 'ext_mod, not author');
+        return;
       }
     }
     // This actions comes from account, we have a uid that is set and not an eid

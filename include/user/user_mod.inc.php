@@ -16,7 +16,8 @@ if (isset($_POST['pem_action']) and isset($_POST['submit']) and "edit_user_info"
 
   if (is_a_guest())
   {
-    
+    do_error(489, 'user_mod, is_guest');
+    return;
   }
   
   if (isset($user['id']) and $user['id'] == $current_user_page_id)
@@ -83,7 +84,7 @@ SELECT '.$conf['user_fields']['id'].' AS id
       )
     );
 
-    set_status_header(489);
+    do_error(489, 'user_mod, not author');
     return;
   }
 }

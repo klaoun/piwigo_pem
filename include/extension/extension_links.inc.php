@@ -58,7 +58,7 @@ if (isset($_POST['pem_action']) and isset($_POST['submit']))
 {
   if (is_a_guest())
   {
-    set_status_header(489);
+    do_error(489, 'ext_links, is_guest');
     return;
   }
 
@@ -242,7 +242,7 @@ WHERE id_extension = '.$_GET['eid'].'
       )
     );
 
-    set_status_header(489);
+    do_error(489, 'ext_links');
     return;
   }
 }

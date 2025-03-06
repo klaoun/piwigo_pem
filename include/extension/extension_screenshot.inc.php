@@ -122,7 +122,7 @@ if (isset($_POST['pem_action']) and isset($_POST['submit']) and "edit_screenshot
 {
   if (is_a_guest())
   {
-    set_status_header(489);
+    do_error(489, 'ext_screenshot, is_guest');
     return;
   }
 
@@ -255,7 +255,7 @@ if (isset($_POST['pem_action']) and isset($_POST['submit']) and "edit_screenshot
       )
     );
 
-    set_status_header(489);
+    do_error(489, 'ext_screenshot');
     return;
   }
 }
