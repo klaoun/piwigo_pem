@@ -23,13 +23,15 @@ else if (isset($_GET['uid']))
 // +-----------------------------------------------------------------------+
 if ($_SERVER['REQUEST_METHOD'] === 'POST' and !isset($_POST['submit']))
 {
-  do_error(489, 'ext_mod, no submit');
+  $logger->info(__FUNCTION__.', FILE = '.__FILE__.', LINE = '.__LINE__);
+  set_status_header(489);
   exit();
 }
 
 if (isset($_POST['submit']) and !isset($_POST['pem_action']))
 {
-  do_error(489, 'ext_mod, no pem_action');
+  $logger->info(__FUNCTION__.', FILE = '.__FILE__.', LINE = '.__LINE__);
+  set_status_header(489);
   exit();
 }
 
@@ -37,7 +39,8 @@ if (empty($page['errors']) and isset($_POST['pem_action']) and isset($_POST['sub
 {
   if (is_a_guest())
   {
-    do_error(489, 'ext_mod is_guest');
+    $logger->info(__FUNCTION__.', FILE = '.__FILE__.', LINE = '.__LINE__);
+    set_status_header(489);
 
     return;
   }
@@ -228,7 +231,8 @@ WHERE idx_extension = '.$current_extension_page_id.'
           )
         );
 
-        do_error(489, 'ext_mod, not author');
+        $logger->info(__FUNCTION__.', FILE = '.__FILE__.', LINE = '.__LINE__);
+        set_status_header(489);
         return;
       }
     }

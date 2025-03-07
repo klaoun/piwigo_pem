@@ -15,7 +15,8 @@ if (isset($_POST['pem_action']) and isset($_POST['submit']))
 
   if (is_a_guest())
   {
-    do_error(489, 'ext_svn, is_guest');
+    $logger->info(__FUNCTION__.', FILE = '.__FILE__.', LINE = '.__LINE__);
+    set_status_header(489);
     return;
   }
 
@@ -139,7 +140,8 @@ WHERE id_extension = '.$_GET['eid'].'
       )
     );
 
-    do_error(489, 'ext_svn, not author');
+    $logger->info(__FUNCTION__.', FILE = '.__FILE__.', LINE = '.__LINE__);
+    set_status_header(489);
     return;
   }
 }

@@ -30,8 +30,6 @@
   {/foreach}
                     </select>
 {/if}
-          
-
             </div>
 
             <input type="hidden" name="pem_action" value="add_link">

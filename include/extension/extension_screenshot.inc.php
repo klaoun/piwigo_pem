@@ -122,7 +122,8 @@ if (isset($_POST['pem_action']) and isset($_POST['submit']) and "edit_screenshot
 {
   if (is_a_guest())
   {
-    do_error(489, 'ext_screenshot, is_guest');
+    $logger->info(__FUNCTION__.', FILE = '.__FILE__.', LINE = '.__LINE__);
+    set_status_header(489);
     return;
   }
 
@@ -255,7 +256,8 @@ if (isset($_POST['pem_action']) and isset($_POST['submit']) and "edit_screenshot
       )
     );
 
-    do_error(489, 'ext_screenshot');
+    $logger->info(__FUNCTION__.', FILE = '.__FILE__.', LINE = '.__LINE__);
+    set_status_header(489);
     return;
   }
 }

@@ -12,7 +12,8 @@ global $template, $user;
 if (isset($_POST['pem_action']) and isset($_POST['submit']) and "edit_authors" == $_POST['pem_action'])
 {
   if (is_a_guest()){
-    do_error(489, 'ext_authors, is_guest');
+    $logger->info(__FUNCTION__.', FILE = '.__FILE__.', LINE = '.__LINE__);
+    set_status_header(489);
     return;
   } 
 
@@ -75,7 +76,8 @@ INSERT INTO '.PEM_AUTHORS_TABLE.' (idx_extension, idx_user)
       )
     );
 
-    do_error(489, 'ext_authors');
+    $logger->info(__FUNCTION__.', FILE = '.__FILE__.', LINE = '.__LINE__);
+    set_status_header(489);
     return;
   }
 }

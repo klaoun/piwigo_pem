@@ -16,7 +16,8 @@ if (isset($_POST['pem_action']) and isset($_POST['submit']) and "edit_user_info"
 
   if (is_a_guest())
   {
-    do_error(489, 'user_mod, is_guest');
+    $logger->info(__FUNCTION__.', FILE = '.__FILE__.', LINE = '.__LINE__);
+    set_status_header(489);
     return;
   }
   
@@ -84,7 +85,8 @@ SELECT '.$conf['user_fields']['id'].' AS id
       )
     );
 
-    do_error(489, 'user_mod, not author');
+    $logger->info(__FUNCTION__.', FILE = '.__FILE__.', LINE = '.__LINE__);
+    set_status_header(489);
     return;
   }
 }
