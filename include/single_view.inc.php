@@ -305,8 +305,8 @@ if (isset($_GET['eid']) && 1 == count($_GET))
         $tpl_all_extension_links,
         array(
           'id_link' => 'svn',
-          'name' => l10n('Trac page'),
-          'url' => str_replace('piwigo.org/svn/extensions', 'piwigo.org/dev/browser/extensions', $data['svn_url']),
+          'name' => l10n('Subversion page'),
+          'url' => $data['svn_url'], // str_replace('piwigo.org/svn/extensions', 'piwigo.org/dev/browser/extensions', $data['svn_url']),
           'language' => l10n("All languages"),
           'description' => l10n('source code'),
         )
