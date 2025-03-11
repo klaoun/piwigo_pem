@@ -4,7 +4,7 @@
 // |                           Initialization                              |
 // +-----------------------------------------------------------------------+
 
-global $page, $user;
+global $page, $user, $logger;
 
 if (isset($_GET['eid']))
 {

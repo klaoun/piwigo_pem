@@ -3,7 +3,7 @@
 // |                           Initialization                              |
 // +-----------------------------------------------------------------------+
 
-global $user;
+global $user, $logger;
 
 $current_user_page_id = $_GET['uid'];
 

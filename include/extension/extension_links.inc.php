@@ -48,7 +48,7 @@ function save_order_links($sorted_link_ids)
 // |                           Initialization                              |
 // +-----------------------------------------------------------------------+
 
-global $template, $user;
+global $template, $user, $logger;
 
 // +-----------------------------------------------------------------------+
 // |                           Form submission                             |

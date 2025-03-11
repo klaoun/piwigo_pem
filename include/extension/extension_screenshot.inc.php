@@ -4,7 +4,7 @@
 // |                           Initialization                              |
 // +-----------------------------------------------------------------------+
 
-global $user;
+global $user, $logger;
 
 $current_extension_page_id = $_GET['eid'];
 
