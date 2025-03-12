@@ -240,7 +240,7 @@ if (isset($_GET['eid']) && 1 == count($_GET))
       $template->assign(
         array(
           'can_modify' => $page['user_can_modify'],
-          'admin' => get_user_status() =='admin',
+          'admin' => get_user_status() =='admin' or get_user_status() =='webmaster',
         )
       );
       //Know if the user is the user owner
