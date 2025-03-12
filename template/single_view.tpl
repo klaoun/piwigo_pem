@@ -29,7 +29,7 @@
         <input class="form-check-input" type="checkbox" role="switch" id="edit_mode">
         <label class="form-check-label" for="edit_mode">{'Edit mode'|translate}</label>
       </div>
-    {if isset($u_owner) && $u_owner == true || isset($admin) && $admin == true}
+    {if (isset($u_owner) && $u_owner == true) || (isset($admin) && $admin == true)}
       <div class="ms-4">
         <span class="link-secondary link" data-bs-toggle="modal" data-bs-target="#deleteExtensionModal">
           <i class="icon-trash"></i>{'Delete extension'|translate}
