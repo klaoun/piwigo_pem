@@ -29,10 +29,12 @@ $query = '
 SELECT
     id_extension,
     name,
+    idx_category,
     username
   FROM '.PEM_EXT_TABLE.' AS e
     JOIN '.USERS_TABLE.' AS u ON u.id = e.idx_user
-';
+    JOIN '.PEM_EXT_CAT_TABLE.' on idx_extensions = id_extensions
+;';
 $result = pwg_query($query);
 while ($row = pwg_db_fetch_assoc($result))
 {
