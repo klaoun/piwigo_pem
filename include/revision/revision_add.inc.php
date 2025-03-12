@@ -26,7 +26,7 @@ if (isset($_POST['pem_action']) and isset($_POST['submit']))
 {
   if (is_a_guest())
   {
-    $logger->info(__FUNCTION__.', FILE = '.__FILE__.', LINE = '.__LINE__);
+    $logger->info('is_a_guest on '.$_POST['pem_action'].' in FILE = '.__FILE__.', LINE = '.__LINE__);
     set_status_header(489);
     return;
   }
@@ -850,7 +850,7 @@ DELETE
         )
       );
 
-      $logger->info(__FUNCTION__.', FILE = '.__FILE__.', LINE = '.__LINE__);
+      $logger->info('not author on '.$_POST['pem_action'].' in FILE = '.__FILE__.', LINE = '.__LINE__);
       set_status_header(489);
       return;
     }

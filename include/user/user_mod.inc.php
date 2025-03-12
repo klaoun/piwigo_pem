@@ -16,7 +16,7 @@ if (isset($_POST['pem_action']) and isset($_POST['submit']) and "edit_user_info"
 
   if (is_a_guest())
   {
-    $logger->info(__FUNCTION__.', FILE = '.__FILE__.', LINE = '.__LINE__);
+    $logger->info('is_guest on '.$_POST['pem_action'].' in FILE = '.__FILE__.', LINE = '.__LINE__);
     set_status_header(489);
     return;
   }
@@ -65,7 +65,7 @@ SELECT '.$conf['user_fields']['id'].' AS id
         $country_name = 'unkown';
 
         notify_mattermost('['.$conf['mattermost_notif_type'].'] user #'.$user['id'].' ('.$user['username'].') updated their information , IP='.$_SERVER['REMOTE_ADDR'].' country='.$country_code.'/'.$country_name);
-        pwg_activity('pem_user', $_POST['rid'], 'edit', array());
+        pwg_activity('pem_user', $user['id'], 'edit', array());
 
         $template->assign(
           array(
@@ -85,7 +85,7 @@ SELECT '.$conf['user_fields']['id'].' AS id
       )
     );
 
-    $logger->info(__FUNCTION__.', FILE = '.__FILE__.', LINE = '.__LINE__);
+    $logger->info('not author on '.$_POST['pem_action'].' in FILE = '.__FILE__.', LINE = '.__LINE__);
     set_status_header(489);
     return;
   }

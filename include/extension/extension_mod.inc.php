@@ -23,14 +23,14 @@ else if (isset($_GET['uid']))
 // +-----------------------------------------------------------------------+
 if ($_SERVER['REQUEST_METHOD'] === 'POST' and !isset($_POST['submit']))
 {
-  $logger->info(__FUNCTION__.', FILE = '.__FILE__.', LINE = '.__LINE__);
+  $logger->info('no POST submit in FILE = '.__FILE__.', LINE = '.__LINE__);
   set_status_header(489);
   exit();
 }
 
 if (isset($_POST['submit']) and !isset($_POST['pem_action']))
 {
-  $logger->info(__FUNCTION__.', FILE = '.__FILE__.', LINE = '.__LINE__);
+  $logger->info('no POST pem_action in FILE = '.__FILE__.', LINE = '.__LINE__);
   set_status_header(489);
   exit();
 }
@@ -39,7 +39,7 @@ if (empty($page['errors']) and isset($_POST['pem_action']) and isset($_POST['sub
 {
   if (is_a_guest())
   {
-    $logger->info(__FUNCTION__.', FILE = '.__FILE__.', LINE = '.__LINE__);
+    $logger->info('is_a_guest on '.$_POST['pem_action'].' in FILE = '.__FILE__.', LINE = '.__LINE__);
     set_status_header(489);
 
     return;
@@ -231,7 +231,7 @@ WHERE idx_extension = '.$current_extension_page_id.'
           )
         );
 
-        $logger->info(__FUNCTION__.', FILE = '.__FILE__.', LINE = '.__LINE__);
+        $logger->info('not author on '.$_POST['pem_action'].' in FILE = '.__FILE__.', LINE = '.__LINE__);
         set_status_header(489);
         return;
       }
