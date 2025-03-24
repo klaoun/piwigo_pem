@@ -1,6 +1,13 @@
 <!DOCTYPE html>
 <html lang="{$lang_info.code}"  dir="{$lang_info.direction}">
   <head>
+    {* Add title and decsription*}
+    <title>Piwigo extension manager</title>
+    <meta name="description" content="{'Change appearance with themes. Add features with plugins. Extensions require just a few clicks to get installed. 350 extensions available, and growing!'|translate|escape:html}">
+
+    {*Add favicon*}
+    <link rel="shortcut icon" type="image/x-icon" href="themes/default/icon/favicon.ico">
+
     {* Required meta tags *}
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
