@@ -39,7 +39,7 @@
               <div class="spinner-border d-none" role="status">
                 <span class="visually-hidden">{'Loading...'|translate}</span>
               </div>
-              <input type="submit" class="btn btn-primary small-btn" value="{'Submit'|translate}" name="submit" onclick="onSubmitDisplaySpinner('addExtForm');"/>
+              <input type="submit" class="btn btn-primary small-btn" value="{'Create extension'|translate}" name="submit" onclick="onSubmitDisplaySpinner('addExtForm');"/>
             </div>
 
           </form>

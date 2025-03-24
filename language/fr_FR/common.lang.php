@@ -319,5 +319,7 @@ $lang['Screenshot successfully updated'] = 'Capture d\'écran mise à jour avec 
 $lang['User succesfully updated.'] = 'L\'utilisateur a été mis à jour avec succès.';
 $lang['You must the current user to modify the information.'] = 'Vous devez être l\'utilisateur actuel pour modifier les informations.';
 $lang['Be careful when naming this revision, it is one of the extensions embedded in Piwigo'] = 'Attention en nommant cette révision, il s\'agit d\'une des extensions embarquées dans Piwigo';
-
+$lang['Piwigo team'] = 'Équipe Piwigo';
+$lang['Create extension'] = 'Créer l\'extension';
+$lang['Add revision'] = 'Ajouter la revision';
 //

@@ -165,7 +165,7 @@ $lang['no extension'] = 'no extension';
 $lang['Download last revision'] = 'Download last revision';
 $lang['Download'] = 'Download';
 $lang['releases'] = 'releases';
-$lang['Choose compatibility versions...'] = 'Choose compatibility versions...';
+$lang['Choose compatibility versions...'] = 'Choose compatible versions...';
 $lang['Tags'] = 'Tags';
 $lang['Type in a search term'] = 'Type in a search term';
 $lang['No results'] = 'No results';
@@ -322,5 +322,7 @@ $lang['What\'s new?'] = 'What\'s new?';
 $lang['Newsletters'] = 'Newsletters';
 $lang['Contact'] = 'Contact';
 $lang['Be careful when naming this revision, it is one of the extensions embedded in Piwigo'] = 'Be careful when naming this revision, it is one of the extensions embedded in Piwigo';
-
+$lang['Piwigo team'] = 'Piwigo team';
+$lang['Create extension'] = 'Create extension';
+$lang['Add revision'] = 'Add revision';
 //

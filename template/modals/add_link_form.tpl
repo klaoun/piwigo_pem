@@ -39,7 +39,7 @@
               <div class="spinner-border d-none" role="status">
                 <span class="visually-hidden">{'Loading...'|translate}</span>
               </div>
-              <input type="submit" class="btn btn-primary small-btn" value="Submit" name="submit" onclick="onSubmitDisplaySpinner('addLinkForm');"/>
+              <input type="submit" class="btn btn-primary small-btn" value="{'Save'|translate}" name="submit" onclick="onSubmitDisplaySpinner('addLinkForm');"/>
             </div>
           </form>
         </div>

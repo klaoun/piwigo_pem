@@ -110,7 +110,7 @@
                 <div class="form-group">
                   <label for="revision_compatible_versions" class=" pb-2">{'Compatibility'|translate}</label>
                   <select class="revision_compatible_versions" required data-selectize="authors"
-                    data-create="true" name="compatible_versions[]" multiple="multiple" data-placeholder="{'Choose compatible versions...'|translate}">
+                    data-create="true" name="compatible_versions[]" multiple="multiple" data-placeholder="{'Choose compatibility versions...'|translate}">
 {foreach from=$VERSIONS_PWG item=version}
                     <option value="{$version.id_version}">{$version.version}</option>
 {/foreach}
@@ -158,7 +158,7 @@
           {* Revision languages *}
 {if !empty($languages)}
               <div class="mb-3 form-group">
-                <label for="revison_languages" class="col-12">{'Available language'|translate}</label>
+                <label for="revison_languages" class="col-12">{'Available languages'|translate}</label>
                 <div>
                   <span class="detectLang link link-primary" onclick="detectLang('eid',{$extension_id})">
                     <i class="icon-language"></i> {'Detect languages'|translate}
@@ -196,7 +196,7 @@
               <div class="spinner-border d-none" role="status">
                 <span class="visually-hidden">{'Loading...'|translate}</span>
               </div>
-              <input type="submit" class="btn btn-primary small-btn" value="Submit" name="submit" onclick="onSubmitDisplaySpinner('addRevisionForm');"/>
+              <input type="submit" class="btn btn-primary small-btn" value="{'Add revision'|translate}" name="submit" onclick="onSubmitDisplaySpinner('addRevisionForm');"/>
             </div>
 
           </form>

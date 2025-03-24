@@ -99,7 +99,7 @@
             <input type="hidden" name="pem_action" value="edit_revision">
 
             <div class="modal-footer">
-              <button type="button" class="btn btn-tertiary small-btn" data-bs-dismiss="modal">Close</button>
+              <button type="button" class="btn btn-tertiary small-btn" data-bs-dismiss="modal">{'Close'|translate}</button>
               <div class="spinner-border d-none" role="status">
                 <span class="visually-hidden">{'Loading...'|translate}</span>
               </div>

@@ -182,7 +182,7 @@ SELECT
 
     // Assign user info to tpl
     if(in_array($current_user_page_id , $conf['admin_users'])){
-      $current_user_page_infos['group'] = 'Piwigo team <img class="certification_pink" src="'.get_absolute_root_url() . PEM_PATH.'images/CertificationPink.svg"/>';
+      $current_user_page_infos['group'] = l10n('Piwigo team').' <img class="certification_pink" src="'.get_absolute_root_url() . PEM_PATH.'images/CertificationPink.svg"/>';
     }
     else if (in_array($current_user_page_id , $conf['translator_users']))
     {
