@@ -166,20 +166,14 @@ if (isset($_GET['eid']) && 1 == count($_GET))
     $default_ext_description[0]['default'] = true;
 
     $ext_descriptions = array_merge($ext_descriptions_translations, $default_ext_description);
-    foreach($ext_descriptions as $key => $ext_description)
+
+    foreach ($ext_descriptions as $key => $ext_description)
     {
-      $ext_descriptions[$key]['description'] = 
-        htmlspecialchars(
-          strip_tags(
-            stripslashes(
-              str_replace('"', "'", $ext_description['description'])
-            )
-          )
-        );
+      $ext_descriptions[$key]['description'] = strip_tags(stripslashes($ext_description['description']));
     }
 
-    $json_descriptions = json_encode($ext_descriptions, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT |JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_LINE_TERMINATORS );
-
+    $json_descriptions = json_encode($ext_descriptions, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
+    $escaped_json_descriptions = htmlspecialchars($json_descriptions, ENT_QUOTES, 'UTF-8');
     //Check if extension is one of those embedded in Piwigo
     $is_in_embedded_ext_array = false;
 
@@ -194,7 +188,7 @@ if (isset($_GET['eid']) && 1 == count($_GET))
         'extension_id' => $current_extension_page_id,
         'extension_name' => htmlspecialchars(strip_tags(stripslashes($data['name']))),
         'descriptions' =>$ext_descriptions,
-        'json_descriptions' => $json_descriptions,
+        'json_descriptions' => $escaped_json_descriptions,
         'default_description' =>
         htmlspecialchars(
           stripslashes(
@@ -529,19 +523,14 @@ SELECT
 
         $rev_descriptions = array_merge($rev_descriptions_translations, $default_rev_description);
 
-        foreach($rev_descriptions as $rev_description)
+        foreach ($rev_descriptions as &$rev_description)
         {
-          $rev_description['description'] = 
-          htmlspecialchars(
-            strip_tags(
-              stripslashes(
-                str_replace('"', "'",$rev_description['description'])
-              )
-            )
-          );
+          $rev_description['description'] = strip_tags(stripslashes($rev_description['description']));
         }
 
-        $json_rev_descriptions = json_encode($rev_descriptions, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT |JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_LINE_TERMINATORS );
+        $json_rev_descriptions = json_encode($rev_descriptions, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
+        $escaped_json_rev_descriptions = htmlspecialchars($json_rev_descriptions, ENT_QUOTES, 'UTF-8');
+
         $tpl_revisions[] = array(
             'id' => $row['id_revision'],
             'version' => $row['version'],
@@ -563,7 +552,7 @@ SELECT
             'author_id' => $row['author'] ,
             'u_download' => PHPWG_ROOT_PATH.'download.php?rid='.$row['id_revision'],
             'rev_descriptions' => $rev_descriptions,
-            'rev_json_descriptions' => $json_rev_descriptions,
+            'rev_json_descriptions' => $escaped_json_rev_descriptions,
             'rev_default_description' =>
               htmlspecialchars(
                 stripslashes($row['default_description'])

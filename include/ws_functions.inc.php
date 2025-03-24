@@ -438,19 +438,24 @@ function ws_pem_extensions_get_list($params, &$service)
         'nb_reviews' => !empty($extension_infos_of[$extension_id]['nb_reviews']) ? sprintf(l10n('%d reviews'), $extension_infos_of[$extension_id]['nb_reviews']) : null,
         'about' => nl2br(
           htmlspecialchars(
-            strip_tags($extension_infos_of[$extension_id]['description'])
+            strip_tags(
+              stripslashes($extension_infos_of[$extension_id]['description'])
             )
-          ),
+          )
+        ),
         'authors' => array_combine($authors, get_author_name($authors)),
         'name' => $revision_infos_of[$revision_id]['version'],
         'compatible_versions' => implode(', ', $versions_of[$revision_id]),
         'languages' => isset($languages_of[$revision_id]) ?
             $languages_of[$revision_id] : array(),
-        'description' => nl2br(
+        'description' => 
+        nl2br(
           htmlspecialchars(
-            strip_tags($revision_infos_of[$revision_id]['description'])
+            strip_tags(
+              stripslashes($revision_infos_of[$revision_id]['description'])
             )
-          ),
+          )
+        ),
         'date' => date('Y-m-d', $revision_infos_of[$revision_id]['date']),
         'certification' => $certification,
         'thumbnail_src' => $screenshot_infos

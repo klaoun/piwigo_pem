@@ -177,7 +177,7 @@
     data-bs-modal_title ="{'Translate extension description'|translate}"
     data-bs-pem_action ="edit_extension_translation"
     data-bs-lang_ids = "{json_encode($translator_lang_ids)}"
-    data-bs-descriptions = '{$json_descriptions}'
+    data-bs-descriptions = "{$json_descriptions}"
   >
     <i class="icon-edit-language"></i>
   </span>
@@ -358,7 +358,7 @@
                   data-bs-rev_id="{$rev.id}" 
                   data-bs-rev_version_name="{$rev.version}" 
                   data-bs-rev_versions_compatible="{$rev.ids_versions_compatible}"
-                  data-bs-descriptions = '{$rev.rev_json_descriptions}'
+                  data-bs-descriptions='{$rev.rev_json_descriptions}'
                   data-bs-rev_author="{$rev.author_id}"
                 >
                   <i class="icon-pencil"></i>

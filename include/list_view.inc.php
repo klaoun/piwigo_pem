@@ -66,7 +66,7 @@ SELECT
       $result= query2array($query);
       
       $current_category_page_info['spotlight_extension'] = $result[0];
-      $current_category_page_info['spotlight_extension']['description'] = stripslashes($current_category_page_info['spotlight_extension']['description']);
+      $current_category_page_info['spotlight_extension']['description'] = strip_tags(stripslashes($current_category_page_info['spotlight_extension']['description']));
 
       //Get screenshot info
       $screenshot_infos = get_extension_screenshot_infos(
