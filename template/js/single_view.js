@@ -557,3 +557,13 @@ $('input[name="author"]').on('change', function() {
   var getCheckedValue = $('input[name=author]:checked').val()
   jQuery(this).attr( 'checked', true )
 });
+
+//Used to toogle long or short description
+function toggleDescription()
+{
+  $('.extension_description_container').toggleClass('short');
+  $('.extension_description_container').toggleClass('long');
+
+  var aTag = $(".extension_description_container");
+  $('html,body').animate({scrollTop: aTag.offset().top - 58},'fast');
+}

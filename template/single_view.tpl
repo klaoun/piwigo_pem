@@ -187,9 +187,11 @@
 {if isset($descriptions)}
   {foreach from=$descriptions item=description}
     {if $CURRENT_LANG == $description.id_lang && !is_null($description.description)}
-    <div>
-      <p class="extension_description">{$description.description|stripslashes|nl2br}</p>
-    </div>
+      <div class="extension_description_container short">
+        <p class="extension_description">{$default_description|stripslashes|nl2br}</p>
+        <span class="read-more" onclick="toggleDescription()">{'Read more ...'|translate}</span>
+        <span class="read-less" onclick="toggleDescription()">{'Read Less'|translate}</span>
+      </div>
       {assign var="default" value=false}
       {break}
     {else}
@@ -197,8 +199,10 @@
     {/if}
   {/foreach}
   {if true == $default}
-    <div>
+    <div class="extension_description_container short">
       <p class="extension_description">{$default_description|stripslashes|nl2br}</p>
+      <span class="read-more" onclick="toggleDescription()">{'Read more ...'|translate}</span>
+      <span class="read-less" onclick="toggleDescription()">{'Read Less'|translate}</span>
     </div>
   {/if}
 {/if}

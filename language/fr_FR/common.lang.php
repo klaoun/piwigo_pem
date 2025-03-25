@@ -322,4 +322,6 @@ $lang['Be careful when naming this revision, it is one of the extensions embedde
 $lang['Piwigo team'] = 'Équipe Piwigo';
 $lang['Create extension'] = 'Créer l\'extension';
 $lang['Add revision'] = 'Ajouter la revision';
+$lang['Read more ...'] = 'Lire plus ...';
+$lang['Read less'] = 'Lire moins';
 //

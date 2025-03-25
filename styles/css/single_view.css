@@ -65,6 +65,45 @@ header Image
 }
 
 /******
+Tab section
+******/
+.extension_description_container{
+  position:relative;
+}
+
+.read-more,
+.read-less{
+  color:var(--main_orange);
+  cursor: pointer;
+  position:absolute;
+  font-weight:700;
+  right:0;
+}
+
+.short .extension_description{
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  line-clamp: 4;
+  -webkit-line-clamp: 4;
+  -webkit-box-orient: vertical;
+}
+
+.long .extension_description{
+  overflow: visible;
+  line-clamp: unset;
+  -webkit-line-clamp: unset;
+}
+
+.short .read-less{
+  display:none;
+}
+
+.long .read-more{
+  display:none;
+}
+
+/******
 Revisions
 ******/
 #single_view .changelogRevision.card{
