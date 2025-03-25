@@ -558,12 +558,59 @@ $('input[name="author"]').on('change', function() {
   jQuery(this).attr( 'checked', true )
 });
 
-//Used to toogle long or short description
-function toggleDescription()
-{
-  $('.extension_description_container').toggleClass('short');
-  $('.extension_description_container').toggleClass('long');
+function checkTextOverflow() {
+  $('.extension_description_container').each(function() {
+      const container = $(this);
+      const description = container.find('.extension_description');
+      const readMore = container.find('.read-more');
+      const readLess = container.find('.read-less');
 
-  var aTag = $(".extension_description_container");
-  $('html,body').animate({scrollTop: aTag.offset().top - 58},'fast');
+      // Ensure visibility for measurement
+      container.css('visibility', 'hidden').css('display', 'block');
+
+      const lineHeight = parseFloat(getComputedStyle(description[0]).lineHeight);
+      const maxHeight = lineHeight * 4; // Max height 4 lines
+
+      if (description[0].scrollHeight > maxHeight) {
+          //Make sure read more is visible because desc is overflowing
+          readMore.show();
+          readLess.hide();
+          container.addClass('short').removeClass('long');
+      } else {
+          //Hide read more and less seen as description isn't long enough to need them
+          readMore.hide();
+          readLess.hide();
+          container.removeClass('short').addClass('long');
+      }
+
+      // Restore visibility
+      container.css('visibility', '').css('display', '');
+  });
+}
+
+// Run after full page load
+$(window).on('load', checkTextOverflow);
+$(window).resize(checkTextOverflow);
+
+
+//On click of read more or less display or hide description
+$('.read-more, .read-less').on('click', toggleDescription);
+
+function toggleDescription() {
+  const container = $(this).closest('.extension_description_container');
+  const readMore = container.find('.read-more');
+  const readLess = container.find('.read-less');
+
+  if (container.hasClass('short')) {
+      container.removeClass('short').addClass('long');
+      readMore.hide();
+      readLess.show();
+  } else {
+      container.removeClass('long').addClass('short');
+      readMore.show();
+      readLess.hide();
+  }
+
+  //Scroll back to of desc
+  $('html,body').animate({scrollTop: container.offset().top - 58},'fast');
 }

@@ -190,7 +190,7 @@
       <div class="extension_description_container short">
         <p class="extension_description">{$default_description|stripslashes|nl2br}</p>
         <span class="read-more" onclick="toggleDescription()">{'Read more ...'|translate}</span>
-        <span class="read-less" onclick="toggleDescription()">{'Read Less'|translate}</span>
+        <span class="read-less" onclick="toggleDescription()">{'Read less'|translate}</span>
       </div>
       {assign var="default" value=false}
       {break}
@@ -202,7 +202,7 @@
     <div class="extension_description_container short">
       <p class="extension_description">{$default_description|stripslashes|nl2br}</p>
       <span class="read-more" onclick="toggleDescription()">{'Read more ...'|translate}</span>
-      <span class="read-less" onclick="toggleDescription()">{'Read Less'|translate}</span>
+      <span class="read-less" onclick="toggleDescription()">{'Read less'|translate}</span>
     </div>
   {/if}
 {/if}
