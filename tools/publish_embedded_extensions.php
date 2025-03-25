@@ -33,6 +33,12 @@ include(PHPWG_ROOT_PATH.'admin/include/functions.php');
 $query = 'SELECT id_language, code from piwigo_pem_languages;';
 $pem_ext_languages = query2array($query, 'code', 'id_language');
 
+// These parameters are needed if you want to run this script
+
+// $conf['publish_url'] = '';
+// $conf['publish_username'] = '';
+// $conf['publish_password'] = '';
+
 $opt = getopt('', array('version_id:', 'release_name:'));
 
 $mandatory_fields = array('version_id', 'release_name');
@@ -152,7 +158,7 @@ SELECT
     AND archive_root_dir REGEXP \'^[a-z]{2,3}_[a-z]{2}$\'
 ;';
 $piwigo_languages_published = query2array($query, 'id_extension', 'archive_root_dir');
-//$piwigo_languages_published = array(); // TODO to comment if you want to publish languages
+$piwigo_languages_published = array(); // TODO to comment if you want to publish languages
 
 $ext_type = 'language';
 
