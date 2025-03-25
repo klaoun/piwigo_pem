@@ -327,4 +327,5 @@ $lang['Create extension'] = 'Create extension';
 $lang['Add revision'] = 'Add revision';
 $lang['Read more ...'] = 'Read more ...';
 $lang['Read less'] = 'Read less';
+$lang['No links are available for this extension.'] = 'No links are available for this extension.';
 //
