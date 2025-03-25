@@ -25,6 +25,7 @@ include_once('../include/constants.inc.php');
 
 $extension_infos_of = array();
 
+//category added to query since anonymus info sent to piwigo.org in piwigo 15
 $query = '
 SELECT
     id_extension,
@@ -33,7 +34,7 @@ SELECT
     username
   FROM '.PEM_EXT_TABLE.' AS e
     JOIN '.USERS_TABLE.' AS u ON u.id = e.idx_user
-    JOIN '.PEM_EXT_CAT_TABLE.' on idx_extensions = id_extensions
+    JOIN '.PEM_EXT_CAT_TABLE.' on idx_extension = id_extension
 ;';
 $result = pwg_query($query);
 while ($row = pwg_db_fetch_assoc($result))
