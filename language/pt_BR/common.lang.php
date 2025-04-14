@@ -316,3 +316,9 @@ $lang['Change appearance with themes. Add features with plugins. Extensions requ
 $lang['Changelogs'] = 'Registros de alterações';
 $lang['Close'] = 'Fechar';
 $lang['Compatible version of Piwigo'] = 'Versão compatível do Piwigo';
+$lang['Read more ...'] = 'Leia mais...';
+$lang['Read less'] = 'Leia menos';
+$lang['Piwigo team'] = 'Equipe Piwigo';
+$lang['No links are available for this extension.'] = 'Não há links disponíveis para esta extensão.';
+$lang['Create extension'] = 'Criar extensão';
+$lang['Add revision'] = 'Adicionar revisão';
