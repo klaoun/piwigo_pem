@@ -52,12 +52,13 @@
 {/if}
 
             </div>
-
-{if isset($GIT_URL) ||isset($SVN_URL)}
+{if (isset($admin) && $admin == true)}
+  {if isset($GIT_URL) ||isset($SVN_URL)}
               <div class="mb-3 form-group">
                 <button class="link-primary" onclick="deleteSVNGitConfig({$extension_id})">{'Delete SVN/Git data'|translate}</button>
               </div>
-{/if}                
+  {/if}   
+{/if}             
 
               
 {if isset($SVN_INFOS) && !empty($SVN_INFOS)}

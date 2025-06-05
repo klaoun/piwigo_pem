@@ -35,8 +35,10 @@
   {if isset($u_owner_id) && $u_owner_id == $author.uid}
                     <p class="d-inline-block m-0">({'Owner'|translate})</p>   
   {else if isset($can_modify) && true == $can_modify}
+    {if $current_user_id != $author.uid}
       <button class="link-primary" type="button" onclick="deleteAuthor({$author.uid}, {$extension_id})">{'Delete'|translate}</button>
       <p class="d-inline-block m-0">|</p>
+    {/if}
       <button class="link-primary" onclick="setOwner({$author.uid}, {$extension_id})">{'Set as owner'|translate}</button>
   {/if}
 {/foreach}

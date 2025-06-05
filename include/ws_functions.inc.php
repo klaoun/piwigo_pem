@@ -824,28 +824,59 @@ function ws_pem_extensions_delete_author($params, &$service)
     die('missing user id');
   }
 
-  global $user, $conf;
+  global $user, $conf, $logger;
 
-  $eid = $params['extension_id'];
-  $uid = $params['user_id'];
+  // Gets the available authors and owner
+  $query = '
+SELECT DISTINCT 
+    eT.idx_user as uid
+  FROM '.PEM_EXT_TABLE.' as eT
+    WHERE eT.id_extension = '.$params['extension_id'].'
+;';
+
+  $owners = query2array($query, 'uid');
 
   $query = '
-DELETE FROM '.PEM_AUTHORS_TABLE.'
-  WHERE idx_user = '.$uid.'
-  AND idx_extension = '.$eid.'
+SELECT DISTINCT
+    aT.idx_user as uid
+  FROM '.PEM_AUTHORS_TABLE.' as aT
+    WHERE aT.idx_extension = '.$params['extension_id'].'
 ;';
-  
-  pwg_query($query);
 
-  // $country_code = geoip_country_code_by_name($_SERVER['REMOTE_ADDR']);
-  // $country_name = geoip_country_name_by_name($_SERVER['REMOTE_ADDR']);
+  $authors= query2array($query, 'uid');
 
-  $country_code = 'unkown';
-  $country_name = 'unkown';
-  
-  notify_mattermost('['.$conf['mattermost_notif_type'].'] user #'.$user['id'].' ('.$user['username'].') deleted author from extension #'.$eid.' , IP='.$_SERVER['REMOTE_ADDR'].' country='.$country_code.'/'.$country_name);
-  pwg_activity('pem_author', $uid, 'delete', array('extension' => $eid));
+  $all_authors = array_merge_recursive($owners, $authors);
 
+  $is_author = false;
+
+  foreach ($all_authors as $author) {
+    if ($author['uid'] == $user['id']) {
+      $is_author = true;
+      break;
+    }
+  }
+
+  //Check if user is admin, owner or author before doing action
+  if ($user['id'] != $params['user_id'] and (is_admin() or $is_author))
+  {
+    delete_author($params['extension_id'], $params['user_id']);
+
+    // $country_code = geoip_country_code_by_name($_SERVER['REMOTE_ADDR']);
+    // $country_name = geoip_country_name_by_name($_SERVER['REMOTE_ADDR']);
+
+    $country_code = 'unkown';
+    $country_name = 'unkown';
+    
+    notify_mattermost('['.$conf['mattermost_notif_type'].'] user #'.$user['id'].' ('.$user['username'].') deleted author for extension #'.$params['extension_id'].' , IP='.$_SERVER['REMOTE_ADDR'].' country='.$country_code.'/'.$country_name);
+    pwg_activity('pem_author', $params['extension_id'], 'delete', array('extension' => $params['extension_id']));
+
+  }
+  else
+  {
+    $logger->info('Action not allowed in FILE = '.__FILE__.', LINE = '.__LINE__);
+    set_status_header(489);
+    exit();
+  }
 }
 
 /**
@@ -869,47 +900,40 @@ DELETE FROM '.PEM_AUTHORS_TABLE.'
     die('missing user id');
   }
 
-  global $user, $conf;
-  
-  $eid = $params['extension_id'];
-  $uid = $params['user_id'];
-  
-  $extension_infos = get_extension_infos_of($eid);
-  // $author = intval($_GET['owner']);
+  global $user, $conf, $logger;
 
-  if ($uid > 0)
+  // Gets the available authors and owner
+  $query = '
+SELECT DISTINCT 
+    eT.idx_user as uid
+  FROM '.PEM_EXT_TABLE.' as eT
+    WHERE eT.id_extension = '.$params['extension_id'].'
+;';
+
+  $owners = query2array($query, 'uid');
+
+  //Check if user is admin, owner or author before doing action
+  if (is_admin() or !in_array($user['id'], $owners))
   {
-    $query = '
-UPDATE '.PEM_EXT_TABLE.'
-  SET idx_user = '.$uid.'
-  WHERE id_extension = '.$eid.'
-;';
-    pwg_query($query);
+    extension_set_owner($params['extension_id'], $params['user_id']);
 
-    $query = '
-DELETE FROM '.PEM_AUTHORS_TABLE.'
-  WHERE idx_user = '.$uid.'
-  AND idx_extension = '.$eid.'
-;';
-    pwg_query($query);
+    // $country_code = geoip_country_code_by_name($_SERVER['REMOTE_ADDR']);
+    // $country_name = geoip_country_name_by_name($_SERVER['REMOTE_ADDR']);
 
-    $query = '
-INSERT INTO '.PEM_AUTHORS_TABLE.' (idx_extension, idx_user)
-  VALUES ('.$eid.', '.$extension_infos['idx_user'].')
-;';
-    pwg_query($query);
+    $country_code = 'unkown';
+    $country_name = 'unkown';
+    
+    notify_mattermost('['.$conf['mattermost_notif_type'].'] user #'.$user['id'].' ('.$user['username'].') set owner for extension #'.$params['extension_id'].' , IP='.$_SERVER['REMOTE_ADDR'].' country='.$country_code.'/'.$country_name);
+    pwg_activity('pem_author', $params['user_id'], 'delete', array('extension' => $params['extension_id']));
 
   }
+  else
+  {
+    $logger->info('Action not allowed in FILE = '.__FILE__.', LINE = '.__LINE__);
+    set_status_header(489);
+    exit();
+  }
 
-  // $country_code = geoip_country_code_by_name($_SERVER['REMOTE_ADDR']);
-  // $country_name = geoip_country_name_by_name($_SERVER['REMOTE_ADDR']);
-
-  $country_code = 'unkown';
-  $country_name = 'unkown';
-
-  notify_mattermost('['.$conf['mattermost_notif_type'].'] user #'.$user['id'].' ('.$user['username'].') set owner for extension #'.$eid.' , IP='.$_SERVER['REMOTE_ADDR'].' country='.$country_code.'/'.$country_name);
-
-  pwg_activity('pem_owner', $eid, 'add', array('owner' => $uid));
 }
 
 /**
@@ -922,24 +946,34 @@ function ws_pem_extensions_delete_link($params, &$service)
     return new PwgError(403, 'Invalid security token');
   }
 
-  global $user, $conf;
+  global $user, $conf, $logger;
 
-  $query = '
+  //Check if user is admin, owner or author before doing action
+  if (is_admin())
+  {
+    $query = '
 DELETE
   FROM '.PEM_LINKS_TABLE.'
   WHERE id_link = '.$params['link_id'].'
     AND idx_extension = '.$params['extension_id'].'
 ;';
-  pwg_query($query);
+    pwg_query($query);
 
-  // $country_code = geoip_country_code_by_name($_SERVER['REMOTE_ADDR']);
-  // $country_name = geoip_country_name_by_name($_SERVER['REMOTE_ADDR']);
+    // $country_code = geoip_country_code_by_name($_SERVER['REMOTE_ADDR']);
+    // $country_name = geoip_country_name_by_name($_SERVER['REMOTE_ADDR']);
 
-  $country_code = 'unkown';
-  $country_name = 'unkown';
+    $country_code = 'unkown';
+    $country_name = 'unkown';
 
-  notify_mattermost('['.$conf['mattermost_notif_type'].'] user #'.$user['id'].' ('.$user['username'].') deleted link for extension #'.$params['extension_id'].' , IP='.$_SERVER['REMOTE_ADDR'].' country='.$country_code.'/'.$country_name);
-  pwg_activity('pem_link', $params['link_id'], 'delete', array('extension' => $params['extension_id']));
+    notify_mattermost('['.$conf['mattermost_notif_type'].'] user #'.$user['id'].' ('.$user['username'].') deleted link for extension #'.$params['extension_id'].' , IP='.$_SERVER['REMOTE_ADDR'].' country='.$country_code.'/'.$country_name);
+    pwg_activity('pem_link', $params['extension_id'], 'delete', array('extension' => $params['extension_id']));
+  }
+  else
+  {
+    $logger->info('Action not allowed in FILE = '.__FILE__.', LINE = '.__LINE__);
+    set_status_header(489);
+    exit();
+  }
 }
 
 /**
@@ -952,9 +986,43 @@ function ws_pem_extensions_delete_svn_git_config($params, &$service)
     return new PwgError(403, 'Invalid security token');
   }
 
-  global $user, $conf;
+  global $user, $conf, $logger;
+
+  // Gets the available authors and owner
+  $query = '
+SELECT DISTINCT 
+    eT.idx_user as uid
+  FROM '.PEM_EXT_TABLE.' as eT
+    WHERE eT.id_extension = '.$params['extension_id'].'
+;';
+
+  $owners = query2array($query, 'uid');
 
   $query = '
+SELECT DISTINCT
+    aT.idx_user as uid
+  FROM '.PEM_AUTHORS_TABLE.' as aT
+    WHERE aT.idx_extension = '.$params['extension_id'].'
+;';
+
+  $authors= query2array($query, 'uid');
+
+  $all_authors = array_merge_recursive($owners, $authors);
+
+  $is_author = false;
+
+  foreach ($all_authors as $author) {
+    if ($author['uid'] == $user['id']) {
+      $is_author = true;
+      break;
+    }
+  }
+
+  //Check if user is admin, owner or author before doing action
+  if (is_admin() or $is_author)
+  {
+
+    $query = '
 UPDATE '.PEM_EXT_TABLE.'
 SET svn_url = NULL,
     git_url = NULL,
@@ -963,17 +1031,23 @@ SET svn_url = NULL,
 WHERE id_extension = '.$params['extension_id'].'
 ;';
 
-  pwg_query($query);
+    pwg_query($query);
 
-  // $country_code = geoip_country_code_by_name($_SERVER['REMOTE_ADDR']);
-  // $country_name = geoip_country_name_by_name($_SERVER['REMOTE_ADDR']);
+    // $country_code = geoip_country_code_by_name($_SERVER['REMOTE_ADDR']);
+    // $country_name = geoip_country_name_by_name($_SERVER['REMOTE_ADDR']);
 
-  $country_code = 'unkown';
-  $country_name = 'unkown';
+    $country_code = 'unkown';
+    $country_name = 'unkown';
 
-  notify_mattermost('['.$conf['mattermost_notif_type'].'] user #'.$user['id'].' ('.$user['username'].') deleted SVN/git config for extension #'.$params['extension_id'].' , IP='.$_SERVER['REMOTE_ADDR'].' country='.$country_code.'/'.$country_name);
-
-  pwg_activity('pem_svn_git', $params['extension_id'], 'delete', array('extension' => $params['extension_id']));
+    notify_mattermost('['.$conf['mattermost_notif_type'].'] user #'.$user['id'].' ('.$user['username'].') deleted SVN/git config for extension #'.$params['extension_id'].' , IP='.$_SERVER['REMOTE_ADDR'].' country='.$country_code.'/'.$country_name);
+    pwg_activity('pem_svn_git', $params['extension_id'], 'delete', array('extension' => $params['extension_id']));
+  }
+  else
+  {
+    $logger->info('Action not allowed in FILE = '.__FILE__.', LINE = '.__LINE__);
+    set_status_header(489);
+    exit();
+  }
 }
 
 /**
@@ -986,74 +1060,83 @@ function ws_pem_extensions_delete_extension($params, &$service)
     return new PwgError(403, 'Invalid security token');
   }
 
-  global $user, $conf;
+  global $user, $conf, $logger;
 
-  $query = '
+  if (is_admin())
+  {
+    $query = '
 SELECT
     name
   FROM '.PEM_EXT_TABLE.'
     WHERE id_extension = '.$params['extension_id'].'
 ;';
-list($extension_name) = pwg_db_fetch_row(pwg_query($query));
+  list($extension_name) = pwg_db_fetch_row(pwg_query($query));
 
-// Delete all the revisions for the given extension
-  $query = '
+  // Delete all the revisions for the given extension
+    $query = '
 SELECT id_revision
   FROM '.PEM_REV_TABLE.'
   WHERE idx_extension = '.$params['extension_id'].'
 ;';
-  $rev_to_delete = query2array($query, null, 'id_revision');
-  delete_revisions($rev_to_delete);
+    $rev_to_delete = query2array($query, null, 'id_revision');
+    delete_revisions($rev_to_delete);
 
-// Deletes all the categories relations
-  $query = '
+  // Deletes all the categories relations
+    $query = '
 DELETE
   FROM '.PEM_EXT_CAT_TABLE.'
   WHERE idx_extension = '.$params['extension_id'].'
 ;';
-  pwg_query($query);
+    pwg_query($query);
 
-// Deletes all the tags relations
-  $query = '
+  // Deletes all the tags relations
+    $query = '
 DELETE
   FROM '.PEM_EXT_TAG_TABLE.'
   WHERE idx_extension = '.$params['extension_id'].'
 ;';
-  pwg_query($query);
+    pwg_query($query);
 
-// Deletes all the rates
-  $query = '
+  // Deletes all the rates
+    $query = '
 DELETE
   FROM '.PEM_RATE_TABLE.'
   WHERE idx_extension = '.$params['extension_id'].'
 ;';
-  pwg_query($query);
+    pwg_query($query);
 
-// Deletes all the reviews
-  $query = '
+  // Deletes all the reviews
+    $query = '
 DELETE
   FROM '.PEM_REVIEW_TABLE.'
   WHERE idx_extension = '.$params['extension_id'].'
 ;';
-  pwg_query($query);
+    pwg_query($query);
 
-// And finally delete the extension
-  $query = '
+  // And finally delete the extension
+    $query = '
 DELETE
   FROM '.PEM_EXT_TABLE.'
   WHERE id_extension = '.$params['extension_id'].'
 ;';
-  pwg_query($query);
+    pwg_query($query);
 
-  // $country_code = geoip_country_code_by_name($_SERVER['REMOTE_ADDR']);
-  // $country_name = geoip_country_name_by_name($_SERVER['REMOTE_ADDR']);
+    // $country_code = geoip_country_code_by_name($_SERVER['REMOTE_ADDR']);
+    // $country_name = geoip_country_name_by_name($_SERVER['REMOTE_ADDR']);
 
-  $country_code = 'unkown';
-  $country_name = 'unkown';
-  
-  notify_mattermost('['.$conf['mattermost_notif_type'].'] user #'.$user['id'].' ('.$user['username'].') deleted extension #'.$params['extension_id'].'('.$extension_name.') , IP='.$_SERVER['REMOTE_ADDR'].' country='.$country_code.'/'.$country_name);
+    $country_code = 'unkown';
+    $country_name = 'unkown';
+    
+    notify_mattermost('['.$conf['mattermost_notif_type'].'] user #'.$user['id'].' ('.$user['username'].') deleted extension #'.$params['extension_id'].'('.$extension_name.') , IP='.$_SERVER['REMOTE_ADDR'].' country='.$country_code.'/'.$country_name);
 
-  pwg_activity('pem_extension', $params['extension_id'], 'delete', array(''));
+    pwg_activity('pem_extension', $params['extension_id'], 'delete', array(''));
+  }
+  else
+  {
+    $logger->info('Action not allowed in FILE = '.__FILE__.', LINE = '.__LINE__);
+    set_status_header(489);
+    exit();
+  }
 }
 
 /**
@@ -1066,9 +1149,41 @@ function ws_pem_revisions_delete_revision($params, &$service)
     return new PwgError(403, 'Invalid security token');
   }
 
-  global $user, $conf;
+  global $user, $conf, $logger;
+
+    // Gets the available authors and owner
+  $query = '
+SELECT DISTINCT 
+    eT.idx_user as uid
+  FROM '.PEM_EXT_TABLE.' as eT
+    WHERE eT.id_extension = '.$params['extension_id'].'
+;';
+
+  $owners = query2array($query, 'uid');
 
   $query = '
+SELECT DISTINCT
+    aT.idx_user as uid
+  FROM '.PEM_AUTHORS_TABLE.' as aT
+    WHERE aT.idx_extension = '.$params['extension_id'].'
+;';
+
+  $authors= query2array($query, 'uid');
+
+  $all_authors = array_merge_recursive($owners, $authors);
+
+  $is_author = false;
+
+  foreach ($all_authors as $author) {
+    if ($author['uid'] == $user['id']) {
+      $is_author = true;
+      break;
+    }
+  }
+
+  if (is_admin() or in_array($user['id'], $all_authors ))
+  {
+    $query = '
 SELECT
     id_extension,
     name
@@ -1076,41 +1191,48 @@ SELECT
     WHERE id_extension = '.$params['extension_id'].'
 ;';
 
-  list($eid, $extension_name) = pwg_db_fetch_row(pwg_query($query));
+    list($eid, $extension_name) = pwg_db_fetch_row(pwg_query($query));
   
-  $revision_infos_of = get_revision_infos_of(array($params['revision_id']));
+    $revision_infos_of = get_revision_infos_of(array($params['revision_id']));
 
-  @unlink(
-    get_revision_src(
-      $revision_infos_of[$params['revision_id']]['idx_extension'],
-      $params['revision_id'],
-      $revision_infos_of[$params['revision_id']]['url']
-    )
-  );
+    @unlink(
+      get_revision_src(
+        $revision_infos_of[$params['revision_id']]['idx_extension'],
+        $params['revision_id'],
+        $revision_infos_of[$params['revision_id']]['url']
+      )
+    );
 
-  $query = '
+    $query = '
 DELETE
   FROM '.PEM_COMP_TABLE.'
   WHERE idx_revision = '.$params['revision_id'].'
 ;';
-  pwg_query($query);
+    pwg_query($query);
 
-  $query = '
+    $query = '
 DELETE
   FROM '.PEM_REV_TABLE.'
   WHERE id_revision = '.$params['revision_id'].'
 ;';
-  pwg_query($query);
+    pwg_query($query);
 
-  // $country_code = geoip_country_code_by_name($_SERVER['REMOTE_ADDR']);
-  // $country_name = geoip_country_name_by_name($_SERVER['REMOTE_ADDR']);
+    // $country_code = geoip_country_code_by_name($_SERVER['REMOTE_ADDR']);
+    // $country_name = geoip_country_name_by_name($_SERVER['REMOTE_ADDR']);
 
-  $country_code = 'unkown';
-  $country_name = 'unkown';
-  
-  notify_mattermost('['.$conf['mattermost_notif_type'].'] user #'.$user['id'].' ('.$user['username'].') deleted revision #'.$params['revision_id'].' from extension #'.$eid.' ('.$extension_name.') , IP='.$_SERVER['REMOTE_ADDR'].' country='.$country_code.'/'.$country_name);
+    $country_code = 'unkown';
+    $country_name = 'unkown';
+    
+    notify_mattermost('['.$conf['mattermost_notif_type'].'] user #'.$user['id'].' ('.$user['username'].') deleted revision #'.$params['revision_id'].' from extension #'.$eid.' ('.$extension_name.') , IP='.$_SERVER['REMOTE_ADDR'].' country='.$country_code.'/'.$country_name);
 
-  pwg_activity('pem_revision', $params['revision_id'], 'delete', array('extension'=>$params['extension_id']));
+    pwg_activity('pem_revision', $params['revision_id'], 'delete', array('extension'=>$params['extension_id']));
+  }
+  else
+  {
+    $logger->info('Action not allowed in FILE = '.__FILE__.', LINE = '.__LINE__);
+    set_status_header(489);
+    exit();
+  }
 }
 
 function ws_pem_revisions_get_language_info($params, &$service)
