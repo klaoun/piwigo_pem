@@ -948,8 +948,38 @@ function ws_pem_extensions_delete_link($params, &$service)
 
   global $user, $conf, $logger;
 
+  // Gets the available authors and owner
+  $query = '
+SELECT DISTINCT 
+    eT.idx_user as uid
+  FROM '.PEM_EXT_TABLE.' as eT
+    WHERE eT.id_extension = '.$params['extension_id'].'
+;';
+
+  $owners = query2array($query, 'uid');
+
+  $query = '
+SELECT DISTINCT
+    aT.idx_user as uid
+  FROM '.PEM_AUTHORS_TABLE.' as aT
+    WHERE aT.idx_extension = '.$params['extension_id'].'
+;';
+
+  $authors= query2array($query, 'uid');
+
+  $all_authors = array_merge_recursive($owners, $authors);
+
+  $is_author = false;
+
+  foreach ($all_authors as $author) {
+    if ($author['uid'] == $user['id']) {
+      $is_author = true;
+      break;
+    }
+  }
+
   //Check if user is admin, owner or author before doing action
-  if (is_admin())
+  if (is_admin() or $is_author)
   {
     $query = '
 DELETE
@@ -1152,6 +1182,7 @@ function ws_pem_revisions_delete_revision($params, &$service)
   global $user, $conf, $logger;
 
     // Gets the available authors and owner
+  // Gets the available authors and owner
   $query = '
 SELECT DISTINCT 
     eT.idx_user as uid
@@ -1181,7 +1212,8 @@ SELECT DISTINCT
     }
   }
 
-  if (is_admin() or in_array($user['id'], $all_authors ))
+  //Check if user is admin, owner or author before doing action
+  if (is_admin() or $is_author)
   {
     $query = '
 SELECT
