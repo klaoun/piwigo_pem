@@ -1179,6 +1179,8 @@ function ws_pem_revisions_delete_revision($params, &$service)
     return new PwgError(403, 'Invalid security token');
   }
 
+  check_user_activity();
+
   global $user, $conf, $logger;
 
     // Gets the available authors and owner

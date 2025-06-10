@@ -267,6 +267,9 @@ function deleteRevision(revisionId,extensionId, link )
         window.history.replaceState( null, null, window.location.href );
       }
       window.location = window.location.href;
+    },
+    error: function (data) {
+      jQuery('#deleteRevisionModal .modal-body').html('<p>'+data.responseText+'</p>')
     }
   });
 }

@@ -325,4 +325,6 @@ $lang['Add revision'] = 'Ajouter la revision';
 $lang['Read more ...'] = 'Lire plus ...';
 $lang['Read less'] = 'Lire moins';
 $lang['No links are available for this extension.'] = 'Aucun lien n\'est disponible pour cette extension.';
+$lang['This action cannot be performed at this time. Please contact an admin.'] = 'Cette action est actuellement impossible. Veuillez contacter un administrateur.';
+
 //

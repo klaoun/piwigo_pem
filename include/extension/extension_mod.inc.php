@@ -21,6 +21,8 @@ else if (isset($_GET['uid']))
 // +-----------------------------------------------------------------------+
 // |                           Form submission                             |
 // +-----------------------------------------------------------------------+
+include_once(PEM_PATH . 'include/functions_users.inc.php');
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST' and !isset($_POST['submit']))
 {
   $logger->info('no POST submit in FILE = '.__FILE__.', LINE = '.__LINE__);
@@ -239,7 +241,9 @@ WHERE idx_extension = '.$current_extension_page_id.'
     // This actions comes from account, we have a uid that is set and not an eid
     else if ("add_ext" == $_POST['pem_action'])
     {
-    // Inserts the extension (need to be done before the other includes, to
+      check_user_activity();
+
+      // Inserts the extension (need to be done before the other includes, to
       // retrieve the insert id
       $insert = array(
         'idx_user'   => $user['id'],

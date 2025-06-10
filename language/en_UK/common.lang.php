@@ -328,4 +328,5 @@ $lang['Add revision'] = 'Add revision';
 $lang['Read more ...'] = 'Read more ...';
 $lang['Read less'] = 'Read less';
 $lang['No links are available for this extension.'] = 'No links are available for this extension.';
+$lang['This action cannot be performed at this time. Please contact an admin.'] = 'This action cannot be performed at this time. Please contact an admin.';
 //
