@@ -325,3 +325,4 @@ $lang['No links are available for this extension.'] = 'Bu eklenti için herhangi
 $lang['Read more ...'] = 'Devamını oku...';
 $lang['Read less'] = 'Daralt';
 $lang['Piwigo team'] = 'Piwigo takımı';
+$lang['This action cannot be performed at this time. Please contact an admin.'] = 'Bu eylem şu anda gerçekleştirilemiyor. Lütfen bir yöneticiyle iletişime geçin.';
