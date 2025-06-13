@@ -194,18 +194,15 @@ SELECT
   $date_created = strtotime($result[0]['date']);
   $one_hour_ago = time() - 3600;
 
-  if (!is_admin() and $date_created < $one_hour_ago)
+  //By default lets set this to false
+  $can_delete_revision = false;
+
+  if (is_admin())
   {
-    if(10 < $nb_downloads){
-      $can_delete_revision = true;
-    }
-    else{
-      $can_delete_revision = false;
-    }
-  }
-  else
+    $can_delete_revision = true;
+  } elseif ($date_created > $one_hour_ago and 10 > $nb_downloads)
   {
-    $can_delete_revision = false;
+    $can_delete_revision = true;
   }
 
   return $can_delete_revision;
