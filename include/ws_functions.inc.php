@@ -1179,11 +1179,19 @@ function ws_pem_revisions_delete_revision($params, &$service)
     return new PwgError(403, 'Invalid security token');
   }
 
+  //Check if the revision can be deleted, if it is less than on hour old and less than 10 downlaods by users
+  $can_delete_revision = can_revision_be_deleted($params['extension_id']);
+
+  if (!$can_delete_revision)
+  {
+    $message = l10n('This action cannot be performed at this time. Please contact an admin.');
+    exit($message);
+  }
+
   check_user_activity();
 
   global $user, $conf, $logger;
 
-    // Gets the available authors and owner
   // Gets the available authors and owner
   $query = '
 SELECT DISTINCT 

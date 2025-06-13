@@ -367,6 +367,7 @@
                 >
                   <i class="icon-pencil"></i>
                 </span>
+      {if $rev.can_be_deleted}
                 <span class="edit_mode circle-icon secondary_action me-2" 
                   data-bs-toggle="modal" 
                   data-bs-target="#deleteRevisionModal"
@@ -376,6 +377,7 @@
                   >
                   <i class="icon-trash translate-middle"></i>
                 </span>
+      {/if}
     {/if}
                 <span class="cursor-pointer" onclick="revToggleDisplay('rev{$rev.id}_header', 'rev{$rev.id}_content')"><i {if $rev.expanded}class="icon-chevron-down"{else}class="icon-chevron-right"{/if}></i>
               </div>

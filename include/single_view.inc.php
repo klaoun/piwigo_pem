@@ -563,6 +563,7 @@ SELECT
             'expanded' => isset($_GET['rid']) && $row['id_revision'] == $_GET['rid'],
             'downloads' => isset($downloads_of_revision[$row['id_revision']]) ? 
                             $downloads_of_revision[$row['id_revision']] : 0,
+            'can_be_deleted' => can_revision_be_deleted($row['id_revision']),
         );
 
         $first_date = $row['date'];

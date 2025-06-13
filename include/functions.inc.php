@@ -170,3 +170,43 @@ function notify_mattermost($message)
 
   return $result;
 }
+
+
+/**
+ * Check how many downloads and since how long a revision was added
+ * if the user isn't an admin and the revision was published more than 1 hour ago or has more than 10 downlaods
+ * Then it can't be deleted
+ */
+
+function can_revision_be_deleted($id_revision)
+{
+    $query = '
+SELECT
+    id_revision,
+    nb_downloads,
+    date
+  FROM '.PEM_REV_TABLE.'
+  WHERE id_revision = '.$id_revision.'
+;';
+
+  $result = query2array($query, null);
+  $nb_downloads = $result[0]['nb_downloads'];
+  $date_created = strtotime($result[0]['date']);
+  $one_hour_ago = time() - 3600;
+
+  if (!is_admin() and $date_created < $one_hour_ago)
+  {
+    if(10 < $nb_downloads){
+      $can_delete_revision = true;
+    }
+    else{
+      $can_delete_revision = false;
+    }
+  }
+  else
+  {
+    $can_delete_revision = false;
+  }
+
+  return $can_delete_revision;
+}
