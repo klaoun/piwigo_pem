@@ -321,3 +321,4 @@ $lang['Read more ...'] = 'Lesen Sie mehr ...';
 $lang['Add revision'] = 'Überarbeitung hinzufügen';
 $lang['Create extension'] = 'Erweiterung erstellen';
 $lang['No links are available for this extension.'] = 'Für diese Erweiterung sind keine Links verfügbar.';
+$lang['This action cannot be performed at this time. Please contact an admin.'] = 'Diese Aktion kann zur Zeit nicht durchgeführt werden. Bitte kontaktieren Sie einen Administrator.';
